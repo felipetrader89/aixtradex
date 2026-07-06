@@ -5,7 +5,7 @@ export function BrandMark({ className = "" }: { className?: string }) {
         <span className="text-chrome">A</span>
         <span className="relative inline-block normal-case text-chrome">
           ı
-          <span className="absolute left-[42%] top-[0.08em] h-[0.15em] w-[0.15em] -translate-x-1/2 bg-brand-accent" />
+          <span className="absolute left-[42%] top-[0.27em] h-[0.21em] w-[0.21em] -translate-x-1/2 bg-brand-accent" />
         </span>
         <span className="text-chrome"> </span>
         <span className="text-brand-accent">X</span>
