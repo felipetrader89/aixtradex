@@ -5,15 +5,12 @@ export const siteConfig = {
   brokers: ["FPMarkets", "Tickmill", "Vantage", "Exness"],
 } as const;
 
-// TODO: replace every placeholder below with the real payment destination
-// before this goes live. Wrong crypto addresses cause irreversible fund loss.
 export const paymentAddresses = {
-  binancePayId: "TODO_BINANCE_PAY_ID",
-  btc: "TODO_BTC_ADDRESS",
-  usdtTrc20: "TODO_USDT_TRC20_ADDRESS",
-  usdtErc20: "TODO_USDT_ERC20_ADDRESS",
-  usdtBep20: "TODO_USDT_BEP20_ADDRESS",
-  usdc: "TODO_USDC_ADDRESS",
-  ltc: "TODO_LTC_ADDRESS",
-  eth: "TODO_ETH_ADDRESS",
+  binancePayId: "38373757",
+  btc: "13YCPr7Pdkbp67jsQ3GfvbUZ9PUW6AaaLs",
+  usdtTrc20: "TBafKQqxXdyTRvzCVMZY38j8nrZsUe4CFP",
+  usdtErc20: "0x0edeb5c10fe25acc0c5324b9a929900df64712e8",
+  usdc: "0x0edeb5c10fe25acc0c5324b9a929900df64712e8",
+  ltc: "LUV1T1ivaowrDYjmeZvEQneXzCrKXVg4bw",
+  eth: "0x0edeb5c10fe25acc0c5324b9a929900df64712e8",
 } as const;

@@ -232,7 +232,6 @@
     "title": "Pago",
     "intro": "Elige una de las opciones abajo para pagar tu plan. Después de enviar, mándame la captura o el hash de la transacción por Telegram para confirmar y liberar el acceso.",
     "planLabel": "Plan seleccionado",
-    "amountNote": "Confirma el valor exacto del plan en la página de Planes antes de enviar.",
     "warning": "Envía solo por la red indicada en cada opción abajo. Enviar por la red equivocada puede causar la pérdida permanente de los fondos.",
     "addressLabel": "Dirección",
     "copy": "Copiar",
@@ -246,7 +245,7 @@
       "usdtTrc20": { "label": "USDT", "network": "Red TRC-20 (Tron)" },
       "usdtErc20": { "label": "USDT", "network": "Red ERC-20 (Ethereum)" },
       "usdtBep20": { "label": "USDT", "network": "Red BEP-20 (BNB Smart Chain)" },
-      "usdc": { "label": "USDC", "network": "Red ERC-20 (Ethereum)" },
+      "usdc": { "label": "USDC", "network": "Red BASE" },
       "ltc": { "label": "Litecoin (LTC)", "network": "Red Litecoin" },
       "eth": { "label": "Ethereum (ETH)", "network": "Red Ethereum (ERC-20)" }
     },

@@ -41,7 +41,6 @@ export default async function PaymentPage({ params, searchParams }: Props) {
     { key: "btc", value: paymentAddresses.btc },
     { key: "usdtTrc20", value: paymentAddresses.usdtTrc20 },
     { key: "usdtErc20", value: paymentAddresses.usdtErc20 },
-    { key: "usdtBep20", value: paymentAddresses.usdtBep20 },
     { key: "usdc", value: paymentAddresses.usdc },
     { key: "ltc", value: paymentAddresses.ltc },
     { key: "eth", value: paymentAddresses.eth },
@@ -60,13 +59,36 @@ export default async function PaymentPage({ params, searchParams }: Props) {
         <p className="mx-auto max-w-xl text-brand-ink-dim">{t("intro")}</p>
       </header>
 
-      {planLabel && (
+      {planKey && (
         <GlowCard className="mb-6 text-center">
           <p className="text-xs font-semibold uppercase tracking-wide text-brand-accent">
             {t("planLabel")}
           </p>
           <p className="mt-1 font-display text-xl font-bold text-chrome">{planLabel}</p>
-          <p className="mt-2 text-xs text-brand-ink-dim">{t("amountNote")}</p>
+          {planKey === "monthly" ? (
+            <div className="mt-2 space-y-1">
+              <p className="text-sm text-brand-ink-dim">
+                {tPulse("monthly.firstMonthNote")}:{" "}
+                <span className="font-semibold text-chrome">
+                  {tPulse("monthly.firstMonthPrice")} {tPulse("monthly.period")}
+                </span>
+              </p>
+              <p className="text-sm text-brand-ink-dim">
+                {tPulse("monthly.regularNote")}:{" "}
+                <span className="font-semibold text-chrome">
+                  {tPulse("monthly.regularPrice")} {tPulse("monthly.period")}
+                </span>
+              </p>
+            </div>
+          ) : (
+            <p className="mt-2 font-display text-2xl font-extrabold text-chrome">
+              {tPulse(`${planKey}.price`)}
+              <span className="text-sm font-medium text-brand-ink-dim">
+                {" "}
+                {tPulse(`${planKey}.period`)}
+              </span>
+            </p>
+          )}
         </GlowCard>
       )}
 

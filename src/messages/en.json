@@ -232,7 +232,6 @@
     "title": "Payment",
     "intro": "Choose one of the options below to pay for your plan. After sending, send me the screenshot or transaction hash on Telegram so I can confirm and unlock access.",
     "planLabel": "Selected plan",
-    "amountNote": "Check the exact plan price on the Plans page before sending.",
     "warning": "Only send using the network indicated for each option below. Sending on the wrong network can cause permanent loss of funds.",
     "addressLabel": "Address",
     "copy": "Copy",
@@ -246,7 +245,7 @@
       "usdtTrc20": { "label": "USDT", "network": "TRC-20 network (Tron)" },
       "usdtErc20": { "label": "USDT", "network": "ERC-20 network (Ethereum)" },
       "usdtBep20": { "label": "USDT", "network": "BEP-20 network (BNB Smart Chain)" },
-      "usdc": { "label": "USDC", "network": "ERC-20 network (Ethereum)" },
+      "usdc": { "label": "USDC", "network": "BASE network" },
       "ltc": { "label": "Litecoin (LTC)", "network": "Litecoin network" },
       "eth": { "label": "Ethereum (ETH)", "network": "Ethereum network (ERC-20)" }
     },
