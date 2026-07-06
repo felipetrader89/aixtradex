@@ -33,7 +33,7 @@ export function Header({ logoExists }: { logoExists: boolean }) {
           <LogoMark variant="header" hasLogo={logoExists} />
         </Link>
 
-        <nav className="hidden items-stretch gap-2 md:flex">
+        <nav className="hidden items-stretch gap-1 md:flex">
           {links.map((link) => (
             <Link
               key={link.href}
