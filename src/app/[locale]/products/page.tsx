@@ -4,9 +4,8 @@ import { GlowCard } from "@/components/brand/GlowCard";
 import { IconCalendar, IconChartUp, IconRocket } from "@/components/brand/icons";
 import { SpecTable } from "@/components/sections/SpecTable";
 import { CompoundCalculator } from "@/components/sections/CompoundCalculator";
-import { getPathname } from "@/i18n/navigation";
+import { Link, getPathname } from "@/i18n/navigation";
 import { routing } from "@/i18n/routing";
-import { siteConfig } from "@/lib/site-config";
 
 type Props = { params: Promise<{ locale: string }> };
 
@@ -38,10 +37,6 @@ export default async function ProductsPage({ params }: Props) {
     { label: t("pulse.specs.interest"), value: t("pulse.specs.interestValue") },
     { label: t("pulse.specs.term"), value: t("pulse.specs.termValue") },
   ];
-
-  const monthlyDmHref = `${siteConfig.telegramDmUrl}?text=${encodeURIComponent(t("pulse.dmMonthly"))}`;
-  const sixMonthsDmHref = `${siteConfig.telegramDmUrl}?text=${encodeURIComponent(t("pulse.dmSixMonths"))}`;
-  const annualDmHref = `${siteConfig.telegramDmUrl}?text=${encodeURIComponent(t("pulse.dmAnnual"))}`;
 
   return (
     <div className="mx-auto max-w-4xl px-6 py-16">
@@ -138,33 +133,27 @@ export default async function ProductsPage({ params }: Props) {
         <CompoundCalculator locale={locale} />
 
         <div className="mt-8 flex flex-col items-center justify-center gap-4 sm:flex-row">
-          <a
-            href={monthlyDmHref}
-            target="_blank"
-            rel="noopener noreferrer"
+          <Link
+            href="/payment?plan=monthly"
             className="cta-neon flex items-center gap-2 rounded-full bg-brand-surface px-6 py-3 text-sm font-semibold text-brand-ink transition-colors duration-300 hover:text-brand-accent"
           >
             <IconCalendar className="h-5 w-5" />
             {t("pulse.ctaMonthly")}
-          </a>
-          <a
-            href={sixMonthsDmHref}
-            target="_blank"
-            rel="noopener noreferrer"
+          </Link>
+          <Link
+            href="/payment?plan=sixMonths"
             className="cta-neon flex items-center gap-2 rounded-full bg-brand-surface px-6 py-3 text-sm font-semibold text-brand-ink transition-colors duration-300 hover:text-brand-accent"
           >
             <IconChartUp className="h-5 w-5" />
             {t("pulse.ctaSixMonths")}
-          </a>
-          <a
-            href={annualDmHref}
-            target="_blank"
-            rel="noopener noreferrer"
+          </Link>
+          <Link
+            href="/payment?plan=annual"
             className="cta-neon flex items-center gap-2 rounded-full bg-brand-surface px-6 py-3 text-sm font-semibold text-brand-ink transition-colors duration-300 hover:text-brand-accent"
           >
             <IconRocket className="h-5 w-5" />
             {t("pulse.ctaAnnual")}
-          </a>
+          </Link>
         </div>
       </section>
     </div>

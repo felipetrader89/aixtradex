@@ -106,9 +106,6 @@
       "ctaMonthly": "Obtener Plan Mensual",
       "ctaSixMonths": "Obtener Plan de 6 Meses",
       "ctaAnnual": "Obtener Plan Anual",
-      "dmMonthly": "¡Hola! Quiero obtener el Plan Mensual",
-      "dmSixMonths": "¡Hola! Quiero obtener el Plan de 6 Meses",
-      "dmAnnual": "¡Hola! Quiero obtener el Plan Anual",
       "specs": {
         "platform": "Plataforma", "platformValue": "MetaTrader 4 (solo MT4)",
         "accountType": "Tipo de Cuenta", "accountTypeValue": "Raw Spread / ECN / Zero",
@@ -230,5 +227,31 @@
       "body": "Mientras el blog no está listo, mantente al tanto por Telegram.",
       "button": "Unirse a Telegram"
     }
+  },
+  "Payment": {
+    "title": "Pago",
+    "intro": "Elige una de las opciones abajo para pagar tu plan. Después de enviar, mándame la captura o el hash de la transacción por Telegram para confirmar y liberar el acceso.",
+    "planLabel": "Plan seleccionado",
+    "amountNote": "Confirma el valor exacto del plan en la página de Planes antes de enviar.",
+    "warning": "Envía solo por la red indicada en cada opción abajo. Enviar por la red equivocada puede causar la pérdida permanente de los fondos.",
+    "addressLabel": "Dirección",
+    "copy": "Copiar",
+    "copied": "¡Copiado!",
+    "methods": {
+      "binancePay": {
+        "label": "Binance Pay",
+        "network": "Paga directamente desde la app de Binance usando el ID abajo"
+      },
+      "btc": { "label": "Bitcoin (BTC)", "network": "Red Bitcoin" },
+      "usdtTrc20": { "label": "USDT", "network": "Red TRC-20 (Tron)" },
+      "usdtErc20": { "label": "USDT", "network": "Red ERC-20 (Ethereum)" },
+      "usdtBep20": { "label": "USDT", "network": "Red BEP-20 (BNB Smart Chain)" },
+      "usdc": { "label": "USDC", "network": "Red ERC-20 (Ethereum)" },
+      "ltc": { "label": "Litecoin (LTC)", "network": "Red Litecoin" },
+      "eth": { "label": "Ethereum (ETH)", "network": "Red Ethereum (ERC-20)" }
+    },
+    "ctaTelegram": "Ya pagué — Enviar comprobante por Telegram",
+    "dmMessage": "¡Hola! Pagué el {plan} y voy a enviar el comprobante.",
+    "backToPlans": "← Volver a Planes"
   }
 }
