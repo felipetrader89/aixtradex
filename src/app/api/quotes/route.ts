@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 
-export const revalidate = 180;
+export const revalidate = 900;
 
 type Quote = { pair: string; price: number };
 
@@ -15,7 +15,7 @@ let fxCache: Quote[] = [];
 async function fetchGold(): Promise<Quote | null> {
   try {
     const res = await fetch("https://api.gold-api.com/price/XAU", {
-      next: { revalidate: 180 },
+      next: { revalidate: 900 },
     });
     if (!res.ok) return goldCache;
     const data = (await res.json()) as { price?: number };
@@ -35,7 +35,7 @@ async function fetchFx(): Promise<Quote[]> {
     const symbols = encodeURIComponent(FX_PAIRS.join(","));
     const res = await fetch(
       `https://api.twelvedata.com/price?symbol=${symbols}&apikey=${apiKey}`,
-      { next: { revalidate: 180 } }
+      { next: { revalidate: 900 } }
     );
     if (!res.ok) return fxCache;
     const data = (await res.json()) as Record<string, { price?: string } | undefined>;
