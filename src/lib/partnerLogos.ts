@@ -6,7 +6,6 @@ export const PARTNER_LOGOS = [
   { slug: "tickmill", name: "Tickmill" },
   { slug: "vantage", name: "Vantage" },
   { slug: "exness", name: "Exness" },
-  { slug: "metatrader4", name: "MetaTrader 4" },
 ] as const;
 
 export function hasPartnerLogo(slug: string): boolean {
