@@ -24,12 +24,16 @@ export function Header({ logoExists }: { logoExists: boolean }) {
 
   return (
     <header className="sticky top-0 z-50 border-b border-brand-hairline bg-brand-bg/90 backdrop-blur">
-      <div className="mx-auto flex max-w-5xl items-center justify-between px-6 py-4">
-        <Link href="/" className="shrink-0" onClick={() => setOpen(false)}>
+      <div className="mx-auto flex max-w-5xl items-stretch justify-between px-6">
+        <Link
+          href="/"
+          className="flex shrink-0 items-center py-4"
+          onClick={() => setOpen(false)}
+        >
           <LogoMark variant="header" hasLogo={logoExists} />
         </Link>
 
-        <nav className="hidden items-stretch gap-2 self-stretch md:flex">
+        <nav className="hidden items-stretch gap-2 md:flex">
           {links.map((link) => (
             <Link
               key={link.href}
@@ -43,14 +47,14 @@ export function Header({ logoExists }: { logoExists: boolean }) {
           ))}
         </nav>
 
-        <div className="hidden items-center gap-4 md:flex">
+        <div className="hidden items-center gap-4 py-4 md:flex">
           <LanguageSwitcher />
           <Button href={siteConfig.telegramUrl} className="!px-4 !py-2 text-xs">
             {t("cta")}
           </Button>
         </div>
 
-        <div className="flex items-center gap-4 md:hidden">
+        <div className="flex items-center gap-4 py-4 md:hidden">
           <LanguageSwitcher />
           <button
             type="button"

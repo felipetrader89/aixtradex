@@ -105,8 +105,13 @@ body {
   align-items: center;
   justify-content: center;
   overflow: hidden;
-  padding: 0 0.9rem;
+  padding: 0 0.35rem;
   transition: color 0.25s ease;
+}
+@media (min-width: 1024px) {
+  .nav-pill {
+    padding: 0 0.9rem;
+  }
 }
 .nav-pill::before {
   content: "";
