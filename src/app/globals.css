@@ -97,6 +97,34 @@ body {
   right: 0;
 }
 
+/* ---------- Nav pill (active/hover parallelogram) ---------- */
+.nav-pill {
+  position: relative;
+  z-index: 0;
+  display: inline-block;
+  padding: 0.4rem 0.9rem;
+  transition: color 0.25s ease;
+}
+.nav-pill::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  border-radius: 4px;
+  background: var(--color-brand-accent);
+  transform: skewX(-12deg) scaleX(0);
+  transform-origin: left center;
+  transition: transform 0.25s ease;
+}
+.nav-pill:hover,
+.nav-pill.nav-pill-active {
+  color: var(--color-brand-ink);
+}
+.nav-pill:hover::before,
+.nav-pill.nav-pill-active::before {
+  transform: skewX(-12deg) scaleX(1);
+}
+
 a:focus-visible,
 button:focus-visible {
   outline: 2px solid var(--color-brand-accent);
@@ -184,6 +212,8 @@ button:focus-visible {
   .ticker-track,
   .hover-card,
   .nav-link::after,
+  .nav-pill,
+  .nav-pill::before,
   .cta-neon::before,
   .rocket-float,
   .rocket-launch {

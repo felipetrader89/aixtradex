@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { useTranslations } from "next-intl";
-import { Link } from "@/i18n/navigation";
+import { Link, usePathname } from "@/i18n/navigation";
 import { LogoMark } from "@/components/brand/LogoMark";
 import { Button } from "@/components/ui/Button";
 import { LanguageSwitcher } from "@/components/layout/LanguageSwitcher";
@@ -11,6 +11,7 @@ import { siteConfig } from "@/lib/site-config";
 export function Header({ logoExists }: { logoExists: boolean }) {
   const t = useTranslations("Nav");
   const [open, setOpen] = useState(false);
+  const pathname = usePathname();
 
   const links = [
     { href: "/", label: t("home") },
@@ -28,12 +29,14 @@ export function Header({ logoExists }: { logoExists: boolean }) {
           <LogoMark variant="header" hasLogo={logoExists} />
         </Link>
 
-        <nav className="hidden items-center gap-6 md:flex">
+        <nav className="hidden items-center gap-2 md:flex">
           {links.map((link) => (
             <Link
               key={link.href}
               href={link.href}
-              className="nav-link text-sm font-medium text-brand-ink-dim transition-colors hover:text-brand-accent"
+              className={`nav-pill text-sm font-medium text-brand-ink-dim ${
+                pathname === link.href ? "nav-pill-active" : ""
+              }`}
             >
               {link.label}
             </Link>
@@ -70,7 +73,9 @@ export function Header({ logoExists }: { logoExists: boolean }) {
               key={link.href}
               href={link.href}
               onClick={() => setOpen(false)}
-              className="text-sm font-medium text-brand-ink-dim hover:text-brand-accent"
+              className={`nav-pill w-fit text-sm font-medium text-brand-ink-dim ${
+                pathname === link.href ? "nav-pill-active" : ""
+              }`}
             >
               {link.label}
             </Link>
