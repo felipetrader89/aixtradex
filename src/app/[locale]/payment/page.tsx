@@ -41,6 +41,7 @@ export default async function PaymentPage({ params, searchParams }: Props) {
     { key: "btc", value: paymentAddresses.btc },
     { key: "usdtTrc20", value: paymentAddresses.usdtTrc20 },
     { key: "usdtErc20", value: paymentAddresses.usdtErc20 },
+    { key: "usdtBep20", value: paymentAddresses.usdtBep20 },
     { key: "usdc", value: paymentAddresses.usdc },
     { key: "ltc", value: paymentAddresses.ltc },
     { key: "eth", value: paymentAddresses.eth },

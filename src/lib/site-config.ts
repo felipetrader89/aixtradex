@@ -10,6 +10,7 @@ export const paymentAddresses = {
   btc: "13YCPr7Pdkbp67jsQ3GfvbUZ9PUW6AaaLs",
   usdtTrc20: "TBafKQqxXdyTRvzCVMZY38j8nrZsUe4CFP",
   usdtErc20: "0x0edeb5c10fe25acc0c5324b9a929900df64712e8",
+  usdtBep20: "0x0edeb5c10fe25acc0c5324b9a929900df64712e8",
   usdc: "0x0edeb5c10fe25acc0c5324b9a929900df64712e8",
   ltc: "LUV1T1ivaowrDYjmeZvEQneXzCrKXVg4bw",
   eth: "0x0edeb5c10fe25acc0c5324b9a929900df64712e8",

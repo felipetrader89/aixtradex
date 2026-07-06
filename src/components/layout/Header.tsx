@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { Suspense, useState } from "react";
 import { useTranslations } from "next-intl";
 import { Link, usePathname } from "@/i18n/navigation";
 import { LogoMark } from "@/components/brand/LogoMark";
@@ -48,14 +48,18 @@ export function Header({ logoExists }: { logoExists: boolean }) {
         </nav>
 
         <div className="hidden items-center gap-4 py-4 md:flex">
-          <LanguageSwitcher />
+          <Suspense fallback={<div className="h-6 w-[88px]" />}>
+            <LanguageSwitcher />
+          </Suspense>
           <Button href={siteConfig.telegramUrl} className="!px-4 !py-2 text-xs">
             {t("cta")}
           </Button>
         </div>
 
         <div className="flex items-center gap-4 py-4 md:hidden">
-          <LanguageSwitcher />
+          <Suspense fallback={<div className="h-6 w-[88px]" />}>
+            <LanguageSwitcher />
+          </Suspense>
           <button
             type="button"
             onClick={() => setOpen((v) => !v)}
