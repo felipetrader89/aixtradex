@@ -1,0 +1,233 @@
+{
+  "Metadata": {
+    "home": {
+      "title": "Ai X TradeX — Automated Forex Trading Robot",
+      "description": "Automated account management for MetaTrader 4. Documented results, no empty hype — monthly and annual plans with a real performance target."
+    },
+    "products": {
+      "title": "Ai X Pulse v1 — Plans — Ai X TradeX",
+      "description": "Ai X Pulse v1: managed account with a monthly or annual plan, targeting 1% to 4% per trading day via compound interest."
+    },
+    "about": {
+      "title": "About — Ai X TradeX",
+      "description": "Alesson Felipe, developer since 2012, forex-focused since 2015. The story behind Ai X Pulse v1."
+    },
+    "contact": {
+      "title": "Contact — Ai X TradeX",
+      "description": "Talk to Ai X TradeX on Telegram — questions, onboarding, and support in one channel."
+    },
+    "faq": {
+      "title": "FAQ — Ai X TradeX",
+      "description": "Answers about Ai X Pulse v1 — minimum deposit, compatible brokers, billing, and how to get started."
+    },
+    "blog": {
+      "title": "Blog — Ai X TradeX",
+      "description": "Content and updates about Ai X Pulse v1 — coming soon."
+    }
+  },
+  "Nav": {
+    "home": "Home",
+    "products": "Plans",
+    "about": "About",
+    "faq": "FAQ",
+    "blog": "Blog",
+    "contact": "Contact",
+    "cta": "Join Telegram"
+  },
+  "Common": {
+    "marketTicker": "Live market"
+  },
+  "Home": {
+    "hero": {
+      "title": "Ai X TradeX",
+      "subtitle": "Automated trading robot for MetaTrader 4. Documented results, no empty hype.",
+      "ctaPrimary": "See the Plans",
+      "ctaSecondary": "Join the group"
+    },
+    "market": {
+      "title": "Live market"
+    },
+    "calculatorCta": "See the Plans",
+    "whyUs": {
+      "heading": "Why",
+      "items": [
+        { "title": "Your account, 100%", "body": "Not a fund, not pooled. You deposit and withdraw whenever you want." },
+        { "title": "Robot running 24/5", "body": "Included VPS - no need to keep your own computer on." },
+        { "title": "Real Performance", "body": "Up to 4% per day, +130% per month with compound interest." },
+        { "title": "Compatible Brokers", "body": "Works with Exness, FPMarkets, Tickmill, and Vantage." }
+      ]
+    },
+    "why": {
+      "title": "Why a Robot, Not Signals or Copy Trading?",
+      "body": "Signals or copy trading are manual traders. That depends on someone being awake, analyzing, and making a fast decision without messing up. The robot works on its own, without emotion, following the same tested logic every day. And I'm the developer myself, taking care of the code and any future updates whenever needed."
+    },
+    "aboutTeaser": {
+      "title": "Who's behind this",
+      "body": "I started with nothing — at 15 I was already renting a place, working at a beverage warehouse. I went through computing, an online store, and binary options, where I reached #1 in Brazil and Top 5 in the world in 2019. After losing money chasing miracle robots in forex, I decided to develop my own EA — with realistic targets and compound interest, not empty promises.",
+      "cta": "Read the Full Story"
+    },
+    "partners": {
+      "title": "Partner Brokers"
+    }
+  },
+  "Products": {
+    "title": "Ai X Pulse v1",
+    "intro": "Automated account management, with a real performance target and a flexible compounding schedule — short, medium, or long term.",
+    "pulse": {
+      "tag": "Managed account — monthly or annual subscription",
+      "description": "You open an account with the recommended broker, deposit from $100, and we install and configure the robot on a VPS connected to your own MT4 account. You track everything in real time through the MT4 app and can deposit or withdraw whenever you want — it's your account, not a fund, not a pooled account.",
+      "performanceNote": "Performance target: up to 4% per day, with +130% per month possible using compound interest. The compounding schedule can be tuned for short, medium, or long term, depending on your goal.",
+      "riskNote": "A performance target, not a guarantee — trading involves risk and past results don't guarantee future results.",
+      "monthly": {
+        "label": "Monthly Plan",
+        "firstMonthNote": "1st month",
+        "firstMonthPrice": "$49",
+        "regularNote": "From the 2nd month on",
+        "regularPrice": "$99",
+        "period": "/month",
+        "explain": "First month at a promotional price so you can test the robot. From the second month on, $99 — the expected return of up to 4% per day covers the fee comfortably."
+      },
+      "sixMonths": {
+        "label": "6-Month Plan",
+        "price": "$299",
+        "period": "/6 months",
+        "originalPrice": "$594.00",
+        "badge": "50% OFF"
+      },
+      "annual": {
+        "label": "Annual Plan",
+        "price": "$499",
+        "period": "/year",
+        "originalPrice": "$1,188.00",
+        "badge": "58% OFF",
+        "note": "A single price, paid once a year — the accumulated return over the period covers it with room to spare."
+      },
+      "ctaMonthly": "Get the Monthly Plan",
+      "ctaSixMonths": "Get the 6-Month Plan",
+      "ctaAnnual": "Get the Annual Plan",
+      "dmMonthly": "Hi! I want to get the Monthly Plan",
+      "dmSixMonths": "Hi! I want to get the 6-Month Plan",
+      "dmAnnual": "Hi! I want to get the Annual Plan",
+      "specs": {
+        "platform": "Platform", "platformValue": "MetaTrader 4 (MT4 only)",
+        "accountType": "Account Type", "accountTypeValue": "Raw Spread / ECN / Zero",
+        "leverage": "Leverage", "leverageValue": "1:500",
+        "deposit": "Min. Starting Deposit", "depositValue": "$100",
+        "operation": "Operation", "operationValue": "24/5 100% Automated",
+        "interest": "Compounding", "interestValue": "Compound / Simple",
+        "term": "Term", "termValue": "Short / Medium / Long"
+      }
+    },
+    "calculator": {
+      "title": "Calculate Your Account Growth",
+      "depositLabel": "Initial deposit ($)",
+      "modeLabel": "Interest type",
+      "simpleLabel": "Simple Interest",
+      "compoundLabel": "Compound Interest",
+      "monthsLabel": "Simulation month(s)",
+      "rateNote": "{count, plural, one {4% per trading day × # trading day selected} other {4% per trading day × # trading days selected}}",
+      "resultLabel": "Projected Final Balance",
+      "profitLabel": "Estimated Profit",
+      "resultNote": "Starting from {deposit}.",
+      "disclaimer": "Illustrative simulation based on the published performance target — not a guarantee of results. Trading involves risk."
+    }
+  },
+  "About": {
+    "title": "About",
+    "intro": "From renting a place at 15 to being Brazil's #1 trader — the full journey behind Ai X Pulse v1.",
+    "story": [
+      "My name is Alesson Felipe, 36 years old today. I've always been a simple person with big dreams. At 15, I was already renting a place with my wife, who was 16 at the time — just a bed, a mattress, a stove, and a gas canister. I spent seven years working at a beverage warehouse that supplied the beach vendors of Boa Viagem, in Recife. I used to watch the buildings along the shore and the cars driving down the seafront, picturing myself one day moving out of that rental, with a decent car to take my family out in.",
+      "It was at that warehouse that I bought my first PC, paying it off little by little. I taught myself computing, downloading guides from the internet — formatting computers, installing Windows, then slideshow discs and CD compilations. I left the warehouse job, went to work as a waiter's assistant, and kept dreaming: one day I'd give my family what I saw successful people doing every day.",
+      "I started studying how to make money online — affiliate systems, dropshipping. Affiliates didn't work out, but dropshipping did: I sold my first R$10,000, R$15,000 importing from China. When marketplaces started banning dropshippers in Brazil, I learned to code and built my own online store. Traffic was the problem, so I went after marketing, automated posting in Facebook groups, and ended up with over 100 recurring customers in an affiliate system I built myself — until that also ran into account bans.",
+      "At the end of 2015 I discovered binary options. I lost a lot of money at first. I studied it in depth — probability, tops and bottoms, uptrend/downtrend lines, pullbacks — until I became the #1 trader in Brazil and Top 5 in the world on IQ Option, in 2019.",
+      "The binary options accounts eventually got banned too, and that's how I ended up in forex. I tried applying the same strategy — it didn't work, so I went back to studying from scratch, this time focused on market structure and automated strategy. Between 2022 and 2023 I lost money chasing miracle robots, buying HFT EAs that promised to turn a little into a lot overnight. I fell for scams more than once.",
+      "So I decided to develop my own EA — a hybrid HFT/scalper model, since serious brokers don't allow pure HFT. That's when profit started becoming consistent. And that's also when I learned the most important lesson: without a target and without compound interest, an account blows up. Today, Ai X Pulse v1 is that lesson applied — a realistic daily target, aiming for a high return over the long term through compound interest, not the empty promise of getting rich overnight.",
+      "I'm still married to my wife after more than 21 years — she's been through every high and low of this journey with me — and today I'm a father of three. I'm a Christian, and it was my faith that kept me steady through the hardest periods.",
+      "If you've ever fallen for a scam, tried everything and gotten frustrated, or just want to see your money actually working for you — that's exactly why Ai X Pulse v1 exists."
+    ],
+    "brokers": {
+      "title": "Partner Brokers",
+      "body": "The robot works with Raw Spread or ECN accounts on MetaTrader 4 (MT4), since the spread needs to stay below 20 pts. That's why we work with partner brokers that offer this type of account: FPMarkets, Tickmill, Vantage, and Exness. This isn't investment advice, just technical compatibility.",
+      "comingSoon": "More Brokers Coming Soon..."
+    },
+    "closing": {
+      "title": "Let's talk",
+      "body": "Questions about the robot or how the managed account works? Just reach out on Telegram."
+    },
+    "cta": "Join Telegram"
+  },
+  "Contact": {
+    "title": "Contact",
+    "body": "Right now, all support, questions, and onboarding go through the Telegram group — it's the fastest way to reach me directly.",
+    "cta": "Join Telegram",
+    "note": "No forms, no email queue — it's just you and me, straight in the chat."
+  },
+  "Footer": {
+    "disclaimer": "Trading involves risk. Past results do not guarantee future results. Nothing on this site is financial advice.",
+    "menuHeading": "Menu",
+    "usefulHeading": "Useful Links",
+    "socialHeading": "Social Media",
+    "usefulLinks": {
+      "markets": "Markets",
+      "tools": "Tools",
+      "news": "News",
+      "analysis": "Analysis",
+      "brokers": "Brokers",
+      "calendar": "Economic Calendar"
+    },
+    "comingSoon": "Coming soon",
+    "rightsPrefix": "© 2015-{year} -",
+    "rightsSuffix": ". All rights reserved."
+  },
+  "Faq": {
+    "title": "FAQ",
+    "intro": "Everything you need to know before getting started with Ai X Pulse v1.",
+    "items": [
+      {
+        "q": "What is Ai X Pulse v1?",
+        "a": "It's a robot (Expert Advisor) that trades automatically on your own MetaTrader 4 account, running 24/5 on a dedicated VPS, targeting up to 4% per trading day with compound interest."
+      },
+      {
+        "q": "Do I need trading experience?",
+        "a": "No. You just need to open an account with a partner broker and deposit — we set up the robot for you. All the trading is automated."
+      },
+      {
+        "q": "Is this an investment fund or a pooled account?",
+        "a": "No. The account is yours, opened in your name, at the broker you choose. You deposit and withdraw whenever you want, with no third party involved."
+      },
+      {
+        "q": "Which brokers are compatible?",
+        "a": "FPMarkets, Tickmill, Vantage, and Exness — Raw Spread or ECN accounts, with spread below 20 pts."
+      },
+      {
+        "q": "What's the minimum deposit?",
+        "a": "$100."
+      },
+      {
+        "q": "How does billing work?",
+        "a": "Monthly: $49 for the first month, $99 from the second month on. There's also a 6-month plan for $299 and an annual plan for $499 (from $1,188.00, 58% off)."
+      },
+      {
+        "q": "Is the result guaranteed?",
+        "a": "No. It's a performance target, not a guarantee — trading involves risk and past results don't guarantee future results."
+      },
+      {
+        "q": "How do I get started?",
+        "a": "Talk to me directly on Telegram — I'll walk you through opening the account and installing the robot."
+      }
+    ],
+    "cta": {
+      "title": "Still have questions?",
+      "body": "Talk to me directly on Telegram.",
+      "button": "Join Telegram"
+    }
+  },
+  "Blog": {
+    "title": "Blog",
+    "comingSoon": "Content and updates about Ai X Pulse v1 coming soon. In the meantime, follow the updates directly on the Telegram group.",
+    "cta": {
+      "body": "While the blog isn't live yet, stay up to date on Telegram.",
+      "button": "Join Telegram"
+    }
+  }
+}

@@ -1,0 +1,161 @@
+@import "tailwindcss";
+
+@theme {
+  --color-brand-bg: #0b1929;
+  --color-brand-surface: #122336;
+  --color-brand-surface-2: #182b40;
+  --color-brand-accent: #33d6a0;
+  --color-brand-accent-dark: #0e6b52;
+  --color-brand-chrome-start: #ffffff;
+  --color-brand-chrome-end: #c9d2d8;
+  --color-brand-ink: #d7e0e6;
+  --color-brand-ink-dim: #8fa0ac;
+  --color-brand-hairline: rgba(51, 214, 160, 0.18);
+
+  --font-display: var(--font-poppins), "Poppins", sans-serif;
+  --font-body: var(--font-inter), "Inter", sans-serif;
+}
+
+body {
+  background: var(--color-brand-bg);
+  color: var(--color-brand-ink);
+}
+
+.text-chrome {
+  background: linear-gradient(
+    180deg,
+    var(--color-brand-chrome-start),
+    var(--color-brand-chrome-end)
+  );
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
+}
+
+.glow-border {
+  border: 1px solid var(--color-brand-hairline);
+  box-shadow: 0 0 40px rgba(51, 214, 160, 0.06);
+}
+
+/* ---------- Ticker marquee ---------- */
+@keyframes ticker-scroll {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+.ticker-track {
+  animation: ticker-scroll 100s linear infinite;
+}
+.ticker-mask:hover .ticker-track {
+  animation-play-state: paused;
+}
+
+/* ---------- Hero cursor-reactive glow ---------- */
+.hero-glow {
+  --mx: 50%;
+  --my: 0%;
+}
+.hero-glow-layer {
+  background: radial-gradient(
+    600px circle at var(--mx) var(--my),
+    rgba(51, 214, 160, 0.14),
+    transparent 70%
+  );
+}
+
+/* ---------- Hover-interactive cards ---------- */
+.hover-card {
+  transition:
+    transform 0.2s ease,
+    border-color 0.2s ease,
+    box-shadow 0.2s ease;
+}
+.hover-card:hover {
+  transform: translateY(-4px);
+  border-color: rgba(51, 214, 160, 0.45);
+  box-shadow: 0 16px 40px rgba(51, 214, 160, 0.12);
+}
+
+/* ---------- Nav underline ---------- */
+.nav-link {
+  position: relative;
+}
+.nav-link::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 100%;
+  bottom: -4px;
+  height: 1px;
+  background: var(--color-brand-accent);
+  transition: right 0.2s ease;
+}
+.nav-link:hover::after {
+  right: 0;
+}
+
+a:focus-visible,
+button:focus-visible {
+  outline: 2px solid var(--color-brand-accent);
+  outline-offset: 2px;
+}
+
+/* ---------- Footer divider ---------- */
+.footer-divider {
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(51, 214, 160, 0.5),
+    transparent
+  );
+}
+
+/* ---------- Neon CTA buttons ---------- */
+.cta-neon {
+  position: relative;
+  overflow: hidden;
+  border: 1px solid rgba(51, 214, 160, 0.5);
+  box-shadow:
+    0 0 10px rgba(51, 214, 160, 0.25),
+    0 0 22px rgba(51, 214, 160, 0.12);
+  transition:
+    box-shadow 0.3s ease,
+    border-color 0.3s ease,
+    color 0.3s ease;
+}
+.cta-neon::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  left: -100%;
+  background: linear-gradient(
+    100deg,
+    transparent,
+    rgba(51, 214, 160, 0.35),
+    transparent
+  );
+  transition: left 0.5s ease;
+}
+.cta-neon:hover::before {
+  left: 100%;
+}
+.cta-neon:hover {
+  border-color: var(--color-brand-accent);
+  box-shadow:
+    0 0 16px rgba(51, 214, 160, 0.55),
+    0 0 32px rgba(51, 214, 160, 0.3);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ticker-track,
+  .hover-card,
+  .nav-link::after,
+  .cta-neon::before {
+    transition: none;
+    animation: none;
+  }
+}
