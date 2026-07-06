@@ -2,7 +2,7 @@ import Image from "next/image";
 import { BrandMark } from "@/components/brand/BrandMark";
 
 const sizes = {
-  header: { image: 40, text: "text-lg" },
+  header: { image: 40, text: "text-2xl md:text-lg lg:text-4xl" },
   hero: { image: 120, text: "text-3xl sm:text-4xl" },
 } as const;
 
