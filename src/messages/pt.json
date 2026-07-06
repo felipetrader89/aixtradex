@@ -35,7 +35,8 @@
     "cta": "Entrar no Telegram"
   },
   "Common": {
-    "marketTicker": "Mercado em tempo real"
+    "marketTicker": "Mercado em tempo real",
+    "backToTop": "Voltar ao topo"
   },
   "Home": {
     "hero": {

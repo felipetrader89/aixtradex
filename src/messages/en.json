@@ -35,7 +35,8 @@
     "cta": "Join Telegram"
   },
   "Common": {
-    "marketTicker": "Live market"
+    "marketTicker": "Live market",
+    "backToTop": "Back to top"
   },
   "Home": {
     "hero": {

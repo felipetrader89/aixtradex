@@ -8,6 +8,7 @@ import { hasLogo } from "@/lib/logo";
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
 import { MarketTicker } from "@/components/sections/MarketTicker";
+import { ScrollToTopButton } from "@/components/ui/ScrollToTopButton";
 import "../globals.css";
 
 const poppins = Poppins({
@@ -74,6 +75,7 @@ export default async function LocaleLayout({
             <MarketTicker />
           </section>
           <Footer />
+          <ScrollToTopButton />
         </NextIntlClientProvider>
       </body>
     </html>

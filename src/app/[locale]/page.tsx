@@ -103,6 +103,7 @@ export default async function HomePage({ params }: Props) {
                   alt={name}
                   width={140}
                   height={48}
+                  unoptimized
                   className="h-auto max-h-10 w-auto object-contain"
                 />
               </div>
