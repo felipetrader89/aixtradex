@@ -3,7 +3,7 @@ import { getPathname } from "@/i18n/navigation";
 import { routing } from "@/i18n/routing";
 
 const baseUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000";
-const paths = ["/", "/products", "/about", "/faq", "/blog", "/contact"] as const;
+const paths = ["/", "/products", "/about", "/faq", "/blog", "/how-it-works", "/contact"] as const;
 
 export default function sitemap(): MetadataRoute.Sitemap {
   return paths.map((path) => ({

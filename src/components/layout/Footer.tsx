@@ -2,6 +2,7 @@ import { useTranslations } from "next-intl";
 import { Link } from "@/i18n/navigation";
 import { BrandMark } from "@/components/brand/BrandMark";
 import {
+  IconTelegram,
   IconYoutube,
   IconInstagram,
   IconTiktok,
@@ -9,6 +10,7 @@ import {
   IconX,
   IconWhatsapp,
 } from "@/components/brand/socialIcons";
+import { siteConfig } from "@/lib/site-config";
 
 const SOCIALS = [
   { name: "YouTube", Icon: IconYoutube },
@@ -47,11 +49,8 @@ export function Footer() {
               <Link href="/faq" className="nav-link w-fit hover:text-brand-accent">
                 {nav("faq")}
               </Link>
-              <Link href="/blog" className="nav-link w-fit hover:text-brand-accent">
-                {nav("blog")}
-              </Link>
-              <Link href="/contact" className="nav-link w-fit hover:text-brand-accent">
-                {nav("contact")}
+              <Link href="/how-it-works" className="nav-link w-fit hover:text-brand-accent">
+                {nav("howItWorks")}
               </Link>
             </nav>
           </div>
@@ -99,6 +98,15 @@ export function Footer() {
               {t("socialHeading")}
             </h3>
             <div className="flex flex-wrap gap-3">
+              <a
+                href={siteConfig.telegramUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="Telegram"
+                className="flex h-9 w-9 items-center justify-center rounded-full border border-brand-hairline text-brand-ink-dim transition-colors duration-200 hover:border-brand-accent hover:text-brand-accent"
+              >
+                <IconTelegram />
+              </a>
               {SOCIALS.map(({ name, Icon }) => (
                 <span
                   key={name}

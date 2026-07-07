@@ -58,3 +58,11 @@ export function IconWhatsapp({ className = "" }: IconProps) {
     </svg>
   );
 }
+
+export function IconTelegram({ className = "" }: IconProps) {
+  return (
+    <svg viewBox="0 0 24 24" fill="currentColor" className={`${base} ${className}`} aria-hidden="true">
+      <path d="M9.42 15.18 9.02 20.76c.57 0 .81-.24 1.11-.54l2.66-2.54 5.52 4.02c1.01.56 1.73.27 1.98-.93l3.59-16.9h.01c.34-1.48-.54-2.06-1.52-1.7L1.06 9.62c-1.46.57-1.44 1.39-.25 1.77l5.5 1.72L18.9 5.02c.6-.4 1.15-.18.7.22z" />
+    </svg>
+  );
+}

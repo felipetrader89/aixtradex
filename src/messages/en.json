@@ -23,6 +23,10 @@
     "blog": {
       "title": "Blog — Ai X TradeX",
       "description": "Content and updates about Ai X Pulse v1 — coming soon."
+    },
+    "howItWorks": {
+      "title": "How It Works — Ai X Pulse v1 — Ai X TradeX",
+      "description": "See how Ai X Pulse v1 trades XAU/USD on MetaTrader 4 — strategy, risk management, automatic goals, and a real-time dashboard."
     }
   },
   "Nav": {
@@ -31,8 +35,9 @@
     "about": "About",
     "faq": "FAQ",
     "blog": "Blog",
+    "howItWorks": "How It Works",
     "contact": "Contact",
-    "cta": "Join Telegram"
+    "cta": "Telegram"
   },
   "Common": {
     "marketTicker": "Live market",
@@ -226,6 +231,53 @@
     "cta": {
       "body": "While the blog isn't live yet, stay up to date on Telegram.",
       "button": "Join Telegram"
+    }
+  },
+  "HowItWorks": {
+    "title": "Ai X Pulse v1 — How It Works",
+    "intro": "An Expert Advisor built specifically for XAU/USD (Gold) on MetaTrader 4 — automated, goal-driven, and with configurable risk management.",
+    "benefits": {
+      "heading": "Why Ai X PULSE Is Different?",
+      "items": [
+        { "title": "Gold-Focused (XAU/USD)", "body": "Built and calibrated specifically for gold's behavior — not a generic robot adapted to fit." },
+        { "title": "Goal-Based Operation", "body": "You set how much you want to earn per day, week, and month. Once the target is hit, the robot closes everything and pauses automatically." },
+        { "title": "Flexible Risk Management", "body": "Fixed lot, balance-proportional lot, or percentage risk per trade — you choose how much to risk." },
+        { "title": "Smart Profit Protection", "body": "The robot tracks open trades and protects gains as the market moves in your favor." },
+        { "title": "Real-Time Dashboard", "body": "Balance, daily/weekly/monthly profit, open trades, and robot status directly on the chart." },
+        { "title": "Full Control", "body": "Buttons to pause, resume, or close trades at any moment." },
+        { "title": "Time Filter", "body": "Only trades during the high-liquidity hours you configure." }
+      ]
+    },
+    "technical": {
+      "heading": "How It Works Under the Hood",
+      "steps": [
+        { "title": "Entry Strategy", "body": "Continuously monitors the market and positions orders strategically around price. When gold breaks out with strength in one direction, the robot enters in favor of that move, with entry distance that adapts automatically to current market conditions." },
+        { "title": "Volatility Filter", "body": "Only opens trades when it detects real market expansion — staying out during sideways, directionless periods, which is exactly where most robots lose money to unnecessary costs." },
+        { "title": "Position Management", "body": "Tracks each trade and adjusts protection as profit builds, reacting quickly to price changes to preserve accumulated gains." },
+        { "title": "Trend-Following", "body": "Once a direction is identified, the robot trades only in favor of the trend — and automatically resolves conflicting positions if the market spikes both ways at once." },
+        { "title": "Goals & Auto-Pause", "body": "Tracks cumulative results per day, week, and month (in value or percentage). Once the target is hit, it closes everything and pauses until the next period." },
+        { "title": "Configurable Risk Management", "body": "Three lot-sizing modes: fixed lot, balance-based lot (scales with account size), or percentage risk calculated on account balance." },
+        { "title": "Broker Overload Protection", "body": "Internal safeguards prevent excessive requests to the broker — a common technical issue that triggers alerts and blocks — keeping operation stable even on stricter brokers." },
+        { "title": "Time & Spread Filter", "body": "Only trades within the configured time window (down to the minute) and respects a maximum spread ceiling." },
+        { "title": "Visual Control Panel", "body": "On-chart interface showing balance, equity, floating profit, results by period, open/pending trades, session status, and manual control buttons." }
+      ]
+    },
+    "specs": {
+      "heading": "Specifications",
+      "platform": "Platform", "platformValue": "MetaTrader 4",
+      "pair": "Recommended Pair", "pairValue": "XAU/USD (Gold)",
+      "timeframe": "Timeframe", "timeframeValue": "M15 (auto-adjusted)",
+      "accountType": "Account Type", "accountTypeValue": "Low spread recommended",
+      "operation": "Operation Mode", "operationValue": "Automatic, with manual controls",
+      "dashboard": "Visual Dashboard", "dashboardValue": "Yes, real-time"
+    },
+    "risk": {
+      "body": "Ai X Pulse is an automated trading tool. Like any operation in financial markets, it involves risk, and past results don't guarantee future ones. We strongly recommend testing on a demo account before trading real capital, and always using risk management suited to your profile."
+    },
+    "cta": {
+      "title": "Want to See the Plans?",
+      "body": "Now that you know how the robot works under the hood, check out the available plans and pick the one that makes sense for you.",
+      "button": "View Plans"
     }
   },
   "Payment": {

@@ -4,6 +4,7 @@ import { Suspense, useState } from "react";
 import { useTranslations } from "next-intl";
 import { Link, usePathname } from "@/i18n/navigation";
 import { LogoMark } from "@/components/brand/LogoMark";
+import { IconTelegram } from "@/components/brand/icons";
 import { Button } from "@/components/ui/Button";
 import { LanguageSwitcher } from "@/components/layout/LanguageSwitcher";
 import { siteConfig } from "@/lib/site-config";
@@ -18,8 +19,7 @@ export function Header({ logoExists }: { logoExists: boolean }) {
     { href: "/products", label: t("products") },
     { href: "/about", label: t("about") },
     { href: "/faq", label: t("faq") },
-    { href: "/blog", label: t("blog") },
-    { href: "/contact", label: t("contact") },
+    { href: "/how-it-works", label: t("howItWorks") },
   ];
 
   return (
@@ -48,16 +48,17 @@ export function Header({ logoExists }: { logoExists: boolean }) {
         </nav>
 
         <div className="hidden items-center gap-4 py-4 md:flex">
-          <Suspense fallback={<div className="h-6 w-[88px]" />}>
+          <Suspense fallback={<div className="h-6 w-14" />}>
             <LanguageSwitcher />
           </Suspense>
-          <Button href={siteConfig.telegramUrl} className="!px-4 !py-2 text-xs">
+          <Button href={siteConfig.telegramDmUrl} variant="neon" className="!px-4 !py-2 text-xs">
+            <IconTelegram className="h-4 w-4" />
             {t("cta")}
           </Button>
         </div>
 
         <div className="flex items-center gap-4 py-4 md:hidden">
-          <Suspense fallback={<div className="h-6 w-[88px]" />}>
+          <Suspense fallback={<div className="h-6 w-14" />}>
             <LanguageSwitcher />
           </Suspense>
           <button
@@ -88,7 +89,10 @@ export function Header({ logoExists }: { logoExists: boolean }) {
               {link.label}
             </Link>
           ))}
-          <Button href={siteConfig.telegramUrl}>{t("cta")}</Button>
+          <Button href={siteConfig.telegramDmUrl} variant="neon">
+            <IconTelegram className="h-4 w-4" />
+            {t("cta")}
+          </Button>
         </div>
       )}
     </header>

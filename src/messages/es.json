@@ -23,6 +23,10 @@
     "blog": {
       "title": "Blog — Ai X TradeX",
       "description": "Contenido y novedades sobre Ai X Pulse v1 — próximamente."
+    },
+    "howItWorks": {
+      "title": "Cómo Funciona — Ai X Pulse v1 — Ai X TradeX",
+      "description": "Descubre cómo Ai X Pulse v1 opera XAU/USD en MetaTrader 4 — estrategia, gestión de riesgo, metas automáticas y panel en tiempo real."
     }
   },
   "Nav": {
@@ -31,8 +35,9 @@
     "about": "Sobre",
     "faq": "FAQ",
     "blog": "Blog",
+    "howItWorks": "Cómo Funciona",
     "contact": "Contacto",
-    "cta": "Unirse a Telegram"
+    "cta": "Telegram"
   },
   "Common": {
     "marketTicker": "Mercado en tiempo real",
@@ -226,6 +231,53 @@
     "cta": {
       "body": "Mientras el blog no está listo, mantente al tanto por Telegram.",
       "button": "Unirse a Telegram"
+    }
+  },
+  "HowItWorks": {
+    "title": "Ai X Pulse v1 — Cómo Funciona",
+    "intro": "Un Expert Advisor creado específicamente para XAU/USD (Oro) en MetaTrader 4 — automatizado, disciplinado por metas y con gestión de riesgo configurable.",
+    "benefits": {
+      "heading": "¿Por qué Ai X PULSE es diferente?",
+      "items": [
+        { "title": "Enfoque en el Oro (XAU/USD)", "body": "Desarrollado y calibrado específicamente para el comportamiento del oro — no es un robot genérico adaptado." },
+        { "title": "Opera por Metas", "body": "Tú defines cuánto quieres ganar por día, semana y mes. Al alcanzar la meta, el robot cierra todo y se pausa automáticamente." },
+        { "title": "Gestión de Riesgo Flexible", "body": "Lote fijo, lote proporcional al saldo o riesgo porcentual por operación — tú eliges cuánto arriesgar." },
+        { "title": "Protección de Ganancia Inteligente", "body": "El robot sigue las operaciones y protege la ganancia a medida que el mercado se mueve a favor." },
+        { "title": "Panel en Tiempo Real", "body": "Saldo, ganancia del día/semana/mes, operaciones abiertas y estado del robot directo en el gráfico." },
+        { "title": "Control Total", "body": "Botones para pausar, reanudar o cerrar operaciones en cualquier momento." },
+        { "title": "Filtro de Horarios", "body": "Opera solo en los horarios de mayor liquidez que tú configures." }
+      ]
+    },
+    "technical": {
+      "heading": "Cómo funciona por dentro",
+      "steps": [
+        { "title": "Estrategia de Entrada", "body": "Monitorea el mercado continuamente y se posiciona estratégicamente alrededor del precio. Cuando el oro rompe con fuerza en una dirección, el robot entra a favor de ese movimiento, con una distancia de entrada que se adapta automáticamente a las condiciones del momento." },
+        { "title": "Filtro de Volatilidad", "body": "Solo abre operaciones cuando detecta una expansión real de movimiento — se mantiene fuera en los períodos laterales, justo donde la mayoría de los robots pierde dinero con costos innecesarios." },
+        { "title": "Gestión de Posiciones", "body": "Sigue la operación y ajusta la protección a medida que avanza la ganancia, reaccionando rápido a los cambios de precio para preservar lo acumulado." },
+        { "title": "Operación por Tendencia", "body": "Tras identificar la dirección, opera solo a favor de la tendencia — y resuelve automáticamente si el mercado se dispara en ambos sentidos a la vez." },
+        { "title": "Metas y Pausa Automática", "body": "Controla el resultado acumulado por día, semana y mes (en valor o %). Al alcanzar la meta, cierra todo y se pausa hasta el siguiente período." },
+        { "title": "Gestión de Riesgo Configurable", "body": "Tres modos de lote: fijo, por saldo (crece con el capital) o riesgo porcentual calculado sobre el saldo." },
+        { "title": "Protección contra Sobrecarga", "body": "Mecanismos internos evitan el exceso de solicitudes al bróker, garantizando una operación estable incluso en brókers más exigentes." },
+        { "title": "Filtro de Horario y Spread", "body": "Opera solo dentro de la ventana horaria configurada (por minuto) y respeta un tope máximo de spread." },
+        { "title": "Panel de Control Visual", "body": "Interfaz en el gráfico con saldo, patrimonio, ganancia flotante, resultado por período, operaciones abiertas/pendientes, estado de la sesión y botones de control manual." }
+      ]
+    },
+    "specs": {
+      "heading": "Especificaciones",
+      "platform": "Plataforma", "platformValue": "MetaTrader 4",
+      "pair": "Par Recomendado", "pairValue": "XAU/USD (Oro)",
+      "timeframe": "Timeframe", "timeframeValue": "M15 (ajuste automático)",
+      "accountType": "Tipo de Cuenta", "accountTypeValue": "Spread bajo recomendado",
+      "operation": "Modo de Operación", "operationValue": "Automático, con controles manuales",
+      "dashboard": "Panel Visual", "dashboardValue": "Sí, en tiempo real"
+    },
+    "risk": {
+      "body": "Ai X Pulse es una herramienta de automatización de operaciones. Como toda operación en los mercados financieros, implica riesgo, y los resultados pasados no garantizan resultados futuros. Recomendamos probar en una cuenta demo antes de operar con capital real, y usar siempre una gestión de riesgo acorde a tu perfil."
+    },
+    "cta": {
+      "title": "¿Quieres ver los planes?",
+      "body": "Ahora que ya sabes cómo funciona el robot por dentro, revisa los planes disponibles y elige el que tenga más sentido para ti.",
+      "button": "Ver Planes"
     }
   },
   "Payment": {
