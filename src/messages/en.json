@@ -94,15 +94,15 @@
         "label": "6-Month Plan",
         "price": "$249",
         "period": "/6 months",
-        "originalPrice": "$594.00",
-        "badge": "50% OFF"
+        "originalPrice": "$294.00",
+        "badge": "15% OFF"
       },
       "annual": {
         "label": "Annual Plan",
         "price": "$399",
         "period": "/year",
-        "originalPrice": "$1,188.00",
-        "badge": "58% OFF",
+        "originalPrice": "$588.00",
+        "badge": "32% OFF",
         "note": "A single price, paid once a year — the accumulated return over the period covers it with room to spare."
       },
       "ctaMonthly": "Get the Monthly Plan",
@@ -205,7 +205,7 @@
       },
       {
         "q": "How does billing work?",
-        "a": "Monthly: $49/month. There's also a 6-month plan for $249 (from $594.00, 50% off) and an annual plan for $399 (from $1,188.00, 58% off)."
+        "a": "Monthly: $49/month. There's also a 6-month plan for $249 (from $294.00, 15% off) and an annual plan for $399 (from $588.00, 32% off)."
       },
       {
         "q": "Is the result guaranteed?",

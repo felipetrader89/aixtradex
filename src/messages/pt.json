@@ -94,15 +94,15 @@
         "label": "Plano 6 Meses",
         "price": "US$249",
         "period": "/6 meses",
-        "originalPrice": "US$594,00",
-        "badge": "50% OFF"
+        "originalPrice": "US$294,00",
+        "badge": "15% OFF"
       },
       "annual": {
         "label": "Plano Anual",
         "price": "US$399",
         "period": "/ano",
-        "originalPrice": "US$1.188,00",
-        "badge": "58% OFF",
+        "originalPrice": "US$588,00",
+        "badge": "32% OFF",
         "note": "Valor único, pagamento uma vez por ano — o retorno acumulado no período cobre o investimento com folga."
       },
       "ctaMonthly": "Obter Plano Mensal",
@@ -205,7 +205,7 @@
       },
       {
         "q": "Como funciona a cobrança?",
-        "a": "Mensal: US$49/mês. Também tem o plano de 6 meses por US$249 (de US$594,00, com 50% de desconto) e o anual por US$399 (de US$1.188,00, com 58% de desconto)."
+        "a": "Mensal: US$49/mês. Também tem o plano de 6 meses por US$249 (de US$294,00, com 15% de desconto) e o anual por US$399 (de US$588,00, com 32% de desconto)."
       },
       {
         "q": "O resultado é garantido?",
