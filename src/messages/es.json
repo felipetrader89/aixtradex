@@ -86,23 +86,20 @@
       "riskNote": "Es una meta de rendimiento, no una garantía — el trading implica riesgo y los resultados pasados no garantizan resultados futuros.",
       "monthly": {
         "label": "Plan Mensual",
-        "firstMonthNote": "1er mes",
-        "firstMonthPrice": "US$49",
-        "regularNote": "A partir del 2º mes",
-        "regularPrice": "US$99",
+        "price": "US$49",
         "period": "/mes",
-        "explain": "Primer mes con valor promocional para que pruebes el robot. A partir del segundo mes, US$99 — el retorno esperado de hasta 4% por día cubre la cuota tranquilamente."
+        "explain": "El retorno esperado de hasta 4% por día cubre la cuota tranquilamente."
       },
       "sixMonths": {
         "label": "Plan 6 Meses",
-        "price": "US$299",
+        "price": "US$249",
         "period": "/6 meses",
         "originalPrice": "US$594,00",
         "badge": "50% OFF"
       },
       "annual": {
         "label": "Plan Anual",
-        "price": "US$499",
+        "price": "US$399",
         "period": "/año",
         "originalPrice": "US$1.188,00",
         "badge": "58% OFF",
@@ -208,7 +205,7 @@
       },
       {
         "q": "¿Cómo funciona el cobro?",
-        "a": "Mensual: US$49 el primer mes, US$99 a partir del segundo. También hay un plan de 6 meses por US$299 y un plan anual por US$499 (desde US$1.188,00, con 58% de descuento)."
+        "a": "Mensual: US$49/mes. También hay un plan de 6 meses por US$249 (desde US$594,00, 50% de descuento) y un plan anual por US$399 (desde US$1.188,00, con 58% de descuento)."
       },
       {
         "q": "¿El resultado está garantizado?",

@@ -66,22 +66,7 @@ export default async function PaymentPage({ params, searchParams }: Props) {
             {t("planLabel")}
           </p>
           <p className="mt-1 font-display text-xl font-bold text-chrome">{planLabel}</p>
-          {planKey === "monthly" ? (
-            <div className="mt-2 space-y-1">
-              <p className="text-sm text-brand-ink-dim">
-                {tPulse("monthly.firstMonthNote")}:{" "}
-                <span className="font-semibold text-chrome">
-                  {tPulse("monthly.firstMonthPrice")} {tPulse("monthly.period")}
-                </span>
-              </p>
-              <p className="text-sm text-brand-ink-dim">
-                {tPulse("monthly.regularNote")}:{" "}
-                <span className="font-semibold text-chrome">
-                  {tPulse("monthly.regularPrice")} {tPulse("monthly.period")}
-                </span>
-              </p>
-            </div>
-          ) : (
+          {planKey && (
             <p className="mt-2 font-display text-2xl font-extrabold text-chrome">
               {tPulse(`${planKey}.price`)}
               <span className="text-sm font-medium text-brand-ink-dim">

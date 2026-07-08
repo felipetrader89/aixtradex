@@ -54,30 +54,17 @@ export default async function ProductsPage({ params }: Props) {
         <p className="mb-8 max-w-2xl text-brand-ink-dim">{t("pulse.description")}</p>
 
         <div className="mb-8 grid grid-cols-1 gap-4 sm:grid-cols-3 sm:items-stretch">
-          <GlowCard className="flex flex-col items-center gap-3 text-center">
+          <GlowCard className="flex flex-col items-center gap-2 text-center">
             <p className="font-display text-lg font-bold text-brand-accent">
               {t("pulse.monthly.label")}
             </p>
-            <div className="w-full rounded-lg bg-brand-surface-2 p-3">
-              <p className="text-xs text-brand-ink-dim">{t("pulse.monthly.firstMonthNote")}</p>
-              <p className="font-display text-2xl font-extrabold text-chrome">
-                {t("pulse.monthly.firstMonthPrice")}
-                <span className="text-sm font-medium text-brand-ink-dim">
-                  {" "}
-                  {t("pulse.monthly.period")}
-                </span>
-              </p>
-            </div>
-            <div className="w-full rounded-lg bg-brand-surface-2 p-3">
-              <p className="text-xs text-brand-ink-dim">{t("pulse.monthly.regularNote")}</p>
-              <p className="font-display text-2xl font-extrabold text-chrome">
-                {t("pulse.monthly.regularPrice")}
-                <span className="text-sm font-medium text-brand-ink-dim">
-                  {" "}
-                  {t("pulse.monthly.period")}
-                </span>
-              </p>
-            </div>
+            <p className="font-display text-3xl font-extrabold text-chrome">
+              {t("pulse.monthly.price")}
+              <span className="text-base font-medium text-brand-ink-dim">
+                {" "}
+                {t("pulse.monthly.period")}
+              </span>
+            </p>
             <p className="mt-1 text-xs text-brand-ink-dim">{t("pulse.monthly.explain")}</p>
           </GlowCard>
 

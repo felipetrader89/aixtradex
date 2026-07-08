@@ -86,23 +86,20 @@
       "riskNote": "A performance target, not a guarantee — trading involves risk and past results don't guarantee future results.",
       "monthly": {
         "label": "Monthly Plan",
-        "firstMonthNote": "1st month",
-        "firstMonthPrice": "$49",
-        "regularNote": "From the 2nd month on",
-        "regularPrice": "$99",
+        "price": "$49",
         "period": "/month",
-        "explain": "First month at a promotional price so you can test the robot. From the second month on, $99 — the expected return of up to 4% per day covers the fee comfortably."
+        "explain": "The expected return of up to 4% per day covers the fee comfortably."
       },
       "sixMonths": {
         "label": "6-Month Plan",
-        "price": "$299",
+        "price": "$249",
         "period": "/6 months",
         "originalPrice": "$594.00",
         "badge": "50% OFF"
       },
       "annual": {
         "label": "Annual Plan",
-        "price": "$499",
+        "price": "$399",
         "period": "/year",
         "originalPrice": "$1,188.00",
         "badge": "58% OFF",
@@ -208,7 +205,7 @@
       },
       {
         "q": "How does billing work?",
-        "a": "Monthly: $49 for the first month, $99 from the second month on. There's also a 6-month plan for $299 and an annual plan for $499 (from $1,188.00, 58% off)."
+        "a": "Monthly: $49/month. There's also a 6-month plan for $249 (from $594.00, 50% off) and an annual plan for $399 (from $1,188.00, 58% off)."
       },
       {
         "q": "Is the result guaranteed?",
