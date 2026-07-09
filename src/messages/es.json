@@ -77,8 +77,12 @@
     }
   },
   "Products": {
-    "title": "Ai X Pulse v1",
-    "intro": "Gestión de cuenta automatizada, con una meta de rendimiento real y un cronograma de interés compuesto flexible — corto, medio o largo plazo.",
+    "title": "Ai X PULSE",
+    "intro": "Ai X PULSE es un robot híbrido HFT/Scalper, diseñado para darte resultados a corto, medio y largo plazo. Elige abajo la forma de poner este robot a trabajar en tu cuenta hoy mismo.",
+    "tabs": {
+      "managed": "Gestión de Cuenta",
+      "license": "Comprar Licencia"
+    },
     "pulse": {
       "tag": "Gestión de cuenta — suscripción mensual o anual",
       "description": "Abres una cuenta en el bróker recomendado, depositas desde US$100, y nosotros instalamos y configuramos el robot en una VPS conectada a tu propia cuenta MT4. Sigues todo en tiempo real desde la app de MT4 y puedes depositar o retirar cuando quieras — la cuenta es tuya, no es un fondo, no es una cuenta agrupada.",
@@ -117,6 +121,17 @@
         "interest": "Interés", "interestValue": "Compuesto / Simple",
         "term": "Plazo", "termValue": "Corto / Medio / Largo"
       }
+    },
+    "license": {
+      "tag": "Licencia del robot — corre por tu cuenta",
+      "description": "Recibes el archivo del robot y lo instalas directo en tus propias cuentas MT4, sin que yo gestione la cuenta. La licencia cubre hasta 3 cuentas — envíame el ID de cada una para activarlas.",
+      "requirementsNote": "Las 3 cuentas necesitan un spread por debajo de 20 pts para que el robot rinda bien.",
+      "oneMonth": { "label": "Licencia 1 Mes", "price": "US$99", "period": "/mes" },
+      "sixMonths": { "label": "Licencia 6 Meses", "price": "US$399", "period": "/6 meses" },
+      "oneYear": { "label": "Licencia 1 Año", "price": "US$699", "period": "/año" },
+      "ctaOneMonth": "Obtener Licencia de 1 Mes",
+      "ctaSixMonths": "Obtener Licencia de 6 Meses",
+      "ctaOneYear": "Obtener Licencia de 1 Año"
     },
     "calculator": {
       "title": "Calcula el Crecimiento de tu Cuenta",

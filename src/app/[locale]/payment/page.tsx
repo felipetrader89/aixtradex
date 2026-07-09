@@ -10,8 +10,24 @@ type Props = {
   searchParams: Promise<{ plan?: string }>;
 };
 
-const PLAN_KEYS = ["monthly", "sixMonths", "annual"] as const;
+const PLAN_KEYS = [
+  "monthly",
+  "sixMonths",
+  "annual",
+  "licenseMonthly",
+  "licenseSixMonths",
+  "licenseAnnual",
+] as const;
 type PlanKey = (typeof PLAN_KEYS)[number];
+
+const PLAN_PATH: Record<PlanKey, string> = {
+  monthly: "pulse.monthly",
+  sixMonths: "pulse.sixMonths",
+  annual: "pulse.annual",
+  licenseMonthly: "license.oneMonth",
+  licenseSixMonths: "license.sixMonths",
+  licenseAnnual: "license.oneYear",
+};
 
 function isPlanKey(value: string | undefined): value is PlanKey {
   return PLAN_KEYS.includes(value as PlanKey);
@@ -31,10 +47,11 @@ export default async function PaymentPage({ params, searchParams }: Props) {
   const { plan } = await searchParams;
   setRequestLocale(locale);
   const t = await getTranslations("Payment");
-  const tPulse = await getTranslations("Products.pulse");
+  const tProducts = await getTranslations("Products");
 
   const planKey = isPlanKey(plan) ? plan : undefined;
-  const planLabel = planKey ? tPulse(`${planKey}.label`) : undefined;
+  const planPath = planKey ? PLAN_PATH[planKey] : undefined;
+  const planLabel = planPath ? tProducts(`${planPath}.label`) : undefined;
 
   const methods = [
     { key: "binancePay", value: paymentAddresses.binancePayId },
@@ -66,12 +83,12 @@ export default async function PaymentPage({ params, searchParams }: Props) {
             {t("planLabel")}
           </p>
           <p className="mt-1 font-display text-xl font-bold text-chrome">{planLabel}</p>
-          {planKey && (
+          {planPath && (
             <p className="mt-2 font-display text-2xl font-extrabold text-chrome">
-              {tPulse(`${planKey}.price`)}
+              {tProducts(`${planPath}.price`)}
               <span className="text-sm font-medium text-brand-ink-dim">
                 {" "}
-                {tPulse(`${planKey}.period`)}
+                {tProducts(`${planPath}.period`)}
               </span>
             </p>
           )}

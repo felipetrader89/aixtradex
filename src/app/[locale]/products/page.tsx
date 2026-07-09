@@ -1,10 +1,9 @@
 import type { Metadata } from "next";
 import { getTranslations, setRequestLocale } from "next-intl/server";
-import { GlowCard } from "@/components/brand/GlowCard";
-import { IconCalendar, IconChartUp, IconRocket } from "@/components/brand/icons";
 import { SpecTable } from "@/components/sections/SpecTable";
 import { CompoundCalculator } from "@/components/sections/CompoundCalculator";
-import { Link, getPathname } from "@/i18n/navigation";
+import { ProductsTabs } from "@/components/sections/ProductsTabs";
+import { getPathname } from "@/i18n/navigation";
 import { routing } from "@/i18n/routing";
 
 type Props = { params: Promise<{ locale: string }> };
@@ -38,111 +37,93 @@ export default async function ProductsPage({ params }: Props) {
     { label: t("pulse.specs.term"), value: t("pulse.specs.termValue") },
   ];
 
+  const managed = {
+    tag: t("pulse.tag"),
+    description: t("pulse.description"),
+    performanceNote: t("pulse.performanceNote"),
+    riskNote: t("pulse.riskNote"),
+    plans: [
+      {
+        label: t("pulse.monthly.label"),
+        price: t("pulse.monthly.price"),
+        period: t("pulse.monthly.period"),
+        note: t("pulse.monthly.explain"),
+        ctaLabel: t("pulse.ctaMonthly"),
+        ctaHref: "/payment?plan=monthly",
+      },
+      {
+        label: t("pulse.sixMonths.label"),
+        price: t("pulse.sixMonths.price"),
+        period: t("pulse.sixMonths.period"),
+        originalPrice: t("pulse.sixMonths.originalPrice"),
+        badge: t("pulse.sixMonths.badge"),
+        ctaLabel: t("pulse.ctaSixMonths"),
+        ctaHref: "/payment?plan=sixMonths",
+      },
+      {
+        label: t("pulse.annual.label"),
+        price: t("pulse.annual.price"),
+        period: t("pulse.annual.period"),
+        originalPrice: t("pulse.annual.originalPrice"),
+        badge: t("pulse.annual.badge"),
+        note: t("pulse.annual.note"),
+        ctaLabel: t("pulse.ctaAnnual"),
+        ctaHref: "/payment?plan=annual",
+        highlight: true,
+      },
+    ],
+  };
+
+  const license = {
+    tag: t("license.tag"),
+    description: t("license.description"),
+    requirementsNote: t("license.requirementsNote"),
+    plans: [
+      {
+        label: t("license.oneMonth.label"),
+        price: t("license.oneMonth.price"),
+        period: t("license.oneMonth.period"),
+        ctaLabel: t("license.ctaOneMonth"),
+        ctaHref: "/payment?plan=licenseMonthly",
+      },
+      {
+        label: t("license.sixMonths.label"),
+        price: t("license.sixMonths.price"),
+        period: t("license.sixMonths.period"),
+        ctaLabel: t("license.ctaSixMonths"),
+        ctaHref: "/payment?plan=licenseSixMonths",
+      },
+      {
+        label: t("license.oneYear.label"),
+        price: t("license.oneYear.price"),
+        period: t("license.oneYear.period"),
+        ctaLabel: t("license.ctaOneYear"),
+        ctaHref: "/payment?plan=licenseAnnual",
+        highlight: true,
+      },
+    ],
+  };
+
   return (
     <div className="mx-auto max-w-4xl px-6 py-16">
-      <header className="mb-16 text-center">
+      <header className="mb-12 text-center">
         <h1 className="mb-4 font-display text-3xl font-extrabold uppercase text-chrome sm:text-4xl">
           {t("title")}
         </h1>
         <p className="mx-auto max-w-xl text-brand-ink-dim">{t("intro")}</p>
       </header>
 
-      <section>
-        <p className="mb-2 text-xs font-semibold uppercase tracking-wide text-brand-accent">
-          {t("pulse.tag")}
-        </p>
-        <p className="mb-8 max-w-2xl text-brand-ink-dim">{t("pulse.description")}</p>
+      <ProductsTabs
+        tabs={{ managed: t("tabs.managed"), license: t("tabs.license") }}
+        managed={managed}
+        license={license}
+      />
 
-        <div className="mb-8 grid grid-cols-1 gap-4 sm:grid-cols-3 sm:items-stretch">
-          <GlowCard className="flex flex-col items-center gap-2 text-center">
-            <p className="font-display text-lg font-bold text-brand-accent">
-              {t("pulse.monthly.label")}
-            </p>
-            <p className="font-display text-3xl font-extrabold text-chrome">
-              {t("pulse.monthly.price")}
-              <span className="text-base font-medium text-brand-ink-dim">
-                {" "}
-                {t("pulse.monthly.period")}
-              </span>
-            </p>
-            <p className="mt-1 text-xs text-brand-ink-dim">{t("pulse.monthly.explain")}</p>
-          </GlowCard>
+      <div className="my-10">
+        <SpecTable rows={specs} />
+      </div>
 
-          <GlowCard className="flex flex-col items-center gap-2 text-center">
-            <p className="font-display text-lg font-bold text-brand-accent">
-              {t("pulse.sixMonths.label")}
-            </p>
-            <span className="rounded-full bg-brand-accent px-3 py-1 text-xs font-bold text-brand-bg">
-              {t("pulse.sixMonths.badge")}
-            </span>
-            <p className="font-display text-3xl font-extrabold text-chrome">
-              {t("pulse.sixMonths.price")}
-              <span className="text-base font-medium text-brand-ink-dim">
-                {" "}
-                {t("pulse.sixMonths.period")}
-              </span>
-            </p>
-            <p className="text-sm text-brand-ink-dim line-through">
-              {t("pulse.sixMonths.originalPrice")}
-            </p>
-          </GlowCard>
-
-          <GlowCard className="relative flex flex-col items-center gap-2 text-center !border-2 !border-brand-accent shadow-[0_0_40px_rgba(51,214,160,0.25)]">
-            <p className="font-display text-lg font-bold text-brand-accent">
-              {t("pulse.annual.label")}
-            </p>
-            <span className="rounded-full bg-brand-accent px-3 py-1 text-xs font-bold text-brand-bg">
-              {t("pulse.annual.badge")}
-            </span>
-            <p className="font-display text-3xl font-extrabold text-chrome">
-              {t("pulse.annual.price")}
-              <span className="text-base font-medium text-brand-ink-dim">
-                {" "}
-                {t("pulse.annual.period")}
-              </span>
-            </p>
-            <p className="text-sm text-brand-ink-dim line-through">
-              {t("pulse.annual.originalPrice")}
-            </p>
-            <p className="mt-1 text-xs text-brand-ink-dim">{t("pulse.annual.note")}</p>
-          </GlowCard>
-        </div>
-
-        <GlowCard className="mb-6 text-sm">
-          <p className="mb-1 font-semibold text-brand-ink">{t("pulse.performanceNote")}</p>
-          <p className="text-brand-ink-dim">{t("pulse.riskNote")}</p>
-        </GlowCard>
-
-        <div className="mb-10">
-          <SpecTable rows={specs} />
-        </div>
-
-        <CompoundCalculator locale={locale} />
-
-        <div className="mt-8 flex flex-col items-center justify-center gap-4 sm:flex-row">
-          <Link
-            href="/payment?plan=monthly"
-            className="cta-neon flex items-center gap-2 rounded-full bg-brand-surface px-6 py-3 text-sm font-semibold text-brand-ink transition-colors duration-300 hover:text-brand-accent"
-          >
-            <IconCalendar className="h-5 w-5" />
-            {t("pulse.ctaMonthly")}
-          </Link>
-          <Link
-            href="/payment?plan=sixMonths"
-            className="cta-neon flex items-center gap-2 rounded-full bg-brand-surface px-6 py-3 text-sm font-semibold text-brand-ink transition-colors duration-300 hover:text-brand-accent"
-          >
-            <IconChartUp className="h-5 w-5" />
-            {t("pulse.ctaSixMonths")}
-          </Link>
-          <Link
-            href="/payment?plan=annual"
-            className="cta-neon flex items-center gap-2 rounded-full bg-brand-surface px-6 py-3 text-sm font-semibold text-brand-ink transition-colors duration-300 hover:text-brand-accent"
-          >
-            <IconRocket className="h-5 w-5" />
-            {t("pulse.ctaAnnual")}
-          </Link>
-        </div>
-      </section>
+      <CompoundCalculator locale={locale} />
     </div>
   );
 }

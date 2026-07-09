@@ -77,8 +77,12 @@
     }
   },
   "Products": {
-    "title": "Ai X Pulse v1",
-    "intro": "Gestão de conta automatizada, com meta de performance real e prazo de juros compostos flexível — curto, médio ou longo prazo.",
+    "title": "Ai X PULSE",
+    "intro": "Ai X PULSE é um robô híbrido HFT/Scalper, projetado pra entregar resultado no curto, médio e longo prazo. Escolha abaixo a forma de colocar esse robô trabalhando na sua conta ainda hoje.",
+    "tabs": {
+      "managed": "Gestão de Conta",
+      "license": "Comprar Licença"
+    },
     "pulse": {
       "tag": "Gestão de conta — assinatura mensal ou anual",
       "description": "Você abre conta na corretora recomendada, deposita a partir de US$100, e a gente instala e configura o robô numa VPS ligada à sua própria conta MT4. Você acompanha tudo em tempo real pelo app do MT4 e pode depositar ou sacar quando quiser — a conta é sua, não é fundo, não é conta agrupada.",
@@ -117,6 +121,17 @@
         "interest": "Juros", "interestValue": "Composto / Simples",
         "term": "Prazo", "termValue": "Curto / Médio / Longo"
       }
+    },
+    "license": {
+      "tag": "Licença do robô — direto na sua própria gestão",
+      "description": "Você recebe o arquivo do robô e instala direto nas suas contas MT4, sem que eu faça a gestão. A licença libera até 3 contas — me envia o ID de cada uma pra eu liberar o acesso.",
+      "requirementsNote": "As 3 contas precisam ter spread abaixo de 20 pts pra o robô entregar um bom desempenho.",
+      "oneMonth": { "label": "Licença 1 Mês", "price": "US$99", "period": "/mês" },
+      "sixMonths": { "label": "Licença 6 Meses", "price": "US$399", "period": "/6 meses" },
+      "oneYear": { "label": "Licença 1 Ano", "price": "US$699", "period": "/ano" },
+      "ctaOneMonth": "Obter Licença de 1 Mês",
+      "ctaSixMonths": "Obter Licença de 6 Meses",
+      "ctaOneYear": "Obter Licença de 1 Ano"
     },
     "calculator": {
       "title": "Calcule o Crescimento da sua Conta",

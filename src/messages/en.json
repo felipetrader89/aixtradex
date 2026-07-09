@@ -77,8 +77,12 @@
     }
   },
   "Products": {
-    "title": "Ai X Pulse v1",
-    "intro": "Automated account management, with a real performance target and a flexible compounding schedule — short, medium, or long term.",
+    "title": "Ai X PULSE",
+    "intro": "Ai X PULSE is a hybrid HFT/Scalper robot, built to deliver results in the short, medium, and long term. Choose below how you want this robot working on your account today.",
+    "tabs": {
+      "managed": "Managed Account",
+      "license": "Buy a License"
+    },
     "pulse": {
       "tag": "Managed account — monthly or annual subscription",
       "description": "You open an account with the recommended broker, deposit from $100, and we install and configure the robot on a VPS connected to your own MT4 account. You track everything in real time through the MT4 app and can deposit or withdraw whenever you want — it's your account, not a fund, not a pooled account.",
@@ -117,6 +121,17 @@
         "interest": "Compounding", "interestValue": "Compound / Simple",
         "term": "Term", "termValue": "Short / Medium / Long"
       }
+    },
+    "license": {
+      "tag": "Robot license — run it on your own",
+      "description": "You get the robot file and install it directly on your own MT4 accounts, no account management from me. The license covers up to 3 accounts — send me each account ID so I can activate them.",
+      "requirementsNote": "All 3 accounts need a spread below 20 pts for the robot to perform well.",
+      "oneMonth": { "label": "1-Month License", "price": "$99", "period": "/month" },
+      "sixMonths": { "label": "6-Month License", "price": "$399", "period": "/6 months" },
+      "oneYear": { "label": "1-Year License", "price": "$699", "period": "/year" },
+      "ctaOneMonth": "Get the 1-Month License",
+      "ctaSixMonths": "Get the 6-Month License",
+      "ctaOneYear": "Get the 1-Year License"
     },
     "calculator": {
       "title": "Calculate Your Account Growth",
