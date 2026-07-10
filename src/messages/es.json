@@ -6,7 +6,7 @@
     },
     "products": {
       "title": "Ai X Pulse v1 — Planes — Ai X TradeX",
-      "description": "Ai X Pulse v1: licencia del robot para hasta 3 cuentas MT4, planes de 1 mes, 6 meses o 1 año, con una meta de rendimiento real."
+      "description": "Ai X Pulse v1: licencia del robot para 1 cuenta demo y 1 cuenta real, planes de 1 mes, 6 meses o 1 año, con una meta de rendimiento real."
     },
     "about": {
       "title": "Sobre nosotros — Ai X TradeX",
@@ -58,9 +58,9 @@
       "heading": "¿Por qué",
       "items": [
         { "title": "Tu cuenta, 100% tuya", "body": "La licencia corre directo en tu propia cuenta — depositas y retiras cuando quieras, sin terceros administrando tu dinero." },
-        { "title": "Licencia para hasta 3 Cuentas", "body": "Recibes el archivo del robot y lo instalas directo en hasta 3 cuentas MT4 tuyas." },
-        { "title": "Rendimiento Real", "body": "Hasta 4% por día, siguiendo la misma lógica probada todos los días." },
-        { "title": "Brókers Compatibles", "body": "Compatible con Exness, FPMarkets, Tickmill y Vantage." }
+        { "title": "Licencia para 1 Demo + 1 Real", "body": "Recibes el archivo .ex4 del robot y lo instalas en una cuenta demo y una cuenta real, ambas tuyas." },
+        { "title": "Rendimiento Real", "body": "Gana hasta 5% por día, siguiendo la gestión de riesgo estándar del robot, la misma lógica probada todos los días." },
+        { "title": "Brókers Compatibles", "body": "Compatible con FPMarkets, Tickmill, Vantage, FPTrading e ICTrading." }
       ]
     },
     "why": {
@@ -82,13 +82,13 @@
     "pulse": {
       "tag": "Gestión de cuenta — suscripción mensual o anual",
       "description": "Abres una cuenta en el bróker recomendado, depositas desde US$100, y nosotros instalamos y configuramos el robot en una VPS conectada a tu propia cuenta MT4. Sigues todo en tiempo real desde la app de MT4 y puedes depositar o retirar cuando quieras — la cuenta es tuya, no es un fondo, no es una cuenta agrupada.",
-      "performanceNote": "Meta de rendimiento: hasta 4% por día, con +130% mensual posible usando interés compuesto. El cronograma de interés compuesto se puede ajustar a corto, medio o largo plazo, según tu objetivo.",
+      "performanceNote": "Meta de rendimiento: hasta 5% por día, con +130% mensual posible usando interés compuesto. El cronograma de interés compuesto se puede ajustar a corto, medio o largo plazo, según tu objetivo.",
       "riskNote": "Es una meta de rendimiento, no una garantía — el trading implica riesgo y los resultados pasados no garantizan resultados futuros.",
       "monthly": {
         "label": "Plan Mensual",
         "price": "US$49",
         "period": "/mes",
-        "explain": "El retorno esperado de hasta 4% por día cubre la cuota tranquilamente."
+        "explain": "El retorno esperado de hasta 5% por día cubre la cuota tranquilamente."
       },
       "sixMonths": {
         "label": "Plan 6 Meses",
@@ -119,12 +119,12 @@
       }
     },
     "license": {
-      "tag": "Licencia del robot — para hasta 3 cuentas MT4",
-      "description": "Recibes el archivo del robot y lo instalas directo en tus propias cuentas MT4, sin que yo gestione la cuenta. La licencia cubre hasta 3 cuentas — envíame el ID de cada una para activarlas.",
-      "requirementsNote": "Las 3 cuentas necesitan un spread por debajo de 20 pts para que el robot rinda bien.",
-      "oneMonth": { "label": "Licencia 1 Mes", "price": "US$99", "period": "/mes" },
-      "sixMonths": { "label": "Licencia 6 Meses", "price": "US$399", "period": "/6 meses" },
-      "oneYear": { "label": "Licencia 1 Año", "price": "US$699", "period": "/año" },
+      "tag": "Licencia del robot — 1 cuenta demo + 1 cuenta real",
+      "description": "Recibes el archivo del robot y lo instalas directo en tus propias cuentas MT4, sin que yo gestione la cuenta. La licencia cubre hasta 2 cuentas — 1 demo y 1 real — envíame el ID de cada una para activarlas.",
+      "requirementsNote": "Las 2 cuentas (demo y real) necesitan un spread por debajo de 20 pts para que el robot rinda bien.",
+      "oneMonth": { "label": "Licencia 1 Mes", "price": "US$49", "period": "/mes" },
+      "sixMonths": { "label": "Licencia 6 Meses", "price": "US$249", "period": "/6 meses" },
+      "oneYear": { "label": "Licencia 1 Año", "price": "US$399", "period": "/año" },
       "ctaOneMonth": "Obtener Licencia de 1 Mes",
       "ctaSixMonths": "Obtener Licencia de 6 Meses",
       "ctaOneYear": "Obtener Licencia de 1 Año"
@@ -136,7 +136,7 @@
       "simpleLabel": "Interés Simple",
       "compoundLabel": "Interés Compuesto",
       "monthsLabel": "Mes(es) de la simulación",
-      "rateNote": "{count, plural, one {4% por día hábil × # día hábil seleccionado} other {4% por día hábil × # días hábiles seleccionados}}",
+      "rateNote": "{count, plural, one {5% por día hábil × # día hábil seleccionado} other {5% por día hábil × # días hábiles seleccionados}}",
       "resultLabel": "Saldo Final Proyectado",
       "profitLabel": "Ganancia Estimada",
       "resultNote": "Partiendo de {deposit}.",
@@ -208,7 +208,7 @@
       },
       {
         "q": "¿Qué brókers son compatibles?",
-        "a": "FPMarkets, Tickmill, Vantage y Exness — cuentas Raw Spread o ECN, con spread por debajo de 20 pts."
+        "a": "FPMarkets, Tickmill, Vantage, FPTrading e ICTrading — cuentas Raw Spread o ECN, con spread por debajo de 20 pts."
       },
       {
         "q": "¿Cuál es el depósito mínimo?",
@@ -216,11 +216,11 @@
       },
       {
         "q": "¿Cómo funciona el cobro?",
-        "a": "Licencia: US$99 por 1 mes, US$399 por 6 meses o US$699 por 1 año — cubre hasta 3 cuentas MT4."
+        "a": "Licencia: US$49 por 1 mes, US$249 por 6 meses o US$399 por 1 año — cubre 1 cuenta demo y 1 cuenta real."
       },
       {
-        "q": "¿Cómo funciona la licencia de hasta 3 cuentas?",
-        "a": "Una licencia activa el robot en hasta 3 cuentas MT4 tuyas. Después de comprarla, me envías el ID de cada cuenta y activo el acceso. Las 3 cuentas necesitan un spread por debajo de 20 pts para que el robot rinda bien."
+        "q": "¿Cómo funciona la licencia de 1 cuenta demo y 1 cuenta real?",
+        "a": "Una licencia activa el robot en 2 cuentas MT4 tuyas — 1 demo y 1 real. Después de comprarla, me envías el ID de cada cuenta y activo el acceso. Las 2 cuentas necesitan un spread por debajo de 20 pts para que el robot rinda bien."
       },
       {
         "q": "¿El resultado está garantizado?",

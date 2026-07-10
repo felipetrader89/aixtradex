@@ -6,7 +6,7 @@
     },
     "products": {
       "title": "Ai X Pulse v1 — Planos — Ai X TradeX",
-      "description": "Ai X Pulse v1: licença do robô pra até 3 contas MT4, planos de 1 mês, 6 meses ou 1 ano, com meta de performance real."
+      "description": "Ai X Pulse v1: licença do robô pra 1 conta demo e 1 conta real, planos de 1 mês, 6 meses ou 1 ano, com meta de performance real."
     },
     "about": {
       "title": "Sobre — Ai X TradeX",
@@ -58,9 +58,9 @@
       "heading": "Por que",
       "items": [
         { "title": "Conta 100% sua", "body": "A licença roda direto na sua própria conta — você deposita e saca quando quiser, sem terceiros administrando seu dinheiro." },
-        { "title": "Licença pra até 3 Contas", "body": "Você recebe o arquivo .ex4 do robô e instala direto em até 3 contas MT4 suas." },
+        { "title": "Licença pra 1 Demo + 1 Real", "body": "Você recebe o arquivo .ex4 do robô e instala numa conta demo e numa conta real, as duas suas." },
         { "title": "Performance Real", "body": "Lucre até 5% ao dia, seguindo o gerenciamento padrão do robô, a mesma lógica testada todos os dias." },
-        { "title": "Broker Compatíveis", "body": "Exness, FPMarkets, Tickmill, Vantage, FPTrading e ICTrading." }
+        { "title": "Broker Compatíveis", "body": "FPMarkets, Tickmill, Vantage, FPTrading e ICTrading." }
       ]
     },
     "why": {
@@ -119,12 +119,12 @@
       }
     },
     "license": {
-      "tag": "Licença do robô — pra até 3 contas MT4",
-      "description": "Você recebe o arquivo do robô e instala direto nas suas contas MT4, sem que eu faça a gestão. A licença libera até 3 contas — me envia o ID de cada uma pra eu liberar o acesso.",
-      "requirementsNote": "As 3 contas precisam ter spread abaixo de 20 pts pra o robô entregar um bom desempenho.",
-      "oneMonth": { "label": "Licença 1 Mês", "price": "US$99", "period": "/mês" },
-      "sixMonths": { "label": "Licença 6 Meses", "price": "US$399", "period": "/6 meses" },
-      "oneYear": { "label": "Licença 1 Ano", "price": "US$699", "period": "/ano" },
+      "tag": "Licença do robô — 1 conta demo + 1 conta real",
+      "description": "Você recebe o arquivo do robô e instala direto nas suas contas MT4, sem que eu faça a gestão. A licença libera até 2 contas — 1 demo e 1 real — me envia o ID de cada uma pra eu liberar o acesso.",
+      "requirementsNote": "As 2 contas (demo e real) precisam ter spread abaixo de 20 pts pra o robô entregar um bom desempenho.",
+      "oneMonth": { "label": "Licença 1 Mês", "price": "US$49", "period": "/mês" },
+      "sixMonths": { "label": "Licença 6 Meses", "price": "US$249", "period": "/6 meses" },
+      "oneYear": { "label": "Licença 1 Ano", "price": "US$399", "period": "/ano" },
       "ctaOneMonth": "Obter Licença de 1 Mês",
       "ctaSixMonths": "Obter Licença de 6 Meses",
       "ctaOneYear": "Obter Licença de 1 Ano"
@@ -208,7 +208,7 @@
       },
       {
         "q": "Quais corretoras são compatíveis?",
-        "a": "FPMarkets, Tickmill, Vantage, Exness, FPTrading e ICTrading — contas Raw Spread ou ECN, com spread abaixo de 20 pts."
+        "a": "FPMarkets, Tickmill, Vantage, FPTrading e ICTrading — contas Raw Spread ou ECN, com spread abaixo de 20 pts."
       },
       {
         "q": "Qual o depósito mínimo?",
@@ -216,11 +216,11 @@
       },
       {
         "q": "Como funciona a cobrança?",
-        "a": "Licença: US$99 por 1 mês, US$399 por 6 meses ou US$699 por 1 ano — libera até 3 contas MT4."
+        "a": "Licença: US$49 por 1 mês, US$249 por 6 meses ou US$399 por 1 ano — libera 1 conta demo e 1 conta real."
       },
       {
-        "q": "Como funciona a licença de até 3 contas?",
-        "a": "Uma licença libera o robô em até 3 contas MT4 suas. Depois de contratar, você me manda o ID de cada conta e eu libero o acesso. As 3 contas precisam ter spread abaixo de 20 pts pra o robô entregar um bom desempenho."
+        "q": "Como funciona a licença de 1 conta demo e 1 conta real?",
+        "a": "Uma licença libera o robô em 2 contas MT4 suas — 1 demo e 1 real. Depois de contratar, você me manda o ID de cada conta e eu libero o acesso. As 2 contas precisam ter spread abaixo de 20 pts pra o robô entregar um bom desempenho."
       },
       {
         "q": "O resultado é garantido?",

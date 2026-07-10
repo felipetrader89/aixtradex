@@ -6,7 +6,7 @@
     },
     "products": {
       "title": "Ai X Pulse v1 — Plans — Ai X TradeX",
-      "description": "Ai X Pulse v1: robot license for up to 3 MT4 accounts, 1-month, 6-month, or 1-year plans, with a real performance target."
+      "description": "Ai X Pulse v1: robot license for 1 demo and 1 live MT4 account, 1-month, 6-month, or 1-year plans, with a real performance target."
     },
     "about": {
       "title": "About — Ai X TradeX",
@@ -58,9 +58,9 @@
       "heading": "Why",
       "items": [
         { "title": "Your account, 100%", "body": "The license runs directly on your own account — deposit and withdraw whenever you want, no third party managing your money." },
-        { "title": "License for up to 3 Accounts", "body": "You get the robot file and install it directly on up to 3 of your own MT4 accounts." },
-        { "title": "Real Performance", "body": "Up to 4% per day, following the same tested logic every day." },
-        { "title": "Compatible Brokers", "body": "Works with Exness, FPMarkets, Tickmill, and Vantage." }
+        { "title": "License for 1 Demo + 1 Live Account", "body": "You get the robot's .ex4 file and install it on a demo account and a live account, both yours." },
+        { "title": "Real Performance", "body": "Earn up to 5% per day, following the robot's standard risk settings, the same tested logic every day." },
+        { "title": "Compatible Brokers", "body": "Works with FPMarkets, Tickmill, Vantage, FPTrading, and ICTrading." }
       ]
     },
     "why": {
@@ -82,13 +82,13 @@
     "pulse": {
       "tag": "Managed account — monthly or annual subscription",
       "description": "You open an account with the recommended broker, deposit from $100, and we install and configure the robot on a VPS connected to your own MT4 account. You track everything in real time through the MT4 app and can deposit or withdraw whenever you want — it's your account, not a fund, not a pooled account.",
-      "performanceNote": "Performance target: up to 4% per day, with +130% per month possible using compound interest. The compounding schedule can be tuned for short, medium, or long term, depending on your goal.",
+      "performanceNote": "Performance target: up to 5% per day, with +130% per month possible using compound interest. The compounding schedule can be tuned for short, medium, or long term, depending on your goal.",
       "riskNote": "A performance target, not a guarantee — trading involves risk and past results don't guarantee future results.",
       "monthly": {
         "label": "Monthly Plan",
         "price": "$49",
         "period": "/month",
-        "explain": "The expected return of up to 4% per day covers the fee comfortably."
+        "explain": "The expected return of up to 5% per day covers the fee comfortably."
       },
       "sixMonths": {
         "label": "6-Month Plan",
@@ -119,12 +119,12 @@
       }
     },
     "license": {
-      "tag": "Robot license — for up to 3 MT4 accounts",
-      "description": "You get the robot file and install it directly on your own MT4 accounts, no account management from me. The license covers up to 3 accounts — send me each account ID so I can activate them.",
-      "requirementsNote": "All 3 accounts need a spread below 20 pts for the robot to perform well.",
-      "oneMonth": { "label": "1-Month License", "price": "$99", "period": "/month" },
-      "sixMonths": { "label": "6-Month License", "price": "$399", "period": "/6 months" },
-      "oneYear": { "label": "1-Year License", "price": "$699", "period": "/year" },
+      "tag": "Robot license — 1 demo + 1 live account",
+      "description": "You get the robot file and install it directly on your own MT4 accounts, no account management from me. The license covers up to 2 accounts — 1 demo and 1 live — send me each account ID so I can activate them.",
+      "requirementsNote": "Both accounts (demo and live) need a spread below 20 pts for the robot to perform well.",
+      "oneMonth": { "label": "1-Month License", "price": "$49", "period": "/month" },
+      "sixMonths": { "label": "6-Month License", "price": "$249", "period": "/6 months" },
+      "oneYear": { "label": "1-Year License", "price": "$399", "period": "/year" },
       "ctaOneMonth": "Get the 1-Month License",
       "ctaSixMonths": "Get the 6-Month License",
       "ctaOneYear": "Get the 1-Year License"
@@ -136,7 +136,7 @@
       "simpleLabel": "Simple Interest",
       "compoundLabel": "Compound Interest",
       "monthsLabel": "Simulation month(s)",
-      "rateNote": "{count, plural, one {4% per trading day × # trading day selected} other {4% per trading day × # trading days selected}}",
+      "rateNote": "{count, plural, one {5% per trading day × # trading day selected} other {5% per trading day × # trading days selected}}",
       "resultLabel": "Projected Final Balance",
       "profitLabel": "Estimated Profit",
       "resultNote": "Starting from {deposit}.",
@@ -208,7 +208,7 @@
       },
       {
         "q": "Which brokers are compatible?",
-        "a": "FPMarkets, Tickmill, Vantage, and Exness — Raw Spread or ECN accounts, with spread below 20 pts."
+        "a": "FPMarkets, Tickmill, Vantage, FPTrading, and ICTrading — Raw Spread or ECN accounts, with spread below 20 pts."
       },
       {
         "q": "What's the minimum deposit?",
@@ -216,11 +216,11 @@
       },
       {
         "q": "How does billing work?",
-        "a": "License: $99 for 1 month, $399 for 6 months, or $699 for 1 year — covers up to 3 MT4 accounts."
+        "a": "License: $49 for 1 month, $249 for 6 months, or $399 for 1 year — covers 1 demo account and 1 live account."
       },
       {
-        "q": "How does the 3-account license work?",
-        "a": "One license activates the robot on up to 3 of your own MT4 accounts. After you purchase, you send me each account ID and I activate access. All 3 accounts need a spread below 20 pts for the robot to perform well."
+        "q": "How does the 1 demo + 1 live account license work?",
+        "a": "One license activates the robot on 2 of your own MT4 accounts — 1 demo and 1 live. After you purchase, you send me each account ID and I activate access. Both accounts need a spread below 20 pts for the robot to perform well."
       },
       {
         "q": "Is the result guaranteed?",
