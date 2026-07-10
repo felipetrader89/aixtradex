@@ -31,14 +31,16 @@ export function WhyUsStrip({
         )}
         <span className="inline-block -ml-[5px] -translate-y-[7px]">?</span>
       </h2>
-      <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4">
+      <div className="grid grid-cols-1 gap-5 sm:grid-cols-2">
         {items.map((item, i) => {
           const Icon = ICONS[i % ICONS.length];
           return (
-            <GlowCard key={item.title} className="flex flex-col items-center text-center">
-              <Icon className="h-12 w-12 text-brand-accent" />
-              <h3 className="mt-4 text-base font-bold text-brand-ink">{item.title}</h3>
-              <p className="mt-2 text-sm text-brand-ink-dim">{item.body}</p>
+            <GlowCard key={item.title} className="flex items-start gap-4 text-left">
+              <Icon className="h-9 w-9 shrink-0 text-brand-accent" />
+              <div>
+                <h3 className="text-base font-bold text-brand-ink">{item.title}</h3>
+                <p className="mt-2 text-sm text-brand-ink-dim">{item.body}</p>
+              </div>
             </GlowCard>
           );
         })}

@@ -1,9 +1,10 @@
 import type { Metadata } from "next";
 import { getTranslations, setRequestLocale } from "next-intl/server";
+import { GlowCard } from "@/components/brand/GlowCard";
+import { IconCalendar, IconChartUp, IconRocket } from "@/components/brand/icons";
 import { SpecTable } from "@/components/sections/SpecTable";
 import { CompoundCalculator } from "@/components/sections/CompoundCalculator";
-import { ProductsTabs } from "@/components/sections/ProductsTabs";
-import { getPathname } from "@/i18n/navigation";
+import { Link, getPathname } from "@/i18n/navigation";
 import { routing } from "@/i18n/routing";
 
 type Props = { params: Promise<{ locale: string }> };
@@ -37,72 +38,33 @@ export default async function ProductsPage({ params }: Props) {
     { label: t("pulse.specs.term"), value: t("pulse.specs.termValue") },
   ];
 
-  const managed = {
-    tag: t("pulse.tag"),
-    description: t("pulse.description"),
-    performanceNote: t("pulse.performanceNote"),
-    riskNote: t("pulse.riskNote"),
-    plans: [
-      {
-        label: t("pulse.monthly.label"),
-        price: t("pulse.monthly.price"),
-        period: t("pulse.monthly.period"),
-        note: t("pulse.monthly.explain"),
-        ctaLabel: t("pulse.ctaMonthly"),
-        ctaHref: "/payment?plan=monthly",
-      },
-      {
-        label: t("pulse.sixMonths.label"),
-        price: t("pulse.sixMonths.price"),
-        period: t("pulse.sixMonths.period"),
-        originalPrice: t("pulse.sixMonths.originalPrice"),
-        badge: t("pulse.sixMonths.badge"),
-        ctaLabel: t("pulse.ctaSixMonths"),
-        ctaHref: "/payment?plan=sixMonths",
-      },
-      {
-        label: t("pulse.annual.label"),
-        price: t("pulse.annual.price"),
-        period: t("pulse.annual.period"),
-        originalPrice: t("pulse.annual.originalPrice"),
-        badge: t("pulse.annual.badge"),
-        note: t("pulse.annual.note"),
-        ctaLabel: t("pulse.ctaAnnual"),
-        ctaHref: "/payment?plan=annual",
-        highlight: true,
-      },
-    ],
-  };
-
-  const license = {
-    tag: t("license.tag"),
-    description: t("license.description"),
-    requirementsNote: t("license.requirementsNote"),
-    plans: [
-      {
-        label: t("license.oneMonth.label"),
-        price: t("license.oneMonth.price"),
-        period: t("license.oneMonth.period"),
-        ctaLabel: t("license.ctaOneMonth"),
-        ctaHref: "/payment?plan=licenseMonthly",
-      },
-      {
-        label: t("license.sixMonths.label"),
-        price: t("license.sixMonths.price"),
-        period: t("license.sixMonths.period"),
-        ctaLabel: t("license.ctaSixMonths"),
-        ctaHref: "/payment?plan=licenseSixMonths",
-      },
-      {
-        label: t("license.oneYear.label"),
-        price: t("license.oneYear.price"),
-        period: t("license.oneYear.period"),
-        ctaLabel: t("license.ctaOneYear"),
-        ctaHref: "/payment?plan=licenseAnnual",
-        highlight: true,
-      },
-    ],
-  };
+  const plans = [
+    {
+      label: t("license.oneMonth.label"),
+      price: t("license.oneMonth.price"),
+      period: t("license.oneMonth.period"),
+      ctaLabel: t("license.ctaOneMonth"),
+      ctaHref: "/payment?plan=licenseMonthly",
+      Icon: IconCalendar,
+    },
+    {
+      label: t("license.sixMonths.label"),
+      price: t("license.sixMonths.price"),
+      period: t("license.sixMonths.period"),
+      ctaLabel: t("license.ctaSixMonths"),
+      ctaHref: "/payment?plan=licenseSixMonths",
+      Icon: IconChartUp,
+    },
+    {
+      label: t("license.oneYear.label"),
+      price: t("license.oneYear.price"),
+      period: t("license.oneYear.period"),
+      ctaLabel: t("license.ctaOneYear"),
+      ctaHref: "/payment?plan=licenseAnnual",
+      Icon: IconRocket,
+      highlight: true,
+    },
+  ];
 
   return (
     <div className="mx-auto max-w-4xl px-6 py-16">
@@ -113,17 +75,47 @@ export default async function ProductsPage({ params }: Props) {
         <p className="mx-auto max-w-xl text-brand-ink-dim">{t("intro")}</p>
       </header>
 
-      <ProductsTabs
-        tabs={{ managed: t("tabs.managed"), license: t("tabs.license") }}
-        managed={managed}
-        license={license}
-      />
+      <section>
+        <p className="mb-2 text-xs font-semibold uppercase tracking-wide text-brand-accent">
+          {t("license.tag")}
+        </p>
+        <p className="mb-8 max-w-2xl text-brand-ink-dim">{t("license.description")}</p>
 
-      <div className="my-10">
-        <SpecTable rows={specs} />
-      </div>
+        <div className="mb-8 grid grid-cols-1 gap-4 sm:grid-cols-3 sm:items-stretch">
+          {plans.map(({ label, price, period, ctaLabel, ctaHref, Icon, highlight }) => (
+            <div key={label} className="flex flex-col gap-4">
+              <GlowCard
+                className={`flex flex-col items-center gap-2 text-center ${
+                  highlight ? "!border-2 !border-brand-accent shadow-[0_0_40px_rgba(51,214,160,0.25)]" : ""
+                }`}
+              >
+                <p className="font-display text-lg font-bold text-brand-accent">{label}</p>
+                <p className="font-display text-3xl font-extrabold text-chrome">
+                  {price}
+                  <span className="text-base font-medium text-brand-ink-dim"> {period}</span>
+                </p>
+              </GlowCard>
+              <Link
+                href={ctaHref}
+                className="cta-neon flex items-center justify-center gap-2 rounded-full bg-brand-surface px-6 py-3 text-sm font-semibold text-brand-ink transition-colors duration-300 hover:text-brand-accent"
+              >
+                <Icon className="h-5 w-5" />
+                {ctaLabel}
+              </Link>
+            </div>
+          ))}
+        </div>
 
-      <CompoundCalculator locale={locale} />
+        <GlowCard className="mb-6 text-sm">
+          <p className="text-brand-ink-dim">{t("license.requirementsNote")}</p>
+        </GlowCard>
+
+        <div className="mb-10">
+          <SpecTable rows={specs} />
+        </div>
+
+        <CompoundCalculator locale={locale} />
+      </section>
     </div>
   );
 }

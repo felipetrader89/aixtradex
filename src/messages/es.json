@@ -2,11 +2,11 @@
   "Metadata": {
     "home": {
       "title": "Ai X TradeX — Robot de Trading Automatizado para Forex",
-      "description": "Gestión de cuenta automatizada para MetaTrader 4. Resultados documentados, sin promesas vacías — planes mensual y anual con una meta de rendimiento real."
+      "description": "Licencia del robot de trading automatizado para MetaTrader 4. Resultados documentados, sin promesas vacías — planes de 1 mes, 6 meses o 1 año."
     },
     "products": {
       "title": "Ai X Pulse v1 — Planes — Ai X TradeX",
-      "description": "Ai X Pulse v1: gestión de cuenta con plan mensual o anual, meta de 1% a 4% por día hábil mediante interés compuesto."
+      "description": "Ai X Pulse v1: licencia del robot para hasta 3 cuentas MT4, planes de 1 mes, 6 meses o 1 año, con una meta de rendimiento real."
     },
     "about": {
       "title": "Sobre nosotros — Ai X TradeX",
@@ -57,9 +57,9 @@
     "whyUs": {
       "heading": "¿Por qué",
       "items": [
-        { "title": "Tu cuenta, 100% tuya", "body": "Gestión o licencia, la cuenta sigue siendo tuya — depositas y retiras cuando quieras." },
-        { "title": "2 Formas de Tener el Robot", "body": "Gestión de cuenta con VPS incluida, o licencia para operarlo tú mismo en hasta 3 cuentas MT4." },
-        { "title": "Rendimiento Real", "body": "Hasta 4% por día, siguiendo la misma lógica probada en ambos formatos." },
+        { "title": "Tu cuenta, 100% tuya", "body": "La licencia corre directo en tu propia cuenta — depositas y retiras cuando quieras, sin terceros administrando tu dinero." },
+        { "title": "Licencia para hasta 3 Cuentas", "body": "Recibes el archivo del robot y lo instalas directo en hasta 3 cuentas MT4 tuyas." },
+        { "title": "Rendimiento Real", "body": "Hasta 4% por día, siguiendo la misma lógica probada todos los días." },
         { "title": "Brókers Compatibles", "body": "Compatible con Exness, FPMarkets, Tickmill y Vantage." }
       ]
     },
@@ -78,11 +78,7 @@
   },
   "Products": {
     "title": "Ai X PULSE",
-    "intro": "Ai X PULSE es un robot híbrido HFT/Scalper, diseñado para darte resultados a corto, medio y largo plazo. Elige abajo la forma de poner este robot a trabajar en tu cuenta hoy mismo.",
-    "tabs": {
-      "managed": "Gestión de Cuenta",
-      "license": "Comprar Licencia"
-    },
+    "intro": "Ai X PULSE es un robot híbrido HFT/Scalper, diseñado para darte resultados a corto, medio y largo plazo. Consigue tu licencia y empieza a operar en tu cuenta hoy mismo.",
     "pulse": {
       "tag": "Gestión de cuenta — suscripción mensual o anual",
       "description": "Abres una cuenta en el bróker recomendado, depositas desde US$100, y nosotros instalamos y configuramos el robot en una VPS conectada a tu propia cuenta MT4. Sigues todo en tiempo real desde la app de MT4 y puedes depositar o retirar cuando quieras — la cuenta es tuya, no es un fondo, no es una cuenta agrupada.",
@@ -123,7 +119,7 @@
       }
     },
     "license": {
-      "tag": "Licencia del robot — corre por tu cuenta",
+      "tag": "Licencia del robot — para hasta 3 cuentas MT4",
       "description": "Recibes el archivo del robot y lo instalas directo en tus propias cuentas MT4, sin que yo gestione la cuenta. La licencia cubre hasta 3 cuentas — envíame el ID de cada una para activarlas.",
       "requirementsNote": "Las 3 cuentas necesitan un spread por debajo de 20 pts para que el robot rinda bien.",
       "oneMonth": { "label": "Licencia 1 Mes", "price": "US$99", "period": "/mes" },
@@ -167,7 +163,7 @@
     },
     "closing": {
       "title": "Hablemos",
-      "body": "¿Dudas sobre el robot o cómo funciona la gestión de cuenta? Solo escríbeme por Telegram."
+      "body": "¿Dudas sobre el robot o cómo funciona la licencia? Solo escríbeme por Telegram."
     },
     "cta": "Unirse a Telegram"
   },
@@ -200,31 +196,27 @@
     "items": [
       {
         "q": "¿Qué es Ai X Pulse v1?",
-        "a": "Es un robot híbrido HFT/Scalper (Expert Advisor) que opera XAU/USD automáticamente en MetaTrader 4. Eliges entre 2 formas de usarlo: gestión de cuenta (yo lo configuro y me encargo de todo en una VPS) o licencia (tú mismo instalas el robot en tus propias cuentas)."
-      },
-      {
-        "q": "¿Cuál es la diferencia entre gestión de cuenta y licencia?",
-        "a": "En la gestión de cuenta, configuro el robot en una VPS conectada a tu cuenta y me encargo de todo — tú solo depositas y sigues los resultados. En la licencia, recibes el archivo del robot y lo instalas directo en hasta 3 cuentas MT4 tuyas, sin que yo gestione la cuenta."
+        "a": "Es un robot híbrido HFT/Scalper (Expert Advisor) que opera XAU/USD automáticamente en MetaTrader 4. Compras la licencia, la instalas en tus cuentas y el robot opera solo, siguiendo la misma lógica probada todos los días."
       },
       {
         "q": "¿Necesito experiencia en trading?",
-        "a": "No. En la gestión de cuenta, nosotros configuramos todo por ti. En la licencia, solo necesitas saber instalar un Expert Advisor en MetaTrader 4 — te explico paso a paso."
+        "a": "No. Solo necesitas saber instalar un Expert Advisor en MetaTrader 4 — te explico paso a paso después de la compra."
       },
       {
         "q": "¿Es un fondo de inversión o una cuenta agrupada?",
-        "a": "No, en ninguna de las dos opciones. La cuenta es tuya, abierta a tu nombre, en el bróker que elijas. Depositas y retiras cuando quieras, sin depender de terceros."
+        "a": "No. La licencia corre directo en tu propia cuenta, en el bróker que elijas — sin terceros administrando tu dinero."
       },
       {
         "q": "¿Qué brókers son compatibles?",
-        "a": "FPMarkets, Tickmill, Vantage y Exness — cuentas Raw Spread o ECN, con spread por debajo de 20 pts. Aplica para las dos opciones, gestión o licencia."
+        "a": "FPMarkets, Tickmill, Vantage y Exness — cuentas Raw Spread o ECN, con spread por debajo de 20 pts."
       },
       {
         "q": "¿Cuál es el depósito mínimo?",
-        "a": "En la gestión de cuenta, US$100. En la licencia no hay depósito mínimo definido por mí — solo la tarifa de la licencia; el requisito es el spread por debajo de 20 pts en tu cuenta."
+        "a": "No hay depósito mínimo definido por mí — usas la cuenta que ya tienes o abres una con tu bróker de preferencia. El requisito es el spread por debajo de 20 pts."
       },
       {
         "q": "¿Cómo funciona el cobro?",
-        "a": "Gestión de cuenta: US$49/mes, o 6 meses por US$249 (desde US$294,00, 15% off), o anual por US$399 (desde US$588,00, 32% off). Licencia: US$99 por 1 mes, US$399 por 6 meses o US$699 por 1 año — cubre hasta 3 cuentas MT4."
+        "a": "Licencia: US$99 por 1 mes, US$399 por 6 meses o US$699 por 1 año — cubre hasta 3 cuentas MT4."
       },
       {
         "q": "¿Cómo funciona la licencia de hasta 3 cuentas?",
@@ -236,7 +228,7 @@
       },
       {
         "q": "¿Cómo empiezo?",
-        "a": "Habla conmigo directamente por Telegram — te explico las dos opciones y cuál tiene más sentido para ti, además de los pasos para abrir la cuenta o activar la licencia."
+        "a": "Habla conmigo directamente por Telegram — elige tu plan de licencia y te explico paso a paso cómo activarla en tus cuentas."
       }
     ],
     "cta": {
@@ -296,7 +288,7 @@
     },
     "cta": {
       "title": "¿Quieres tener este robot en tu cuenta?",
-      "body": "Ahora que ya sabes cómo funciona el robot por dentro, mira las dos formas de ponerlo a trabajar para ti — gestión de cuenta o licencia — y elige la que tenga más sentido.",
+      "body": "Ahora que ya sabes cómo funciona el robot por dentro, mira los planes de licencia disponibles y empieza a operar hoy mismo.",
       "button": "Ver Planes"
     }
   },

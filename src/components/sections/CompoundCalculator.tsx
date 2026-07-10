@@ -4,7 +4,7 @@ import { useMemo, useState } from "react";
 import { useTranslations } from "next-intl";
 import { GlowCard } from "@/components/brand/GlowCard";
 
-const DAILY_RATE = 0.04;
+const DAILY_RATE = 0.05;
 const MONTHS_IN_YEAR = 12;
 
 type Mode = "simple" | "compound";

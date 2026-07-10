@@ -2,11 +2,11 @@
   "Metadata": {
     "home": {
       "title": "Ai X TradeX — Robô de Trading Automatizado pra Forex",
-      "description": "Gestão de conta automatizada pro MetaTrader 4. Resultado documentado, sem promessa vazia — planos mensal e anual com meta de performance real."
+      "description": "Licença do robô de trading automatizado pro MetaTrader 4. Resultado documentado, sem promessa vazia — planos de 1 mês, 6 meses ou 1 ano."
     },
     "products": {
       "title": "Ai X Pulse v1 — Planos — Ai X TradeX",
-      "description": "Ai X Pulse v1: gestão de conta com plano mensal ou anual, meta de 1% a 4% ao dia útil via juros compostos."
+      "description": "Ai X Pulse v1: licença do robô pra até 3 contas MT4, planos de 1 mês, 6 meses ou 1 ano, com meta de performance real."
     },
     "about": {
       "title": "Sobre — Ai X TradeX",
@@ -57,10 +57,10 @@
     "whyUs": {
       "heading": "Por que",
       "items": [
-        { "title": "Conta 100% sua", "body": "Gestão ou licença, a conta continua sua — você deposita e saca quando quiser." },
-        { "title": "2 Formas de Ter o Robô", "body": "Gestão de conta com VPS inclusa, ou licença pra rodar você mesmo em até 3 contas MT4." },
-        { "title": "Performance Real", "body": "Até 4% ao dia, seguindo a mesma lógica testada nos dois formatos." },
-        { "title": "Broker Compatíveis", "body": "Exness, FPMarkets, Tickmill e Vantage." }
+        { "title": "Conta 100% sua", "body": "A licença roda direto na sua própria conta — você deposita e saca quando quiser, sem terceiros administrando seu dinheiro." },
+        { "title": "Licença pra até 3 Contas", "body": "Você recebe o arquivo .ex4 do robô e instala direto em até 3 contas MT4 suas." },
+        { "title": "Performance Real", "body": "Lucre até 5% ao dia, seguindo o gerenciamento padrão do robô, a mesma lógica testada todos os dias." },
+        { "title": "Broker Compatíveis", "body": "Exness, FPMarkets, Tickmill, Vantage, FPTrading e ICTrading." }
       ]
     },
     "why": {
@@ -78,21 +78,17 @@
   },
   "Products": {
     "title": "Ai X PULSE",
-    "intro": "Ai X PULSE é um robô híbrido HFT/Scalper, projetado pra entregar resultado no curto, médio e longo prazo. Escolha abaixo a forma de colocar esse robô trabalhando na sua conta ainda hoje.",
-    "tabs": {
-      "managed": "Gestão de Conta",
-      "license": "Comprar Licença"
-    },
+    "intro": "Ai X PULSE é um robô híbrido HFT/Scalper, projetado pra entregar resultado no curto, médio e longo prazo. Adquira sua licença e comece a operar na sua conta ainda hoje.",
     "pulse": {
       "tag": "Gestão de conta — assinatura mensal ou anual",
       "description": "Você abre conta na corretora recomendada, deposita a partir de US$100, e a gente instala e configura o robô numa VPS ligada à sua própria conta MT4. Você acompanha tudo em tempo real pelo app do MT4 e pode depositar ou sacar quando quiser — a conta é sua, não é fundo, não é conta agrupada.",
-      "performanceNote": "Meta de performance: até 4% ao dia, com +130% ao mês possível usando juros compostos. A programação de juros compostos pode ser ajustada pra curto, médio ou longo prazo, conforme seu objetivo.",
+      "performanceNote": "Meta de performance: até 5% ao dia, com +130% ao mês possível usando juros compostos. A programação de juros compostos pode ser ajustada pra curto, médio ou longo prazo, conforme seu objetivo.",
       "riskNote": "Meta de performance, não garantia — trading envolve risco e resultado passado não garante resultado futuro.",
       "monthly": {
         "label": "Plano Mensal",
         "price": "US$49",
         "period": "/mês",
-        "explain": "O retorno esperado de até 4% ao dia cobre a mensalidade tranquilamente."
+        "explain": "O retorno esperado de até 5% ao dia cobre a mensalidade tranquilamente."
       },
       "sixMonths": {
         "label": "Plano 6 Meses",
@@ -123,7 +119,7 @@
       }
     },
     "license": {
-      "tag": "Licença do robô — direto na sua própria gestão",
+      "tag": "Licença do robô — pra até 3 contas MT4",
       "description": "Você recebe o arquivo do robô e instala direto nas suas contas MT4, sem que eu faça a gestão. A licença libera até 3 contas — me envia o ID de cada uma pra eu liberar o acesso.",
       "requirementsNote": "As 3 contas precisam ter spread abaixo de 20 pts pra o robô entregar um bom desempenho.",
       "oneMonth": { "label": "Licença 1 Mês", "price": "US$99", "period": "/mês" },
@@ -140,7 +136,7 @@
       "simpleLabel": "Juros Simples",
       "compoundLabel": "Juros Composto",
       "monthsLabel": "Mês(es) da simulação",
-      "rateNote": "{count, plural, one {4% ao dia útil × # dia útil selecionado} other {4% ao dia útil × # dias úteis selecionados}}",
+      "rateNote": "{count, plural, one {5% ao dia útil × # dia útil selecionado} other {5% ao dia útil × # dias úteis selecionados}}",
       "resultLabel": "Saldo Final Projetado",
       "profitLabel": "Lucro Estimado",
       "resultNote": "Partindo de {deposit}.",
@@ -167,7 +163,7 @@
     },
     "closing": {
       "title": "Bora conversar",
-      "body": "Dúvidas sobre o robô ou como funciona a gestão de conta? Só chamar no Telegram."
+      "body": "Dúvidas sobre o robô ou como funciona a licença? Só chamar no Telegram."
     },
     "cta": "Entrar no Telegram"
   },
@@ -200,31 +196,27 @@
     "items": [
       {
         "q": "O que é o Ai X Pulse v1?",
-        "a": "É um robô (Expert Advisor) híbrido HFT/Scalper que opera automaticamente em XAU/USD no MetaTrader 4. Você escolhe entre 2 formas de usar: gestão de conta (eu configuro e cuido de tudo numa VPS) ou licença (você mesmo instala o robô nas suas contas)."
-      },
-      {
-        "q": "Qual a diferença entre gestão de conta e licença?",
-        "a": "Na gestão de conta, eu configuro o robô numa VPS ligada à sua conta e cuido de tudo — você só deposita e acompanha. Na licença, você recebe o arquivo do robô e instala direto em até 3 contas MT4 suas, sem que eu faça a gestão."
+        "a": "É um robô (Expert Advisor) híbrido HFT/Scalper que opera automaticamente em XAU/USD no MetaTrader 4. Você adquire a licença, instala nas suas contas e o robô opera sozinho, seguindo a mesma lógica testada todos os dias."
       },
       {
         "q": "Preciso ter experiência em trading?",
-        "a": "Não. Na gestão de conta, a gente configura tudo pra você. Na licença, você só precisa saber instalar um Expert Advisor no MetaTrader 4 — te explico o passo a passo."
+        "a": "Não. Você só precisa saber instalar um Expert Advisor no MetaTrader 4 — te explico o passo a passo depois da compra."
       },
       {
         "q": "É fundo de investimento ou conta agrupada?",
-        "a": "Não, em nenhuma das duas opções. A conta é sua, aberta no seu nome, na corretora que você escolher. Você deposita e saca quando quiser, sem depender de terceiros."
+        "a": "Não. A licença roda direto na sua própria conta, na corretora que você escolher — você não depende de terceiros administrando seu dinheiro."
       },
       {
         "q": "Quais corretoras são compatíveis?",
-        "a": "FPMarkets, Tickmill, Vantage e Exness — contas Raw Spread ou ECN, com spread abaixo de 20 pts. Vale pras duas formas, gestão ou licença."
+        "a": "FPMarkets, Tickmill, Vantage, Exness, FPTrading e ICTrading — contas Raw Spread ou ECN, com spread abaixo de 20 pts."
       },
       {
         "q": "Qual o depósito mínimo?",
-        "a": "Na gestão de conta, US$100. Na licença não tem depósito mínimo definido por mim — só a taxa da licença; o requisito é o spread abaixo de 20 pts na sua conta."
+        "a": "Não tem depósito mínimo definido por mim — você usa a conta que já tem ou abre na corretora de sua preferência. O requisito é o spread abaixo de 20 pts."
       },
       {
         "q": "Como funciona a cobrança?",
-        "a": "Gestão de conta: US$49/mês, ou 6 meses por US$249 (de US$294,00, 15% off), ou anual por US$399 (de US$588,00, 32% off). Licença: US$99 por 1 mês, US$399 por 6 meses ou US$699 por 1 ano — libera até 3 contas MT4."
+        "a": "Licença: US$99 por 1 mês, US$399 por 6 meses ou US$699 por 1 ano — libera até 3 contas MT4."
       },
       {
         "q": "Como funciona a licença de até 3 contas?",
@@ -236,7 +228,7 @@
       },
       {
         "q": "Como faço pra começar?",
-        "a": "Fala comigo direto no Telegram — te explico as duas opções e qual faz mais sentido pra você, além do passo a passo de abertura de conta ou ativação da licença."
+        "a": "Fala comigo direto no Telegram — escolhe o plano de licença e te explico o passo a passo de ativação nas suas contas."
       }
     ],
     "cta": {
@@ -296,7 +288,7 @@
     },
     "cta": {
       "title": "Quer usar esse robô na sua conta?",
-      "body": "Agora que você já sabe como o robô funciona por dentro, veja as duas formas de ter ele trabalhando pra você — gestão de conta ou licença — e escolha o que faz mais sentido.",
+      "body": "Agora que você já sabe como o robô funciona por dentro, veja os planos de licença disponíveis e comece a operar ainda hoje.",
       "button": "Ver Planos"
     }
   },

@@ -2,11 +2,11 @@
   "Metadata": {
     "home": {
       "title": "Ai X TradeX — Automated Forex Trading Robot",
-      "description": "Automated account management for MetaTrader 4. Documented results, no empty hype — monthly and annual plans with a real performance target."
+      "description": "Automated trading robot license for MetaTrader 4. Documented results, no empty hype — 1-month, 6-month, or 1-year plans."
     },
     "products": {
       "title": "Ai X Pulse v1 — Plans — Ai X TradeX",
-      "description": "Ai X Pulse v1: managed account with a monthly or annual plan, targeting 1% to 4% per trading day via compound interest."
+      "description": "Ai X Pulse v1: robot license for up to 3 MT4 accounts, 1-month, 6-month, or 1-year plans, with a real performance target."
     },
     "about": {
       "title": "About — Ai X TradeX",
@@ -57,9 +57,9 @@
     "whyUs": {
       "heading": "Why",
       "items": [
-        { "title": "Your account, 100%", "body": "Managed or licensed, the account stays yours — deposit and withdraw whenever you want." },
-        { "title": "2 Ways to Run the Robot", "body": "Managed account with VPS included, or a license to run it yourself on up to 3 MT4 accounts." },
-        { "title": "Real Performance", "body": "Up to 4% per day, following the same tested logic in both formats." },
+        { "title": "Your account, 100%", "body": "The license runs directly on your own account — deposit and withdraw whenever you want, no third party managing your money." },
+        { "title": "License for up to 3 Accounts", "body": "You get the robot file and install it directly on up to 3 of your own MT4 accounts." },
+        { "title": "Real Performance", "body": "Up to 4% per day, following the same tested logic every day." },
         { "title": "Compatible Brokers", "body": "Works with Exness, FPMarkets, Tickmill, and Vantage." }
       ]
     },
@@ -78,11 +78,7 @@
   },
   "Products": {
     "title": "Ai X PULSE",
-    "intro": "Ai X PULSE is a hybrid HFT/Scalper robot, built to deliver results in the short, medium, and long term. Choose below how you want this robot working on your account today.",
-    "tabs": {
-      "managed": "Managed Account",
-      "license": "Buy a License"
-    },
+    "intro": "Ai X PULSE is a hybrid HFT/Scalper robot, built to deliver results in the short, medium, and long term. Get your license and start trading on your account today.",
     "pulse": {
       "tag": "Managed account — monthly or annual subscription",
       "description": "You open an account with the recommended broker, deposit from $100, and we install and configure the robot on a VPS connected to your own MT4 account. You track everything in real time through the MT4 app and can deposit or withdraw whenever you want — it's your account, not a fund, not a pooled account.",
@@ -123,7 +119,7 @@
       }
     },
     "license": {
-      "tag": "Robot license — run it on your own",
+      "tag": "Robot license — for up to 3 MT4 accounts",
       "description": "You get the robot file and install it directly on your own MT4 accounts, no account management from me. The license covers up to 3 accounts — send me each account ID so I can activate them.",
       "requirementsNote": "All 3 accounts need a spread below 20 pts for the robot to perform well.",
       "oneMonth": { "label": "1-Month License", "price": "$99", "period": "/month" },
@@ -167,7 +163,7 @@
     },
     "closing": {
       "title": "Let's talk",
-      "body": "Questions about the robot or how the managed account works? Just reach out on Telegram."
+      "body": "Questions about the robot or how the license works? Just reach out on Telegram."
     },
     "cta": "Join Telegram"
   },
@@ -200,31 +196,27 @@
     "items": [
       {
         "q": "What is Ai X Pulse v1?",
-        "a": "It's a hybrid HFT/Scalper robot (Expert Advisor) that trades XAU/USD automatically on MetaTrader 4. You choose between 2 ways to use it: managed account (I set it up and run everything on a VPS) or license (you install the robot yourself on your own accounts)."
-      },
-      {
-        "q": "What's the difference between managed account and license?",
-        "a": "With a managed account, I set up the robot on a VPS connected to your account and handle everything — you just deposit and track results. With a license, you get the robot file and install it directly on up to 3 of your own MT4 accounts, with no management from me."
+        "a": "It's a hybrid HFT/Scalper robot (Expert Advisor) that trades XAU/USD automatically on MetaTrader 4. You purchase the license, install it on your accounts, and the robot trades on its own, following the same tested logic every day."
       },
       {
         "q": "Do I need trading experience?",
-        "a": "No. With a managed account, we set everything up for you. With a license, you just need to know how to install an Expert Advisor on MetaTrader 4 — I'll walk you through it."
+        "a": "No. You just need to know how to install an Expert Advisor on MetaTrader 4 — I'll walk you through it after purchase."
       },
       {
         "q": "Is this an investment fund or a pooled account?",
-        "a": "No, in either option. The account is yours, opened in your name, at the broker you choose. You deposit and withdraw whenever you want, with no third party involved."
+        "a": "No. The license runs directly on your own account, at the broker you choose — no third party managing your money."
       },
       {
         "q": "Which brokers are compatible?",
-        "a": "FPMarkets, Tickmill, Vantage, and Exness — Raw Spread or ECN accounts, with spread below 20 pts. This applies to both the managed account and the license."
+        "a": "FPMarkets, Tickmill, Vantage, and Exness — Raw Spread or ECN accounts, with spread below 20 pts."
       },
       {
         "q": "What's the minimum deposit?",
-        "a": "For a managed account, $100. For a license, there's no minimum deposit set by me — just the license fee; the requirement is a spread below 20 pts on your account."
+        "a": "There's no minimum deposit set by me — use the account you already have or open one with your broker of choice. The requirement is a spread below 20 pts."
       },
       {
         "q": "How does billing work?",
-        "a": "Managed account: $49/month, or 6 months for $249 (from $294.00, 15% off), or annual for $399 (from $588.00, 32% off). License: $99 for 1 month, $399 for 6 months, or $699 for 1 year — covers up to 3 MT4 accounts."
+        "a": "License: $99 for 1 month, $399 for 6 months, or $699 for 1 year — covers up to 3 MT4 accounts."
       },
       {
         "q": "How does the 3-account license work?",
@@ -236,7 +228,7 @@
       },
       {
         "q": "How do I get started?",
-        "a": "Talk to me directly on Telegram — I'll walk you through both options and which one makes more sense for you, plus the steps to open an account or activate a license."
+        "a": "Talk to me directly on Telegram — pick your license plan and I'll walk you through activating it on your accounts."
       }
     ],
     "cta": {
@@ -296,7 +288,7 @@
     },
     "cta": {
       "title": "Want This Robot on Your Account?",
-      "body": "Now that you know how the robot works under the hood, check out the two ways to put it to work for you — managed account or license — and pick the one that makes sense for you.",
+      "body": "Now that you know how the robot works under the hood, check out the license plans and start trading today.",
       "button": "View Plans"
     }
   },
