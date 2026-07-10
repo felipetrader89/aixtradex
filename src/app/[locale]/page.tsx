@@ -11,6 +11,7 @@ import { Link, getPathname } from "@/i18n/navigation";
 import { routing } from "@/i18n/routing";
 import { siteConfig } from "@/lib/site-config";
 import { PARTNER_LOGOS, hasPartnerLogo } from "@/lib/partnerLogos";
+import { hasLogo } from "@/lib/logo";
 
 type Props = { params: Promise<{ locale: string }> };
 
@@ -50,7 +51,7 @@ export default async function HomePage({ params }: Props) {
       </section>
 
       <section className="mx-auto max-w-5xl px-6 py-14">
-        <WhyUsStrip heading={t("whyUs.heading")} items={whyUsItems} />
+        <WhyUsStrip heading={t("whyUs.heading")} items={whyUsItems} hasLogo={hasLogo()} />
       </section>
 
       <section className="mx-auto max-w-5xl px-6 py-16">

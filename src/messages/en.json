@@ -57,9 +57,9 @@
     "whyUs": {
       "heading": "Why",
       "items": [
-        { "title": "Your account, 100%", "body": "Not a fund, not pooled. You deposit and withdraw whenever you want." },
-        { "title": "Robot running 24/5", "body": "Included VPS - no need to keep your own computer on." },
-        { "title": "Real Performance", "body": "Up to 4% per day, +130% per month with compound interest." },
+        { "title": "Your account, 100%", "body": "Managed or licensed, the account stays yours — deposit and withdraw whenever you want." },
+        { "title": "2 Ways to Run the Robot", "body": "Managed account with VPS included, or a license to run it yourself on up to 3 MT4 accounts." },
+        { "title": "Real Performance", "body": "Up to 4% per day, following the same tested logic in both formats." },
         { "title": "Compatible Brokers", "body": "Works with Exness, FPMarkets, Tickmill, and Vantage." }
       ]
     },
@@ -200,27 +200,35 @@
     "items": [
       {
         "q": "What is Ai X Pulse v1?",
-        "a": "It's a robot (Expert Advisor) that trades automatically on your own MetaTrader 4 account, running 24/5 on a dedicated VPS, targeting up to 4% per trading day with compound interest."
+        "a": "It's a hybrid HFT/Scalper robot (Expert Advisor) that trades XAU/USD automatically on MetaTrader 4. You choose between 2 ways to use it: managed account (I set it up and run everything on a VPS) or license (you install the robot yourself on your own accounts)."
+      },
+      {
+        "q": "What's the difference between managed account and license?",
+        "a": "With a managed account, I set up the robot on a VPS connected to your account and handle everything — you just deposit and track results. With a license, you get the robot file and install it directly on up to 3 of your own MT4 accounts, with no management from me."
       },
       {
         "q": "Do I need trading experience?",
-        "a": "No. You just need to open an account with a partner broker and deposit — we set up the robot for you. All the trading is automated."
+        "a": "No. With a managed account, we set everything up for you. With a license, you just need to know how to install an Expert Advisor on MetaTrader 4 — I'll walk you through it."
       },
       {
         "q": "Is this an investment fund or a pooled account?",
-        "a": "No. The account is yours, opened in your name, at the broker you choose. You deposit and withdraw whenever you want, with no third party involved."
+        "a": "No, in either option. The account is yours, opened in your name, at the broker you choose. You deposit and withdraw whenever you want, with no third party involved."
       },
       {
         "q": "Which brokers are compatible?",
-        "a": "FPMarkets, Tickmill, Vantage, and Exness — Raw Spread or ECN accounts, with spread below 20 pts."
+        "a": "FPMarkets, Tickmill, Vantage, and Exness — Raw Spread or ECN accounts, with spread below 20 pts. This applies to both the managed account and the license."
       },
       {
         "q": "What's the minimum deposit?",
-        "a": "$100."
+        "a": "For a managed account, $100. For a license, there's no minimum deposit set by me — just the license fee; the requirement is a spread below 20 pts on your account."
       },
       {
         "q": "How does billing work?",
-        "a": "Monthly: $49/month. There's also a 6-month plan for $249 (from $294.00, 15% off) and an annual plan for $399 (from $588.00, 32% off)."
+        "a": "Managed account: $49/month, or 6 months for $249 (from $294.00, 15% off), or annual for $399 (from $588.00, 32% off). License: $99 for 1 month, $399 for 6 months, or $699 for 1 year — covers up to 3 MT4 accounts."
+      },
+      {
+        "q": "How does the 3-account license work?",
+        "a": "One license activates the robot on up to 3 of your own MT4 accounts. After you purchase, you send me each account ID and I activate access. All 3 accounts need a spread below 20 pts for the robot to perform well."
       },
       {
         "q": "Is the result guaranteed?",
@@ -228,7 +236,7 @@
       },
       {
         "q": "How do I get started?",
-        "a": "Talk to me directly on Telegram — I'll walk you through opening the account and installing the robot."
+        "a": "Talk to me directly on Telegram — I'll walk you through both options and which one makes more sense for you, plus the steps to open an account or activate a license."
       }
     ],
     "cta": {
@@ -287,8 +295,8 @@
       "body": "Ai X Pulse is an automated trading tool. Like any operation in financial markets, it involves risk, and past results don't guarantee future ones. We strongly recommend testing on a demo account before trading real capital, and always using risk management suited to your profile."
     },
     "cta": {
-      "title": "Want to See the Plans?",
-      "body": "Now that you know how the robot works under the hood, check out the available plans and pick the one that makes sense for you.",
+      "title": "Want This Robot on Your Account?",
+      "body": "Now that you know how the robot works under the hood, check out the two ways to put it to work for you — managed account or license — and pick the one that makes sense for you.",
       "button": "View Plans"
     }
   },

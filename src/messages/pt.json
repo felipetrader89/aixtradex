@@ -57,9 +57,9 @@
     "whyUs": {
       "heading": "Por que",
       "items": [
-        { "title": "Conta 100% sua", "body": "Não é fundo, não é conta agrupada. Você deposita e saca quando quiser." },
-        { "title": "Robô rodando 24/5", "body": "VPS Inclusa - não precisa deixar seu computador ligado." },
-        { "title": "Performance Real", "body": "Até 4% ao dia, +130% ao mês com juros compostos." },
+        { "title": "Conta 100% sua", "body": "Gestão ou licença, a conta continua sua — você deposita e saca quando quiser." },
+        { "title": "2 Formas de Ter o Robô", "body": "Gestão de conta com VPS inclusa, ou licença pra rodar você mesmo em até 3 contas MT4." },
+        { "title": "Performance Real", "body": "Até 4% ao dia, seguindo a mesma lógica testada nos dois formatos." },
         { "title": "Broker Compatíveis", "body": "Exness, FPMarkets, Tickmill e Vantage." }
       ]
     },
@@ -200,27 +200,35 @@
     "items": [
       {
         "q": "O que é o Ai X Pulse v1?",
-        "a": "É um robô (Expert Advisor) que opera automaticamente na sua própria conta MetaTrader 4, rodando 24/5 numa VPS dedicada, buscando uma meta de até 4% ao dia útil com juros compostos."
+        "a": "É um robô (Expert Advisor) híbrido HFT/Scalper que opera automaticamente em XAU/USD no MetaTrader 4. Você escolhe entre 2 formas de usar: gestão de conta (eu configuro e cuido de tudo numa VPS) ou licença (você mesmo instala o robô nas suas contas)."
+      },
+      {
+        "q": "Qual a diferença entre gestão de conta e licença?",
+        "a": "Na gestão de conta, eu configuro o robô numa VPS ligada à sua conta e cuido de tudo — você só deposita e acompanha. Na licença, você recebe o arquivo do robô e instala direto em até 3 contas MT4 suas, sem que eu faça a gestão."
       },
       {
         "q": "Preciso ter experiência em trading?",
-        "a": "Não. Você só precisa abrir conta numa corretora parceira e depositar — a gente configura o robô pra você. Todo o trading é automatizado."
+        "a": "Não. Na gestão de conta, a gente configura tudo pra você. Na licença, você só precisa saber instalar um Expert Advisor no MetaTrader 4 — te explico o passo a passo."
       },
       {
         "q": "É fundo de investimento ou conta agrupada?",
-        "a": "Não. A conta é sua, aberta no seu nome, na corretora que você escolher. Você deposita e saca quando quiser, sem depender de terceiros."
+        "a": "Não, em nenhuma das duas opções. A conta é sua, aberta no seu nome, na corretora que você escolher. Você deposita e saca quando quiser, sem depender de terceiros."
       },
       {
         "q": "Quais corretoras são compatíveis?",
-        "a": "FPMarkets, Tickmill, Vantage e Exness — contas Raw Spread ou ECN, com spread abaixo de 20 pts."
+        "a": "FPMarkets, Tickmill, Vantage e Exness — contas Raw Spread ou ECN, com spread abaixo de 20 pts. Vale pras duas formas, gestão ou licença."
       },
       {
         "q": "Qual o depósito mínimo?",
-        "a": "US$100."
+        "a": "Na gestão de conta, US$100. Na licença não tem depósito mínimo definido por mim — só a taxa da licença; o requisito é o spread abaixo de 20 pts na sua conta."
       },
       {
         "q": "Como funciona a cobrança?",
-        "a": "Mensal: US$49/mês. Também tem o plano de 6 meses por US$249 (de US$294,00, com 15% de desconto) e o anual por US$399 (de US$588,00, com 32% de desconto)."
+        "a": "Gestão de conta: US$49/mês, ou 6 meses por US$249 (de US$294,00, 15% off), ou anual por US$399 (de US$588,00, 32% off). Licença: US$99 por 1 mês, US$399 por 6 meses ou US$699 por 1 ano — libera até 3 contas MT4."
+      },
+      {
+        "q": "Como funciona a licença de até 3 contas?",
+        "a": "Uma licença libera o robô em até 3 contas MT4 suas. Depois de contratar, você me manda o ID de cada conta e eu libero o acesso. As 3 contas precisam ter spread abaixo de 20 pts pra o robô entregar um bom desempenho."
       },
       {
         "q": "O resultado é garantido?",
@@ -228,7 +236,7 @@
       },
       {
         "q": "Como faço pra começar?",
-        "a": "Fala comigo direto no Telegram — te explico o passo a passo de abertura de conta e instalação do robô."
+        "a": "Fala comigo direto no Telegram — te explico as duas opções e qual faz mais sentido pra você, além do passo a passo de abertura de conta ou ativação da licença."
       }
     ],
     "cta": {
@@ -287,8 +295,8 @@
       "body": "O Ai X Pulse é uma ferramenta de automação de operações. Como toda operação no mercado financeiro, envolve risco, e resultados passados não garantem resultados futuros. Recomendamos testar em conta demo antes de operar com capital real, e usar sempre uma gestão de risco compatível com seu perfil."
     },
     "cta": {
-      "title": "Quer ver os planos?",
-      "body": "Agora que você já sabe como o robô funciona por dentro, veja os planos disponíveis e escolha o que faz mais sentido pra você.",
+      "title": "Quer usar esse robô na sua conta?",
+      "body": "Agora que você já sabe como o robô funciona por dentro, veja as duas formas de ter ele trabalhando pra você — gestão de conta ou licença — e escolha o que faz mais sentido.",
       "button": "Ver Planos"
     }
   },
