@@ -138,11 +138,11 @@
       "compoundLabel": "Compound Interest",
       "monthsLabel": "Simulation month(s)",
       "rateNote": "{count, plural, one {{rate}% per trading day × # trading day selected} other {{rate}% per trading day × # trading days selected}}",
-      "resultLabel": "Projected Final Balance",
+      "resultLabel": "Final Balance",
       "profitLabel": "Estimated Profit",
-      "profitDayLabel": "Profit per Day",
-      "profitWeekLabel": "Profit per Week",
-      "profitMonthLabel": "Profit per Month",
+      "profitDayLabel": "Daily Profit",
+      "profitWeekLabel": "Weekly Profit",
+      "profitMonthLabel": "Monthly Profit",
       "resultNote": "Starting from {deposit}.",
       "disclaimer": "Illustrative simulation based on the published performance target — not a guarantee of results. Trading involves risk."
     }

@@ -81,27 +81,27 @@
     "intro": "Ai X PULSE es un robot híbrido HFT/Scalper, diseñado para darte resultados a corto, medio y largo plazo. Consigue tu licencia y empieza a operar en tu cuenta hoy mismo.",
     "pulse": {
       "tag": "Gestión de cuenta — suscripción mensual o anual",
-      "description": "Abres una cuenta en el bróker recomendado, depositas desde US$100, y nosotros instalamos y configuramos el robot en una VPS conectada a tu propia cuenta MT4. Sigues todo en tiempo real desde la app de MT4 y puedes depositar o retirar cuando quieras — la cuenta es tuya, no es un fondo, no es una cuenta agrupada.",
+      "description": "Abres una cuenta en el bróker recomendado, depositas desde $100, y nosotros instalamos y configuramos el robot en una VPS conectada a tu propia cuenta MT4. Sigues todo en tiempo real desde la app de MT4 y puedes depositar o retirar cuando quieras — la cuenta es tuya, no es un fondo, no es una cuenta agrupada.",
       "performanceNote": "Meta de rendimiento: hasta 5% por día, con +130% mensual posible usando interés compuesto. El cronograma de interés compuesto se puede ajustar a corto, medio o largo plazo, según tu objetivo.",
       "riskNote": "Es una meta de rendimiento, no una garantía — el trading implica riesgo y los resultados pasados no garantizan resultados futuros.",
       "monthly": {
         "label": "Plan Mensual",
-        "price": "US$49",
+        "price": "$49",
         "period": "/mes",
         "explain": "El retorno esperado de hasta 5% por día cubre la cuota tranquilamente."
       },
       "sixMonths": {
         "label": "Plan 6 Meses",
-        "price": "US$249",
+        "price": "$249",
         "period": "/6 meses",
-        "originalPrice": "US$294,00",
+        "originalPrice": "$294,00",
         "badge": "15% OFF"
       },
       "annual": {
         "label": "Plan Anual",
-        "price": "US$399",
+        "price": "$399",
         "period": "/año",
-        "originalPrice": "US$588,00",
+        "originalPrice": "$588,00",
         "badge": "32% OFF",
         "note": "Valor único, pagado una vez al año — el retorno acumulado en el período lo cubre con margen de sobra."
       },
@@ -112,7 +112,7 @@
         "platform": "Plataforma", "platformValue": "MetaTrader 4 (solo MT4)",
         "accountType": "Tipo de Cuenta", "accountTypeValue": "Raw Spread / ECN / Zero",
         "leverage": "Apalancamiento", "leverageValue": "1:500",
-        "deposit": "Depósito Mínimo Inicial", "depositValue": "US$100",
+        "deposit": "Depósito Mínimo Inicial", "depositValue": "$100",
         "operation": "Operación", "operationValue": "24/5 100% Automatizado",
         "interest": "Interés", "interestValue": "Compuesto / Simple",
         "term": "Plazo", "termValue": "Corto / Medio / Largo"
@@ -122,27 +122,27 @@
       "tag": "Licencia del robot — 1 cuenta demo + 1 cuenta real",
       "description": "Recibes el archivo del robot y lo instalas directo en tus propias cuentas MT4, sin que yo gestione la cuenta. La licencia cubre hasta 2 cuentas — 1 demo y 1 real — envíame el ID de cada una para activarlas.",
       "requirementsNote": "Las 2 cuentas (demo y real) necesitan un spread por debajo de 20 pts para que el robot rinda bien.",
-      "oneMonth": { "label": "Licencia 1 Mes", "price": "US$49", "period": "/mes" },
-      "sixMonths": { "label": "Licencia 6 Meses", "price": "US$249", "period": "/6 meses" },
-      "oneYear": { "label": "Licencia 1 Año", "price": "US$399", "period": "/año" },
+      "oneMonth": { "label": "Licencia 1 Mes", "price": "$49", "period": "/mes" },
+      "sixMonths": { "label": "Licencia 6 Meses", "price": "$249", "period": "/6 meses" },
+      "oneYear": { "label": "Licencia 1 Año", "price": "$399", "period": "/año" },
       "ctaOneMonth": "Obtener Licencia de 1 Mes",
       "ctaSixMonths": "Obtener Licencia de 6 Meses",
       "ctaOneYear": "Obtener Licencia de 1 Año"
     },
     "calculator": {
       "title": "Calcula el Crecimiento de tu Cuenta",
-      "depositLabel": "Depósito inicial (US$)",
+      "depositLabel": "Depósito inicial ($)",
       "rateLabel": "Meta Diaria",
       "modeLabel": "Tipo de interés",
       "simpleLabel": "Interés Simple",
       "compoundLabel": "Interés Compuesto",
       "monthsLabel": "Mes(es) de la simulación",
       "rateNote": "{count, plural, one {{rate}% por día hábil × # día hábil seleccionado} other {{rate}% por día hábil × # días hábiles seleccionados}}",
-      "resultLabel": "Saldo Final Proyectado",
+      "resultLabel": "Saldo Final",
       "profitLabel": "Ganancia Estimada",
-      "profitDayLabel": "Ganancia por Día",
-      "profitWeekLabel": "Ganancia por Semana",
-      "profitMonthLabel": "Ganancia por Mes",
+      "profitDayLabel": "Ganancia Diaria",
+      "profitWeekLabel": "Ganancia Semanal",
+      "profitMonthLabel": "Ganancia Mensual",
       "resultNote": "Partiendo de {deposit}.",
       "disclaimer": "Simulación ilustrativa basada en la meta de rendimiento publicada — no es garantía de resultado. El trading implica riesgo."
     }
@@ -220,7 +220,7 @@
       },
       {
         "q": "¿Cómo funciona el cobro?",
-        "a": "Licencia: US$49 por 1 mes, US$249 por 6 meses o US$399 por 1 año — cubre 1 cuenta demo y 1 cuenta real."
+        "a": "Licencia: $49 por 1 mes, $249 por 6 meses o $399 por 1 año — cubre 1 cuenta demo y 1 cuenta real."
       },
       {
         "q": "¿Cómo funciona la licencia de 1 cuenta demo y 1 cuenta real?",

@@ -39,15 +39,10 @@ export function CompoundCalculator({ locale }: { locale: string }) {
   const [selectedMonths, setSelectedMonths] = useState<number[]>([currentMonth]);
   const dailyRate = ratePercent / 100;
 
-  const currency = useMemo(
-    () =>
-      new Intl.NumberFormat(locale, {
-        style: "currency",
-        currency: "USD",
-        maximumFractionDigits: 0,
-      }),
-    [locale]
-  );
+  const currency = useMemo(() => {
+    const numberFormat = new Intl.NumberFormat(locale, { maximumFractionDigits: 0 });
+    return { format: (value: number) => `$${numberFormat.format(value)}` };
+  }, [locale]);
 
   const totalDays = useMemo(
     () => selectedMonths.reduce((sum, m) => sum + businessDaysInMonth(currentYear, m), 0),
