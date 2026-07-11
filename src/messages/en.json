@@ -132,13 +132,17 @@
     "calculator": {
       "title": "Calculate Your Account Growth",
       "depositLabel": "Initial deposit ($)",
+      "rateLabel": "Daily Target",
       "modeLabel": "Interest type",
       "simpleLabel": "Simple Interest",
       "compoundLabel": "Compound Interest",
       "monthsLabel": "Simulation month(s)",
-      "rateNote": "{count, plural, one {5% per trading day × # trading day selected} other {5% per trading day × # trading days selected}}",
+      "rateNote": "{count, plural, one {{rate}% per trading day × # trading day selected} other {{rate}% per trading day × # trading days selected}}",
       "resultLabel": "Projected Final Balance",
       "profitLabel": "Estimated Profit",
+      "profitDayLabel": "Profit per Day",
+      "profitWeekLabel": "Profit per Week",
+      "profitMonthLabel": "Profit per Month",
       "resultNote": "Starting from {deposit}.",
       "disclaimer": "Illustrative simulation based on the published performance target — not a guarantee of results. Trading involves risk."
     }

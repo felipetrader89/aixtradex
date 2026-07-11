@@ -132,13 +132,17 @@
     "calculator": {
       "title": "Calcula el Crecimiento de tu Cuenta",
       "depositLabel": "Depósito inicial (US$)",
+      "rateLabel": "Meta Diaria",
       "modeLabel": "Tipo de interés",
       "simpleLabel": "Interés Simple",
       "compoundLabel": "Interés Compuesto",
       "monthsLabel": "Mes(es) de la simulación",
-      "rateNote": "{count, plural, one {5% por día hábil × # día hábil seleccionado} other {5% por día hábil × # días hábiles seleccionados}}",
+      "rateNote": "{count, plural, one {{rate}% por día hábil × # día hábil seleccionado} other {{rate}% por día hábil × # días hábiles seleccionados}}",
       "resultLabel": "Saldo Final Proyectado",
       "profitLabel": "Ganancia Estimada",
+      "profitDayLabel": "Ganancia por Día",
+      "profitWeekLabel": "Ganancia por Semana",
+      "profitMonthLabel": "Ganancia por Mes",
       "resultNote": "Partiendo de {deposit}.",
       "disclaimer": "Simulación ilustrativa basada en la meta de rendimiento publicada — no es garantía de resultado. El trading implica riesgo."
     }

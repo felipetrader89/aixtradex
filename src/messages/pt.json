@@ -132,13 +132,17 @@
     "calculator": {
       "title": "Calcule o Crescimento da sua Conta",
       "depositLabel": "Depósito inicial (US$)",
+      "rateLabel": "Meta diária",
       "modeLabel": "Tipo de juros",
       "simpleLabel": "Juros Simples",
       "compoundLabel": "Juros Composto",
       "monthsLabel": "Mês(es) da simulação",
-      "rateNote": "{count, plural, one {5% ao dia útil × # dia útil selecionado} other {5% ao dia útil × # dias úteis selecionados}}",
+      "rateNote": "{count, plural, one {{rate}% ao dia útil × # dia útil selecionado} other {{rate}% ao dia útil × # dias úteis selecionados}}",
       "resultLabel": "Saldo Final Projetado",
       "profitLabel": "Lucro Estimado",
+      "profitDayLabel": "Lucro por Dia",
+      "profitWeekLabel": "Lucro por Semana",
+      "profitMonthLabel": "Lucro por Mês",
       "resultNote": "Partindo de {deposit}.",
       "disclaimer": "Simulação ilustrativa baseada na meta de performance divulgada — não é garantia de resultado. Trading envolve risco."
     }

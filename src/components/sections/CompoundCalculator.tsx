@@ -4,8 +4,9 @@ import { useMemo, useState } from "react";
 import { useTranslations } from "next-intl";
 import { GlowCard } from "@/components/brand/GlowCard";
 
-const DAILY_RATE = 0.05;
 const MONTHS_IN_YEAR = 12;
+const WEEK_DAYS = 5;
+const RATE_OPTIONS = [1, 2, 3, 4, 5];
 
 type Mode = "simple" | "compound";
 
@@ -33,8 +34,10 @@ export function CompoundCalculator({ locale }: { locale: string }) {
   const currentMonth = new Date().getMonth();
 
   const [deposit, setDeposit] = useState(100);
+  const [ratePercent, setRatePercent] = useState(5);
   const [mode, setMode] = useState<Mode>("compound");
   const [selectedMonths, setSelectedMonths] = useState<number[]>([currentMonth]);
+  const dailyRate = ratePercent / 100;
 
   const currency = useMemo(
     () =>
@@ -51,11 +54,18 @@ export function CompoundCalculator({ locale }: { locale: string }) {
     [selectedMonths, currentYear]
   );
 
-  const projected =
-    mode === "compound"
-      ? deposit * Math.pow(1 + DAILY_RATE, totalDays)
-      : deposit * (1 + DAILY_RATE * totalDays);
+  function growth(days: number) {
+    return mode === "compound"
+      ? deposit * Math.pow(1 + dailyRate, days)
+      : deposit * (1 + dailyRate * days);
+  }
+
+  const projected = growth(totalDays);
   const profit = projected - deposit;
+  const monthDays = businessDaysInMonth(currentYear, currentMonth);
+  const dayProfit = growth(1) - deposit;
+  const weekProfit = growth(WEEK_DAYS) - deposit;
+  const monthProfit = growth(monthDays) - deposit;
 
   function toggleMonth(monthIndex: number) {
     setSelectedMonths((prev) => {
@@ -75,7 +85,7 @@ export function CompoundCalculator({ locale }: { locale: string }) {
 
       <GlowCard>
         <div className="mb-4 flex flex-col gap-4 sm:flex-row">
-          <label className="flex-1 text-sm">
+          <label className="text-sm sm:w-64">
             <span className="mb-1 block text-brand-ink-dim">{t("depositLabel")}</span>
             <input
               type="number"
@@ -88,6 +98,26 @@ export function CompoundCalculator({ locale }: { locale: string }) {
           </label>
 
           <div className="flex-1 text-sm">
+            <span className="mb-1 block text-brand-ink-dim">{t("rateLabel")}</span>
+            <div className="flex gap-1">
+              {RATE_OPTIONS.map((r) => (
+                <button
+                  key={r}
+                  type="button"
+                  onClick={() => setRatePercent(r)}
+                  className={
+                    ratePercent === r
+                      ? "rounded-md bg-brand-accent px-5 py-[10px] text-xs font-semibold text-brand-bg transition-transform hover:scale-[1.02]"
+                      : "rounded-md border border-brand-hairline px-5 py-[10px] text-xs font-semibold text-brand-ink-dim transition-colors hover:border-brand-accent hover:text-brand-accent"
+                  }
+                >
+                  {r}%
+                </button>
+              ))}
+            </div>
+          </div>
+
+          <div className="text-sm sm:w-[330px]">
             <span className="mb-1 block text-brand-ink-dim">{t("modeLabel")}</span>
             <div className="flex gap-2">
               <button
@@ -95,8 +125,8 @@ export function CompoundCalculator({ locale }: { locale: string }) {
                 onClick={() => setMode("simple")}
                 className={
                   mode === "simple"
-                    ? "flex-1 rounded-lg bg-brand-accent px-2 py-2 text-xs font-semibold text-brand-bg transition-transform hover:scale-[1.02]"
-                    : "flex-1 rounded-lg border border-brand-hairline px-2 py-2 text-xs font-semibold text-brand-ink-dim transition-colors hover:border-brand-accent hover:text-brand-accent"
+                    ? "flex-1 rounded-lg bg-brand-accent px-2 py-[10px] text-xs font-semibold text-brand-bg transition-transform hover:scale-[1.02]"
+                    : "flex-1 rounded-lg border border-brand-hairline px-2 py-[10px] text-xs font-semibold text-brand-ink-dim transition-colors hover:border-brand-accent hover:text-brand-accent"
                 }
               >
                 {t("simpleLabel")}
@@ -106,8 +136,8 @@ export function CompoundCalculator({ locale }: { locale: string }) {
                 onClick={() => setMode("compound")}
                 className={
                   mode === "compound"
-                    ? "flex-1 rounded-lg bg-brand-accent px-2 py-2 text-xs font-semibold text-brand-bg transition-transform hover:scale-[1.02]"
-                    : "flex-1 rounded-lg border border-brand-hairline px-2 py-2 text-xs font-semibold text-brand-ink-dim transition-colors hover:border-brand-accent hover:text-brand-accent"
+                    ? "flex-1 rounded-lg bg-brand-accent px-2 py-[10px] text-xs font-semibold text-brand-bg transition-transform hover:scale-[1.02]"
+                    : "flex-1 rounded-lg border border-brand-hairline px-2 py-[10px] text-xs font-semibold text-brand-ink-dim transition-colors hover:border-brand-accent hover:text-brand-accent"
                 }
               >
                 {t("compoundLabel")}
@@ -128,8 +158,8 @@ export function CompoundCalculator({ locale }: { locale: string }) {
                   onClick={() => toggleMonth(monthIndex)}
                   className={
                     selected
-                      ? "rounded-full bg-brand-accent px-3 py-1.5 text-xs font-semibold text-brand-bg transition-transform hover:scale-[1.05]"
-                      : "rounded-full border border-brand-hairline px-3 py-1.5 text-xs font-semibold text-brand-ink-dim transition-colors hover:border-brand-accent hover:text-brand-accent"
+                      ? "rounded-md bg-brand-accent px-3 py-1.5 text-xs font-semibold text-brand-bg transition-transform hover:scale-[1.05]"
+                      : "rounded-md border border-brand-hairline px-3 py-1.5 text-xs font-semibold text-brand-ink-dim transition-colors hover:border-brand-accent hover:text-brand-accent"
                   }
                 >
                   {monthAbbreviation(locale, monthIndex)}
@@ -139,18 +169,41 @@ export function CompoundCalculator({ locale }: { locale: string }) {
           </div>
         </div>
 
-        <p className="mb-3 text-xs text-brand-ink-dim">{t("rateNote", { count: totalDays })}</p>
+        <p className="mb-3 text-xs text-brand-ink-dim">
+          {t("rateNote", { count: totalDays, rate: ratePercent })}
+        </p>
 
-        <div className="mb-3 grid grid-cols-1 gap-3 sm:grid-cols-2">
+        <div className="mb-3 grid grid-cols-3 gap-3">
+          <div className="rounded-lg bg-brand-surface-2 p-4 text-center">
+            <p className="text-xs uppercase tracking-wide text-brand-ink-dim">{t("profitDayLabel")}</p>
+            <p className="font-display text-xl font-extrabold text-brand-accent sm:text-2xl">
+              {currency.format(dayProfit)}
+            </p>
+          </div>
+          <div className="rounded-lg bg-brand-surface-2 p-4 text-center">
+            <p className="text-xs uppercase tracking-wide text-brand-ink-dim">{t("profitWeekLabel")}</p>
+            <p className="font-display text-xl font-extrabold text-brand-accent sm:text-2xl">
+              {currency.format(weekProfit)}
+            </p>
+          </div>
+          <div className="rounded-lg bg-brand-surface-2 p-4 text-center">
+            <p className="text-xs uppercase tracking-wide text-brand-ink-dim">{t("profitMonthLabel")}</p>
+            <p className="font-display text-xl font-extrabold text-brand-accent sm:text-2xl">
+              {currency.format(monthProfit)}
+            </p>
+          </div>
+        </div>
+
+        <div className="mb-3 grid grid-cols-2 gap-3">
           <div className="rounded-lg bg-brand-surface-2 p-4 text-center">
             <p className="text-xs uppercase tracking-wide text-brand-ink-dim">{t("resultLabel")}</p>
-            <p className="font-display text-2xl font-extrabold text-chrome sm:text-3xl">
+            <p className="font-display text-xl font-extrabold text-chrome sm:text-2xl">
               {currency.format(projected)}
             </p>
           </div>
           <div className="rounded-lg bg-brand-surface-2 p-4 text-center">
             <p className="text-xs uppercase tracking-wide text-brand-ink-dim">{t("profitLabel")}</p>
-            <p className="font-display text-2xl font-extrabold text-brand-accent sm:text-3xl">
+            <p className="font-display text-xl font-extrabold text-brand-accent sm:text-2xl">
               {currency.format(profit)}
             </p>
           </div>
