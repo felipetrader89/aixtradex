@@ -28,7 +28,7 @@ export function Header({ logoExists }: { logoExists: boolean }) {
       <div className="mx-auto flex max-w-5xl items-stretch justify-between px-6">
         <Link
           href="/"
-          className="flex shrink-0 items-center py-4 lg:pt-[2px] lg:pb-[6px]"
+          className="flex shrink-0 items-center py-1 md:py-4 lg:pt-[2px] lg:pb-[6px]"
           onClick={() => setOpen(false)}
         >
           <LogoMark variant="header" hasLogo={logoExists} />

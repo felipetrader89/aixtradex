@@ -21,10 +21,11 @@ const LOGO_HEIGHT = 400;
 const HEADER_LOGO_WIDTH = 976;
 const HEADER_LOGO_HEIGHT = 298;
 // Sized independently from sizes.header (which also drives the text
-// fallback). At lg, paired with the Header link's reduced lg:py-1 — the
-// logo grows into the padding that py-4 used to waste, so the row's total
-// height (logo + padding) stays the same and the nav/CTA don't shift.
-const HEADER_LOGO_CLASS = "h-8 w-auto md:h-5 lg:h-[68px]";
+// fallback). At each breakpoint, paired with the Header link's reduced
+// vertical padding — the logo grows into the padding that py-4 used to
+// waste, so the row's total height (logo + padding) stays the same and
+// the nav/CTA don't shift. md keeps the original py-4 + h-5 pairing.
+const HEADER_LOGO_CLASS = "h-14 w-auto md:h-5 lg:h-[68px]";
 
 export function LogoMark({
   variant = "header",

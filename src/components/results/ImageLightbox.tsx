@@ -46,7 +46,7 @@ export function ImageLightbox({ images, index, onClose, onNavigate }: Props) {
         type="button"
         onClick={onClose}
         aria-label="Fechar"
-        className="absolute right-4 top-4 flex h-10 w-10 items-center justify-center rounded-full border border-white/20 text-xl text-white transition-colors hover:border-brand-accent hover:text-brand-accent"
+        className="absolute right-4 top-4 z-10 flex h-10 w-10 items-center justify-center rounded-full border border-white/20 text-xl text-white transition-colors hover:border-brand-accent hover:text-brand-accent"
       >
         ×
       </button>
@@ -59,7 +59,7 @@ export function ImageLightbox({ images, index, onClose, onNavigate }: Props) {
             goPrev();
           }}
           aria-label="Anterior"
-          className="absolute left-2 top-1/2 flex h-11 w-11 -translate-y-1/2 items-center justify-center rounded-full border border-white/20 text-xl text-white transition-colors hover:border-brand-accent hover:text-brand-accent sm:left-6"
+          className="absolute left-2 top-1/2 z-10 flex h-11 w-11 -translate-y-1/2 items-center justify-center rounded-full border border-white/20 text-xl text-white transition-colors hover:border-brand-accent hover:text-brand-accent sm:left-6"
         >
           ‹
         </button>
@@ -87,7 +87,7 @@ export function ImageLightbox({ images, index, onClose, onNavigate }: Props) {
             goNext();
           }}
           aria-label="Próximo"
-          className="absolute right-2 top-1/2 flex h-11 w-11 -translate-y-1/2 items-center justify-center rounded-full border border-white/20 text-xl text-white transition-colors hover:border-brand-accent hover:text-brand-accent sm:right-6"
+          className="absolute right-2 top-1/2 z-10 flex h-11 w-11 -translate-y-1/2 items-center justify-center rounded-full border border-white/20 text-xl text-white transition-colors hover:border-brand-accent hover:text-brand-accent sm:right-6"
         >
           ›
         </button>
