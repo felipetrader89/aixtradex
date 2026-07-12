@@ -17,6 +17,15 @@ const sizes = {
 const LOGO_WIDTH = 2100;
 const LOGO_HEIGHT = 400;
 
+// Intrinsic size of the 2x header logo (976x298) — same idea, header only.
+const HEADER_LOGO_WIDTH = 976;
+const HEADER_LOGO_HEIGHT = 298;
+// Sized independently from sizes.header (which also drives the text
+// fallback). At lg, paired with the Header link's reduced lg:py-1 — the
+// logo grows into the padding that py-4 used to waste, so the row's total
+// height (logo + padding) stays the same and the nav/CTA don't shift.
+const HEADER_LOGO_CLASS = "h-8 w-auto md:h-5 lg:h-[68px]";
+
 export function LogoMark({
   variant = "header",
   hasLogo,
@@ -27,6 +36,19 @@ export function LogoMark({
   const { className, text } = sizes[variant];
 
   if (hasLogo) {
+    if (variant === "header") {
+      return (
+        <Image
+          src="/identidade/ai_x_tradex_logo_transparente_2x.png"
+          alt="Ai X TradeX"
+          width={HEADER_LOGO_WIDTH}
+          height={HEADER_LOGO_HEIGHT}
+          className={HEADER_LOGO_CLASS}
+          priority
+        />
+      );
+    }
+
     return (
       <Image
         src="/identidade/logo.png"

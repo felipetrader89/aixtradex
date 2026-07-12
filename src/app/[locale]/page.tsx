@@ -5,6 +5,7 @@ import { Hero } from "@/components/sections/Hero";
 import { MarketTicker } from "@/components/sections/MarketTicker";
 import { WhyUsStrip } from "@/components/sections/WhyUsStrip";
 import { CompoundCalculator } from "@/components/sections/CompoundCalculator";
+import { ResultsCarousel } from "@/components/results/ResultsCarousel";
 import { GlowCard } from "@/components/brand/GlowCard";
 import { Button } from "@/components/ui/Button";
 import { Link, getPathname } from "@/i18n/navigation";
@@ -12,6 +13,7 @@ import { routing } from "@/i18n/routing";
 import { siteConfig } from "@/lib/site-config";
 import { PARTNER_LOGOS, hasPartnerLogo } from "@/lib/partnerLogos";
 import { hasLogo } from "@/lib/logo";
+import { getHomeResultImages } from "@/lib/results";
 
 type Props = { params: Promise<{ locale: string }> };
 
@@ -34,6 +36,7 @@ export default async function HomePage({ params }: Props) {
   setRequestLocale(locale);
   const t = await getTranslations("Home");
   const whyUsItems = t.raw("whyUs.items") as { title: string; body: string }[];
+  const homeResults = getHomeResultImages();
 
   return (
     <>
@@ -87,6 +90,18 @@ export default async function HomePage({ params }: Props) {
           </Link>
         </GlowCard>
       </section>
+
+      {homeResults.length > 0 && (
+        <section className="py-16 text-center">
+          <h2 className="mb-8 font-display text-2xl font-bold uppercase text-chrome">
+            {t("results.title")}
+          </h2>
+          <ResultsCarousel images={homeResults} />
+          <div className="mt-8 px-6">
+            <Button href="/results">{t("results.cta")}</Button>
+          </div>
+        </section>
+      )}
 
       <section className="mx-auto max-w-5xl px-6 py-16 text-center">
         <h2 className="mb-8 font-display text-2xl font-bold uppercase text-chrome">

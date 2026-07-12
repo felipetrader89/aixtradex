@@ -17,6 +17,7 @@ export function Header({ logoExists }: { logoExists: boolean }) {
   const links = [
     { href: "/", label: t("home") },
     { href: "/products", label: t("products") },
+    { href: "/results", label: t("results") },
     { href: "/about", label: t("about") },
     { href: "/faq", label: t("faq") },
     { href: "/how-it-works", label: t("howItWorks") },
@@ -27,7 +28,7 @@ export function Header({ logoExists }: { logoExists: boolean }) {
       <div className="mx-auto flex max-w-5xl items-stretch justify-between px-6">
         <Link
           href="/"
-          className="flex shrink-0 items-center py-4"
+          className="flex shrink-0 items-center py-4 lg:pt-[2px] lg:pb-[6px]"
           onClick={() => setOpen(false)}
         >
           <LogoMark variant="header" hasLogo={logoExists} />
@@ -51,8 +52,8 @@ export function Header({ logoExists }: { logoExists: boolean }) {
           <Suspense fallback={<div className="h-6 w-14" />}>
             <LanguageSwitcher />
           </Suspense>
-          <Button href={siteConfig.telegramDmUrl} variant="neon" className="!px-4 !py-2 text-xs">
-            <IconTelegram className="h-4 w-4" />
+          <Button href={siteConfig.telegramDmUrl} variant="neon" className="!px-4 !py-2 text-sm">
+            <IconTelegram className="!h-5 !w-5" />
             {t("cta")}
           </Button>
         </div>

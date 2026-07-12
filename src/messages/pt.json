@@ -27,11 +27,16 @@
     "howItWorks": {
       "title": "Como Funciona — Ai X Pulse v1 — Ai X TradeX",
       "description": "Entenda como o Ai X Pulse v1 opera XAU/USD no MetaTrader 4 — estratégia, gestão de risco, metas automáticas e painel em tempo real."
+    },
+    "results": {
+      "title": "Resultados — Ai X TradeX",
+      "description": "Prints e vídeos reais de contas próprias e de clientes operando com o Ai X Pulse v1 — resultado documentado, sem promessa vazia."
     }
   },
   "Nav": {
     "home": "Início",
     "products": "Planos",
+    "results": "Resultados",
     "about": "Sobre",
     "faq": "FAQ",
     "blog": "Blog",
@@ -74,6 +79,10 @@
     },
     "partners": {
       "title": "Corretoras Parceiras"
+    },
+    "results": {
+      "title": "Resultados Reais",
+      "cta": "Ver Todos os Resultados"
     }
   },
   "Products": {
@@ -295,6 +304,17 @@
       "body": "Agora que você já sabe como o robô funciona por dentro, veja os planos de licença disponíveis e comece a operar ainda hoje.",
       "button": "Ver Planos"
     }
+  },
+  "Results": {
+    "title": "Resultados Reais",
+    "intro": "Prints e vídeos de contas reais — minhas e de clientes — operando com várias versões de todos os meus Robôs Ai X TradeX, desenvolvidos ao longo de mais de 1 ano. Sem edição, sem simulação, direto do app do MetaTrader 4.",
+    "tabs": {
+      "images": "Imagens",
+      "videos": "Vídeos"
+    },
+    "videosEmpty": "Em breve: vídeos das operações direto do celular.",
+    "showMore": "Mostrar Mais",
+    "showLess": "Mostrar Menos"
   },
   "Payment": {
     "title": "Pagamento",

@@ -53,6 +53,22 @@ body {
   animation-play-state: paused;
 }
 
+/* ---------- Results marquee ---------- */
+@keyframes results-scroll {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+.results-track {
+  animation: results-scroll 55s linear infinite;
+}
+.results-mask:hover .results-track {
+  animation-play-state: paused;
+}
+
 /* ---------- Hero cursor-reactive glow ---------- */
 .hero-glow {
   --mx: 50%;

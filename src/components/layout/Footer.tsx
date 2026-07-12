@@ -43,6 +43,9 @@ export function Footer() {
               <Link href="/products" className="nav-link w-fit hover:text-brand-accent">
                 {nav("products")}
               </Link>
+              <Link href="/results" className="nav-link w-fit hover:text-brand-accent">
+                {nav("results")}
+              </Link>
               <Link href="/about" className="nav-link w-fit hover:text-brand-accent">
                 {nav("about")}
               </Link>

@@ -27,11 +27,16 @@
     "howItWorks": {
       "title": "How It Works — Ai X Pulse v1 — Ai X TradeX",
       "description": "See how Ai X Pulse v1 trades XAU/USD on MetaTrader 4 — strategy, risk management, automatic goals, and a real-time dashboard."
+    },
+    "results": {
+      "title": "Results — Ai X TradeX",
+      "description": "Real screenshots and videos from my own and clients' accounts trading with Ai X Pulse v1 — documented results, no empty promises."
     }
   },
   "Nav": {
     "home": "Home",
     "products": "Plans",
+    "results": "Results",
     "about": "About",
     "faq": "FAQ",
     "blog": "Blog",
@@ -74,6 +79,10 @@
     },
     "partners": {
       "title": "Partner Brokers"
+    },
+    "results": {
+      "title": "Real Results",
+      "cta": "See All Results"
     }
   },
   "Products": {
@@ -295,6 +304,17 @@
       "body": "Now that you know how the robot works under the hood, check out the license plans and start trading today.",
       "button": "View Plans"
     }
+  },
+  "Results": {
+    "title": "Real Results",
+    "intro": "Screenshots and videos from real accounts — mine and clients' — trading with Ai X Pulse v1. No editing, no simulation, straight from the MetaTrader 4 app.",
+    "tabs": {
+      "images": "Images",
+      "videos": "Videos"
+    },
+    "videosEmpty": "Coming soon: trade videos straight from the phone.",
+    "showMore": "Show More",
+    "showLess": "Show Less"
   },
   "Payment": {
     "title": "Payment",
