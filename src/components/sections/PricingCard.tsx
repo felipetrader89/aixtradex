@@ -32,7 +32,7 @@ export function PricingCard({
           </span>
         )}
         {price}
-        <span className="text-base font-medium text-brand-ink-dim"> {period}</span>
+        <span className="text-base font-medium text-brand-ink-dim">{period}</span>
       </p>
     </GlowCard>
   );
