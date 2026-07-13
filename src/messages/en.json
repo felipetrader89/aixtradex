@@ -131,9 +131,9 @@
       "tag": "Robot license — 1 demo + 1 live account",
       "description": "You get the robot file and install it directly on your own MT4 accounts, no account management from me. The license covers up to 2 accounts — 1 demo and 1 live — send me each account ID so I can activate them.",
       "requirementsNote": "Both accounts (demo and live) need a spread below 20 pts for the robot to perform well.",
-      "oneMonth": { "label": "1-Month License", "price": "$49", "period": "/month" },
-      "sixMonths": { "label": "6-Month License", "price": "$249", "period": "/6 months" },
-      "oneYear": { "label": "1-Year License", "price": "$399", "period": "/year" },
+      "oneMonth": { "label": "1-Month License", "price": "$49", "period": "/month", "originalPrice": "$69.00", "badge": "29% OFF" },
+      "sixMonths": { "label": "6-Month License", "price": "$249", "period": "/6 months", "originalPrice": "$414.00", "badge": "40% OFF" },
+      "oneYear": { "label": "1-Year License", "price": "$399", "period": "/year", "originalPrice": "$828.00", "badge": "52% OFF" },
       "ctaOneMonth": "Get the 1-Month License",
       "ctaSixMonths": "Get the 6-Month License",
       "ctaOneYear": "Get the 1-Year License"

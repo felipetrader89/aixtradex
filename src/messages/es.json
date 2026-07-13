@@ -131,9 +131,9 @@
       "tag": "Licencia del robot — 1 cuenta demo + 1 cuenta real",
       "description": "Recibes el archivo del robot y lo instalas directo en tus propias cuentas MT4, sin que yo gestione la cuenta. La licencia cubre hasta 2 cuentas — 1 demo y 1 real — envíame el ID de cada una para activarlas.",
       "requirementsNote": "Las 2 cuentas (demo y real) necesitan un spread por debajo de 20 pts para que el robot rinda bien.",
-      "oneMonth": { "label": "Licencia 1 Mes", "price": "$49", "period": "/mes" },
-      "sixMonths": { "label": "Licencia 6 Meses", "price": "$249", "period": "/6 meses" },
-      "oneYear": { "label": "Licencia 1 Año", "price": "$399", "period": "/año" },
+      "oneMonth": { "label": "Licencia 1 Mes", "price": "$49", "period": "/mes", "originalPrice": "$69,00", "badge": "29% OFF" },
+      "sixMonths": { "label": "Licencia 6 Meses", "price": "$249", "period": "/6 meses", "originalPrice": "$414,00", "badge": "40% OFF" },
+      "oneYear": { "label": "Licencia 1 Año", "price": "$399", "period": "/año", "originalPrice": "$828,00", "badge": "52% OFF" },
       "ctaOneMonth": "Obtener Licencia de 1 Mes",
       "ctaSixMonths": "Obtener Licencia de 6 Meses",
       "ctaOneYear": "Obtener Licencia de 1 Año"

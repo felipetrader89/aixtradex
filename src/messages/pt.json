@@ -131,9 +131,9 @@
       "tag": "Licença do robô — 1 conta demo + 1 conta real",
       "description": "Você recebe o arquivo do robô e instala direto nas suas contas MT4, sem que eu faça a gestão. A licença libera até 2 contas — 1 demo e 1 real — me envia o ID de cada uma pra eu liberar o acesso.",
       "requirementsNote": "As 2 contas (demo e real) precisam ter spread abaixo de 20 pts pra o robô entregar um bom desempenho.",
-      "oneMonth": { "label": "Licença 1 Mês", "price": "$49", "period": "/mês" },
-      "sixMonths": { "label": "Licença 6 Meses", "price": "$249", "period": "/6 meses" },
-      "oneYear": { "label": "Licença 1 Ano", "price": "$399", "period": "/ano" },
+      "oneMonth": { "label": "Licença 1 Mês", "price": "$49", "period": "/mês", "originalPrice": "$69,00", "badge": "29% OFF" },
+      "sixMonths": { "label": "Licença 6 Meses", "price": "$249", "period": "/6 meses", "originalPrice": "$414,00", "badge": "40% OFF" },
+      "oneYear": { "label": "Licença 1 Ano", "price": "$399", "period": "/ano", "originalPrice": "$828,00", "badge": "52% OFF" },
       "ctaOneMonth": "Obter Licença de 1 Mês",
       "ctaSixMonths": "Obter Licença de 6 Meses",
       "ctaOneYear": "Obter Licença de 1 Ano"

@@ -3,6 +3,7 @@ import { getTranslations, setRequestLocale } from "next-intl/server";
 import { GlowCard } from "@/components/brand/GlowCard";
 import { IconCalendar, IconChartUp, IconRocket } from "@/components/brand/icons";
 import { SpecTable } from "@/components/sections/SpecTable";
+import { PricingCard } from "@/components/sections/PricingCard";
 import { CompoundCalculator } from "@/components/sections/CompoundCalculator";
 import { Link, getPathname } from "@/i18n/navigation";
 import { routing } from "@/i18n/routing";
@@ -43,6 +44,8 @@ export default async function ProductsPage({ params }: Props) {
       label: t("license.oneMonth.label"),
       price: t("license.oneMonth.price"),
       period: t("license.oneMonth.period"),
+      originalPrice: t("license.oneMonth.originalPrice"),
+      badge: t("license.oneMonth.badge"),
       ctaLabel: t("license.ctaOneMonth"),
       ctaHref: "/payment?plan=licenseMonthly",
       Icon: IconCalendar,
@@ -51,6 +54,8 @@ export default async function ProductsPage({ params }: Props) {
       label: t("license.sixMonths.label"),
       price: t("license.sixMonths.price"),
       period: t("license.sixMonths.period"),
+      originalPrice: t("license.sixMonths.originalPrice"),
+      badge: t("license.sixMonths.badge"),
       ctaLabel: t("license.ctaSixMonths"),
       ctaHref: "/payment?plan=licenseSixMonths",
       Icon: IconChartUp,
@@ -59,6 +64,8 @@ export default async function ProductsPage({ params }: Props) {
       label: t("license.oneYear.label"),
       price: t("license.oneYear.price"),
       period: t("license.oneYear.period"),
+      originalPrice: t("license.oneYear.originalPrice"),
+      badge: t("license.oneYear.badge"),
       ctaLabel: t("license.ctaOneYear"),
       ctaHref: "/payment?plan=licenseAnnual",
       Icon: IconRocket,
@@ -82,19 +89,16 @@ export default async function ProductsPage({ params }: Props) {
         <p className="mb-8 max-w-2xl text-brand-ink-dim">{t("license.description")}</p>
 
         <div className="mb-8 grid grid-cols-1 gap-4 sm:grid-cols-3 sm:items-stretch">
-          {plans.map(({ label, price, period, ctaLabel, ctaHref, Icon, highlight }) => (
+          {plans.map(({ label, price, period, originalPrice, badge, ctaLabel, ctaHref, Icon, highlight }) => (
             <div key={label} className="flex flex-col gap-4">
-              <GlowCard
-                className={`flex flex-col items-center gap-2 text-center ${
-                  highlight ? "!border-2 !border-brand-accent shadow-[0_0_40px_rgba(51,214,160,0.25)]" : ""
-                }`}
-              >
-                <p className="font-display text-lg font-bold text-brand-accent">{label}</p>
-                <p className="font-display text-3xl font-extrabold text-chrome">
-                  {price}
-                  <span className="text-base font-medium text-brand-ink-dim"> {period}</span>
-                </p>
-              </GlowCard>
+              <PricingCard
+                label={label}
+                price={price}
+                period={period}
+                originalPrice={originalPrice}
+                badge={badge}
+                className={highlight ? "!border-2 !border-brand-accent shadow-[0_0_40px_rgba(51,214,160,0.25)]" : ""}
+              />
               <Link
                 href={ctaHref}
                 className="cta-neon flex items-center justify-center gap-2 rounded-full bg-brand-surface px-6 py-3 text-sm font-semibold text-brand-ink transition-colors duration-300 hover:text-brand-accent"
