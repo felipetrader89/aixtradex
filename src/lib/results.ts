@@ -29,6 +29,15 @@ function extractIndex(filename: string) {
   return match ? Number(match[1]) : 0;
 }
 
+// Capture date embedded in the filename (e.g. "photo_2026-07-15_11-19-10.jpg").
+// We deliberately don't use filesystem mtime here — git checkout resets
+// mtimes on every Vercel deploy, so it can't tell recent uploads apart in
+// production even though it works fine on a local machine.
+function extractDateKey(filename: string) {
+  const match = filename.match(/(\d{4}-\d{2}-\d{2})_(\d{2}-\d{2}-\d{2})/);
+  return match ? `${match[1]}_${match[2]}` : "";
+}
+
 export function getResultImages(): ResultImage[] {
   let files: string[];
   try {
@@ -37,7 +46,15 @@ export function getResultImages(): ResultImage[] {
     return [];
   }
 
-  files.sort((a, b) => extractIndex(a) - extractIndex(b));
+  // Newest capture date first. Files sharing the same date (the original
+  // bulk batch, all stamped with the same export timestamp) fall back to
+  // their "_N_" index so that batch's relative order stays stable.
+  files.sort((a, b) => {
+    const dateA = extractDateKey(a);
+    const dateB = extractDateKey(b);
+    if (dateA !== dateB) return dateA < dateB ? 1 : -1;
+    return extractIndex(a) - extractIndex(b);
+  });
 
   const seenHashes = new Set<string>();
   const images: ResultImage[] = [];
