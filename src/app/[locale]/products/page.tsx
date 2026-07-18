@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import { GlowCard } from "@/components/brand/GlowCard";
-import { IconCalendar, IconChartUp, IconRocket } from "@/components/brand/icons";
+import { IconCalendar, IconRocket } from "@/components/brand/icons";
 import { SpecTable } from "@/components/sections/SpecTable";
 import { PricingCard } from "@/components/sections/PricingCard";
 import { CompoundCalculator } from "@/components/sections/CompoundCalculator";
@@ -44,30 +44,20 @@ export default async function ProductsPage({ params }: Props) {
       label: t("license.oneMonth.label"),
       price: t("license.oneMonth.price"),
       period: t("license.oneMonth.period"),
-      originalPrice: t("license.oneMonth.originalPrice"),
-      badge: t("license.oneMonth.badge"),
+      note: t("license.oneMonth.note"),
       ctaLabel: t("license.ctaOneMonth"),
       ctaHref: "/payment?plan=licenseMonthly",
       Icon: IconCalendar,
     },
     {
-      label: t("license.sixMonths.label"),
-      price: t("license.sixMonths.price"),
-      period: t("license.sixMonths.period"),
-      originalPrice: t("license.sixMonths.originalPrice"),
-      badge: t("license.sixMonths.badge"),
-      ctaLabel: t("license.ctaSixMonths"),
-      ctaHref: "/payment?plan=licenseSixMonths",
-      Icon: IconChartUp,
-    },
-    {
-      label: t("license.oneYear.label"),
-      price: t("license.oneYear.price"),
-      period: t("license.oneYear.period"),
-      originalPrice: t("license.oneYear.originalPrice"),
-      badge: t("license.oneYear.badge"),
-      ctaLabel: t("license.ctaOneYear"),
-      ctaHref: "/payment?plan=licenseAnnual",
+      label: t("license.lifetime.label"),
+      price: t("license.lifetime.price"),
+      period: t("license.lifetime.period"),
+      originalPrice: t("license.lifetime.originalPrice"),
+      badge: t("license.lifetime.badge"),
+      note: t("license.lifetime.note"),
+      ctaLabel: t("license.ctaLifetime"),
+      ctaHref: "/payment?plan=licenseLifetime",
       Icon: IconRocket,
       highlight: true,
     },
@@ -88,8 +78,8 @@ export default async function ProductsPage({ params }: Props) {
         </p>
         <p className="mb-8 max-w-2xl text-brand-ink-dim">{t("license.description")}</p>
 
-        <div className="mb-8 grid grid-cols-1 gap-4 sm:grid-cols-3 sm:items-stretch">
-          {plans.map(({ label, price, period, originalPrice, badge, ctaLabel, ctaHref, Icon, highlight }) => (
+        <div className="mb-8 grid grid-cols-1 gap-4 sm:grid-cols-2 sm:items-stretch">
+          {plans.map(({ label, price, period, originalPrice, badge, note, ctaLabel, ctaHref, Icon, highlight }) => (
             <div key={label} className="flex flex-col gap-4">
               <PricingCard
                 label={label}
@@ -97,6 +87,7 @@ export default async function ProductsPage({ params }: Props) {
                 period={period}
                 originalPrice={originalPrice}
                 badge={badge}
+                note={note}
                 className={highlight ? "!border-2 !border-brand-accent shadow-[0_0_40px_rgba(51,214,160,0.25)]" : ""}
               />
               <Link

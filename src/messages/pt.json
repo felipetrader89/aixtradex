@@ -2,11 +2,11 @@
   "Metadata": {
     "home": {
       "title": "Ai X TradeX — Robô de Trading Automatizado pra Forex",
-      "description": "Licença do robô de trading automatizado pro MetaTrader 4. Resultado documentado, sem promessa vazia — planos de 1 mês, 6 meses ou 1 ano."
+      "description": "Licença do robô de trading automatizado pro MetaTrader 4. Resultado documentado, sem promessa vazia — plano mensal ou licença vitalícia."
     },
     "products": {
       "title": "Ai X Pulse v1 — Planos — Ai X TradeX",
-      "description": "Ai X Pulse v1: licença do robô pra 1 conta demo e 1 conta real, planos de 1 mês, 6 meses ou 1 ano, com meta de performance real."
+      "description": "Ai X Pulse v1: licença do robô pra 1 conta demo e 1 conta real, plano mensal ou licença vitalícia, com meta de performance real."
     },
     "about": {
       "title": "Sobre — Ai X TradeX",
@@ -131,12 +131,10 @@
       "tag": "Licença do robô — 1 conta demo + 1 conta real",
       "description": "Você recebe o arquivo do robô e instala direto nas suas contas MT4, sem que eu faça a gestão. A licença libera até 2 contas — 1 demo e 1 real — me envia o ID de cada uma pra eu liberar o acesso.",
       "requirementsNote": "As 2 contas (demo e real) precisam ter spread abaixo de 20 pts pra o robô entregar um bom desempenho.",
-      "oneMonth": { "label": "Licença 1 Mês", "price": "$49", "period": "/mês", "originalPrice": "$69", "badge": "29% OFF" },
-      "sixMonths": { "label": "Licença 6 Meses", "price": "$249", "period": "/6 meses", "originalPrice": "$414", "badge": "40% OFF" },
-      "oneYear": { "label": "Licença 1 Ano", "price": "$399", "period": "/ano", "originalPrice": "$828", "badge": "52% OFF" },
-      "ctaOneMonth": "Obter Licença de 1 Mês",
-      "ctaSixMonths": "Obter Licença de 6 Meses",
-      "ctaOneYear": "Obter Licença de 1 Ano"
+      "oneMonth": { "label": "Licença Mensal", "price": "$69", "period": "/mês", "note": "$99/mês a partir do 2º mês" },
+      "lifetime": { "label": "Licença Vitalícia", "price": "$499", "period": "", "originalPrice": "$997", "badge": "50% OFF", "note": "Pagamento único, acesso vitalício ao robô" },
+      "ctaOneMonth": "Obter Licença Mensal",
+      "ctaLifetime": "Obter Licença Vitalícia"
     },
     "calculator": {
       "title": "Calcule o Crescimento da sua Conta",
@@ -229,7 +227,7 @@
       },
       {
         "q": "Como funciona a cobrança?",
-        "a": "Licença: $49 por 1 mês, $249 por 6 meses ou $399 por 1 ano — libera 1 conta demo e 1 conta real."
+        "a": "Licença: $69 no 1º mês e $99/mês a partir do 2º mês, ou $499 (de $997) no plano vitalício — libera 1 conta demo e 1 conta real."
       },
       {
         "q": "Como funciona a licença de 1 conta demo e 1 conta real?",

@@ -15,8 +15,7 @@ const PLAN_KEYS = [
   "sixMonths",
   "annual",
   "licenseMonthly",
-  "licenseSixMonths",
-  "licenseAnnual",
+  "licenseLifetime",
 ] as const;
 type PlanKey = (typeof PLAN_KEYS)[number];
 
@@ -25,8 +24,7 @@ const PLAN_PATH: Record<PlanKey, string> = {
   sixMonths: "pulse.sixMonths",
   annual: "pulse.annual",
   licenseMonthly: "license.oneMonth",
-  licenseSixMonths: "license.sixMonths",
-  licenseAnnual: "license.oneYear",
+  licenseLifetime: "license.lifetime",
 };
 
 function isPlanKey(value: string | undefined): value is PlanKey {

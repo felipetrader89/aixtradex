@@ -2,11 +2,11 @@
   "Metadata": {
     "home": {
       "title": "Ai X TradeX — Automated Forex Trading Robot",
-      "description": "Automated trading robot license for MetaTrader 4. Documented results, no empty hype — 1-month, 6-month, or 1-year plans."
+      "description": "Automated trading robot license for MetaTrader 4. Documented results, no empty hype — monthly plan or lifetime license."
     },
     "products": {
       "title": "Ai X Pulse v1 — Plans — Ai X TradeX",
-      "description": "Ai X Pulse v1: robot license for 1 demo and 1 live MT4 account, 1-month, 6-month, or 1-year plans, with a real performance target."
+      "description": "Ai X Pulse v1: robot license for 1 demo and 1 live MT4 account, monthly plan or lifetime license, with a real performance target."
     },
     "about": {
       "title": "About — Ai X TradeX",
@@ -131,12 +131,10 @@
       "tag": "Robot license — 1 demo + 1 live account",
       "description": "You get the robot file and install it directly on your own MT4 accounts, no account management from me. The license covers up to 2 accounts — 1 demo and 1 live — send me each account ID so I can activate them.",
       "requirementsNote": "Both accounts (demo and live) need a spread below 20 pts for the robot to perform well.",
-      "oneMonth": { "label": "1-Month License", "price": "$49", "period": "/month", "originalPrice": "$69", "badge": "29% OFF" },
-      "sixMonths": { "label": "6-Month License", "price": "$249", "period": "/6 months", "originalPrice": "$414", "badge": "40% OFF" },
-      "oneYear": { "label": "1-Year License", "price": "$399", "period": "/year", "originalPrice": "$828", "badge": "52% OFF" },
-      "ctaOneMonth": "Get the 1-Month License",
-      "ctaSixMonths": "Get the 6-Month License",
-      "ctaOneYear": "Get the 1-Year License"
+      "oneMonth": { "label": "Monthly License", "price": "$69", "period": "/month", "note": "$99/month from the 2nd month on" },
+      "lifetime": { "label": "Lifetime License", "price": "$499", "period": "", "originalPrice": "$997", "badge": "50% OFF", "note": "One-time payment, lifetime access to the robot" },
+      "ctaOneMonth": "Get the Monthly License",
+      "ctaLifetime": "Get the Lifetime License"
     },
     "calculator": {
       "title": "Calculate Your Account Growth",
@@ -229,7 +227,7 @@
       },
       {
         "q": "How does billing work?",
-        "a": "License: $49 for 1 month, $249 for 6 months, or $399 for 1 year — covers 1 demo account and 1 live account."
+        "a": "License: $69 for the 1st month, then $99/month from the 2nd month on, or $499 (from $997) for the lifetime plan — covers 1 demo account and 1 live account."
       },
       {
         "q": "How does the 1 demo + 1 live account license work?",
