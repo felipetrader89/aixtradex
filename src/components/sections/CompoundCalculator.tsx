@@ -6,7 +6,7 @@ import { GlowCard } from "@/components/brand/GlowCard";
 
 const MONTHS_IN_YEAR = 12;
 const WEEK_DAYS = 5;
-const RATE_OPTIONS = [1, 2, 3, 4, 5];
+const RATE_OPTIONS = [1, 2, 3, 4, 5, 10];
 
 type Mode = "simple" | "compound";
 
@@ -102,8 +102,8 @@ export function CompoundCalculator({ locale }: { locale: string }) {
                   onClick={() => setRatePercent(r)}
                   className={
                     ratePercent === r
-                      ? "rounded-md bg-brand-accent px-5 py-[10px] text-xs font-semibold text-brand-bg transition-transform hover:scale-[1.02]"
-                      : "rounded-md border border-brand-hairline px-5 py-[10px] text-xs font-semibold text-brand-ink-dim transition-colors hover:border-brand-accent hover:text-brand-accent"
+                      ? "rounded-md bg-brand-accent px-[17px] py-[10px] text-xs font-semibold text-brand-bg transition-transform hover:scale-[1.02]"
+                      : "rounded-md border border-brand-hairline px-[17px] py-[10px] text-xs font-semibold text-brand-ink-dim transition-colors hover:border-brand-accent hover:text-brand-accent"
                   }
                 >
                   {r}%
