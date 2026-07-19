@@ -22,7 +22,7 @@ const SOCIALS = [
 ] as const;
 
 const pillClass =
-  "rounded-md border border-brand-hairline px-3 py-1.5 text-xs font-semibold text-brand-ink-dim transition-colors hover:border-brand-accent hover:text-brand-accent";
+  "rounded-md border border-brand-hairline px-3 py-1.5 text-center text-xs font-semibold text-brand-ink-dim transition-colors hover:border-brand-accent hover:text-brand-accent";
 const socialPillClass =
   "flex h-9 w-9 items-center justify-center rounded-md border border-brand-hairline text-brand-ink-dim transition-colors duration-200 hover:border-brand-accent hover:text-brand-accent";
 
@@ -41,7 +41,7 @@ export function Footer() {
             <h3 className="mb-4 text-xs font-semibold uppercase tracking-wide text-brand-accent">
               {t("usefulHeading")}
             </h3>
-            <div className="flex flex-wrap gap-2">
+            <div className="grid grid-cols-3 gap-2">
               <span className={`cursor-default opacity-60 ${pillClass}`} title={t("comingSoon")}>
                 {t("usefulLinks.analysis")}
               </span>
