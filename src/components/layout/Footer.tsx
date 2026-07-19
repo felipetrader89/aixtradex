@@ -21,6 +21,11 @@ const SOCIALS = [
   { name: "WhatsApp", Icon: IconWhatsapp },
 ] as const;
 
+const pillClass =
+  "rounded-md border border-brand-hairline px-3 py-1.5 text-xs font-semibold text-brand-ink-dim transition-colors hover:border-brand-accent hover:text-brand-accent";
+const socialPillClass =
+  "flex h-9 w-9 items-center justify-center rounded-md border border-brand-hairline text-brand-ink-dim transition-colors duration-200 hover:border-brand-accent hover:text-brand-accent";
+
 export function Footer() {
   const t = useTranslations("Footer");
   const nav = useTranslations("Nav");
@@ -31,82 +36,47 @@ export function Footer() {
       <div className="footer-divider mb-10" />
 
       <div className="mx-auto max-w-5xl">
-        <div className="grid grid-cols-1 gap-8 sm:grid-cols-3">
-          <div>
-            <h3 className="mb-4 text-xs font-semibold uppercase tracking-wide text-brand-accent">
-              {t("menuHeading")}
-            </h3>
-            <nav className="flex flex-col gap-2.5">
-              <Link href="/" className="nav-link w-fit hover:text-brand-accent">
-                {nav("home")}
-              </Link>
-              <Link href="/products" className="nav-link w-fit hover:text-brand-accent">
-                {nav("products")}
-              </Link>
-              <Link href="/results" className="nav-link w-fit hover:text-brand-accent">
-                {nav("results")}
-              </Link>
-              <Link href="/about" className="nav-link w-fit hover:text-brand-accent">
-                {nav("about")}
-              </Link>
-              <Link href="/faq" className="nav-link w-fit hover:text-brand-accent">
-                {nav("faq")}
-              </Link>
-              <Link href="/how-it-works" className="nav-link w-fit hover:text-brand-accent">
-                {nav("howItWorks")}
-              </Link>
-            </nav>
-          </div>
-
+        <div className="grid grid-cols-1 gap-8">
           <div>
             <h3 className="mb-4 text-xs font-semibold uppercase tracking-wide text-brand-accent">
               {t("usefulHeading")}
             </h3>
-            <ul className="flex flex-col gap-2.5">
-              <li>
-                <span className="cursor-default opacity-60" title={t("comingSoon")}>
-                  {t("usefulLinks.markets")}
-                </span>
-              </li>
-              <li>
-                <span className="cursor-default opacity-60" title={t("comingSoon")}>
-                  {t("usefulLinks.tools")}
-                </span>
-              </li>
-              <li>
-                <span className="cursor-default opacity-60" title={t("comingSoon")}>
-                  {t("usefulLinks.news")}
-                </span>
-              </li>
-              <li>
-                <span className="cursor-default opacity-60" title={t("comingSoon")}>
-                  {t("usefulLinks.analysis")}
-                </span>
-              </li>
-              <li>
-                <Link href="/about" className="nav-link w-fit hover:text-brand-accent">
-                  {t("usefulLinks.brokers")}
-                </Link>
-              </li>
-              <li>
-                <span className="cursor-default opacity-60" title={t("comingSoon")}>
-                  {t("usefulLinks.calendar")}
-                </span>
-              </li>
-            </ul>
+            <div className="flex flex-wrap gap-2">
+              <span className={`cursor-default opacity-60 ${pillClass}`} title={t("comingSoon")}>
+                {t("usefulLinks.analysis")}
+              </span>
+              <Link href="/blog" className={pillClass}>
+                {nav("blog")}
+              </Link>
+              <span className={`cursor-default opacity-60 ${pillClass}`} title={t("comingSoon")}>
+                {t("usefulLinks.calendar")}
+              </span>
+              <span className={`cursor-default opacity-60 ${pillClass}`} title={t("comingSoon")}>
+                {t("usefulLinks.brokers")}
+              </span>
+              <span className={`cursor-default opacity-60 ${pillClass}`} title={t("comingSoon")}>
+                {t("usefulLinks.tools")}
+              </span>
+              <span className={`cursor-default opacity-60 ${pillClass}`} title={t("comingSoon")}>
+                {t("usefulLinks.markets")}
+              </span>
+              <span className={`cursor-default opacity-60 ${pillClass}`} title={t("comingSoon")}>
+                {t("usefulLinks.news")}
+              </span>
+            </div>
           </div>
 
           <div>
             <h3 className="mb-4 text-xs font-semibold uppercase tracking-wide text-brand-accent">
               {t("socialHeading")}
             </h3>
-            <div className="flex flex-wrap gap-3">
+            <div className="flex flex-wrap gap-2">
               <a
                 href={siteConfig.telegramUrl}
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label="Telegram"
-                className="flex h-9 w-9 items-center justify-center rounded-full border border-brand-hairline text-brand-ink-dim transition-colors duration-200 hover:border-brand-accent hover:text-brand-accent"
+                className={socialPillClass}
               >
                 <IconTelegram />
               </a>
@@ -115,7 +85,7 @@ export function Footer() {
                   key={name}
                   title={t("comingSoon")}
                   aria-label={name}
-                  className="flex h-9 w-9 cursor-default items-center justify-center rounded-full border border-brand-hairline text-brand-ink-dim opacity-60 transition-colors duration-200 hover:border-brand-accent hover:text-brand-accent"
+                  className={`cursor-default opacity-60 ${socialPillClass}`}
                 >
                   <Icon />
                 </span>
@@ -125,7 +95,7 @@ export function Footer() {
         </div>
 
         <div className="mt-10 border-t border-brand-hairline pt-8">
-          <p className="mb-4 max-w-2xl">{t("disclaimer")}</p>
+          <p className="mb-4">{t("disclaimer")}</p>
           <p>
             {t("rightsPrefix", { year })} <BrandMark className="font-display text-sm font-extrabold" />
             {t("rightsSuffix")}
