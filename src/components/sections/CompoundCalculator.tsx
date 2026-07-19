@@ -143,7 +143,7 @@ export function CompoundCalculator({ locale }: { locale: string }) {
 
         <div className="mb-4 text-sm">
           <span className="mb-1 block text-brand-ink-dim">{t("monthsLabel")}</span>
-          <div className="flex flex-wrap gap-1.5">
+          <div className="grid grid-cols-6 gap-1.5">
             {Array.from({ length: MONTHS_IN_YEAR }, (_, i) => i).map((monthIndex) => {
               const selected = selectedMonths.includes(monthIndex);
               return (
@@ -153,8 +153,8 @@ export function CompoundCalculator({ locale }: { locale: string }) {
                   onClick={() => toggleMonth(monthIndex)}
                   className={
                     selected
-                      ? "rounded-md bg-brand-accent px-3 py-1.5 text-xs font-semibold text-brand-bg transition-transform hover:scale-[1.05]"
-                      : "rounded-md border border-brand-hairline px-3 py-1.5 text-xs font-semibold text-brand-ink-dim transition-colors hover:border-brand-accent hover:text-brand-accent"
+                      ? "rounded-md bg-brand-accent px-3 py-1.5 text-center text-xs font-semibold text-brand-bg transition-transform hover:scale-[1.05]"
+                      : "rounded-md border border-brand-hairline px-3 py-1.5 text-center text-xs font-semibold text-brand-ink-dim transition-colors hover:border-brand-accent hover:text-brand-accent"
                   }
                 >
                   {monthAbbreviation(locale, monthIndex)}
