@@ -102,8 +102,8 @@ export function CompoundCalculator({ locale }: { locale: string }) {
                   onClick={() => setRatePercent(r)}
                   className={
                     ratePercent === r
-                      ? "rounded-md bg-brand-accent px-[17px] py-[10px] text-xs font-semibold text-brand-bg transition-transform hover:scale-[1.02]"
-                      : "rounded-md border border-brand-hairline px-[17px] py-[10px] text-xs font-semibold text-brand-ink-dim transition-colors hover:border-brand-accent hover:text-brand-accent"
+                      ? "rounded-md bg-brand-accent px-[16px] py-[10px] text-xs font-semibold text-brand-bg transition-transform hover:scale-[1.02]"
+                      : "rounded-md border border-brand-hairline px-[16px] py-[10px] text-xs font-semibold text-brand-ink-dim transition-colors hover:border-brand-accent hover:text-brand-accent"
                   }
                 >
                   {r}%
