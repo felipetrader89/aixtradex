@@ -2,6 +2,10 @@ export const siteConfig = {
   name: "Ai X TradeX",
   telegramUrl: "https://t.me/AiXTradeX",
   telegramDmUrl: "https://t.me/AlessonFelipe89",
+  youtubeUrl: "https://www.youtube.com/@AiXTradeX",
+  instagramUrl: "https://www.instagram.com/aixtradex",
+  tiktokUrl: "https://www.tiktok.com/@aixtradex",
+  facebookUrl: "https://www.facebook.com/aixtradex",
   brokers: ["FPMarkets", "Tickmill", "Vantage", "Exness"],
 } as const;
 

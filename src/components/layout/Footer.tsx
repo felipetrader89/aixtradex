@@ -13,12 +13,12 @@ import {
 import { siteConfig } from "@/lib/site-config";
 
 const SOCIALS = [
-  { name: "YouTube", Icon: IconYoutube },
-  { name: "Instagram", Icon: IconInstagram },
-  { name: "TikTok", Icon: IconTiktok },
-  { name: "Facebook", Icon: IconFacebook },
-  { name: "X", Icon: IconX },
-  { name: "WhatsApp", Icon: IconWhatsapp },
+  { name: "YouTube", Icon: IconYoutube, url: siteConfig.youtubeUrl },
+  { name: "Instagram", Icon: IconInstagram, url: siteConfig.instagramUrl },
+  { name: "TikTok", Icon: IconTiktok, url: siteConfig.tiktokUrl },
+  { name: "Facebook", Icon: IconFacebook, url: siteConfig.facebookUrl },
+  { name: "X", Icon: IconX, url: null },
+  { name: "WhatsApp", Icon: IconWhatsapp, url: null },
 ] as const;
 
 const pillClass =
@@ -80,16 +80,29 @@ export function Footer() {
               >
                 <IconTelegram />
               </a>
-              {SOCIALS.map(({ name, Icon }) => (
-                <span
-                  key={name}
-                  title={t("comingSoon")}
-                  aria-label={name}
-                  className={`cursor-default opacity-60 ${socialPillClass}`}
-                >
-                  <Icon />
-                </span>
-              ))}
+              {SOCIALS.map(({ name, Icon, url }) =>
+                url ? (
+                  <a
+                    key={name}
+                    href={url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    aria-label={name}
+                    className={socialPillClass}
+                  >
+                    <Icon />
+                  </a>
+                ) : (
+                  <span
+                    key={name}
+                    title={t("comingSoon")}
+                    aria-label={name}
+                    className={`cursor-default opacity-60 ${socialPillClass}`}
+                  >
+                    <Icon />
+                  </span>
+                )
+              )}
             </div>
           </div>
         </div>
