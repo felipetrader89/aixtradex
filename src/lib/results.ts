@@ -10,18 +10,16 @@ export type ResultImage = { src: string; file: string };
 // Curated for the Home carousel: mid-range profit results (not cents-level,
 // not the four-digit outliers) picked by eye from the current batch. The
 // full /results page always shows everything, this list only trims the
-// homepage teaser.
+// homepage teaser. Update this list whenever new screenshots land in
+// public/results/images/ — keep it on the most recent batch, not the oldest.
 const HOME_CAROUSEL_FILES = [
-  "photo_33_2026-07-11_18-41-42.jpg",
-  "photo_32_2026-07-11_18-41-42.jpg",
-  "photo_23_2026-07-11_18-41-42.jpg",
-  "photo_30_2026-07-11_18-41-42.jpg",
-  "photo_26_2026-07-11_18-41-42.jpg",
-  "photo_31_2026-07-11_18-41-42.jpg",
-  "photo_12_2026-07-11_18-41-42.jpg",
-  "photo_25_2026-07-11_18-41-42.jpg",
-  "photo_29_2026-07-11_18-41-42.jpg",
-  "photo_24_2026-07-11_18-41-42.jpg",
+  "photo_2026-07-20_21-06-51.jpg",
+  "photo_2026-07-21_17-26-27.jpg",
+  "photo_2026-07-21_19-14-25.jpg",
+  "photo_2026-07-21_19-14-30.jpg",
+  "photo_2026-07-20_21-07-06.jpg",
+  "photo_2026-07-21_17-26-40.jpg",
+  "photo_2026-07-20_21-08-56.jpg",
 ];
 
 function extractIndex(filename: string) {
