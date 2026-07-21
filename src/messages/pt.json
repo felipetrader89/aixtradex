@@ -68,10 +68,6 @@
         { "title": "Broker Compatíveis", "body": "FPMarkets, Tickmill, Vantage, FPTrading e ICTrading." }
       ]
     },
-    "why": {
-      "title": "Por que Robô e não Sinais ou Copy?",
-      "body": "Sinal ou copy são traders manuais. Isso depende de alguém acordado, analisando e pensando numa decisão rápida e sem falhar. O Robô trabalha sozinho, sem emoção, seguindo a mesma lógica testada todos os dias. E eu, o próprio desenvolvedor, cuidando do código e de todas as atualizações futuras caso necessário."
-    },
     "aboutTeaser": {
       "title": "Quem tá por trás disso",
       "body": "Comecei sem nada — aos 15 anos já morava de aluguel, trabalhando num depósito de bebidas. Passei por informática, loja virtual e opções binárias, onde cheguei a Top 1 do Brasil e Top 5 do mundo em 2019. Depois de perder dinheiro correndo atrás de robô milagroso no forex, resolvi desenvolver o meu próprio EA — com metas realistas e juros compostos, não promessa vazia.",

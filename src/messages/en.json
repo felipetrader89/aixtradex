@@ -68,10 +68,6 @@
         { "title": "Compatible Brokers", "body": "Works with FPMarkets, Tickmill, Vantage, FPTrading, and ICTrading." }
       ]
     },
-    "why": {
-      "title": "Why a Robot, Not Signals or Copy Trading?",
-      "body": "Signals or copy trading are manual traders. That depends on someone being awake, analyzing, and making a fast decision without messing up. The robot works on its own, without emotion, following the same tested logic every day. And I'm the developer myself, taking care of the code and any future updates whenever needed."
-    },
     "aboutTeaser": {
       "title": "Who's behind this",
       "body": "I started with nothing — at 15 I was already renting a place, working at a beverage warehouse. I went through computing, an online store, and binary options, where I reached #1 in Brazil and Top 5 in the world in 2019. After losing money chasing miracle robots in forex, I decided to develop my own EA — with realistic targets and compound interest, not empty promises.",

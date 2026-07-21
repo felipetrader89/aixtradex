@@ -68,10 +68,6 @@
         { "title": "Brókers Compatibles", "body": "Compatible con FPMarkets, Tickmill, Vantage, FPTrading e ICTrading." }
       ]
     },
-    "why": {
-      "title": "¿Por Qué un Robot y no Señales o Copy?",
-      "body": "La señal o el copy son traders manuales. Eso depende de que alguien esté despierto, analizando y pensando en una decisión rápida y sin fallar. El robot trabaja solo, sin emoción, siguiendo la misma lógica probada todos los días. Y yo, el propio desarrollador, cuidando el código y todas las actualizaciones futuras si es necesario."
-    },
     "aboutTeaser": {
       "title": "Quién está detrás de esto",
       "body": "Empecé sin nada — a los 15 años ya vivía de alquiler, trabajando en un depósito de bebidas. Pasé por informática, tienda virtual y opciones binarias, donde llegué al Top 1 de Brasil y Top 5 del mundo en 2019. Después de perder dinero persiguiendo robots milagrosos en el forex, decidí desarrollar mi propio EA — con metas realistas e interés compuesto, no promesas vacías.",

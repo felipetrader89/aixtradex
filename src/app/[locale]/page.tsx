@@ -66,15 +66,6 @@ export default async function HomePage({ params }: Props) {
 
       <section className="mx-auto max-w-5xl px-6 py-12 text-center">
         <h2 className="mb-6 font-display text-2xl font-bold uppercase text-chrome">
-          {t("why.title")}
-        </h2>
-        <GlowCard className="text-left">
-          <p className="text-brand-ink-dim">{t("why.body")}</p>
-        </GlowCard>
-      </section>
-
-      <section className="mx-auto max-w-5xl px-6 py-12 text-center">
-        <h2 className="mb-6 font-display text-2xl font-bold uppercase text-chrome">
           {t("aboutTeaser.title")}
         </h2>
         <GlowCard className="text-left">
