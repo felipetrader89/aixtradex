@@ -40,7 +40,7 @@ export async function generateMetadata({
     metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000"),
     title: {
       default: t("title"),
-      template: "%s — Ai X TradeX",
+      template: "%s - Ai X TradeX",
     },
     description: t("description"),
   };

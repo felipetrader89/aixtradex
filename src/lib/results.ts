@@ -7,20 +7,8 @@ const IMAGE_EXT = /\.(jpe?g|png|webp)$/i;
 
 export type ResultImage = { src: string; file: string };
 
-// Curated for the Home carousel: mid-range profit results (not cents-level,
-// not the four-digit outliers) picked by eye from the current batch. The
-// full /results page always shows everything, this list only trims the
-// homepage teaser. Update this list whenever new screenshots land in
-// public/results/images/ — keep it on the most recent batch, not the oldest.
-const HOME_CAROUSEL_FILES = [
-  "photo_2026-07-20_21-06-51.jpg",
-  "photo_2026-07-21_17-26-27.jpg",
-  "photo_2026-07-21_19-14-25.jpg",
-  "photo_2026-07-21_19-14-30.jpg",
-  "photo_2026-07-20_21-07-06.jpg",
-  "photo_2026-07-21_17-26-40.jpg",
-  "photo_2026-07-20_21-08-56.jpg",
-];
+// How many of the newest /results screenshots to show in the Home teaser.
+const HOME_CAROUSEL_COUNT = 15;
 
 function extractIndex(filename: string) {
   const match = filename.match(/_(\d+)_/);
@@ -69,12 +57,7 @@ export function getResultImages(): ResultImage[] {
 }
 
 export function getHomeResultImages(): ResultImage[] {
-  const all = getResultImages();
-  const byFile = new Map(all.map((img) => [img.file, img]));
-  const curated = HOME_CAROUSEL_FILES.map((f) => byFile.get(f)).filter(
-    (img): img is ResultImage => Boolean(img)
-  );
-  return curated.length > 0 ? curated : all.slice(0, 10);
+  return getResultImages().slice(0, HOME_CAROUSEL_COUNT);
 }
 
 export type ResultVideo = { youtubeId: string; title: string };

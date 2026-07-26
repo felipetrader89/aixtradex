@@ -59,11 +59,17 @@ body {
     transform: translateX(0);
   }
   to {
-    transform: translateX(-50%);
+    /* Track is [...images, ...images] joined by a uniform gap-4 (1rem) flex
+       gap, so the seam between the two copies sits half a gap past the
+       halfway point of the track's total width. Stopping at -50% alone left
+       a sliver of blank track visible right before the loop reset. */
+    transform: translateX(calc(-50% - 0.5rem));
   }
 }
 .results-track {
-  animation: results-scroll 55s linear infinite;
+  /* Duration is overridden inline by ResultsCarousel (scales with track
+     length so speed stays constant); 90s here is just a no-JS fallback. */
+  animation: results-scroll 90s linear infinite;
 }
 .results-mask:hover .results-track {
   animation-play-state: paused;
