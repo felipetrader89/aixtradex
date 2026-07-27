@@ -4,12 +4,19 @@ import { getMessages, getTranslations, setRequestLocale } from "next-intl/server
 import { notFound } from "next/navigation";
 import { Poppins, Inter } from "next/font/google";
 import { routing } from "@/i18n/routing";
+import { siteConfig } from "@/lib/site-config";
 import { hasLogo } from "@/lib/logo";
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
 import { MarketTicker } from "@/components/sections/MarketTicker";
 import { ScrollToTopButton } from "@/components/ui/ScrollToTopButton";
 import "../globals.css";
+
+const OG_LOCALE: Record<string, string> = {
+  pt: "pt_BR",
+  en: "en_US",
+  es: "es_ES",
+};
 
 const poppins = Poppins({
   subsets: ["latin"],
@@ -40,9 +47,20 @@ export async function generateMetadata({
     metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000"),
     title: {
       default: t("title"),
-      template: "%s - Ai X TradeX",
+      template: "Ai X TradeX - %s",
     },
     description: t("description"),
+    openGraph: {
+      siteName: siteConfig.name,
+      type: "website",
+      locale: OG_LOCALE[locale],
+      alternateLocale: routing.locales
+        .filter((l) => l !== locale)
+        .map((l) => OG_LOCALE[l]),
+    },
+    twitter: {
+      card: "summary_large_image",
+    },
   };
 }
 
