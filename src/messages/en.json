@@ -127,10 +127,10 @@
       "tag": "Robot license - up to 2 accounts (monthly) or up to 5 accounts (lifetime)",
       "description": "You get the robot file and install it directly on your own MT4 accounts, no account management from me. The monthly license covers up to 2 MT4 accounts and the lifetime license up to 5 - send me each account ID so I can activate them.",
       "requirementsNote": "All accounts need a spread below 35 pts for the robot to perform well.",
-      "oneMonth": { "label": "Monthly License", "price": "$99", "period": "/month", "note": "Up to 2 MT4 accounts", "discount": "$30", "discountPrice": "$69", "discountNote": "or $69 with a partner broker discount" },
+      "oneMonth": { "label": "Monthly License", "price": "$99", "period": "/month", "note": "Up to 2 MT4 accounts", "discount": "$30", "discountPrice": "$69", "discountNote": "or $69/month with a partner broker discount" },
       "lifetime": { "label": "Lifetime License", "price": "$499", "period": "", "originalPrice": "$997", "badge": "50% OFF", "note": "One-time payment, lifetime access - up to 5 MT4 accounts", "discount": "$50", "discountPrice": "$449", "discountNote": "or $449 with a partner broker discount" },
       "discountTitle": "Get up to $50 off your license",
-      "discountBody": "Open your account through my link (or switch your account's IB code to mine) at FPMarkets, Tickmill, Vantage, or Exness: $30 OFF the Monthly License and $50 OFF the Lifetime one. You choose this in the next step.",
+      "discountBody": "Open your account through my link (or switch your account's IB code to mine) at FPMarkets, Tickmill, Vantage, or Exness: $30 OFF every month on the Monthly License and $50 OFF the Lifetime one. You choose this in the next step.",
       "ctaOneMonth": "Get the Monthly License",
       "ctaLifetime": "Get the Lifetime License"
     },

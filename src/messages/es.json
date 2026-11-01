@@ -127,10 +127,10 @@
       "tag": "Licencia del robot - hasta 2 cuentas (mensual) o hasta 5 cuentas (vitalicia)",
       "description": "Recibes el archivo del robot y lo instalas directo en tus propias cuentas MT4, sin que yo gestione la cuenta. La licencia mensual cubre hasta 2 cuentas MT4 y la vitalicia hasta 5 - envíame el ID de cada una para activarlas.",
       "requirementsNote": "Todas las cuentas necesitan un spread por debajo de 35 pts para que el robot rinda bien.",
-      "oneMonth": { "label": "Licencia Mensual", "price": "$99", "period": "/mes", "note": "Hasta 2 cuentas MT4", "discount": "$30", "discountPrice": "$69", "discountNote": "o $69 con descuento de bróker asociado" },
+      "oneMonth": { "label": "Licencia Mensual", "price": "$99", "period": "/mes", "note": "Hasta 2 cuentas MT4", "discount": "$30", "discountPrice": "$69", "discountNote": "o $69/mes con descuento de bróker asociado" },
       "lifetime": { "label": "Licencia Vitalicia", "price": "$499", "period": "", "originalPrice": "$997", "badge": "50% OFF", "note": "Pago único, acceso vitalicio - hasta 5 cuentas MT4", "discount": "$50", "discountPrice": "$449", "discountNote": "o $449 con descuento de bróker asociado" },
       "discountTitle": "Obtén hasta $50 de descuento en la licencia",
-      "discountBody": "Abre tu cuenta con mi enlace (o cambia el código IB de tu cuenta al mío) en FPMarkets, Tickmill, Vantage o Exness: $30 OFF en la Licencia Mensual y $50 OFF en la Vitalicia. Lo eliges en el siguiente paso.",
+      "discountBody": "Abre tu cuenta con mi enlace (o cambia el código IB de tu cuenta al mío) en FPMarkets, Tickmill, Vantage o Exness: $30 OFF todos los meses en la Licencia Mensual y $50 OFF en la Vitalicia. Lo eliges en el siguiente paso.",
       "ctaOneMonth": "Obtener Licencia Mensual",
       "ctaLifetime": "Obtener Licencia Vitalicia"
     },
