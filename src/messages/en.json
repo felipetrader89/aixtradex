@@ -65,7 +65,7 @@
         { "title": "Your account, 100%", "body": "The license runs directly on your own account - deposit and withdraw whenever you want, no third party managing your money." },
         { "title": "Up to 5 MT4 Accounts", "body": "You get the robot's .ex4 file and install it on your own accounts: up to 2 with the monthly license, up to 5 with the lifetime one." },
         { "title": "Real Performance", "body": "Earn up to 10% per day, following the robot's standard risk settings, the same tested logic every day." },
-        { "title": "Compatible Brokers", "body": "Works with FPMarkets, Tickmill, Vantage, FPTrading, and ICTrading." }
+        { "title": "Partner Broker Discount", "body": "Works on any MT4 account type. At FPMarkets, Tickmill, Vantage, or Exness through my link/IB code, you get up to $50 off." }
       ]
     },
     "aboutTeaser": {
@@ -115,7 +115,7 @@
       "ctaAnnual": "Get the Annual Plan",
       "specs": {
         "platform": "Platform", "platformValue": "MetaTrader 4 (MT4 only)",
-        "accountType": "Account Type", "accountTypeValue": "Raw Spread / ECN / Zero",
+        "accountType": "Account Type", "accountTypeValue": "Any type",
         "leverage": "Leverage", "leverageValue": "1:500",
         "deposit": "Min. Starting Deposit", "depositValue": "$100",
         "operation": "Operation", "operationValue": "24/5 100% Automated",
@@ -127,8 +127,10 @@
       "tag": "Robot license - up to 2 accounts (monthly) or up to 5 accounts (lifetime)",
       "description": "You get the robot file and install it directly on your own MT4 accounts, no account management from me. The monthly license covers up to 2 MT4 accounts and the lifetime license up to 5 - send me each account ID so I can activate them.",
       "requirementsNote": "All accounts need a spread below 35 pts for the robot to perform well.",
-      "oneMonth": { "label": "Monthly License", "price": "$99", "period": "/month", "note": "Up to 2 MT4 accounts" },
-      "lifetime": { "label": "Lifetime License", "price": "$499", "period": "", "originalPrice": "$997", "badge": "50% OFF", "note": "One-time payment, lifetime access - up to 5 MT4 accounts" },
+      "oneMonth": { "label": "Monthly License", "price": "$99", "period": "/month", "note": "Up to 2 MT4 accounts", "discount": "$30", "discountPrice": "$69", "discountNote": "or $69 with a partner broker discount" },
+      "lifetime": { "label": "Lifetime License", "price": "$499", "period": "", "originalPrice": "$997", "badge": "50% OFF", "note": "One-time payment, lifetime access - up to 5 MT4 accounts", "discount": "$50", "discountPrice": "$449", "discountNote": "or $449 with a partner broker discount" },
+      "discountTitle": "Get up to $50 off your license",
+      "discountBody": "Open your account through my link (or switch your account's IB code to mine) at FPMarkets, Tickmill, Vantage, or Exness: $30 OFF the Monthly License and $50 OFF the Lifetime one. You choose this in the next step.",
       "ctaOneMonth": "Get the Monthly License",
       "ctaLifetime": "Get the Lifetime License"
     },
@@ -165,7 +167,7 @@
     ],
     "brokers": {
       "title": "Partner Brokers",
-      "body": "The robot works with Raw Spread or ECN accounts on MetaTrader 4 (MT4), since the spread needs to stay below 35 pts. That's why we work with partner brokers that offer this type of account: FPMarkets, Tickmill, Vantage, and Exness. This isn't investment advice, just technical compatibility.",
+      "body": "The robot works on any MetaTrader 4 (MT4) account type, at any broker, with spread below 35 pts. At the partner brokers below you get a discount on the license: open your account through my link or switch your account's IB code to mine - $30 off the Monthly License and $50 off the Lifetime one. This isn't investment advice.",
       "comingSoon": "More Brokers Coming Soon..."
     },
     "closing": {
@@ -215,11 +217,11 @@
       },
       {
         "q": "Which brokers are compatible?",
-        "a": "FPMarkets, Tickmill, Vantage, FPTrading, and ICTrading - Raw Spread or ECN accounts, with spread below 35 pts."
+        "a": "Any broker with MetaTrader 4, on any account type, with spread below 35 pts. If you open your account through my link (or switch your IB code to mine) at a partner broker - FPMarkets, Tickmill, Vantage, or Exness - you get $30 off the Monthly License or $50 off the Lifetime one."
       },
       {
         "q": "What's the minimum deposit?",
-        "a": "There's no minimum deposit set by me - use the account you already have or open one with your broker of choice. The requirement is a spread below 35 pts."
+        "a": "The recommended amount is $100 or more, on an MT4 account with 1:500 leverage - any account type, with spread below 35 pts."
       },
       {
         "q": "How does billing work?",
@@ -235,7 +237,7 @@
       },
       {
         "q": "How do I get started?",
-        "a": "Talk to me directly on Telegram - pick your license plan and I'll walk you through activating it on your accounts."
+        "a": "Pick your plan on the Products page and follow the steps: partner broker discount (optional), MT4 account, and crypto payment. At the end, just send me the payment screenshot on Telegram."
       }
     ],
     "cta": {
@@ -286,7 +288,7 @@
       "platform": "Platform", "platformValue": "MetaTrader 4",
       "pair": "Recommended Pair", "pairValue": "XAU/USD (Gold)",
       "timeframe": "Timeframe", "timeframeValue": "M15 (auto-adjusted)",
-      "accountType": "Account Type", "accountTypeValue": "Low spread recommended",
+      "accountType": "Account Type", "accountTypeValue": "Any type (spread up to 35 pts)",
       "operation": "Operation Mode", "operationValue": "Automatic, with manual controls",
       "dashboard": "Visual Dashboard", "dashboardValue": "Yes, real-time"
     },
@@ -312,7 +314,7 @@
   },
   "Payment": {
     "title": "Payment",
-    "intro": "Choose one of the options below to pay for your plan. After sending, send me the screenshot or transaction hash on Telegram so I can confirm and unlock access.",
+    "intro": "Follow the steps: choose whether you want the partner broker discount, create your MT4 account, and pay in crypto. At the end, send me the payment screenshot on Telegram and I'll unlock your access.",
     "planLabel": "Selected plan",
     "warning": "Only send using the network indicated for each option below. Sending on the wrong network can cause permanent loss of funds.",
     "addressLabel": "Address",
@@ -332,7 +334,56 @@
       "eth": { "label": "Ethereum (ETH)", "network": "Ethereum network (ERC-20)" }
     },
     "ctaTelegram": "I've paid - Send proof on Telegram",
-    "dmMessage": "Hi! I've paid for the {plan} and I'll send proof.",
+    "dmMessage": "Hi! I've paid for the {plan} ({price}). I'll send the payment screenshot and my MT4 account number.",
+    "dmMessageDiscount": "Hi! I've paid for the {plan} with the partner discount ({price}) - broker {broker}. I'll send the payment screenshot and my MT4 account number.",
+    "flow": {
+      "choosePlan": "Choose your plan",
+      "discountApplied": "{broker} partner discount: -{discount}",
+      "back": "← Back",
+      "steps": {
+        "discount": "Discount",
+        "broker": "Broker",
+        "account": "MT4 Account",
+        "payment": "Payment"
+      },
+      "discount": {
+        "title": "Want {discount} off your license?",
+        "body": "Open your account at a partner broker through my link, or switch the IB code of the account you already have to mine. Then you pay {discountPrice} instead of {price}.",
+        "yes": "Yes, I want {discount} off",
+        "no": "No, continue without discount"
+      },
+      "broker": {
+        "title": "Choose the partner broker",
+        "body": "Tap the logo of the broker you prefer.",
+        "newTitle": "Don't have an account there yet?",
+        "newBody": "Create your {broker} account through my link. The IB code is applied automatically.",
+        "newCta": "Create {broker} account",
+        "newTab": "Opens in a new tab - this site stays open here.",
+        "switchTitle": "Already have an account there?",
+        "switchBody": "Ask {broker} support (chat or client area) to change your partner/IB to the code below.",
+        "ibLabel": "{broker} IB code",
+        "next": "Done, continue →"
+      },
+      "account": {
+        "title": "Create your MT4 account with these settings",
+        "body": "At your broker, open a MetaTrader 4 account like this:",
+        "bodyBroker": "In your {broker} client area, open a MetaTrader 4 account like this:",
+        "platform": "Platform",
+        "platformValue": "MetaTrader 4",
+        "leverage": "Leverage",
+        "leverageValue": "1:500",
+        "deposit": "Min deposit",
+        "depositValue": "$100",
+        "type": "Account type",
+        "typeValue": "Any type",
+        "note": "Write down your MT4 account number (login) - send it to me along with the payment screenshot so I can activate the license.",
+        "next": "Account created, go to payment →"
+      },
+      "payment": {
+        "title": "Pay {price} with one of the options below",
+        "body": "After paying, tap the button at the bottom and send me the payment screenshot + your MT4 account number on Telegram."
+      }
+    },
     "backToPlans": "← Back to Plans"
   }
 }

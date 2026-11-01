@@ -65,7 +65,7 @@
         { "title": "Tu cuenta, 100% tuya", "body": "La licencia corre directo en tu propia cuenta - depositas y retiras cuando quieras, sin terceros administrando tu dinero." },
         { "title": "Hasta 5 Cuentas MT4", "body": "Recibes el archivo .ex4 del robot y lo instalas en tus propias cuentas: hasta 2 con la licencia mensual, hasta 5 con la vitalicia." },
         { "title": "Rendimiento Real", "body": "Gana hasta 10% por día, siguiendo la gestión de riesgo estándar del robot, la misma lógica probada todos los días." },
-        { "title": "Brókers Compatibles", "body": "Compatible con FPMarkets, Tickmill, Vantage, FPTrading e ICTrading." }
+        { "title": "Descuento con Socios", "body": "Funciona en cualquier tipo de cuenta MT4. En FPMarkets, Tickmill, Vantage o Exness con mi enlace/código IB, obtienes hasta $50 de descuento." }
       ]
     },
     "aboutTeaser": {
@@ -115,7 +115,7 @@
       "ctaAnnual": "Obtener Plan Anual",
       "specs": {
         "platform": "Plataforma", "platformValue": "MetaTrader 4 (solo MT4)",
-        "accountType": "Tipo de Cuenta", "accountTypeValue": "Raw Spread / ECN / Zero",
+        "accountType": "Tipo de Cuenta", "accountTypeValue": "Cualquier tipo",
         "leverage": "Apalancamiento", "leverageValue": "1:500",
         "deposit": "Depósito Mínimo Inicial", "depositValue": "$100",
         "operation": "Operación", "operationValue": "24/5 100% Automatizado",
@@ -127,8 +127,10 @@
       "tag": "Licencia del robot - hasta 2 cuentas (mensual) o hasta 5 cuentas (vitalicia)",
       "description": "Recibes el archivo del robot y lo instalas directo en tus propias cuentas MT4, sin que yo gestione la cuenta. La licencia mensual cubre hasta 2 cuentas MT4 y la vitalicia hasta 5 - envíame el ID de cada una para activarlas.",
       "requirementsNote": "Todas las cuentas necesitan un spread por debajo de 35 pts para que el robot rinda bien.",
-      "oneMonth": { "label": "Licencia Mensual", "price": "$99", "period": "/mes", "note": "Hasta 2 cuentas MT4" },
-      "lifetime": { "label": "Licencia Vitalicia", "price": "$499", "period": "", "originalPrice": "$997", "badge": "50% OFF", "note": "Pago único, acceso vitalicio - hasta 5 cuentas MT4" },
+      "oneMonth": { "label": "Licencia Mensual", "price": "$99", "period": "/mes", "note": "Hasta 2 cuentas MT4", "discount": "$30", "discountPrice": "$69", "discountNote": "o $69 con descuento de bróker asociado" },
+      "lifetime": { "label": "Licencia Vitalicia", "price": "$499", "period": "", "originalPrice": "$997", "badge": "50% OFF", "note": "Pago único, acceso vitalicio - hasta 5 cuentas MT4", "discount": "$50", "discountPrice": "$449", "discountNote": "o $449 con descuento de bróker asociado" },
+      "discountTitle": "Obtén hasta $50 de descuento en la licencia",
+      "discountBody": "Abre tu cuenta con mi enlace (o cambia el código IB de tu cuenta al mío) en FPMarkets, Tickmill, Vantage o Exness: $30 OFF en la Licencia Mensual y $50 OFF en la Vitalicia. Lo eliges en el siguiente paso.",
       "ctaOneMonth": "Obtener Licencia Mensual",
       "ctaLifetime": "Obtener Licencia Vitalicia"
     },
@@ -165,7 +167,7 @@
     ],
     "brokers": {
       "title": "Brókers Asociados",
-      "body": "El robot funciona con cuentas Raw Spread o ECN para MetaTrader 4 (MT4), ya que el spread necesita estar por debajo de 35 pts. Por eso trabajamos con los brókers asociados que ofrecen este tipo de cuenta: FPMarkets, Tickmill, Vantage y Exness. Esto no es una recomendación de inversión, es solo compatibilidad técnica.",
+      "body": "El robot funciona en cualquier tipo de cuenta MetaTrader 4 (MT4), en cualquier bróker, con spread por debajo de 35 pts. En los brókers asociados de abajo obtienes descuento en la licencia: abriendo tu cuenta con mi enlace o cambiando el código IB de tu cuenta al mío - $30 en la Licencia Mensual y $50 en la Vitalicia. Esto no es una recomendación de inversión.",
       "comingSoon": "Más Brókers Próximamente..."
     },
     "closing": {
@@ -215,11 +217,11 @@
       },
       {
         "q": "¿Qué brókers son compatibles?",
-        "a": "FPMarkets, Tickmill, Vantage, FPTrading e ICTrading - cuentas Raw Spread o ECN, con spread por debajo de 35 pts."
+        "a": "Cualquier bróker con MetaTrader 4, en cualquier tipo de cuenta, con spread por debajo de 35 pts. Si abres tu cuenta con mi enlace (o cambias el código IB al mío) en un bróker asociado - FPMarkets, Tickmill, Vantage o Exness - obtienes $30 de descuento en la Licencia Mensual o $50 en la Vitalicia."
       },
       {
         "q": "¿Cuál es el depósito mínimo?",
-        "a": "No hay depósito mínimo definido por mí - usas la cuenta que ya tienes o abres una con tu bróker de preferencia. El requisito es el spread por debajo de 35 pts."
+        "a": "Lo recomendado es desde $100, en una cuenta MT4 con apalancamiento 1:500 - cualquier tipo de cuenta, con spread por debajo de 35 pts."
       },
       {
         "q": "¿Cómo funciona el cobro?",
@@ -235,7 +237,7 @@
       },
       {
         "q": "¿Cómo empiezo?",
-        "a": "Habla conmigo directamente por Telegram - elige tu plan de licencia y te explico paso a paso cómo activarla en tus cuentas."
+        "a": "Elige el plan en la página de Productos y sigue el paso a paso: descuento del bróker asociado (opcional), cuenta MT4 y pago en cripto. Al final solo envíame la captura del pago por Telegram."
       }
     ],
     "cta": {
@@ -286,7 +288,7 @@
       "platform": "Plataforma", "platformValue": "MetaTrader 4",
       "pair": "Par Recomendado", "pairValue": "XAU/USD (Oro)",
       "timeframe": "Timeframe", "timeframeValue": "M15 (ajuste automático)",
-      "accountType": "Tipo de Cuenta", "accountTypeValue": "Spread bajo recomendado",
+      "accountType": "Tipo de Cuenta", "accountTypeValue": "Cualquier tipo (spread hasta 35 pts)",
       "operation": "Modo de Operación", "operationValue": "Automático, con controles manuales",
       "dashboard": "Panel Visual", "dashboardValue": "Sí, en tiempo real"
     },
@@ -312,7 +314,7 @@
   },
   "Payment": {
     "title": "Pago",
-    "intro": "Elige una de las opciones abajo para pagar tu plan. Después de enviar, mándame la captura o el hash de la transacción por Telegram para confirmar y liberar el acceso.",
+    "intro": "Sigue el paso a paso: elige si quieres el descuento del bróker asociado, crea tu cuenta MT4 y paga en cripto. Al final, envíame la captura del pago por Telegram y libero tu acceso.",
     "planLabel": "Plan seleccionado",
     "warning": "Envía solo por la red indicada en cada opción abajo. Enviar por la red equivocada puede causar la pérdida permanente de los fondos.",
     "addressLabel": "Dirección",
@@ -332,7 +334,56 @@
       "eth": { "label": "Ethereum (ETH)", "network": "Red Ethereum (ERC-20)" }
     },
     "ctaTelegram": "Ya pagué - Enviar comprobante por Telegram",
-    "dmMessage": "¡Hola! Pagué el {plan} y voy a enviar el comprobante.",
+    "dmMessage": "¡Hola! Hice el pago de la {plan} ({price}). Voy a enviar la captura del pago y el número de mi cuenta MT4.",
+    "dmMessageDiscount": "¡Hola! Hice el pago de la {plan} con descuento de socio ({price}) - bróker {broker}. Voy a enviar la captura del pago y el número de mi cuenta MT4.",
+    "flow": {
+      "choosePlan": "Elige tu plan",
+      "discountApplied": "Descuento de socio {broker}: -{discount}",
+      "back": "← Volver",
+      "steps": {
+        "discount": "Descuento",
+        "broker": "Bróker",
+        "account": "Cuenta MT4",
+        "payment": "Pago"
+      },
+      "discount": {
+        "title": "¿Quieres {discount} de descuento en tu licencia?",
+        "body": "Abre tu cuenta en un bróker asociado con mi enlace, o cambia el código IB de la cuenta que ya tienes al mío. Así pagas {discountPrice} en lugar de {price}.",
+        "yes": "Sí, quiero {discount} de descuento",
+        "no": "No, seguir sin descuento"
+      },
+      "broker": {
+        "title": "Elige el bróker asociado",
+        "body": "Toca el logo del bróker que prefieras.",
+        "newTitle": "¿Aún no tienes cuenta ahí?",
+        "newBody": "Crea tu cuenta en {broker} con mi enlace. El código IB se aplica automáticamente.",
+        "newCta": "Crear cuenta en {broker}",
+        "newTab": "Se abre en una nueva pestaña - este sitio sigue abierto aquí.",
+        "switchTitle": "¿Ya tienes cuenta ahí?",
+        "switchBody": "Pide al soporte de {broker} (chat o área de cliente) que cambie tu socio/IB al código de abajo.",
+        "ibLabel": "Código IB {broker}",
+        "next": "Listo, continuar →"
+      },
+      "account": {
+        "title": "Crea tu cuenta MT4 con esta configuración",
+        "body": "En tu bróker, abre una cuenta MetaTrader 4 así:",
+        "bodyBroker": "En el área de cliente de {broker}, abre una cuenta MetaTrader 4 así:",
+        "platform": "Plataforma",
+        "platformValue": "MetaTrader 4",
+        "leverage": "Apalancamiento",
+        "leverageValue": "1:500",
+        "deposit": "Depósito mínimo",
+        "depositValue": "$100",
+        "type": "Tipo de cuenta",
+        "typeValue": "Cualquier tipo",
+        "note": "Anota el número (login) de tu cuenta MT4 - me lo envías junto con la captura del pago para activar la licencia.",
+        "next": "Cuenta creada, ir al pago →"
+      },
+      "payment": {
+        "title": "Paga {price} con una de las opciones de abajo",
+        "body": "Después de pagar, toca el botón del final y envíame la captura del pago + el número de tu cuenta MT4 por Telegram."
+      }
+    },
     "backToPlans": "← Volver a Planes"
   }
 }

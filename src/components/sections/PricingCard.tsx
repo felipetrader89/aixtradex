@@ -7,6 +7,7 @@ export function PricingCard({
   originalPrice,
   badge,
   note,
+  discountNote,
   className = "",
 }: {
   label: string;
@@ -15,6 +16,7 @@ export function PricingCard({
   originalPrice?: string;
   badge?: string;
   note?: string;
+  discountNote?: string;
   className?: string;
 }) {
   return (
@@ -37,6 +39,11 @@ export function PricingCard({
         <span className="text-base font-medium text-brand-ink-dim">{period}</span>
       </p>
       {note && <p className="text-xs text-brand-ink-dim">{note}</p>}
+      {discountNote && (
+        <p className="rounded-full bg-brand-accent/10 px-3 py-1 text-xs font-semibold text-brand-accent">
+          {discountNote}
+        </p>
+      )}
     </GlowCard>
   );
 }

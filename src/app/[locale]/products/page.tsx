@@ -45,6 +45,7 @@ export default async function ProductsPage({ params }: Props) {
       price: t("license.oneMonth.price"),
       period: t("license.oneMonth.period"),
       note: t("license.oneMonth.note"),
+      discountNote: t("license.oneMonth.discountNote"),
       ctaLabel: t("license.ctaOneMonth"),
       ctaHref: "/payment?plan=licenseMonthly",
       Icon: IconCalendar,
@@ -56,6 +57,7 @@ export default async function ProductsPage({ params }: Props) {
       originalPrice: t("license.lifetime.originalPrice"),
       badge: t("license.lifetime.badge"),
       note: t("license.lifetime.note"),
+      discountNote: t("license.lifetime.discountNote"),
       ctaLabel: t("license.ctaLifetime"),
       ctaHref: "/payment?plan=licenseLifetime",
       Icon: IconRocket,
@@ -76,10 +78,18 @@ export default async function ProductsPage({ params }: Props) {
         <p className="mb-2 text-xs font-semibold uppercase tracking-wide text-brand-accent">
           {t("license.tag")}
         </p>
-        <p className="mb-8 max-w-2xl text-brand-ink-dim">{t("license.description")}</p>
+        <p className="mb-6 max-w-2xl text-brand-ink-dim">{t("license.description")}</p>
+
+        <GlowCard className="mb-8 flex items-start gap-3 text-sm">
+          <span className="text-2xl">🎁</span>
+          <div>
+            <p className="font-semibold text-brand-accent">{t("license.discountTitle")}</p>
+            <p className="mt-1 text-brand-ink-dim">{t("license.discountBody")}</p>
+          </div>
+        </GlowCard>
 
         <div className="mb-8 grid grid-cols-1 gap-4 sm:grid-cols-2 sm:items-stretch">
-          {plans.map(({ label, price, period, originalPrice, badge, note, ctaLabel, ctaHref, Icon, highlight }) => (
+          {plans.map(({ label, price, period, originalPrice, badge, note, discountNote, ctaLabel, ctaHref, Icon, highlight }) => (
             <div key={label} className="flex flex-col gap-4">
               <PricingCard
                 label={label}
@@ -88,6 +98,7 @@ export default async function ProductsPage({ params }: Props) {
                 originalPrice={originalPrice}
                 badge={badge}
                 note={note}
+                discountNote={discountNote}
                 className={highlight ? "!border-2 !border-brand-accent shadow-[0_0_40px_rgba(51,214,160,0.25)]" : ""}
               />
               <Link
