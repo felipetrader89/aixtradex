@@ -6,7 +6,7 @@
     },
     "products": {
       "title": "Planos",
-      "description": "Ai X Pulse RS: licença do robô pra 1 conta demo e 1 conta real, plano mensal ou licença vitalícia, com meta de performance real."
+      "description": "Ai X Pulse RS: licença do robô no plano mensal (até 2 contas MT4) ou vitalício (até 5 contas MT4), com meta de performance de até 10% ao dia."
     },
     "about": {
       "title": "Sobre",
@@ -63,8 +63,8 @@
       "heading": "Por que",
       "items": [
         { "title": "Conta 100% sua", "body": "A licença roda direto na sua própria conta - você deposita e saca quando quiser, sem terceiros administrando seu dinheiro." },
-        { "title": "Licença pra 1 Demo + 1 Real", "body": "Você recebe o arquivo .ex4 do robô e instala numa conta demo e numa conta real, as duas suas." },
-        { "title": "Performance Real", "body": "Lucre até 5% ao dia, seguindo o gerenciamento padrão do robô, a mesma lógica testada todos os dias." },
+        { "title": "Até 5 Contas MT4", "body": "Você recebe o arquivo .ex4 do robô e instala nas suas próprias contas: até 2 na licença mensal, até 5 na vitalícia." },
+        { "title": "Performance Real", "body": "Lucre até 10% ao dia, seguindo o gerenciamento padrão do robô, a mesma lógica testada todos os dias." },
         { "title": "Broker Compatíveis", "body": "FPMarkets, Tickmill, Vantage, FPTrading e ICTrading." }
       ]
     },
@@ -124,11 +124,11 @@
       }
     },
     "license": {
-      "tag": "Licença do robô - 1 conta demo + 1 conta real",
-      "description": "Você recebe o arquivo do robô e instala direto nas suas contas MT4, sem que eu faça a gestão. A licença libera até 2 contas - 1 demo e 1 real - me envia o ID de cada uma pra eu liberar o acesso.",
-      "requirementsNote": "As 2 contas (demo e real) precisam ter spread abaixo de 20 pts pra o robô entregar um bom desempenho.",
-      "oneMonth": { "label": "Licença Mensal", "price": "$69", "period": "/mês", "note": "$99/mês a partir do 2º mês" },
-      "lifetime": { "label": "Licença Vitalícia", "price": "$499", "period": "", "originalPrice": "$997", "badge": "50% OFF", "note": "Pagamento único, acesso vitalício ao robô" },
+      "tag": "Licença do robô - até 2 contas (mensal) ou até 5 contas (vitalícia)",
+      "description": "Você recebe o arquivo do robô e instala direto nas suas contas MT4, sem que eu faça a gestão. A licença mensal libera até 2 contas MT4 e a vitalícia até 5 - me envia o ID de cada uma pra eu liberar o acesso.",
+      "requirementsNote": "Todas as contas precisam ter spread abaixo de 35 pts pra o robô entregar um bom desempenho.",
+      "oneMonth": { "label": "Licença Mensal", "price": "$99", "period": "/mês", "note": "Até 2 contas MT4" },
+      "lifetime": { "label": "Licença Vitalícia", "price": "$499", "period": "", "originalPrice": "$997", "badge": "50% OFF", "note": "Pagamento único, acesso vitalício - até 5 contas MT4" },
       "ctaOneMonth": "Obter Licença Mensal",
       "ctaLifetime": "Obter Licença Vitalícia"
     },
@@ -165,7 +165,7 @@
     ],
     "brokers": {
       "title": "Corretoras Parceiras",
-      "body": "O robô funciona com contas Raw Spread ou ECN para MetaTrader 4 (MT4), já que o spread precisa estar abaixo de 20 pts. Por isso trabalhamos com as corretoras parceiras que oferecem esse tipo de conta: FPMarkets, Tickmill, Vantage e Exness. Isso não é indicação de investimento, é só compatibilidade técnica.",
+      "body": "O robô funciona com contas Raw Spread ou ECN para MetaTrader 4 (MT4), já que o spread precisa estar abaixo de 35 pts. Por isso trabalhamos com as corretoras parceiras que oferecem esse tipo de conta: FPMarkets, Tickmill, Vantage e Exness. Isso não é indicação de investimento, é só compatibilidade técnica.",
       "comingSoon": "Mais Corretoras em Breve..."
     },
     "closing": {
@@ -215,19 +215,19 @@
       },
       {
         "q": "Quais corretoras são compatíveis?",
-        "a": "FPMarkets, Tickmill, Vantage, FPTrading e ICTrading - contas Raw Spread ou ECN, com spread abaixo de 20 pts."
+        "a": "FPMarkets, Tickmill, Vantage, FPTrading e ICTrading - contas Raw Spread ou ECN, com spread abaixo de 35 pts."
       },
       {
         "q": "Qual o depósito mínimo?",
-        "a": "Não tem depósito mínimo definido por mim - você usa a conta que já tem ou abre na corretora de sua preferência. O requisito é o spread abaixo de 20 pts."
+        "a": "Não tem depósito mínimo definido por mim - você usa a conta que já tem ou abre na corretora de sua preferência. O requisito é o spread abaixo de 35 pts."
       },
       {
         "q": "Como funciona a cobrança?",
-        "a": "Licença: $69 no 1º mês e $99/mês a partir do 2º mês, ou $499 (de $997) no plano vitalício - libera 1 conta demo e 1 conta real."
+        "a": "Licença Mensal: $99/mês, libera até 2 contas MT4. Licença Vitalícia: $499 (de $997), pagamento único, libera até 5 contas MT4."
       },
       {
-        "q": "Como funciona a licença de 1 conta demo e 1 conta real?",
-        "a": "Uma licença libera o robô em 2 contas MT4 suas - 1 demo e 1 real. Depois de contratar, você me manda o ID de cada conta e eu libero o acesso. As 2 contas precisam ter spread abaixo de 20 pts pra o robô entregar um bom desempenho."
+        "q": "Quantas contas posso usar com a licença?",
+        "a": "A Licença Mensal libera o robô em até 2 contas MT4 suas, e a Licença Vitalícia em até 5. Depois de contratar, você me manda o ID de cada conta e eu libero o acesso. Todas as contas precisam ter spread abaixo de 35 pts pra o robô entregar um bom desempenho."
       },
       {
         "q": "O resultado é garantido?",

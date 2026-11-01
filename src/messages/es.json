@@ -6,7 +6,7 @@
     },
     "products": {
       "title": "Planes",
-      "description": "Ai X Pulse RS: licencia del robot para 1 cuenta demo y 1 cuenta real, plan mensual o licencia vitalicia, con una meta de rendimiento real."
+      "description": "Ai X Pulse RS: licencia del robot en el plan mensual (hasta 2 cuentas MT4) o vitalicio (hasta 5 cuentas MT4), con una meta de rendimiento de hasta 10% por día."
     },
     "about": {
       "title": "Sobre Nosotros",
@@ -63,8 +63,8 @@
       "heading": "¿Por qué",
       "items": [
         { "title": "Tu cuenta, 100% tuya", "body": "La licencia corre directo en tu propia cuenta - depositas y retiras cuando quieras, sin terceros administrando tu dinero." },
-        { "title": "Licencia para 1 Demo + 1 Real", "body": "Recibes el archivo .ex4 del robot y lo instalas en una cuenta demo y una cuenta real, ambas tuyas." },
-        { "title": "Rendimiento Real", "body": "Gana hasta 5% por día, siguiendo la gestión de riesgo estándar del robot, la misma lógica probada todos los días." },
+        { "title": "Hasta 5 Cuentas MT4", "body": "Recibes el archivo .ex4 del robot y lo instalas en tus propias cuentas: hasta 2 con la licencia mensual, hasta 5 con la vitalicia." },
+        { "title": "Rendimiento Real", "body": "Gana hasta 10% por día, siguiendo la gestión de riesgo estándar del robot, la misma lógica probada todos los días." },
         { "title": "Brókers Compatibles", "body": "Compatible con FPMarkets, Tickmill, Vantage, FPTrading e ICTrading." }
       ]
     },
@@ -124,11 +124,11 @@
       }
     },
     "license": {
-      "tag": "Licencia del robot - 1 cuenta demo + 1 cuenta real",
-      "description": "Recibes el archivo del robot y lo instalas directo en tus propias cuentas MT4, sin que yo gestione la cuenta. La licencia cubre hasta 2 cuentas - 1 demo y 1 real - envíame el ID de cada una para activarlas.",
-      "requirementsNote": "Las 2 cuentas (demo y real) necesitan un spread por debajo de 20 pts para que el robot rinda bien.",
-      "oneMonth": { "label": "Licencia Mensual", "price": "$69", "period": "/mes", "note": "$99/mes a partir del 2º mes" },
-      "lifetime": { "label": "Licencia Vitalicia", "price": "$499", "period": "", "originalPrice": "$997", "badge": "50% OFF", "note": "Pago único, acceso vitalicio al robot" },
+      "tag": "Licencia del robot - hasta 2 cuentas (mensual) o hasta 5 cuentas (vitalicia)",
+      "description": "Recibes el archivo del robot y lo instalas directo en tus propias cuentas MT4, sin que yo gestione la cuenta. La licencia mensual cubre hasta 2 cuentas MT4 y la vitalicia hasta 5 - envíame el ID de cada una para activarlas.",
+      "requirementsNote": "Todas las cuentas necesitan un spread por debajo de 35 pts para que el robot rinda bien.",
+      "oneMonth": { "label": "Licencia Mensual", "price": "$99", "period": "/mes", "note": "Hasta 2 cuentas MT4" },
+      "lifetime": { "label": "Licencia Vitalicia", "price": "$499", "period": "", "originalPrice": "$997", "badge": "50% OFF", "note": "Pago único, acceso vitalicio - hasta 5 cuentas MT4" },
       "ctaOneMonth": "Obtener Licencia Mensual",
       "ctaLifetime": "Obtener Licencia Vitalicia"
     },
@@ -165,7 +165,7 @@
     ],
     "brokers": {
       "title": "Brókers Asociados",
-      "body": "El robot funciona con cuentas Raw Spread o ECN para MetaTrader 4 (MT4), ya que el spread necesita estar por debajo de 20 pts. Por eso trabajamos con los brókers asociados que ofrecen este tipo de cuenta: FPMarkets, Tickmill, Vantage y Exness. Esto no es una recomendación de inversión, es solo compatibilidad técnica.",
+      "body": "El robot funciona con cuentas Raw Spread o ECN para MetaTrader 4 (MT4), ya que el spread necesita estar por debajo de 35 pts. Por eso trabajamos con los brókers asociados que ofrecen este tipo de cuenta: FPMarkets, Tickmill, Vantage y Exness. Esto no es una recomendación de inversión, es solo compatibilidad técnica.",
       "comingSoon": "Más Brókers Próximamente..."
     },
     "closing": {
@@ -215,19 +215,19 @@
       },
       {
         "q": "¿Qué brókers son compatibles?",
-        "a": "FPMarkets, Tickmill, Vantage, FPTrading e ICTrading - cuentas Raw Spread o ECN, con spread por debajo de 20 pts."
+        "a": "FPMarkets, Tickmill, Vantage, FPTrading e ICTrading - cuentas Raw Spread o ECN, con spread por debajo de 35 pts."
       },
       {
         "q": "¿Cuál es el depósito mínimo?",
-        "a": "No hay depósito mínimo definido por mí - usas la cuenta que ya tienes o abres una con tu bróker de preferencia. El requisito es el spread por debajo de 20 pts."
+        "a": "No hay depósito mínimo definido por mí - usas la cuenta que ya tienes o abres una con tu bróker de preferencia. El requisito es el spread por debajo de 35 pts."
       },
       {
         "q": "¿Cómo funciona el cobro?",
-        "a": "Licencia: $69 el 1º mes y $99/mes a partir del 2º mes, o $499 (de $997) en el plan vitalicio - cubre 1 cuenta demo y 1 cuenta real."
+        "a": "Licencia Mensual: $99/mes, cubre hasta 2 cuentas MT4. Licencia Vitalicia: $499 (de $997), pago único, cubre hasta 5 cuentas MT4."
       },
       {
-        "q": "¿Cómo funciona la licencia de 1 cuenta demo y 1 cuenta real?",
-        "a": "Una licencia activa el robot en 2 cuentas MT4 tuyas - 1 demo y 1 real. Después de comprarla, me envías el ID de cada cuenta y activo el acceso. Las 2 cuentas necesitan un spread por debajo de 20 pts para que el robot rinda bien."
+        "q": "¿Cuántas cuentas puedo usar con la licencia?",
+        "a": "La Licencia Mensual activa el robot en hasta 2 cuentas MT4 tuyas, y la Licencia Vitalicia en hasta 5. Después de comprarla, me envías el ID de cada cuenta y activo el acceso. Todas las cuentas necesitan un spread por debajo de 35 pts para que el robot rinda bien."
       },
       {
         "q": "¿El resultado está garantizado?",

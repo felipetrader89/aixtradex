@@ -34,7 +34,7 @@ export function CompoundCalculator({ locale }: { locale: string }) {
   const currentMonth = new Date().getMonth();
 
   const [deposit, setDeposit] = useState(100);
-  const [ratePercent, setRatePercent] = useState(5);
+  const [ratePercent, setRatePercent] = useState(10);
   const [mode, setMode] = useState<Mode>("compound");
   const [selectedMonths, setSelectedMonths] = useState<number[]>([currentMonth]);
   const dailyRate = ratePercent / 100;

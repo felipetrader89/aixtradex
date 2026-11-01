@@ -6,7 +6,7 @@
     },
     "products": {
       "title": "Plans",
-      "description": "Ai X Pulse RS: robot license for 1 demo and 1 live MT4 account, monthly plan or lifetime license, with a real performance target."
+      "description": "Ai X Pulse RS: robot license on the monthly plan (up to 2 MT4 accounts) or lifetime plan (up to 5 MT4 accounts), with a performance target of up to 10% per day."
     },
     "about": {
       "title": "About",
@@ -63,8 +63,8 @@
       "heading": "Why",
       "items": [
         { "title": "Your account, 100%", "body": "The license runs directly on your own account - deposit and withdraw whenever you want, no third party managing your money." },
-        { "title": "License for 1 Demo + 1 Live Account", "body": "You get the robot's .ex4 file and install it on a demo account and a live account, both yours." },
-        { "title": "Real Performance", "body": "Earn up to 5% per day, following the robot's standard risk settings, the same tested logic every day." },
+        { "title": "Up to 5 MT4 Accounts", "body": "You get the robot's .ex4 file and install it on your own accounts: up to 2 with the monthly license, up to 5 with the lifetime one." },
+        { "title": "Real Performance", "body": "Earn up to 10% per day, following the robot's standard risk settings, the same tested logic every day." },
         { "title": "Compatible Brokers", "body": "Works with FPMarkets, Tickmill, Vantage, FPTrading, and ICTrading." }
       ]
     },
@@ -124,11 +124,11 @@
       }
     },
     "license": {
-      "tag": "Robot license - 1 demo + 1 live account",
-      "description": "You get the robot file and install it directly on your own MT4 accounts, no account management from me. The license covers up to 2 accounts - 1 demo and 1 live - send me each account ID so I can activate them.",
-      "requirementsNote": "Both accounts (demo and live) need a spread below 20 pts for the robot to perform well.",
-      "oneMonth": { "label": "Monthly License", "price": "$69", "period": "/month", "note": "$99/month from the 2nd month on" },
-      "lifetime": { "label": "Lifetime License", "price": "$499", "period": "", "originalPrice": "$997", "badge": "50% OFF", "note": "One-time payment, lifetime access to the robot" },
+      "tag": "Robot license - up to 2 accounts (monthly) or up to 5 accounts (lifetime)",
+      "description": "You get the robot file and install it directly on your own MT4 accounts, no account management from me. The monthly license covers up to 2 MT4 accounts and the lifetime license up to 5 - send me each account ID so I can activate them.",
+      "requirementsNote": "All accounts need a spread below 35 pts for the robot to perform well.",
+      "oneMonth": { "label": "Monthly License", "price": "$99", "period": "/month", "note": "Up to 2 MT4 accounts" },
+      "lifetime": { "label": "Lifetime License", "price": "$499", "period": "", "originalPrice": "$997", "badge": "50% OFF", "note": "One-time payment, lifetime access - up to 5 MT4 accounts" },
       "ctaOneMonth": "Get the Monthly License",
       "ctaLifetime": "Get the Lifetime License"
     },
@@ -165,7 +165,7 @@
     ],
     "brokers": {
       "title": "Partner Brokers",
-      "body": "The robot works with Raw Spread or ECN accounts on MetaTrader 4 (MT4), since the spread needs to stay below 20 pts. That's why we work with partner brokers that offer this type of account: FPMarkets, Tickmill, Vantage, and Exness. This isn't investment advice, just technical compatibility.",
+      "body": "The robot works with Raw Spread or ECN accounts on MetaTrader 4 (MT4), since the spread needs to stay below 35 pts. That's why we work with partner brokers that offer this type of account: FPMarkets, Tickmill, Vantage, and Exness. This isn't investment advice, just technical compatibility.",
       "comingSoon": "More Brokers Coming Soon..."
     },
     "closing": {
@@ -215,19 +215,19 @@
       },
       {
         "q": "Which brokers are compatible?",
-        "a": "FPMarkets, Tickmill, Vantage, FPTrading, and ICTrading - Raw Spread or ECN accounts, with spread below 20 pts."
+        "a": "FPMarkets, Tickmill, Vantage, FPTrading, and ICTrading - Raw Spread or ECN accounts, with spread below 35 pts."
       },
       {
         "q": "What's the minimum deposit?",
-        "a": "There's no minimum deposit set by me - use the account you already have or open one with your broker of choice. The requirement is a spread below 20 pts."
+        "a": "There's no minimum deposit set by me - use the account you already have or open one with your broker of choice. The requirement is a spread below 35 pts."
       },
       {
         "q": "How does billing work?",
-        "a": "License: $69 for the 1st month, then $99/month from the 2nd month on, or $499 (from $997) for the lifetime plan - covers 1 demo account and 1 live account."
+        "a": "Monthly License: $99/month, covers up to 2 MT4 accounts. Lifetime License: $499 (from $997), one-time payment, covers up to 5 MT4 accounts."
       },
       {
-        "q": "How does the 1 demo + 1 live account license work?",
-        "a": "One license activates the robot on 2 of your own MT4 accounts - 1 demo and 1 live. After you purchase, you send me each account ID and I activate access. Both accounts need a spread below 20 pts for the robot to perform well."
+        "q": "How many accounts can I use with the license?",
+        "a": "The Monthly License activates the robot on up to 2 of your own MT4 accounts, and the Lifetime License on up to 5. After you purchase, you send me each account ID and I activate access. All accounts need a spread below 35 pts for the robot to perform well."
       },
       {
         "q": "Is the result guaranteed?",
