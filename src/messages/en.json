@@ -334,8 +334,8 @@
       "eth": { "label": "Ethereum (ETH)", "network": "Ethereum network (ERC-20)" }
     },
     "ctaTelegram": "I've paid - Send proof on Telegram",
-    "dmMessage": "Hi! I've paid for the {plan} ({price}).\nMT4 accounts: {accounts}\nI'll send the payment screenshot.",
-    "dmMessageDiscount": "Hi! I've paid for the {plan} with the partner discount ({price}) - broker {broker}.\nMT4 accounts: {accounts}\nI'll send the payment screenshot.",
+    "dmMessage": "Hi! I've paid for the {plan} ({price}).\nName: {name}\nCountry: {country}\nMT4 accounts: {accounts}\nI'll send the payment screenshot.",
+    "dmMessageDiscount": "Hi! I've paid for the {plan} with the partner discount ({price}) - broker {broker}.\nName: {name}\nCountry: {country}\nMT4 accounts: {accounts}\nI'll send the payment screenshot.",
     "flow": {
       "choosePlan": "Choose your plan",
       "discountApplied": "{broker} partner discount: -{discount}",
@@ -376,7 +376,7 @@
         "depositValue": "$100",
         "type": "Account type",
         "typeValue": "Any type",
-        "note": "After creating the account, enter the number (login) of each MT4 account below. They go along in the Telegram message so I can activate the license.",
+        "note": "After creating the account, fill in your details and the number (login) of each MT4 account below. Everything goes along in the Telegram message so I can activate the license.",
         "accountsTitle": "Your MT4 accounts - up to {max} on your plan",
         "slotEmpty": "+ MT4 account {n} - tap to add",
         "slotLabel": "Account {n}",
@@ -385,12 +385,21 @@
         "edit": "Edit",
         "invalid": "Numbers only (4 to 12 digits).",
         "duplicate": "This number was already added.",
-        "required": "Add at least 1 MT4 account to continue.",
-        "next": "Accounts saved, go to payment →"
+        "required": "Fill in your name, country and at least 1 MT4 account to continue.",
+        "customerTitle": "Your details",
+        "nameLabel": "Name",
+        "nameEmpty": "+ First and last name - tap to add",
+        "namePlaceholder": "First and last name",
+        "nameInvalid": "Enter your first and last name.",
+        "countryLabel": "Country",
+        "countryEmpty": "+ Country - tap to add",
+        "countryPlaceholder": "Your country",
+        "countryInvalid": "Enter your country.",
+        "next": "Details saved, go to payment →"
       },
       "payment": {
         "title": "Pay {price} with one of the options below",
-        "body": "After paying, tap the button at the bottom and send me the payment screenshot on Telegram. The message already includes your plan and your MT4 accounts.",
+        "body": "After paying, tap the button at the bottom and send me the payment screenshot on Telegram. The message already includes your details, your plan and your MT4 accounts.",
         "accounts": "MT4 accounts: {ids}"
       }
     },

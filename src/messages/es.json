@@ -334,8 +334,8 @@
       "eth": { "label": "Ethereum (ETH)", "network": "Red Ethereum (ERC-20)" }
     },
     "ctaTelegram": "Ya pagué - Enviar comprobante por Telegram",
-    "dmMessage": "¡Hola! Hice el pago de la {plan} ({price}).\nCuentas MT4: {accounts}\nVoy a enviar la captura del pago.",
-    "dmMessageDiscount": "¡Hola! Hice el pago de la {plan} con descuento de socio ({price}) - bróker {broker}.\nCuentas MT4: {accounts}\nVoy a enviar la captura del pago.",
+    "dmMessage": "¡Hola! Hice el pago de la {plan} ({price}).\nNombre: {name}\nPaís: {country}\nCuentas MT4: {accounts}\nVoy a enviar la captura del pago.",
+    "dmMessageDiscount": "¡Hola! Hice el pago de la {plan} con descuento de socio ({price}) - bróker {broker}.\nNombre: {name}\nPaís: {country}\nCuentas MT4: {accounts}\nVoy a enviar la captura del pago.",
     "flow": {
       "choosePlan": "Elige tu plan",
       "discountApplied": "Descuento de socio {broker}: -{discount}",
@@ -376,7 +376,7 @@
         "depositValue": "$100",
         "type": "Tipo de cuenta",
         "typeValue": "Cualquier tipo",
-        "note": "Después de crear la cuenta, ingresa abajo el número (login) de cada cuenta MT4. Van junto en el mensaje de Telegram para que active la licencia.",
+        "note": "Después de crear la cuenta, completa tus datos y el número (login) de cada cuenta MT4 abajo. Todo va junto en el mensaje de Telegram para que active la licencia.",
         "accountsTitle": "Tus cuentas MT4 - hasta {max} en tu plan",
         "slotEmpty": "+ Cuenta MT4 {n} - toca para agregar",
         "slotLabel": "Cuenta {n}",
@@ -385,12 +385,21 @@
         "edit": "Editar",
         "invalid": "Solo números (de 4 a 12 dígitos).",
         "duplicate": "Este número ya fue agregado.",
-        "required": "Agrega al menos 1 cuenta MT4 para continuar.",
-        "next": "Cuentas guardadas, ir al pago →"
+        "required": "Completa nombre, país y al menos 1 cuenta MT4 para continuar.",
+        "customerTitle": "Tus datos",
+        "nameLabel": "Nombre",
+        "nameEmpty": "+ Nombre y apellido - toca para agregar",
+        "namePlaceholder": "Nombre y apellido",
+        "nameInvalid": "Ingresa tu nombre y apellido.",
+        "countryLabel": "País",
+        "countryEmpty": "+ País - toca para agregar",
+        "countryPlaceholder": "Tu país",
+        "countryInvalid": "Ingresa tu país.",
+        "next": "Datos guardados, ir al pago →"
       },
       "payment": {
         "title": "Paga {price} con una de las opciones de abajo",
-        "body": "Después de pagar, toca el botón del final y envíame la captura del pago por Telegram. El mensaje ya incluye tu plan y tus cuentas MT4.",
+        "body": "Después de pagar, toca el botón del final y envíame la captura del pago por Telegram. El mensaje ya incluye tus datos, tu plan y tus cuentas MT4.",
         "accounts": "Cuentas MT4: {ids}"
       }
     },

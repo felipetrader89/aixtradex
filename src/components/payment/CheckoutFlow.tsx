@@ -9,6 +9,7 @@ import { Link } from "@/i18n/navigation";
 import { siteConfig, paymentAddresses, partnerBrokers } from "@/lib/site-config";
 import { PLAN_ACCOUNTS, PLAN_KEYS, PLAN_PATH, type PlanKey } from "@/lib/plans";
 import { AccountIdSlots } from "@/components/payment/AccountIdSlots";
+import { InlineField } from "@/components/payment/InlineField";
 
 const STEPS = ["discount", "broker", "account", "payment"] as const;
 type Step = (typeof STEPS)[number];
@@ -41,6 +42,8 @@ export function CheckoutFlow({ initialPlan }: { initialPlan?: PlanKey }) {
   const [wantsDiscount, setWantsDiscount] = useState(false);
   const [brokerSlug, setBrokerSlug] = useState<BrokerSlug | undefined>();
   const [accountIds, setAccountIds] = useState<string[]>([]);
+  const [customerName, setCustomerName] = useState("");
+  const [customerCountry, setCustomerCountry] = useState("");
   const topRef = useRef<HTMLDivElement>(null);
 
   function goTo(next: Step) {
@@ -61,10 +64,18 @@ export function CheckoutFlow({ initialPlan }: { initialPlan?: PlanKey }) {
   // Ao trocar de vitalícia pra mensal, só as primeiras contas cabem no plano.
   const savedIds = accountIds.slice(0, maxAccounts).filter(Boolean);
   const accounts = savedIds.join(", ");
+  const accountStepDone = Boolean(customerName && customerCountry && savedIds.length > 0);
 
+  const dmValues = {
+    plan: planLabel,
+    price: finalPrice,
+    name: customerName,
+    country: customerCountry,
+    accounts,
+  };
   const dmText = discountApplied
-    ? t("dmMessageDiscount", { plan: planLabel, price: finalPrice, broker: broker!.name, accounts })
-    : t("dmMessage", { plan: planLabel, price: finalPrice, accounts });
+    ? t("dmMessageDiscount", { ...dmValues, broker: broker!.name })
+    : t("dmMessage", dmValues);
   const dmHref = `${siteConfig.telegramDmUrl}?text=${encodeURIComponent(dmText)}`;
 
   const visibleSteps: readonly Step[] = wantsDiscount ? STEPS : STEPS.filter((s) => s !== "broker");
@@ -275,8 +286,33 @@ export function CheckoutFlow({ initialPlan }: { initialPlan?: PlanKey }) {
               <p className="mx-auto mt-5 max-w-md rounded-lg bg-brand-surface-2 p-3 text-xs text-brand-ink-dim">
                 💡 {tFlow("account.note")}
               </p>
+              <div className="mx-auto mt-6 max-w-md">
+                <p className="mb-3 text-xs font-semibold uppercase tracking-wide text-brand-accent">
+                  {tFlow("account.customerTitle")}
+                </p>
+                <div className="flex flex-col gap-2">
+                  <InlineField
+                    label={tFlow("account.nameLabel")}
+                    emptyText={tFlow("account.nameEmpty")}
+                    value={customerName}
+                    placeholder={tFlow("account.namePlaceholder")}
+                    autoComplete="name"
+                    validate={(v) => (v.split(" ").length < 2 ? tFlow("account.nameInvalid") : null)}
+                    onSave={setCustomerName}
+                  />
+                  <InlineField
+                    label={tFlow("account.countryLabel")}
+                    emptyText={tFlow("account.countryEmpty")}
+                    value={customerCountry}
+                    placeholder={tFlow("account.countryPlaceholder")}
+                    autoComplete="country-name"
+                    validate={(v) => (v.length < 2 ? tFlow("account.countryInvalid") : null)}
+                    onSave={setCustomerCountry}
+                  />
+                </div>
+              </div>
               <AccountIdSlots max={maxAccounts} ids={accountIds} onChange={setAccountIds} />
-              {savedIds.length === 0 && (
+              {!accountStepDone && (
                 <p className="mt-3 text-center text-xs text-brand-ink-dim">{tFlow("account.required")}</p>
               )}
               <div className="mt-6 flex items-center justify-between gap-3">
@@ -290,7 +326,7 @@ export function CheckoutFlow({ initialPlan }: { initialPlan?: PlanKey }) {
                 <button
                   type="button"
                   className={primaryBtn}
-                  disabled={savedIds.length === 0}
+                  disabled={!accountStepDone}
                   onClick={() => goTo("payment")}
                 >
                   {tFlow("account.next")}
@@ -306,9 +342,14 @@ export function CheckoutFlow({ initialPlan }: { initialPlan?: PlanKey }) {
                   {tFlow("payment.title", { price: finalPrice })}
                 </h2>
                 <p className="mt-2 text-sm text-brand-ink-dim">{tFlow("payment.body")}</p>
-                <p className="mt-3 inline-block rounded-full bg-brand-accent/10 px-3 py-1 font-mono text-xs font-semibold text-brand-accent">
-                  {tFlow("payment.accounts", { ids: savedIds.join(" · ") })}
-                </p>
+                <div className="mt-3 flex flex-wrap justify-center gap-2">
+                  <p className="rounded-full bg-brand-accent/10 px-3 py-1 text-xs font-semibold text-brand-accent">
+                    {customerName} · {customerCountry}
+                  </p>
+                  <p className="rounded-full bg-brand-accent/10 px-3 py-1 font-mono text-xs font-semibold text-brand-accent">
+                    {tFlow("payment.accounts", { ids: savedIds.join(" · ") })}
+                  </p>
+                </div>
               </GlowCard>
 
               <GlowCard className="mb-4 text-sm text-brand-ink-dim">
