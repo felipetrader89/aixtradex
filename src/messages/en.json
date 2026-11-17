@@ -334,8 +334,8 @@
       "eth": { "label": "Ethereum (ETH)", "network": "Ethereum network (ERC-20)" }
     },
     "ctaTelegram": "I've paid - Send proof on Telegram",
-    "dmMessage": "Hi! I've paid for the {plan} ({price}). I'll send the payment screenshot and my MT4 account number.",
-    "dmMessageDiscount": "Hi! I've paid for the {plan} with the partner discount ({price}) - broker {broker}. I'll send the payment screenshot and my MT4 account number.",
+    "dmMessage": "Hi! I've paid for the {plan} ({price}).\nMT4 accounts: {accounts}\nI'll send the payment screenshot.",
+    "dmMessageDiscount": "Hi! I've paid for the {plan} with the partner discount ({price}) - broker {broker}.\nMT4 accounts: {accounts}\nI'll send the payment screenshot.",
     "flow": {
       "choosePlan": "Choose your plan",
       "discountApplied": "{broker} partner discount: -{discount}",
@@ -376,12 +376,22 @@
         "depositValue": "$100",
         "type": "Account type",
         "typeValue": "Any type",
-        "note": "Write down your MT4 account number (login) - send it to me along with the payment screenshot so I can activate the license.",
-        "next": "Account created, go to payment →"
+        "note": "After creating the account, enter the number (login) of each MT4 account below. They go along in the Telegram message so I can activate the license.",
+        "accountsTitle": "Your MT4 accounts - up to {max} on your plan",
+        "slotEmpty": "+ MT4 account {n} - tap to add",
+        "slotLabel": "Account {n}",
+        "placeholder": "Account number (login)",
+        "save": "Save",
+        "edit": "Edit",
+        "invalid": "Numbers only (4 to 12 digits).",
+        "duplicate": "This number was already added.",
+        "required": "Add at least 1 MT4 account to continue.",
+        "next": "Accounts saved, go to payment →"
       },
       "payment": {
         "title": "Pay {price} with one of the options below",
-        "body": "After paying, tap the button at the bottom and send me the payment screenshot + your MT4 account number on Telegram."
+        "body": "After paying, tap the button at the bottom and send me the payment screenshot on Telegram. The message already includes your plan and your MT4 accounts.",
+        "accounts": "MT4 accounts: {ids}"
       }
     },
     "backToPlans": "← Back to Plans"

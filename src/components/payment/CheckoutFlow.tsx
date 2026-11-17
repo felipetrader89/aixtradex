@@ -7,7 +7,8 @@ import { GlowCard } from "@/components/brand/GlowCard";
 import { CopyButton } from "@/components/ui/CopyButton";
 import { Link } from "@/i18n/navigation";
 import { siteConfig, paymentAddresses, partnerBrokers } from "@/lib/site-config";
-import { PLAN_KEYS, PLAN_PATH, type PlanKey } from "@/lib/plans";
+import { PLAN_ACCOUNTS, PLAN_KEYS, PLAN_PATH, type PlanKey } from "@/lib/plans";
+import { AccountIdSlots } from "@/components/payment/AccountIdSlots";
 
 const STEPS = ["discount", "broker", "account", "payment"] as const;
 type Step = (typeof STEPS)[number];
@@ -39,6 +40,7 @@ export function CheckoutFlow({ initialPlan }: { initialPlan?: PlanKey }) {
   const [step, setStep] = useState<Step>("discount");
   const [wantsDiscount, setWantsDiscount] = useState(false);
   const [brokerSlug, setBrokerSlug] = useState<BrokerSlug | undefined>();
+  const [accountIds, setAccountIds] = useState<string[]>([]);
   const topRef = useRef<HTMLDivElement>(null);
 
   function goTo(next: Step) {
@@ -55,10 +57,14 @@ export function CheckoutFlow({ initialPlan }: { initialPlan?: PlanKey }) {
   const discountPrice = planPath ? tProducts(`${planPath}.discountPrice`) : "";
   const finalPrice = discountApplied ? discountPrice : fullPrice;
   const period = planPath ? tProducts(`${planPath}.period`) : "";
+  const maxAccounts = plan ? PLAN_ACCOUNTS[plan] : 0;
+  // Ao trocar de vitalícia pra mensal, só as primeiras contas cabem no plano.
+  const savedIds = accountIds.slice(0, maxAccounts).filter(Boolean);
+  const accounts = savedIds.join(", ");
 
   const dmText = discountApplied
-    ? t("dmMessageDiscount", { plan: planLabel, price: finalPrice, broker: broker!.name })
-    : t("dmMessage", { plan: planLabel, price: finalPrice });
+    ? t("dmMessageDiscount", { plan: planLabel, price: finalPrice, broker: broker!.name, accounts })
+    : t("dmMessage", { plan: planLabel, price: finalPrice, accounts });
   const dmHref = `${siteConfig.telegramDmUrl}?text=${encodeURIComponent(dmText)}`;
 
   const visibleSteps: readonly Step[] = wantsDiscount ? STEPS : STEPS.filter((s) => s !== "broker");
@@ -269,6 +275,10 @@ export function CheckoutFlow({ initialPlan }: { initialPlan?: PlanKey }) {
               <p className="mx-auto mt-5 max-w-md rounded-lg bg-brand-surface-2 p-3 text-xs text-brand-ink-dim">
                 💡 {tFlow("account.note")}
               </p>
+              <AccountIdSlots max={maxAccounts} ids={accountIds} onChange={setAccountIds} />
+              {savedIds.length === 0 && (
+                <p className="mt-3 text-center text-xs text-brand-ink-dim">{tFlow("account.required")}</p>
+              )}
               <div className="mt-6 flex items-center justify-between gap-3">
                 <button
                   type="button"
@@ -277,7 +287,12 @@ export function CheckoutFlow({ initialPlan }: { initialPlan?: PlanKey }) {
                 >
                   {tFlow("back")}
                 </button>
-                <button type="button" className={primaryBtn} onClick={() => goTo("payment")}>
+                <button
+                  type="button"
+                  className={primaryBtn}
+                  disabled={savedIds.length === 0}
+                  onClick={() => goTo("payment")}
+                >
                   {tFlow("account.next")}
                 </button>
               </div>
@@ -291,6 +306,9 @@ export function CheckoutFlow({ initialPlan }: { initialPlan?: PlanKey }) {
                   {tFlow("payment.title", { price: finalPrice })}
                 </h2>
                 <p className="mt-2 text-sm text-brand-ink-dim">{tFlow("payment.body")}</p>
+                <p className="mt-3 inline-block rounded-full bg-brand-accent/10 px-3 py-1 font-mono text-xs font-semibold text-brand-accent">
+                  {tFlow("payment.accounts", { ids: savedIds.join(" · ") })}
+                </p>
               </GlowCard>
 
               <GlowCard className="mb-4 text-sm text-brand-ink-dim">

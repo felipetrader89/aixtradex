@@ -334,8 +334,8 @@
       "eth": { "label": "Ethereum (ETH)", "network": "Rede Ethereum (ERC-20)" }
     },
     "ctaTelegram": "Já paguei - Enviar comprovante no Telegram",
-    "dmMessage": "Olá! Fiz o pagamento da {plan} ({price}). Vou enviar o print do pagamento e o número da minha conta MT4.",
-    "dmMessageDiscount": "Olá! Fiz o pagamento da {plan} com desconto de parceiro ({price}) - corretora {broker}. Vou enviar o print do pagamento e o número da minha conta MT4.",
+    "dmMessage": "Olá! Fiz o pagamento da {plan} ({price}).\nContas MT4: {accounts}\nVou enviar o print do pagamento.",
+    "dmMessageDiscount": "Olá! Fiz o pagamento da {plan} com desconto de parceiro ({price}) - corretora {broker}.\nContas MT4: {accounts}\nVou enviar o print do pagamento.",
     "flow": {
       "choosePlan": "Escolha seu plano",
       "discountApplied": "Desconto de parceiro {broker}: -{discount}",
@@ -376,12 +376,22 @@
         "depositValue": "$100",
         "type": "Tipo de conta",
         "typeValue": "Qualquer tipo",
-        "note": "Anote o número (login) da conta MT4 - você me envia junto com o print do pagamento pra eu liberar a licença.",
-        "next": "Conta criada, ir pro pagamento →"
+        "note": "Depois de criar a conta, informe abaixo o número (login) de cada conta MT4. Eles vão juntos na mensagem do Telegram pra eu liberar a licença.",
+        "accountsTitle": "Suas contas MT4 - até {max} no seu plano",
+        "slotEmpty": "+ Conta MT4 {n} - toque pra adicionar",
+        "slotLabel": "Conta {n}",
+        "placeholder": "Número da conta (login)",
+        "save": "Salvar",
+        "edit": "Editar",
+        "invalid": "Use só números (de 4 a 12 dígitos).",
+        "duplicate": "Esse número já foi adicionado.",
+        "required": "Adicione pelo menos 1 conta MT4 pra continuar.",
+        "next": "Contas salvas, ir pro pagamento →"
       },
       "payment": {
         "title": "Pague {price} por uma das opções abaixo",
-        "body": "Depois de pagar, toque no botão do final e me envie o print do pagamento + o número da sua conta MT4 no Telegram."
+        "body": "Depois de pagar, toque no botão do final e me envie o print do pagamento no Telegram. A mensagem já vai com seu plano e suas contas MT4.",
+        "accounts": "Contas MT4: {ids}"
       }
     },
     "backToPlans": "← Voltar pra Planos"
