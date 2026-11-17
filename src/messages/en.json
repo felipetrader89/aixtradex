@@ -393,8 +393,8 @@
         "nameInvalid": "Enter your first and last name.",
         "countryLabel": "Country",
         "countryEmpty": "+ Country - tap to add",
-        "countryPlaceholder": "Your country",
-        "countryInvalid": "Enter your country.",
+        "countryPlaceholder": "Type to search your country",
+        "countryNone": "No country found",
         "next": "Details saved, go to payment →"
       },
       "payment": {

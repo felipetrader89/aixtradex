@@ -10,6 +10,7 @@ import { siteConfig, paymentAddresses, partnerBrokers } from "@/lib/site-config"
 import { PLAN_ACCOUNTS, PLAN_KEYS, PLAN_PATH, type PlanKey } from "@/lib/plans";
 import { AccountIdSlots } from "@/components/payment/AccountIdSlots";
 import { InlineField } from "@/components/payment/InlineField";
+import { CountryField } from "@/components/payment/CountryField";
 
 const STEPS = ["discount", "broker", "account", "payment"] as const;
 type Step = (typeof STEPS)[number];
@@ -300,15 +301,7 @@ export function CheckoutFlow({ initialPlan }: { initialPlan?: PlanKey }) {
                     validate={(v) => (v.split(" ").length < 2 ? tFlow("account.nameInvalid") : null)}
                     onSave={setCustomerName}
                   />
-                  <InlineField
-                    label={tFlow("account.countryLabel")}
-                    emptyText={tFlow("account.countryEmpty")}
-                    value={customerCountry}
-                    placeholder={tFlow("account.countryPlaceholder")}
-                    autoComplete="country-name"
-                    validate={(v) => (v.length < 2 ? tFlow("account.countryInvalid") : null)}
-                    onSave={setCustomerCountry}
-                  />
+                  <CountryField value={customerCountry} onSave={setCustomerCountry} />
                 </div>
               </div>
               <AccountIdSlots max={maxAccounts} ids={accountIds} onChange={setAccountIds} />

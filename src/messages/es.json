@@ -393,8 +393,8 @@
         "nameInvalid": "Ingresa tu nombre y apellido.",
         "countryLabel": "País",
         "countryEmpty": "+ País - toca para agregar",
-        "countryPlaceholder": "Tu país",
-        "countryInvalid": "Ingresa tu país.",
+        "countryPlaceholder": "Escribe para buscar el país",
+        "countryNone": "Ningún país encontrado",
         "next": "Datos guardados, ir al pago →"
       },
       "payment": {
