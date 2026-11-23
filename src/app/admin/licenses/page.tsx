@@ -6,8 +6,10 @@ import {
   extendLicenseAction,
   saveLicenseNotesAction,
   setLicenseAccountsAction,
+  setLicenseOwnerAction,
   setLicenseStatusAction,
 } from "@/app/actions/admin";
+import { PLACEHOLDER_EMAIL_DOMAIN, isPlaceholderEmail } from "@/lib/auth";
 import {
   Badge,
   Flash,
@@ -27,6 +29,7 @@ const FILTERS = [
   { value: "expiring", label: "Vencem em 7 dias" },
   { value: "expired", label: "Vencidas" },
   { value: "suspended", label: "Bloqueadas" },
+  { value: "noemail", label: "Sem email" },
 ] as const;
 
 const STATE = {
@@ -45,6 +48,7 @@ export default async function AdminLicenses({ searchParams }: Props) {
         ilike(schema.users.email, `%${term}%`),
         ilike(schema.users.name, `%${term}%`),
         ilike(schema.licenses.key, `%${term}%`),
+        ilike(schema.licenses.notes, `%${term}%`),
         inArray(
           schema.licenses.id,
           db()
@@ -65,7 +69,9 @@ export default async function AdminLicenses({ searchParams }: Props) {
         ? and(isNotNull(schema.licenses.expiresAt), lte(schema.licenses.expiresAt, now))
         : filter === "suspended"
           ? eq(schema.licenses.status, "suspended")
-          : undefined;
+          : filter === "noemail"
+            ? ilike(schema.users.email, `%@${PLACEHOLDER_EMAIL_DOMAIN}`)
+            : undefined;
 
   const rows = await db()
     .select({ license: schema.licenses, user: schema.users })
@@ -158,8 +164,9 @@ export default async function AdminLicenses({ searchParams }: Props) {
                         {license.expiresAt ? ` · vence ${fmtDate(license.expiresAt)}` : ""}
                       </span>
                     </p>
-                    <p className="mt-1 text-sm text-brand-ink">
-                      {user.name ?? "-"} · {user.country ?? "-"} · {user.email}
+                    <p className="mt-1 flex flex-wrap items-center gap-2 text-sm text-brand-ink">
+                      {user.name ?? "-"} · {user.country ?? "-"} ·{" "}
+                      {isPlaceholderEmail(user.email) ? <Badge tone="warn">sem email</Badge> : user.email}
                     </p>
                   </div>
                   <div className="flex flex-wrap gap-2">
@@ -230,6 +237,21 @@ export default async function AdminLicenses({ searchParams }: Props) {
                     />
                     <button type="submit" className={adminBtnGhost}>
                       Salvar contas
+                    </button>
+                  </form>
+                  <form action={setLicenseOwnerAction} className="flex gap-2">
+                    <input type="hidden" name="licenseId" value={license.id} />
+                    <input type="hidden" name="back" value={back} />
+                    <input
+                      name="email"
+                      type="email"
+                      required
+                      defaultValue={isPlaceholderEmail(user.email) ? "" : user.email}
+                      placeholder="Email do cliente"
+                      className={`${adminInput} min-w-0 flex-1`}
+                    />
+                    <button type="submit" className={adminBtnGhost}>
+                      Trocar email
                     </button>
                   </form>
                   <form action={saveLicenseNotesAction} className="flex gap-2">

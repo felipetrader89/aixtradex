@@ -3,7 +3,7 @@
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { eq } from "drizzle-orm";
-import { EMAIL_RE, findOrCreateUser, requireAdmin } from "@/lib/auth";
+import { EMAIL_RE, findOrCreateUser, isPlaceholderEmail, normalizeEmail, requireAdmin } from "@/lib/auth";
 import { db, schema } from "@/lib/db";
 import { approveOrder, extendLicense, loginsInUse, newLicenseKey, setLicenseAccounts } from "@/lib/licensing";
 import { MONTHLY_DAYS, PLAN_MAX_ACCOUNTS, PRODUCT, type PlanType } from "@/lib/plans";
@@ -80,6 +80,35 @@ export async function setLicenseAccountsAction(form: FormData) {
     inUse: `Já estão em outra licença: ${result.logins?.join(", ")}`,
   }[result.error];
   back(form, reason);
+}
+
+// Troca o dono da licença pelo email informado (cliente importado do robô sem email, ou cliente que mudou de email).
+// Se o dono antigo era provisório (@sem-email.invalid) e ficou sem licença, os pedidos dele passam pro novo e ele é apagado.
+export async function setLicenseOwnerAction(form: FormData) {
+  await requireAdmin();
+  const license = await loadLicense(form);
+  const email = normalizeEmail(field(form, "email"));
+  if (!EMAIL_RE.test(email) || isPlaceholderEmail(email)) back(form, "Email inválido.");
+
+  const [oldOwner] = await db().select().from(schema.users).where(eq(schema.users.id, license.userId));
+  const owner = await findOrCreateUser(email, { name: oldOwner?.name ?? undefined });
+  if (owner.id === license.userId) back(form, "Essa licença já é desse email.");
+
+  await db().transaction(async (tx) => {
+    await tx.update(schema.licenses).set({ userId: owner.id }).where(eq(schema.licenses.id, license.id));
+    if (oldOwner && isPlaceholderEmail(oldOwner.email)) {
+      const [left] = await tx
+        .select({ id: schema.licenses.id })
+        .from(schema.licenses)
+        .where(eq(schema.licenses.userId, oldOwner.id))
+        .limit(1);
+      if (!left) {
+        await tx.update(schema.orders).set({ userId: owner.id }).where(eq(schema.orders.userId, oldOwner.id));
+        await tx.delete(schema.users).where(eq(schema.users.id, oldOwner.id));
+      }
+    }
+  });
+  back(form, `Licença ${license.key} agora é de ${email}. O cliente já pode entrar em Minha Conta com esse email.`);
 }
 
 export async function saveLicenseNotesAction(form: FormData) {

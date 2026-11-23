@@ -19,6 +19,11 @@ export function normalizeEmail(email: string) {
 
 export const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
 
+// Clientes importados do robô antigo que ainda não mandaram email ficam com um email provisório nesse domínio
+// (.invalid nunca recebe email). O admin troca pelo email real em /admin/licenses.
+export const PLACEHOLDER_EMAIL_DOMAIN = "sem-email.invalid";
+export const isPlaceholderEmail = (email: string) => normalizeEmail(email).endsWith(`@${PLACEHOLDER_EMAIL_DOMAIN}`);
+
 export function isAdminEmail(email: string) {
   const admins = (process.env.ADMIN_EMAILS ?? "")
     .split(",")

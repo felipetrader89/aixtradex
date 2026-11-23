@@ -7,6 +7,7 @@ import {
   createLoginCode,
   endSession,
   findOrCreateUser,
+  isPlaceholderEmail,
   normalizeEmail,
   startSession,
   verifyLoginCode,
@@ -22,7 +23,7 @@ function safeLocale(locale: string) {
 
 export async function requestCodeAction(rawEmail: string, rawLocale: string): Promise<AuthResult> {
   const email = normalizeEmail(rawEmail);
-  if (!EMAIL_RE.test(email)) return { ok: false, error: "email" };
+  if (!EMAIL_RE.test(email) || isPlaceholderEmail(email)) return { ok: false, error: "email" };
   const locale = safeLocale(rawLocale);
   try {
     const code = await createLoginCode(email);
