@@ -2,7 +2,7 @@ import { desc, eq } from "drizzle-orm";
 import { db, schema } from "@/lib/db";
 import { PRODUCT } from "@/lib/plans";
 import { deleteVersionAction, setCurrentVersionAction } from "@/app/actions/admin";
-import { Badge, Flash, Panel, adminBtn, adminBtnDanger, adminBtnGhost, adminInput, fmtDate } from "@/components/admin/ui";
+import { Badge, Flash, PageHeader, Panel, adminBtn, adminBtnDanger, adminBtnGhost, adminInput, fmtDate } from "@/components/admin/ui";
 
 type Props = { searchParams: Promise<{ msg?: string }> };
 
@@ -24,6 +24,7 @@ export default async function AdminFiles({ searchParams }: Props) {
 
   return (
     <div>
+      <PageHeader title="Arquivos do robô" description="Versões do robô que o cliente baixa na Minha Conta. Só quem tem licença ativa consegue baixar." />
       <Flash msg={msg} />
       <Panel title={`Enviar versão nova - ${PRODUCT.name}`} className="mb-6">
         <form action="/api/admin/upload" method="post" encType="multipart/form-data" className="grid gap-3 sm:grid-cols-2">

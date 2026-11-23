@@ -6,6 +6,7 @@ import { db, schema } from "@/lib/db";
 import { isPlaceholderEmail } from "@/lib/auth";
 import { sendEmail } from "@/lib/email";
 import { licenseServerUrl } from "@/lib/site-config";
+import { getAdminEmails } from "@/lib/config";
 
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "https://app.aixtradex.com";
 
@@ -70,7 +71,7 @@ export async function notifyOrderPaid(orderId: string, via: string) {
       });
     }
 
-    const admins = (process.env.ADMIN_EMAILS ?? "").split(",").map((e) => e.trim()).filter(Boolean);
+    const admins = (await getAdminEmails()).all;
     if (admins.length) {
       const adminLines = [
         `Pedido ${order.code} pago via ${via}.`,

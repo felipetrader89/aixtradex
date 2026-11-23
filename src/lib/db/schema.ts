@@ -171,6 +171,19 @@ export const settings = pgTable("settings", {
   updatedAt: timestamp("updated_at", { withTimezone: true }).notNull().defaultNow(),
 });
 
+// Histórico do admin: quem mudou o quê (configurações, aprovações, licenças). Só leitura na aba Sistema.
+export const adminEvents = pgTable(
+  "admin_events",
+  {
+    id: serial("id").primaryKey(),
+    actor: text("actor").notNull(),
+    action: text("action").notNull(),
+    detail: text("detail"),
+    createdAt: createdAt(),
+  },
+  (t) => [index("admin_events_created_idx").on(t.createdAt)]
+);
+
 export type User = typeof users.$inferSelect;
 export type Order = typeof orders.$inferSelect;
 export type License = typeof licenses.$inferSelect;

@@ -3,22 +3,19 @@
 import { useTranslations } from "next-intl";
 import { GlowCard } from "@/components/brand/GlowCard";
 import { CopyButton } from "@/components/ui/CopyButton";
-import { paymentAddresses } from "@/lib/site-config";
+import type { PublicPaymentMethod } from "@/lib/payment-methods";
 
-const METHODS = [
-  { key: "binancePay", value: paymentAddresses.binancePayId },
-  { key: "btc", value: paymentAddresses.btc },
-  { key: "usdtTrc20", value: paymentAddresses.usdtTrc20 },
-  { key: "usdtErc20", value: paymentAddresses.usdtErc20 },
-  { key: "usdtBep20", value: paymentAddresses.usdtBep20 },
-  { key: "usdc", value: paymentAddresses.usdc },
-  { key: "ltc", value: paymentAddresses.ltc },
-  { key: "eth", value: paymentAddresses.eth },
-] as const;
-
-// Carteiras cripto + botão do Telegram com a mensagem já pronta.
+// Carteiras cripto (as ligadas em Admin → Configurações → Carteiras) + botão do Telegram com a mensagem pronta.
 // Com `exactAmount` (leitura automática da Binance ligada), mostra no topo o valor exato que confirma o pedido sozinho.
-export function PaymentMethods({ dmHref, exactAmount }: { dmHref: string; exactAmount?: string | null }) {
+export function PaymentMethods({
+  dmHref,
+  methods,
+  exactAmount,
+}: {
+  dmHref: string;
+  methods: PublicPaymentMethod[];
+  exactAmount?: string | null;
+}) {
   const t = useTranslations("Payment");
   return (
     <>
@@ -42,10 +39,17 @@ export function PaymentMethods({ dmHref, exactAmount }: { dmHref: string; exactA
       </GlowCard>
 
       <div className="mb-8 flex flex-col gap-4">
-        {METHODS.map(({ key, value }) => (
+        {methods.map(({ key, value, auto }) => (
           <GlowCard key={key} className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
             <div>
-              <p className="font-display text-base font-bold text-chrome">{t(`methods.${key}.label`)}</p>
+              <p className="flex flex-wrap items-center gap-2 font-display text-base font-bold text-chrome">
+                {t(`methods.${key}.label`)}
+                {auto && exactAmount && (
+                  <span className="rounded-full bg-brand-accent/15 px-2 py-0.5 font-body text-[10px] font-semibold uppercase tracking-wide text-brand-accent">
+                    {t("auto.badge")}
+                  </span>
+                )}
+              </p>
               <p className="text-xs text-brand-ink-dim">{t(`methods.${key}.network`)}</p>
               <p className="mt-1 break-all font-mono text-xs text-brand-ink">{value}</p>
             </div>

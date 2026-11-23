@@ -5,6 +5,7 @@ import { useLocale, useTranslations } from "next-intl";
 import { PaymentMethods } from "@/components/payment/PaymentMethods";
 import { renewMyLicenseAction } from "@/app/actions/account";
 import { siteConfig } from "@/lib/site-config";
+import type { PublicPaymentMethod } from "@/lib/payment-methods";
 
 const secondaryBtn =
   "inline-flex items-center justify-center rounded-full border border-brand-accent/40 px-5 py-2.5 text-sm font-semibold text-brand-ink transition-colors hover:border-brand-accent hover:text-brand-accent disabled:pointer-events-none disabled:opacity-40";
@@ -37,11 +38,13 @@ export function PayOrder({
   code,
   amount,
   email,
+  methods,
   exactAmount,
 }: {
   code: string;
   amount: string;
   email: string;
+  methods: PublicPaymentMethod[];
   exactAmount?: string | null;
 }) {
   const t = useTranslations("Account");
@@ -57,7 +60,7 @@ export function PayOrder({
           <p className="mb-4 text-sm text-brand-ink-dim">
             {exactAmount ? t("payIntroAuto", { amount: exactAmount, code }) : t("payIntro", { amount, code })}
           </p>
-          <PaymentMethods dmHref={dmHref} exactAmount={exactAmount} />
+          <PaymentMethods dmHref={dmHref} methods={methods} exactAmount={exactAmount} />
         </div>
       )}
     </div>

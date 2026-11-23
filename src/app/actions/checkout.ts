@@ -2,7 +2,7 @@
 
 import { eq } from "drizzle-orm";
 import { EMAIL_RE } from "@/lib/auth";
-import { binanceConfigured } from "@/lib/binance";
+import { isAutoPayActive } from "@/lib/config";
 import { db, schema } from "@/lib/db";
 import { cleanLogins, createOrder } from "@/lib/licensing";
 import { PLAN_MAX_ACCOUNTS, PLAN_TYPE, isPlanKey } from "@/lib/plans";
@@ -41,7 +41,7 @@ export async function createOrderAction(input: {
       logins: cleaned.logins!,
       locale: input.locale?.slice(0, 5),
     });
-    const payAmount = binanceConfigured() && order.payAmount ? Number(order.payAmount).toFixed(2) : null;
+    const payAmount = (await isAutoPayActive()) && order.payAmount ? Number(order.payAmount).toFixed(2) : null;
     return { ok: true, code: order.code, amount: order.amountUsd, payAmount };
   } catch (error) {
     console.error("createOrderAction", error);

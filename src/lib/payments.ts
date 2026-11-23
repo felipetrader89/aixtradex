@@ -1,7 +1,8 @@
 import "server-only";
 import { and, eq, gte, isNotNull, lte } from "drizzle-orm";
 import { db, schema } from "@/lib/db";
-import { binanceConfigured, fetchDeposits, fetchPayReceipts, type IncomingPayment } from "@/lib/binance";
+import { fetchDeposits, fetchKeyPermissions, fetchPayReceipts, type IncomingPayment } from "@/lib/binance";
+import { getBinanceCreds, getBinanceSettings, type BinanceCreds, type BinanceTest } from "@/lib/config";
 import { approveOrder } from "@/lib/licensing";
 import { notifyOrderPaid } from "@/lib/notify";
 
@@ -23,6 +24,7 @@ export type BinanceState = {
   newDeposits?: number;
   matched?: number;
   payError?: string;
+  autoMatch?: boolean;
 };
 
 async function saveState(state: BinanceState) {
@@ -63,26 +65,29 @@ async function findOrderFor(payment: IncomingPayment) {
 // Rodado a cada minuto pelo timer da VPS (pulse-binance.timer → /api/cron/binance).
 export async function syncBinance(): Promise<BinanceState> {
   const startedAt = new Date();
-  if (!binanceConfigured()) {
+  const creds = await getBinanceCreds();
+  if (!creds) {
     const state = { lastRunAt: startedAt.toISOString(), ok: false, error: "Chave da Binance não configurada." };
     await saveState(state);
     return state;
   }
+  // Desligado no admin: continua lendo os recebimentos (pra vincular à mão), só não paga pedido sozinho.
+  const autoMatch = (await getBinanceSettings()).autoPay !== false;
 
   const previous = await getBinanceState();
   const since = new Date(startedAt.getTime() - (previous?.ok ? LOOKBACK_MS : FIRST_LOOKBACK_MS));
-  const state: BinanceState = { lastRunAt: startedAt.toISOString(), ok: true, newDeposits: 0, matched: 0 };
+  const state: BinanceState = { lastRunAt: startedAt.toISOString(), ok: true, newDeposits: 0, matched: 0, autoMatch };
 
   let incoming: IncomingPayment[] = [];
   try {
-    incoming = await fetchDeposits(since);
+    incoming = await fetchDeposits(creds, since);
   } catch (error) {
     state.ok = false;
     state.error = String(error instanceof Error ? error.message : error).slice(0, 500);
   }
   // Binance Pay é opcional: se essa permissão falhar, os depósitos na rede continuam funcionando.
   try {
-    incoming = incoming.concat(await fetchPayReceipts(since));
+    incoming = incoming.concat(await fetchPayReceipts(creds, since));
   } catch (error) {
     state.payError = String(error instanceof Error ? error.message : error).slice(0, 500);
   }
@@ -104,6 +109,7 @@ export async function syncBinance(): Promise<BinanceState> {
       .returning({ id: schema.cryptoDeposits.id });
     if (!saved) continue; // já visto antes
     state.newDeposits! += 1;
+    if (!autoMatch) continue;
 
     const order = await findOrderFor(payment);
     if (!order) continue;
@@ -120,4 +126,25 @@ export async function syncBinance(): Promise<BinanceState> {
 
   await saveState(state);
   return state;
+}
+
+// "Testar conexão" do admin: permissões da chave + uma leitura de 24h de cada histórico (não grava nada).
+export async function testBinanceConnection(creds: BinanceCreds): Promise<BinanceTest> {
+  const at = new Date().toISOString();
+  const since = new Date(Date.now() - 86_400_000);
+  try {
+    const permissions = await fetchKeyPermissions(creds);
+    const deposits = await fetchDeposits(creds, since);
+    let payOk = true;
+    let payError: string | undefined;
+    try {
+      await fetchPayReceipts(creds, since);
+    } catch (error) {
+      payOk = false;
+      payError = error instanceof Error ? error.message : String(error);
+    }
+    return { at, ok: true, permissions, deposits24h: deposits.length, payOk, payError };
+  } catch (error) {
+    return { at, ok: false, error: error instanceof Error ? error.message : String(error) };
+  }
 }

@@ -3,6 +3,7 @@ import { createHash, randomBytes, randomInt, timingSafeEqual } from "node:crypto
 import { cookies } from "next/headers";
 import { and, desc, eq, gt, isNull } from "drizzle-orm";
 import { db, schema } from "@/lib/db";
+import { isAdmin } from "@/lib/config";
 import type { User } from "@/lib/db/schema";
 
 const SESSION_COOKIE = "aix_session";
@@ -24,13 +25,7 @@ export const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
 export const PLACEHOLDER_EMAIL_DOMAIN = "sem-email.invalid";
 export const isPlaceholderEmail = (email: string) => normalizeEmail(email).endsWith(`@${PLACEHOLDER_EMAIL_DOMAIN}`);
 
-export function isAdminEmail(email: string) {
-  const admins = (process.env.ADMIN_EMAILS ?? "")
-    .split(",")
-    .map((e) => normalizeEmail(e))
-    .filter(Boolean);
-  return admins.includes(normalizeEmail(email));
-}
+// Quem é admin: ADMIN_EMAILS do .env (principais) + os adicionados em Admin → Configurações → Administradores.
 
 function hashCode(email: string, code: string) {
   return sha256(`${normalizeEmail(email)}:${code}`);
@@ -153,5 +148,5 @@ export async function getCurrentUser(): Promise<SessionUser | null> {
     .where(and(eq(schema.sessions.tokenHash, sha256(token)), gt(schema.sessions.expiresAt, new Date())))
     .limit(1);
   if (!row) return null;
-  return { ...row.user, isAdmin: isAdminEmail(row.user.email) };
+  return { ...row.user, isAdmin: await isAdmin(row.user.email) };
 }

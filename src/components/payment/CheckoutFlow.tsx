@@ -13,6 +13,7 @@ import { InlineField } from "@/components/payment/InlineField";
 import { CountryField } from "@/components/payment/CountryField";
 import { PaymentMethods } from "@/components/payment/PaymentMethods";
 import { createOrderAction, orderStatusAction } from "@/app/actions/checkout";
+import type { PublicPaymentMethod } from "@/lib/payment-methods";
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
 
@@ -26,7 +27,7 @@ const secondaryBtn =
   "inline-flex items-center justify-center gap-2 rounded-full border border-brand-accent/40 px-6 py-3 text-sm font-semibold text-brand-ink transition-colors duration-200 hover:border-brand-accent hover:text-brand-accent";
 const backBtn = "text-sm text-brand-ink-dim transition-colors hover:text-brand-accent";
 
-export function CheckoutFlow({ initialPlan }: { initialPlan?: PlanKey }) {
+export function CheckoutFlow({ initialPlan, methods }: { initialPlan?: PlanKey; methods: PublicPaymentMethod[] }) {
   const t = useTranslations("Payment");
   const tFlow = useTranslations("Payment.flow");
   const tProducts = useTranslations("Products");
@@ -410,7 +411,7 @@ export function CheckoutFlow({ initialPlan }: { initialPlan?: PlanKey }) {
                 )}
               </GlowCard>
 
-              <PaymentMethods dmHref={dmHref} exactAmount={payAmount} />
+              <PaymentMethods dmHref={dmHref} methods={methods} exactAmount={payAmount} />
 
               {payAmount && (
                 <p className="mb-6 mt-2 flex items-center justify-center gap-2 text-center text-xs text-brand-ink-dim">

@@ -1,9 +1,10 @@
+import Link from "next/link";
 import { desc, eq, inArray } from "drizzle-orm";
 import { db, schema } from "@/lib/db";
-import { binanceConfigured } from "@/lib/binance";
+import { getBinanceCreds, getBinanceSettings } from "@/lib/config";
 import { getBinanceState } from "@/lib/payments";
 import { approveDepositAction, ignoreDepositAction } from "@/app/actions/admin";
-import { Badge, Flash, Panel, adminBtn, adminBtnGhost, adminInput, fmtDateTime } from "@/components/admin/ui";
+import { Badge, Flash, PageHeader, Panel, adminBtn, adminBtnGhost, adminInput, fmtDateTime } from "@/components/admin/ui";
 
 type Props = { searchParams: Promise<{ msg?: string; filter?: string }> };
 
@@ -22,8 +23,9 @@ const STATUS = {
 
 export default async function AdminBinance({ searchParams }: Props) {
   const { msg, filter = "unmatched" } = await searchParams;
-  const configured = binanceConfigured();
-  const state = await getBinanceState();
+  const [creds, settings, state] = await Promise.all([getBinanceCreds(), getBinanceSettings(), getBinanceState()]);
+  const configured = Boolean(creds);
+  const autoPay = settings.autoPay !== false;
   const statusFilter =
     filter === "matched" || filter === "unmatched" || filter === "ignored"
       ? eq(schema.cryptoDeposits.status, filter)
@@ -49,6 +51,14 @@ export default async function AdminBinance({ searchParams }: Props) {
 
   return (
     <div className="flex flex-col gap-6">
+      <PageHeader
+        title="Recebimentos"
+        description="Tudo que entrou na sua Binance (depósitos e Binance Pay). O que bateu com um pedido foi pago sozinho; o resto você vincula ou ignora."
+      >
+        <Link href="/admin/settings/binance" className={adminBtnGhost}>
+          Configurar Binance
+        </Link>
+      </PageHeader>
       <Flash msg={msg} />
 
       <Panel title="Leitura automática da Binance">
@@ -56,7 +66,7 @@ export default async function AdminBinance({ searchParams }: Props) {
           {!configured ? (
             <Badge tone="bad">Chave não configurada</Badge>
           ) : state?.ok && !stale ? (
-            <Badge tone="ok">Funcionando</Badge>
+            <Badge tone="ok">{autoPay ? "Funcionando" : "Lendo (confirmação automática desligada)"}</Badge>
           ) : (
             <Badge tone="bad">{stale ? "Parada" : "Com erro"}</Badge>
           )}

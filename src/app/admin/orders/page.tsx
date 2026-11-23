@@ -1,6 +1,6 @@
 import { and, desc, eq, ilike, or } from "drizzle-orm";
 import { db, schema } from "@/lib/db";
-import { Flash, Panel, adminBtn, adminInput } from "@/components/admin/ui";
+import { Flash, PageHeader, Panel, adminBtn, adminInput } from "@/components/admin/ui";
 import { OrdersTable } from "@/components/admin/OrdersTable";
 
 type Props = { searchParams: Promise<{ status?: string; q?: string; msg?: string }> };
@@ -37,6 +37,7 @@ export default async function AdminOrders({ searchParams }: Props) {
 
   return (
     <div>
+      <PageHeader title="Pedidos" description="Tudo que foi comprado no site. Pedidos pagos pela Binance são aprovados sozinhos; os outros você aprova aqui." />
       <Flash msg={msg} />
       <div className="mb-6 flex flex-wrap items-center justify-between gap-3">
         <div className="flex flex-wrap gap-2">

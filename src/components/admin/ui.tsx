@@ -9,12 +9,40 @@ export const adminBtnGhost =
 export const adminBtnDanger =
   "rounded-full border border-red-500/40 px-4 py-2 text-xs font-semibold text-red-300 transition-colors hover:bg-red-500/10";
 
-export function Flash({ msg }: { msg?: string }) {
+export function Flash({ msg, err }: { msg?: string; err?: string }) {
+  if (err) {
+    return <p className="mb-6 rounded-xl border border-red-400/40 bg-red-500/10 px-4 py-3 text-sm text-red-200">⚠️ {err}</p>;
+  }
   if (!msg) return null;
   return (
     <p className="mb-6 rounded-xl border border-brand-accent/40 bg-brand-accent/10 px-4 py-3 text-sm text-brand-ink">{msg}</p>
   );
 }
+
+// Título de página do admin.
+export function PageHeader({ title, description, children }: { title: string; description?: string; children?: React.ReactNode }) {
+  return (
+    <div className="mb-6 flex flex-wrap items-end justify-between gap-4">
+      <div>
+        <h1 className="font-display text-2xl font-extrabold text-chrome">{title}</h1>
+        {description && <p className="mt-1 max-w-2xl text-sm text-brand-ink-dim">{description}</p>}
+      </div>
+      {children}
+    </div>
+  );
+}
+
+// Linha "rótulo: valor" usada nos cartões de status.
+export function InfoRow({ label, children }: { label: string; children: React.ReactNode }) {
+  return (
+    <div className="flex flex-wrap items-center justify-between gap-2 border-b border-brand-hairline py-2.5 text-sm last:border-0">
+      <span className="text-brand-ink-dim">{label}</span>
+      <span className="text-right text-brand-ink">{children}</span>
+    </div>
+  );
+}
+
+export const adminLabel = "mb-1.5 block text-xs font-semibold uppercase tracking-wide text-brand-ink-dim";
 
 export function Panel({ title, children, className = "" }: { title?: string; children: React.ReactNode; className?: string }) {
   return (

@@ -13,6 +13,7 @@ import { PLACEHOLDER_EMAIL_DOMAIN, isPlaceholderEmail } from "@/lib/auth";
 import {
   Badge,
   Flash,
+  PageHeader,
   Panel,
   adminBtn,
   adminBtnDanger,
@@ -97,6 +98,7 @@ export default async function AdminLicenses({ searchParams }: Props) {
 
   return (
     <div>
+      <PageHeader title="Licenças" description="Licenças do Ai X PULSE RS: contas MT4 liberadas, vencimento e último contato do robô. Bloqueie, estenda ou troque contas." />
       <Flash msg={msg} />
 
       <details className="mb-6 rounded-2xl border border-brand-hairline bg-brand-surface p-5">

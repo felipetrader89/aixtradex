@@ -315,6 +315,7 @@
   },
   "Payment": {
     "auto": {
+      "badge": "Confirmação automática",
       "title": "Pague exatamente {amount} USDT ou USDC",
       "body": "Pelo Binance Pay ou pelas carteiras de USDT (TRC-20, ERC-20, BEP-20) e USDC abaixo. A confirmação é automática: em poucos minutos sua licença é liberada e você recebe um email.",
       "exactHint": "Use exatamente esse valor, com os centavos. Se a sua corretora desconta taxa de saque, some a taxa, pra chegar {amount} certinho.",

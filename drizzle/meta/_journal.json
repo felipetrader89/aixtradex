@@ -15,6 +15,13 @@
       "when": 1795456091583,
       "tag": "0001_binance",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1795457106275,
+      "tag": "0002_admin_events",
+      "breakpoints": true
     }
   ]
 }

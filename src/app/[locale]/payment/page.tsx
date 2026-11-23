@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import { CheckoutFlow } from "@/components/payment/CheckoutFlow";
 import { isPlanKey } from "@/lib/plans";
+import { getPublicPaymentMethods } from "@/lib/config";
 
 type Props = {
   params: Promise<{ locale: string }>;
@@ -22,6 +23,7 @@ export default async function PaymentPage({ params, searchParams }: Props) {
   const { plan } = await searchParams;
   setRequestLocale(locale);
   const t = await getTranslations("Payment");
+  const methods = await getPublicPaymentMethods();
 
   return (
     <div className="mx-auto max-w-3xl px-6 py-16">
@@ -32,7 +34,7 @@ export default async function PaymentPage({ params, searchParams }: Props) {
         <p className="mx-auto max-w-xl text-brand-ink-dim">{t("intro")}</p>
       </header>
 
-      <CheckoutFlow initialPlan={isPlanKey(plan) ? plan : undefined} />
+      <CheckoutFlow initialPlan={isPlanKey(plan) ? plan : undefined} methods={methods} />
     </div>
   );
 }

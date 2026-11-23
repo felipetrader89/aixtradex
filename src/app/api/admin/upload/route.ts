@@ -3,6 +3,7 @@ import { eq } from "drizzle-orm";
 import { getCurrentUser } from "@/lib/auth";
 import { db, schema } from "@/lib/db";
 import { PRODUCT } from "@/lib/plans";
+import { logEvent } from "@/lib/config";
 
 // Upload de versão nova do robô (formulário do /admin/files). Limite: ~4 MB por envio.
 const MAX_BYTES = 4 * 1024 * 1024;
@@ -51,5 +52,6 @@ export async function POST(request: Request) {
       await tx.update(schema.productVersions).set({ isCurrent: true }).where(eq(schema.productVersions.id, created.id));
     });
   }
+  await logEvent(user.email, "files.upload", `${version} · ${file.name} · ${(file.size / 1024).toFixed(0)} KB${makeCurrent ? " · atual" : ""}`);
   return backTo(request, `Versão ${version} enviada.`);
 }
