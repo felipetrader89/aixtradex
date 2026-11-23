@@ -11,7 +11,7 @@ export const siteConfig = {
 
 // Endereço que o robô consulta pra validar a licença (o cliente libera essa URL no WebRequest do MT4).
 // Trocar só junto com o robô: quem já instalou tem essa URL liberada.
-export const licenseServerUrl = process.env.NEXT_PUBLIC_LICENSE_URL ?? "https://aixtradex.vercel.app";
+export const licenseServerUrl = process.env.NEXT_PUBLIC_LICENSE_URL ?? "https://license.aixtradex.com";
 
 // Corretoras parceiras (IB): quem abre conta pelo link ou muda o IB pro código abaixo ganha desconto na licença.
 export const partnerBrokers = [

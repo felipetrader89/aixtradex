@@ -1,18 +1,18 @@
 import "server-only";
-import { neon } from "@neondatabase/serverless";
-import { drizzle, type NeonHttpDatabase } from "drizzle-orm/neon-http";
+import postgres from "postgres";
+import { drizzle, type PostgresJsDatabase } from "drizzle-orm/postgres-js";
 import * as schema from "./schema";
 
-let instance: NeonHttpDatabase<typeof schema> | undefined;
+// PostgreSQL local da VPS. Conexão criada só no primeiro uso, pra o build não quebrar sem DATABASE_URL.
+const globalForDb = globalThis as unknown as { aixDb?: PostgresJsDatabase<typeof schema> };
 
-// Conexão criada só no primeiro uso, pra o build não quebrar sem DATABASE_URL.
 export function db() {
-  if (!instance) {
+  if (!globalForDb.aixDb) {
     const url = process.env.DATABASE_URL;
     if (!url) throw new Error("DATABASE_URL não configurada");
-    instance = drizzle(neon(url), { schema });
+    globalForDb.aixDb = drizzle(postgres(url, { max: 10 }), { schema });
   }
-  return instance;
+  return globalForDb.aixDb;
 }
 
 export { schema };

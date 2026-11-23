@@ -41,13 +41,13 @@ export async function POST(request: Request) {
     .returning({ id: schema.productVersions.id });
   await db().insert(schema.productFiles).values({ versionId: created.id, dataBase64 });
   if (makeCurrent) {
-    await db().batch([
-      db()
+    await db().transaction(async (tx) => {
+      await tx
         .update(schema.productVersions)
         .set({ isCurrent: false })
-        .where(eq(schema.productVersions.product, PRODUCT.slug)),
-      db().update(schema.productVersions).set({ isCurrent: true }).where(eq(schema.productVersions.id, created.id)),
-    ]);
+        .where(eq(schema.productVersions.product, PRODUCT.slug));
+      await tx.update(schema.productVersions).set({ isCurrent: true }).where(eq(schema.productVersions.id, created.id));
+    });
   }
   return backTo(request, `Versão ${version} enviada.`);
 }

@@ -123,8 +123,10 @@ export async function createManualLicenseAction(form: FormData) {
       notes: field(form, "notes") || "Criada manualmente no admin",
     })
     .returning();
-  for (const login of logins) {
-    await db().insert(schema.licenseAccounts).values({ licenseId: license.id, product: PRODUCT.slug, login });
+  if (logins.length) {
+    await db()
+      .insert(schema.licenseAccounts)
+      .values(logins.map((login) => ({ licenseId: license.id, product: PRODUCT.slug, login })));
   }
   back(form, `Licença ${license.key} criada para ${email}.`);
 }
@@ -134,13 +136,13 @@ export async function setCurrentVersionAction(form: FormData) {
   const id = Number(field(form, "versionId"));
   const [version] = await db().select().from(schema.productVersions).where(eq(schema.productVersions.id, id));
   if (!version) back(form, "Versão não encontrada.");
-  await db().batch([
-    db()
+  await db().transaction(async (tx) => {
+    await tx
       .update(schema.productVersions)
       .set({ isCurrent: false })
-      .where(eq(schema.productVersions.product, version.product)),
-    db().update(schema.productVersions).set({ isCurrent: true }).where(eq(schema.productVersions.id, id)),
-  ]);
+      .where(eq(schema.productVersions.product, version.product));
+    await tx.update(schema.productVersions).set({ isCurrent: true }).where(eq(schema.productVersions.id, id));
+  });
   back(form, `Versão ${version.version} marcada como atual.`);
 }
 

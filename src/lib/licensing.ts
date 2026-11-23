@@ -96,23 +96,28 @@ export type ApproveResult =
   | { ok: false; error: "notPending" | "notFound" };
 
 // Confirma o pagamento: cria a licença (com as contas MT4 do pedido) ou estende a mensal na renovação.
+// Tudo numa transação: ou grava pedido pago + licença, ou nada.
 export async function approveOrder(orderId: string, payment: { method: string; ref?: string }): Promise<ApproveResult> {
-  const [order] = await db()
-    .update(schema.orders)
-    .set({ status: "paid", paidAt: new Date(), paymentMethod: payment.method, paymentRef: payment.ref ?? null })
-    .where(and(eq(schema.orders.id, orderId), eq(schema.orders.status, "pending")))
-    .returning();
-  if (!order) {
-    const [exists] = await db().select({ id: schema.orders.id }).from(schema.orders).where(eq(schema.orders.id, orderId));
-    return { ok: false, error: exists ? "notPending" : "notFound" };
-  }
+  return db().transaction(async (tx) => {
+    const [order] = await tx
+      .update(schema.orders)
+      .set({ status: "paid", paidAt: new Date(), paymentMethod: payment.method, paymentRef: payment.ref ?? null })
+      .where(and(eq(schema.orders.id, orderId), eq(schema.orders.status, "pending")))
+      .returning();
+    if (!order) {
+      const [exists] = await tx.select({ id: schema.orders.id }).from(schema.orders).where(eq(schema.orders.id, orderId));
+      return { ok: false, error: exists ? "notPending" : "notFound" } as const;
+    }
 
-  try {
     if (order.licenseId) {
-      const [license] = await db().select().from(schema.licenses).where(eq(schema.licenses.id, order.licenseId));
+      const [license] = await tx.select().from(schema.licenses).where(eq(schema.licenses.id, order.licenseId));
       if (license) {
-        await extendLicense(license, MONTHLY_DAYS);
-        return { ok: true, licenseId: license.id, skippedLogins: [] };
+        const base = license.expiresAt && license.expiresAt > new Date() ? license.expiresAt : new Date();
+        await tx
+          .update(schema.licenses)
+          .set({ expiresAt: new Date(base.getTime() + MONTHLY_DAYS * 86_400_000) })
+          .where(eq(schema.licenses.id, license.id));
+        return { ok: true, licenseId: license.id, skippedLogins: [] as string[] } as const;
       }
     }
 
@@ -121,30 +126,24 @@ export async function approveOrder(orderId: string, payment: { method: string; r
     const taken = await loginsInUse(wanted);
     const logins = wanted.filter((l) => !taken.includes(l));
     const licenseId = randomUUID();
-    await db().batch([
-      db()
-        .insert(schema.licenses)
-        .values({
-          id: licenseId,
-          key: newLicenseKey(),
-          userId: order.userId,
-          product: order.product,
-          plan: order.plan,
-          maxAccounts: max,
-          broker: order.broker,
-          expiresAt: order.plan === "monthly" ? new Date(Date.now() + MONTHLY_DAYS * 86_400_000) : null,
-        }),
-      ...logins.map((login) =>
-        db().insert(schema.licenseAccounts).values({ licenseId, product: order.product, login })
-      ),
-      db().update(schema.orders).set({ licenseId }).where(eq(schema.orders.id, order.id)),
-    ]);
-    return { ok: true, licenseId, skippedLogins: taken };
-  } catch (error) {
-    // Não deixa o pedido marcado como pago se a licença não foi criada.
-    await db().update(schema.orders).set({ status: "pending", paidAt: null }).where(eq(schema.orders.id, order.id));
-    throw error;
-  }
+    await tx.insert(schema.licenses).values({
+      id: licenseId,
+      key: newLicenseKey(),
+      userId: order.userId,
+      product: order.product,
+      plan: order.plan,
+      maxAccounts: max,
+      broker: order.broker,
+      expiresAt: order.plan === "monthly" ? new Date(Date.now() + MONTHLY_DAYS * 86_400_000) : null,
+    });
+    if (logins.length) {
+      await tx
+        .insert(schema.licenseAccounts)
+        .values(logins.map((login) => ({ licenseId, product: order.product, login })));
+    }
+    await tx.update(schema.orders).set({ licenseId }).where(eq(schema.orders.id, order.id));
+    return { ok: true, licenseId, skippedLogins: taken } as const;
+  });
 }
 
 // Soma dias a partir do vencimento atual (ou de hoje, se já venceu).
@@ -171,19 +170,21 @@ export async function setLicenseAccounts(license: License, rawLogins: string[]):
     .where(eq(schema.licenseAccounts.licenseId, license.id));
   const toAdd = logins.filter((l) => !current.some((c) => c.login === l));
 
-  await db().batch([
-    db()
+  await db().transaction(async (tx) => {
+    await tx
       .delete(schema.licenseAccounts)
       .where(
         and(
           eq(schema.licenseAccounts.licenseId, license.id),
           logins.length ? notInArray(schema.licenseAccounts.login, logins) : undefined
         )
-      ),
-    ...toAdd.map((login) =>
-      db().insert(schema.licenseAccounts).values({ licenseId: license.id, product: license.product, login })
-    ),
-  ]);
+      );
+    if (toAdd.length) {
+      await tx
+        .insert(schema.licenseAccounts)
+        .values(toAdd.map((login) => ({ licenseId: license.id, product: license.product, login })));
+    }
+  });
   return { ok: true };
 }
 
