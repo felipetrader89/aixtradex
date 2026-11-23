@@ -35,6 +35,7 @@ export function OrdersTable({ rows, back }: { rows: { order: Order; user: User }
                   {order.plan === "monthly" ? "Mensal" : "Vitalícia"}
                   {order.licenseId && order.mt4Logins.length === 0 ? " (renovação)" : ""} ·{" "}
                   <strong className="text-brand-ink">{usd(order.amountUsd)}</strong>
+                  {order.payAmount ? ` (exato: ${Number(order.payAmount).toFixed(2)} USDT/USDC)` : ""}
                   {broker ? ` · desconto IB ${broker}` : ""}
                   {order.mt4Logins.length ? ` · MT4: ${order.mt4Logins.join(", ")}` : ""}
                 </p>

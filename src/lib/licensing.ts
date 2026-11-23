@@ -1,6 +1,6 @@
 import "server-only";
-import { randomBytes, randomUUID } from "node:crypto";
-import { and, eq, inArray, ne, notInArray } from "drizzle-orm";
+import { randomBytes, randomInt, randomUUID } from "node:crypto";
+import { and, eq, inArray, isNotNull, ne, notInArray } from "drizzle-orm";
 import { db, schema } from "@/lib/db";
 import type { License } from "@/lib/db/schema";
 import { findOrCreateUser } from "@/lib/auth";
@@ -64,6 +64,32 @@ export async function loginsInUse(logins: string[], exceptLicenseId?: string) {
   return rows.map((r) => r.login);
 }
 
+// Valor exato do pedido em USDT/USDC: preço + centavos que nenhum outro pedido pendente está usando
+// (99.01 a 99.99; se acabarem, 100.01 a 103.99). É assim que o depósito da Binance acha o pedido certo.
+async function freePayAmount(price: number) {
+  const pending = await db()
+    .select({ value: schema.orders.payAmount })
+    .from(schema.orders)
+    .where(and(eq(schema.orders.status, "pending"), isNotNull(schema.orders.payAmount)));
+  const used = new Set(pending.map((r) => Number(r.value).toFixed(2)));
+  for (const [from, to] of [
+    [1, 99],
+    [101, 499],
+  ]) {
+    const free: string[] = [];
+    for (let cents = from; cents <= to; cents++) {
+      if (cents % 100 === 0) continue;
+      const value = (price + cents / 100).toFixed(2);
+      if (!used.has(value)) free.push(value);
+    }
+    if (free.length) return free[randomInt(free.length)];
+  }
+  return null;
+}
+
+const isUniqueViolation = (error: unknown) =>
+  typeof error === "object" && error !== null && (error as { code?: string }).code === "23505";
+
 export async function createOrder(input: {
   email: string;
   name: string;
@@ -72,23 +98,34 @@ export async function createOrder(input: {
   broker?: string | null;
   logins: string[];
   licenseId?: string;
+  locale?: string;
 }) {
   const user = await findOrCreateUser(input.email, { name: input.name, country: input.country });
   const broker = isPartnerBroker(input.broker) ? input.broker : null;
-  const [order] = await db()
-    .insert(schema.orders)
-    .values({
-      code: newOrderCode(),
-      userId: user.id,
-      product: PRODUCT.slug,
-      plan: input.plan,
-      amountUsd: priceFor(input.plan, broker).toFixed(2),
-      broker,
-      mt4Logins: input.logins,
-      licenseId: input.licenseId,
-    })
-    .returning();
-  return order;
+  const price = priceFor(input.plan, broker);
+  // Dois clientes no mesmo segundo podem sortear o mesmo valor: o índice único barra e tentamos de novo.
+  for (let attempt = 0; ; attempt++) {
+    try {
+      const [order] = await db()
+        .insert(schema.orders)
+        .values({
+          code: newOrderCode(),
+          userId: user.id,
+          product: PRODUCT.slug,
+          plan: input.plan,
+          amountUsd: price.toFixed(2),
+          payAmount: await freePayAmount(price),
+          locale: input.locale ?? null,
+          broker,
+          mt4Logins: input.logins,
+          licenseId: input.licenseId,
+        })
+        .returning();
+      return order;
+    } catch (error) {
+      if (attempt >= 4 || !isUniqueViolation(error)) throw error;
+    }
+  }
 }
 
 export type ApproveResult =

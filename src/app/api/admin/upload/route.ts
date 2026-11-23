@@ -8,7 +8,6 @@ import { PRODUCT } from "@/lib/plans";
 const MAX_BYTES = 4 * 1024 * 1024;
 
 // Redirect relativo: atrás do Caddy o request.url é http://localhost:3100, então não dá pra montar URL absoluta com ele.
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
 function backTo(_request: Request, msg: string) {
   return new NextResponse(null, {
     status: 303,

@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useTransition } from "react";
-import { useTranslations } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 import { PaymentMethods } from "@/components/payment/PaymentMethods";
 import { renewMyLicenseAction } from "@/app/actions/account";
 import { siteConfig } from "@/lib/site-config";
@@ -11,6 +11,7 @@ const secondaryBtn =
 
 export function RenewButton({ licenseId, price }: { licenseId: string; price: string }) {
   const t = useTranslations("Account");
+  const locale = useLocale();
   const [pending, startTransition] = useTransition();
   const [done, setDone] = useState(false);
   if (done) return <p className="text-xs text-brand-accent">{t("renewPending")}</p>;
@@ -21,7 +22,7 @@ export function RenewButton({ licenseId, price }: { licenseId: string; price: st
       disabled={pending}
       onClick={() =>
         startTransition(async () => {
-          const result = await renewMyLicenseAction(licenseId);
+          const result = await renewMyLicenseAction(licenseId, locale);
           if (result.ok) setDone(true);
         })
       }
@@ -32,7 +33,17 @@ export function RenewButton({ licenseId, price }: { licenseId: string; price: st
 }
 
 // Pedido pendente: abre as carteiras com a mensagem do Telegram já preenchida com o número do pedido.
-export function PayOrder({ code, amount, email }: { code: string; amount: string; email: string }) {
+export function PayOrder({
+  code,
+  amount,
+  email,
+  exactAmount,
+}: {
+  code: string;
+  amount: string;
+  email: string;
+  exactAmount?: string | null;
+}) {
   const t = useTranslations("Account");
   const [open, setOpen] = useState(false);
   const dmHref = `${siteConfig.telegramDmUrl}?text=${encodeURIComponent(t("dmPay", { code, amount, email }))}`;
@@ -43,8 +54,10 @@ export function PayOrder({ code, amount, email }: { code: string; amount: string
       </button>
       {open && (
         <div className="mt-4">
-          <p className="mb-4 text-sm text-brand-ink-dim">{t("payIntro", { amount, code })}</p>
-          <PaymentMethods dmHref={dmHref} />
+          <p className="mb-4 text-sm text-brand-ink-dim">
+            {exactAmount ? t("payIntroAuto", { amount: exactAmount, code }) : t("payIntro", { amount, code })}
+          </p>
+          <PaymentMethods dmHref={dmHref} exactAmount={exactAmount} />
         </div>
       )}
     </div>

@@ -314,6 +314,16 @@
     "showLess": "Show Less"
   },
   "Payment": {
+    "auto": {
+      "title": "Pay exactly {amount} USDT or USDC",
+      "body": "Via Binance Pay or the USDT (TRC-20, ERC-20, BEP-20) and USDC wallets below. Confirmation is automatic: within a few minutes your license is activated and you get an email.",
+      "exactHint": "Use this exact amount, including the cents. If your exchange deducts a withdrawal fee, add the fee so exactly {amount} arrives.",
+      "otherCoins": "BTC, ETH and LTC: manual confirmation. After paying, send the receipt on Telegram using the button at the bottom.",
+      "waiting": "Waiting for payment... this page updates by itself.",
+      "paidTitle": "Payment confirmed! ✅",
+      "paidBody": "Your license is active. Log in to My Account with {email} to download the robot and see the setup steps.",
+      "paidCta": "Go to My Account"
+    },
     "title": "Payment",
     "intro": "Follow the steps: choose whether you want the partner broker discount, create your MT4 account, and pay in crypto. At the end, send me the payment screenshot on Telegram and I'll unlock your access.",
     "planLabel": "Selected plan",
@@ -442,6 +452,7 @@
     }
   },
   "Account": {
+    "payIntroAuto": "Pay exactly {amount} USDT or USDC (Binance Pay or the USDT/USDC wallets below). Confirmation is automatic within a few minutes. Order {code}.",
     "title": "My account",
     "signedInAs": "Signed in as {email}",
     "logout": "Sign out",
@@ -494,5 +505,24 @@
     "download": "Download",
     "setupTitle": "How to activate on MT4",
     "setupSteps": "In MT4, go to Tools > Options > Expert Advisors, check \"Allow WebRequest for listed URL\" and add the address below. The robot uses it to check your license."
+  },
+  "Emails": {
+    "paid": {
+      "subject": "Payment confirmed - order {code}",
+      "intro": "Hi! I received the payment for order {code}. Your Ai X PULSE RS license is now active.",
+      "key": "License key",
+      "plan": "Plan",
+      "planMonthly": "Monthly",
+      "planLifetime": "Lifetime",
+      "expires": "Valid until",
+      "lifetime": "Lifetime (never expires)",
+      "accounts": "MT4 accounts",
+      "stepsTitle": "Next steps:",
+      "step1": "Log in at {url} with the email {email} (you'll get an access code).",
+      "step2": "Download the robot under Downloads and install it in MT4.",
+      "step3": "In MT4, go to Tools > Options > Expert Advisors and add {url} to \"Allow WebRequest for listed URL\".",
+      "help": "Questions? Reply to this email or message me on Telegram: @AlessonFelipe89",
+      "cta": "Open My Account"
+    }
   }
 }

@@ -17,10 +17,26 @@ const METHODS = [
 ] as const;
 
 // Carteiras cripto + botão do Telegram com a mensagem já pronta.
-export function PaymentMethods({ dmHref }: { dmHref: string }) {
+// Com `exactAmount` (leitura automática da Binance ligada), mostra no topo o valor exato que confirma o pedido sozinho.
+export function PaymentMethods({ dmHref, exactAmount }: { dmHref: string; exactAmount?: string | null }) {
   const t = useTranslations("Payment");
   return (
     <>
+      {exactAmount && (
+        <GlowCard className="mb-4 border border-brand-accent/50 text-center">
+          <p className="font-display text-lg font-bold text-chrome">{t("auto.title", { amount: exactAmount })}</p>
+          <div className="mt-3 flex flex-wrap items-center justify-center gap-3">
+            <span className="rounded-xl bg-brand-accent/10 px-4 py-2 font-mono text-2xl font-extrabold tracking-wide text-brand-accent">
+              {exactAmount}
+            </span>
+            <CopyButton value={exactAmount} label={t("copy")} copiedLabel={t("copied")} />
+          </div>
+          <p className="mt-3 text-sm text-brand-ink-dim">{t("auto.body")}</p>
+          <p className="mt-2 text-xs text-brand-ink-dim">⚠️ {t("auto.exactHint", { amount: exactAmount })}</p>
+          <p className="mt-2 text-xs text-brand-ink-dim">{t("auto.otherCoins")}</p>
+        </GlowCard>
+      )}
+
       <GlowCard className="mb-4 text-sm text-brand-ink-dim">
         <p>⚠️ {t("warning")}</p>
       </GlowCard>

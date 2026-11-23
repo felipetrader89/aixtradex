@@ -25,7 +25,7 @@ export async function updateMyAccountsAction(licenseId: string, logins: string[]
 }
 
 // Renovação da mensal: cria um pedido pendente ligado à licença (mantém o desconto da corretora parceira).
-export async function renewMyLicenseAction(licenseId: string): Promise<{ ok: boolean }> {
+export async function renewMyLicenseAction(licenseId: string, locale?: string): Promise<{ ok: boolean }> {
   const owned = await ownLicense(licenseId);
   if (!owned || owned.license.plan !== "monthly") return { ok: false };
   const { user, license } = owned;
@@ -43,6 +43,7 @@ export async function renewMyLicenseAction(licenseId: string): Promise<{ ok: boo
       broker: license.broker,
       logins: [],
       licenseId: license.id,
+      locale: locale?.slice(0, 5),
     });
   }
   revalidatePath("/[locale]/account", "page");

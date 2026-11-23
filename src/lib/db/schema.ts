@@ -2,6 +2,7 @@ import {
   boolean,
   index,
   integer,
+  jsonb,
   numeric,
   pgTable,
   serial,
@@ -10,6 +11,7 @@ import {
   uniqueIndex,
   uuid,
 } from "drizzle-orm/pg-core";
+import { sql } from "drizzle-orm";
 
 const createdAt = () => timestamp("created_at", { withTimezone: true }).notNull().defaultNow();
 
@@ -46,7 +48,7 @@ export const sessions = pgTable("sessions", {
   createdAt: createdAt(),
 });
 
-// Pedido feito no checkout. "pending" até o pagamento ser confirmado (manual no admin ou, na fase 3, pela Binance).
+// Pedido feito no checkout. "pending" até o pagamento ser confirmado (manual no admin ou automático pela Binance).
 export const orders = pgTable(
   "orders",
   {
@@ -58,6 +60,10 @@ export const orders = pgTable(
     product: text("product").notNull(),
     plan: text("plan", { enum: ["monthly", "lifetime"] }).notNull(),
     amountUsd: numeric("amount_usd", { precision: 12, scale: 2 }).notNull(),
+    // Valor exato a pagar em USDT/USDC: preço + centavos únicos (ex.: 99.37), pra Binance achar o pedido pelo depósito.
+    payAmount: numeric("pay_amount", { precision: 12, scale: 2 }),
+    // Idioma do site na hora da compra (emails de confirmação saem nele).
+    locale: text("locale"),
     broker: text("broker"),
     mt4Logins: text("mt4_logins").array().notNull().default([]),
     // Renovação de uma licença mensal já existente.
@@ -68,7 +74,12 @@ export const orders = pgTable(
     paidAt: timestamp("paid_at", { withTimezone: true }),
     createdAt: createdAt(),
   },
-  (t) => [index("orders_user_idx").on(t.userId), index("orders_status_idx").on(t.status)]
+  (t) => [
+    index("orders_user_idx").on(t.userId),
+    index("orders_status_idx").on(t.status),
+    // Dois pedidos pendentes nunca têm o mesmo valor exato.
+    uniqueIndex("orders_pending_pay_amount_uq").on(t.payAmount).where(sql`status = 'pending'`),
+  ]
 );
 
 export const licenses = pgTable(
@@ -132,8 +143,37 @@ export const productFiles = pgTable("product_files", {
   dataBase64: text("data_base64").notNull(),
 });
 
+// Depósitos lidos da Binance (rede: USDT/USDC; Binance Pay). "matched" = pagou um pedido sozinho;
+// "unmatched" = valor não bateu com nenhum pedido (admin decide); "ignored" = admin marcou como não sendo de cliente.
+export const cryptoDeposits = pgTable(
+  "crypto_deposits",
+  {
+    id: serial("id").primaryKey(),
+    source: text("source", { enum: ["deposit", "pay"] }).notNull(),
+    externalId: text("external_id").notNull().unique(),
+    coin: text("coin").notNull(),
+    network: text("network"),
+    amount: numeric("amount", { precision: 20, scale: 8 }).notNull(),
+    txId: text("tx_id"),
+    sender: text("sender"),
+    receivedAt: timestamp("received_at", { withTimezone: true }).notNull(),
+    status: text("status", { enum: ["matched", "unmatched", "ignored"] }).notNull().default("unmatched"),
+    orderId: uuid("order_id").references(() => orders.id),
+    createdAt: createdAt(),
+  },
+  (t) => [index("crypto_deposits_status_idx").on(t.status)]
+);
+
+// Configurações e estado simples (ex.: última leitura da Binance).
+export const settings = pgTable("settings", {
+  key: text("key").primaryKey(),
+  value: jsonb("value").notNull(),
+  updatedAt: timestamp("updated_at", { withTimezone: true }).notNull().defaultNow(),
+});
+
 export type User = typeof users.$inferSelect;
 export type Order = typeof orders.$inferSelect;
 export type License = typeof licenses.$inferSelect;
 export type LicenseAccount = typeof licenseAccounts.$inferSelect;
 export type ProductVersion = typeof productVersions.$inferSelect;
+export type CryptoDeposit = typeof cryptoDeposits.$inferSelect;

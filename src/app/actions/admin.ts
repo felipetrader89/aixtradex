@@ -2,11 +2,12 @@
 
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
-import { eq } from "drizzle-orm";
+import { and, eq, ne } from "drizzle-orm";
 import { EMAIL_RE, findOrCreateUser, isPlaceholderEmail, normalizeEmail, requireAdmin } from "@/lib/auth";
 import { db, schema } from "@/lib/db";
 import { approveOrder, extendLicense, loginsInUse, newLicenseKey, setLicenseAccounts } from "@/lib/licensing";
 import { MONTHLY_DAYS, PLAN_MAX_ACCOUNTS, PRODUCT, type PlanType } from "@/lib/plans";
+import { notifyOrderPaid } from "@/lib/notify";
 
 const field = (form: FormData, name: string) => String(form.get(name) ?? "").trim();
 
@@ -29,12 +30,43 @@ export async function approveOrderAction(form: FormData) {
     ref: field(form, "ref") || undefined,
   });
   if (!result.ok) back(form, result.error === "notPending" ? "Esse pedido já não está pendente." : "Pedido não encontrado.");
+  await notifyOrderPaid(field(form, "orderId"), "aprovação manual no admin");
   back(
     form,
     result.skippedLogins.length
       ? `Pedido aprovado. Atenção: as contas ${result.skippedLogins.join(", ")} já estavam em outra licença e não foram adicionadas.`
       : "Pedido aprovado e licença liberada."
   );
+}
+
+// Depósito da Binance que não bateu sozinho com um pedido (valor diferente, BTC/ETH...): o admin diz de qual pedido é.
+export async function approveDepositAction(form: FormData) {
+  await requireAdmin();
+  const depositId = Number(field(form, "depositId"));
+  const code = field(form, "orderCode").toUpperCase().replace(/^(AX)?-?/, "AX-");
+  const [deposit] = await db().select().from(schema.cryptoDeposits).where(eq(schema.cryptoDeposits.id, depositId));
+  if (!deposit || deposit.status === "matched") back(form, "Depósito não encontrado ou já usado.");
+  const [order] = await db().select().from(schema.orders).where(eq(schema.orders.code, code));
+  if (!order) back(form, `Pedido ${code} não encontrado.`);
+  const result = await approveOrder(order.id, { method: "binance", ref: deposit.externalId });
+  if (!result.ok) back(form, `O pedido ${code} já não está pendente.`);
+  await db()
+    .update(schema.cryptoDeposits)
+    .set({ status: "matched", orderId: order.id })
+    .where(eq(schema.cryptoDeposits.id, deposit.id));
+  await notifyOrderPaid(order.id, `Binance · ${deposit.amount} ${deposit.coin} (vinculado no admin)`);
+  back(form, `Pedido ${code} aprovado com o depósito de ${Number(deposit.amount)} ${deposit.coin}.`);
+}
+
+// Depósito que não é de cliente (ex.: transferência sua) — some da lista de pendências.
+export async function ignoreDepositAction(form: FormData) {
+  await requireAdmin();
+  const status = field(form, "status") === "unmatched" ? "unmatched" : "ignored";
+  await db()
+    .update(schema.cryptoDeposits)
+    .set({ status })
+    .where(and(eq(schema.cryptoDeposits.id, Number(field(form, "depositId"))), ne(schema.cryptoDeposits.status, "matched")));
+  back(form, status === "ignored" ? "Depósito marcado como não sendo de cliente." : "Depósito voltou pra lista.");
 }
 
 export async function cancelOrderAction(form: FormData) {

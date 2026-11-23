@@ -314,6 +314,16 @@
     "showLess": "Mostrar Menos"
   },
   "Payment": {
+    "auto": {
+      "title": "Pague exatamente {amount} USDT ou USDC",
+      "body": "Pelo Binance Pay ou pelas carteiras de USDT (TRC-20, ERC-20, BEP-20) e USDC abaixo. A confirmação é automática: em poucos minutos sua licença é liberada e você recebe um email.",
+      "exactHint": "Use exatamente esse valor, com os centavos. Se a sua corretora desconta taxa de saque, some a taxa, pra chegar {amount} certinho.",
+      "otherCoins": "BTC, ETH e LTC: confirmação manual. Depois de pagar, envie o comprovante no Telegram pelo botão no final.",
+      "waiting": "Aguardando o pagamento... esta página atualiza sozinha.",
+      "paidTitle": "Pagamento confirmado! ✅",
+      "paidBody": "Sua licença já está ativa. Entre em Minha Conta com o email {email} pra baixar o robô e ver o passo a passo.",
+      "paidCta": "Ir pra Minha Conta"
+    },
     "title": "Pagamento",
     "intro": "Siga o passo a passo: escolha se quer o desconto da corretora parceira, crie sua conta MT4 e pague em cripto. No final, me envia o print do pagamento no Telegram que eu libero o acesso.",
     "planLabel": "Plano selecionado",
@@ -442,6 +452,7 @@
     }
   },
   "Account": {
+    "payIntroAuto": "Pague exatamente {amount} USDT ou USDC (Binance Pay ou carteiras USDT/USDC abaixo). A confirmação é automática em poucos minutos. Pedido {code}.",
     "title": "Minha conta",
     "signedInAs": "Conectado como {email}",
     "logout": "Sair",
@@ -494,5 +505,24 @@
     "download": "Baixar",
     "setupTitle": "Como ativar no MT4",
     "setupSteps": "No MT4, vá em Ferramentas > Opções > Expert Advisors, marque \"Permitir WebRequest para as URLs listadas\" e adicione o endereço abaixo. É por ele que o robô confere sua licença."
+  },
+  "Emails": {
+    "paid": {
+      "subject": "Pagamento confirmado - pedido {code}",
+      "intro": "Olá! Recebi o pagamento do pedido {code}. Sua licença do Ai X PULSE RS já está ativa.",
+      "key": "Chave da licença",
+      "plan": "Plano",
+      "planMonthly": "Mensal",
+      "planLifetime": "Vitalícia",
+      "expires": "Válida até",
+      "lifetime": "Vitalícia (não vence)",
+      "accounts": "Contas MT4",
+      "stepsTitle": "Próximos passos:",
+      "step1": "Entre em {url} com o email {email} (você recebe um código de acesso).",
+      "step2": "Baixe o robô em Downloads e instale no MT4.",
+      "step3": "No MT4, vá em Ferramentas > Opções > Expert Advisors e adicione {url} em \"Permitir WebRequest para as URLs listadas\".",
+      "help": "Dúvidas? Responda este email ou fale comigo no Telegram: @AlessonFelipe89",
+      "cta": "Abrir Minha Conta"
+    }
   }
 }

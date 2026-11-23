@@ -14,6 +14,7 @@ import { db, schema } from "@/lib/db";
 import { licenseState, priceFor } from "@/lib/licensing";
 import { PRODUCT } from "@/lib/plans";
 import { licenseServerUrl } from "@/lib/site-config";
+import { binanceConfigured } from "@/lib/binance";
 
 type Props = { params: Promise<{ locale: string }> };
 
@@ -246,7 +247,12 @@ export default async function AccountPage({ params }: Props) {
                   {t(`orderStatus.${order.status}`)}
                 </span>
                 {order.status === "pending" && (
-                  <PayOrder code={order.code} amount={usd(order.amountUsd)} email={user.email} />
+                  <PayOrder
+                    code={order.code}
+                    amount={usd(order.amountUsd)}
+                    email={user.email}
+                    exactAmount={binanceConfigured() && order.payAmount ? Number(order.payAmount).toFixed(2) : null}
+                  />
                 )}
               </GlowCard>
             ))}

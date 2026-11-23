@@ -1,8 +1,8 @@
 "use client";
 
-import { useRef, useState, useTransition } from "react";
+import { useEffect, useRef, useState, useTransition } from "react";
 import Image from "next/image";
-import { useTranslations } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 import { GlowCard } from "@/components/brand/GlowCard";
 import { CopyButton } from "@/components/ui/CopyButton";
 import { Link } from "@/i18n/navigation";
@@ -12,7 +12,7 @@ import { AccountIdSlots } from "@/components/payment/AccountIdSlots";
 import { InlineField } from "@/components/payment/InlineField";
 import { CountryField } from "@/components/payment/CountryField";
 import { PaymentMethods } from "@/components/payment/PaymentMethods";
-import { createOrderAction } from "@/app/actions/checkout";
+import { createOrderAction, orderStatusAction } from "@/app/actions/checkout";
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
 
@@ -40,7 +40,9 @@ export function CheckoutFlow({ initialPlan }: { initialPlan?: PlanKey }) {
   const [customerCountry, setCustomerCountry] = useState("");
   const [customerEmail, setCustomerEmail] = useState("");
   // Pedido gravado no banco; a chave evita criar outro pedido se o cliente só voltou e avançou de novo.
-  const [order, setOrder] = useState<{ key: string; code: string } | null>(null);
+  const [order, setOrder] = useState<{ key: string; code: string; payAmount: string | null } | null>(null);
+  const [paid, setPaid] = useState(false);
+  const locale = useLocale();
   const [saving, startSaving] = useTransition();
   const topRef = useRef<HTMLDivElement>(null);
 
@@ -65,6 +67,17 @@ export function CheckoutFlow({ initialPlan }: { initialPlan?: PlanKey }) {
   const accountStepDone = Boolean(customerName && customerCountry && customerEmail && savedIds.length > 0);
   const orderKey = JSON.stringify([plan, brokerSlug, customerEmail, customerName, customerCountry, savedIds]);
   const orderCode = order?.key === orderKey ? order.code : "";
+  const payAmount = order?.key === orderKey ? order.payAmount : null;
+
+  // Pagamento automático (Binance): confere o pedido a cada 8s enquanto o cliente está na tela de pagamento.
+  useEffect(() => {
+    if (step !== "payment" || !orderCode || !payAmount || paid) return;
+    const timer = setInterval(async () => {
+      const status = await orderStatusAction(orderCode).catch(() => null);
+      if (status === "paid") setPaid(true);
+    }, 8000);
+    return () => clearInterval(timer);
+  }, [step, orderCode, payAmount, paid]);
 
   function submitAccountStep() {
     if (orderCode) return goTo("payment");
@@ -76,9 +89,10 @@ export function CheckoutFlow({ initialPlan }: { initialPlan?: PlanKey }) {
         country: customerCountry,
         broker: discountApplied ? brokerSlug : null,
         logins: savedIds,
+        locale,
       }).catch(() => null);
       // Se o banco falhar, o cliente segue mesmo assim: os dados vão na mensagem do Telegram.
-      setOrder(result?.ok ? { key: orderKey, code: result.code } : null);
+      setOrder(result?.ok ? { key: orderKey, code: result.code, payAmount: result.payAmount } : null);
       goTo("payment");
     });
   }
@@ -357,7 +371,19 @@ export function CheckoutFlow({ initialPlan }: { initialPlan?: PlanKey }) {
             </GlowCard>
           )}
 
-          {step === "payment" && (
+          {step === "payment" && paid && (
+            <GlowCard className="text-center">
+              <h2 className="font-display text-2xl font-bold text-chrome">{t("auto.paidTitle")}</h2>
+              <p className="mx-auto mt-3 max-w-md text-sm text-brand-ink-dim">
+                {t("auto.paidBody", { email: customerEmail })}
+              </p>
+              <Link href="/account" className={`${primaryBtn} mt-6`}>
+                {t("auto.paidCta")}
+              </Link>
+            </GlowCard>
+          )}
+
+          {step === "payment" && !paid && (
             <div>
               <GlowCard className="mb-4 text-center">
                 <h2 className="font-display text-xl font-bold text-chrome">
@@ -384,7 +410,14 @@ export function CheckoutFlow({ initialPlan }: { initialPlan?: PlanKey }) {
                 )}
               </GlowCard>
 
-              <PaymentMethods dmHref={dmHref} />
+              <PaymentMethods dmHref={dmHref} exactAmount={payAmount} />
+
+              {payAmount && (
+                <p className="mb-6 mt-2 flex items-center justify-center gap-2 text-center text-xs text-brand-ink-dim">
+                  <span className="inline-block h-2 w-2 animate-pulse rounded-full bg-brand-accent" />
+                  {t("auto.waiting")}
+                </p>
+              )}
 
               <div className="mt-4 flex flex-col items-center gap-4">
                 <button type="button" className={backBtn} onClick={() => goTo("account")}>
