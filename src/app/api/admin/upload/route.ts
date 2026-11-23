@@ -4,13 +4,16 @@ import { getCurrentUser } from "@/lib/auth";
 import { db, schema } from "@/lib/db";
 import { PRODUCT } from "@/lib/plans";
 
-// Upload de versão nova do robô (formulário do /admin/files). Limite da Vercel: ~4 MB por envio.
+// Upload de versão nova do robô (formulário do /admin/files). Limite: ~4 MB por envio.
 const MAX_BYTES = 4 * 1024 * 1024;
 
-function backTo(request: Request, msg: string) {
-  const url = new URL("/admin/files", request.url);
-  url.searchParams.set("msg", msg);
-  return NextResponse.redirect(url, 303);
+// Redirect relativo: atrás do Caddy o request.url é http://localhost:3100, então não dá pra montar URL absoluta com ele.
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+function backTo(_request: Request, msg: string) {
+  return new NextResponse(null, {
+    status: 303,
+    headers: { Location: `/admin/files?msg=${encodeURIComponent(msg)}` },
+  });
 }
 
 export async function POST(request: Request) {
