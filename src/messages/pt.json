@@ -34,6 +34,7 @@
     }
   },
   "Nav": {
+    "account": "Minha conta",
     "home": "Início",
     "products": "Planos",
     "results": "Resultados",
@@ -334,8 +335,8 @@
       "eth": { "label": "Ethereum (ETH)", "network": "Rede Ethereum (ERC-20)" }
     },
     "ctaTelegram": "Já paguei - Enviar comprovante no Telegram",
-    "dmMessage": "Olá! Fiz o pagamento da {plan} ({price}).\nNome: {name}\nPaís: {country}\nContas MT4: {accounts}\nVou enviar o print do pagamento.",
-    "dmMessageDiscount": "Olá! Fiz o pagamento da {plan} com desconto de parceiro ({price}) - corretora {broker}.\nNome: {name}\nPaís: {country}\nContas MT4: {accounts}\nVou enviar o print do pagamento.",
+    "dmMessage": "Olá! Fiz o pagamento da {plan} ({price}).\nNome: {name}\nPaís: {country}\nEmail: {email}\nPedido: {order}\nContas MT4: {accounts}\nVou enviar o print do pagamento.",
+    "dmMessageDiscount": "Olá! Fiz o pagamento da {plan} com desconto de parceiro ({price}) - corretora {broker}.\nNome: {name}\nPaís: {country}\nEmail: {email}\nPedido: {order}\nContas MT4: {accounts}\nVou enviar o print do pagamento.",
     "flow": {
       "choosePlan": "Escolha seu plano",
       "discountApplied": "Desconto de parceiro {broker}: -{discount}",
@@ -385,7 +386,12 @@
         "edit": "Editar",
         "invalid": "Use só números (de 4 a 12 dígitos).",
         "duplicate": "Esse número já foi adicionado.",
-        "required": "Preencha nome, país e pelo menos 1 conta MT4 pra continuar.",
+        "required": "Preencha nome, país, email e pelo menos 1 conta MT4 pra continuar.",
+        "emailLabel": "Email",
+        "emailEmpty": "+ Email - toque pra adicionar",
+        "emailPlaceholder": "seu@email.com",
+        "emailInvalid": "Informe um email válido.",
+        "saving": "Salvando pedido...",
         "customerTitle": "Seus dados",
         "nameLabel": "Nome",
         "nameEmpty": "+ Nome e sobrenome - toque pra adicionar",
@@ -400,9 +406,93 @@
       "payment": {
         "title": "Pague {price} por uma das opções abaixo",
         "body": "Depois de pagar, toque no botão do final e me envie o print do pagamento no Telegram. A mensagem já vai com seus dados, seu plano e suas contas MT4.",
-        "accounts": "Contas MT4: {ids}"
+        "accounts": "Contas MT4: {ids}",
+        "order": "Pedido {code}",
+        "accountHint": "Assim que o pagamento for confirmado, sua licença aparece em Minha Conta. Entre com o email {email}."
       }
     },
     "backToPlans": "← Voltar pra Planos"
+  },
+  "Auth": {
+    "title": "Entrar na sua conta",
+    "body": "Digite o email usado na compra. Vamos te enviar um código de 6 dígitos, sem senha.",
+    "emailLabel": "Email",
+    "emailPlaceholder": "seu@email.com",
+    "send": "Enviar código",
+    "sending": "Enviando...",
+    "codeTitle": "Digite o código",
+    "codeBody": "Enviamos um código para {email}. Ele vale por 10 minutos. Confira também a caixa de spam.",
+    "codeLabel": "Código de 6 dígitos",
+    "verify": "Entrar",
+    "verifying": "Entrando...",
+    "changeEmail": "Usar outro email",
+    "resend": "Reenviar código",
+    "resent": "Código reenviado.",
+    "errors": {
+      "email": "Email inválido.",
+      "wait": "Aguarde 1 minuto pra pedir outro código.",
+      "code": "Código incorreto ou vencido.",
+      "server": "Erro no servidor. Tente de novo em instantes."
+    },
+    "email": {
+      "subject": "Seu código de acesso: {code}",
+      "intro": "Use o código abaixo pra entrar na sua conta Ai X TradeX:",
+      "expires": "O código vale por 10 minutos.",
+      "ignore": "Se você não pediu este código, ignore este email."
+    }
+  },
+  "Account": {
+    "title": "Minha conta",
+    "signedInAs": "Conectado como {email}",
+    "logout": "Sair",
+    "admin": "Painel admin",
+    "licensesTitle": "Suas licenças",
+    "empty": "Você ainda não tem licença ativa. Assim que o pagamento for confirmado, ela aparece aqui.",
+    "seePlans": "Ver planos",
+    "plan": {
+      "monthly": "Licença Mensal",
+      "lifetime": "Licença Vitalícia"
+    },
+    "status": {
+      "active": "Ativa",
+      "expired": "Vencida",
+      "suspended": "Bloqueada"
+    },
+    "key": "Chave",
+    "expires": "Vence em {date}",
+    "expiredOn": "Venceu em {date}",
+    "lifetime": "Vitalícia - sem vencimento",
+    "accountsTitle": "Contas MT4 liberadas ({count}/{max})",
+    "accountsHint": "O robô só funciona nas contas cadastradas aqui. Pode trocar quando precisar.",
+    "saveAccounts": "Salvar contas",
+    "savingAccounts": "Salvando...",
+    "accountsSaved": "Contas salvas.",
+    "accountErrors": {
+      "tooMany": "Seu plano permite até {max} contas.",
+      "invalid": "Confira os números das contas MT4.",
+      "inUse": "Estas contas já estão em outra licença: {logins}"
+    },
+    "renew": "Renovar por mais 30 dias ({price})",
+    "renewPending": "Renovação criada - pague o pedido abaixo.",
+    "ordersTitle": "Pedidos",
+    "ordersEmpty": "Nenhum pedido ainda.",
+    "orderStatus": {
+      "pending": "Aguardando pagamento",
+      "paid": "Pago",
+      "cancelled": "Cancelado"
+    },
+    "renewal": "Renovação",
+    "pay": "Pagar agora",
+    "hidePay": "Fechar",
+    "payIntro": "Pague {amount} em uma das carteiras abaixo e envie o print no Telegram. O número do pedido {code} já vai na mensagem.",
+    "dmPay": "Olá! Fiz o pagamento do pedido {code} ({amount}).\nEmail: {email}\nVou enviar o print do pagamento.",
+    "downloadsTitle": "Downloads",
+    "downloadsBody": "Arquivos do robô liberados pra sua licença.",
+    "downloadsLocked": "Os downloads ficam liberados enquanto a licença estiver ativa.",
+    "downloadsEmpty": "Nenhum arquivo disponível ainda.",
+    "current": "Atual",
+    "download": "Baixar",
+    "setupTitle": "Como ativar no MT4",
+    "setupSteps": "No MT4, vá em Ferramentas > Opções > Expert Advisors, marque \"Permitir WebRequest para as URLs listadas\" e adicione o endereço abaixo. É por ele que o robô confere sua licença."
   }
 }

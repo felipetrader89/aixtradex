@@ -34,6 +34,7 @@
     }
   },
   "Nav": {
+    "account": "My account",
     "home": "Home",
     "products": "Plans",
     "results": "Results",
@@ -334,8 +335,8 @@
       "eth": { "label": "Ethereum (ETH)", "network": "Ethereum network (ERC-20)" }
     },
     "ctaTelegram": "I've paid - Send proof on Telegram",
-    "dmMessage": "Hi! I've paid for the {plan} ({price}).\nName: {name}\nCountry: {country}\nMT4 accounts: {accounts}\nI'll send the payment screenshot.",
-    "dmMessageDiscount": "Hi! I've paid for the {plan} with the partner discount ({price}) - broker {broker}.\nName: {name}\nCountry: {country}\nMT4 accounts: {accounts}\nI'll send the payment screenshot.",
+    "dmMessage": "Hi! I've paid for the {plan} ({price}).\nName: {name}\nCountry: {country}\nEmail: {email}\nOrder: {order}\nMT4 accounts: {accounts}\nI'll send the payment screenshot.",
+    "dmMessageDiscount": "Hi! I've paid for the {plan} with the partner discount ({price}) - broker {broker}.\nName: {name}\nCountry: {country}\nEmail: {email}\nOrder: {order}\nMT4 accounts: {accounts}\nI'll send the payment screenshot.",
     "flow": {
       "choosePlan": "Choose your plan",
       "discountApplied": "{broker} partner discount: -{discount}",
@@ -385,7 +386,12 @@
         "edit": "Edit",
         "invalid": "Numbers only (4 to 12 digits).",
         "duplicate": "This number was already added.",
-        "required": "Fill in your name, country and at least 1 MT4 account to continue.",
+        "required": "Fill in your name, country, email and at least 1 MT4 account to continue.",
+        "emailLabel": "Email",
+        "emailEmpty": "+ Email - tap to add",
+        "emailPlaceholder": "you@email.com",
+        "emailInvalid": "Enter a valid email.",
+        "saving": "Saving order...",
         "customerTitle": "Your details",
         "nameLabel": "Name",
         "nameEmpty": "+ First and last name - tap to add",
@@ -400,9 +406,93 @@
       "payment": {
         "title": "Pay {price} with one of the options below",
         "body": "After paying, tap the button at the bottom and send me the payment screenshot on Telegram. The message already includes your details, your plan and your MT4 accounts.",
-        "accounts": "MT4 accounts: {ids}"
+        "accounts": "MT4 accounts: {ids}",
+        "order": "Order {code}",
+        "accountHint": "As soon as the payment is confirmed, your license shows up in My Account. Sign in with {email}."
       }
     },
     "backToPlans": "← Back to Plans"
+  },
+  "Auth": {
+    "title": "Sign in to your account",
+    "body": "Enter the email you used to buy. We'll send you a 6-digit code, no password needed.",
+    "emailLabel": "Email",
+    "emailPlaceholder": "you@email.com",
+    "send": "Send code",
+    "sending": "Sending...",
+    "codeTitle": "Enter the code",
+    "codeBody": "We sent a code to {email}. It's valid for 10 minutes. Check your spam folder too.",
+    "codeLabel": "6-digit code",
+    "verify": "Sign in",
+    "verifying": "Signing in...",
+    "changeEmail": "Use another email",
+    "resend": "Resend code",
+    "resent": "Code resent.",
+    "errors": {
+      "email": "Invalid email.",
+      "wait": "Wait 1 minute before requesting another code.",
+      "code": "Wrong or expired code.",
+      "server": "Server error. Please try again in a moment."
+    },
+    "email": {
+      "subject": "Your access code: {code}",
+      "intro": "Use the code below to sign in to your Ai X TradeX account:",
+      "expires": "The code is valid for 10 minutes.",
+      "ignore": "If you didn't request this code, ignore this email."
+    }
+  },
+  "Account": {
+    "title": "My account",
+    "signedInAs": "Signed in as {email}",
+    "logout": "Sign out",
+    "admin": "Admin panel",
+    "licensesTitle": "Your licenses",
+    "empty": "You don't have an active license yet. As soon as the payment is confirmed, it shows up here.",
+    "seePlans": "See plans",
+    "plan": {
+      "monthly": "Monthly License",
+      "lifetime": "Lifetime License"
+    },
+    "status": {
+      "active": "Active",
+      "expired": "Expired",
+      "suspended": "Blocked"
+    },
+    "key": "Key",
+    "expires": "Expires on {date}",
+    "expiredOn": "Expired on {date}",
+    "lifetime": "Lifetime - no expiry",
+    "accountsTitle": "Enabled MT4 accounts ({count}/{max})",
+    "accountsHint": "The robot only runs on the accounts registered here. You can change them whenever you need.",
+    "saveAccounts": "Save accounts",
+    "savingAccounts": "Saving...",
+    "accountsSaved": "Accounts saved.",
+    "accountErrors": {
+      "tooMany": "Your plan allows up to {max} accounts.",
+      "invalid": "Check the MT4 account numbers.",
+      "inUse": "These accounts are already in another license: {logins}"
+    },
+    "renew": "Renew for 30 more days ({price})",
+    "renewPending": "Renewal created - pay the order below.",
+    "ordersTitle": "Orders",
+    "ordersEmpty": "No orders yet.",
+    "orderStatus": {
+      "pending": "Awaiting payment",
+      "paid": "Paid",
+      "cancelled": "Cancelled"
+    },
+    "renewal": "Renewal",
+    "pay": "Pay now",
+    "hidePay": "Close",
+    "payIntro": "Pay {amount} to one of the wallets below and send the screenshot on Telegram. Order number {code} is already in the message.",
+    "dmPay": "Hi! I've paid order {code} ({amount}).\nEmail: {email}\nI'll send the payment screenshot.",
+    "downloadsTitle": "Downloads",
+    "downloadsBody": "Robot files available for your license.",
+    "downloadsLocked": "Downloads are available while your license is active.",
+    "downloadsEmpty": "No files available yet.",
+    "current": "Current",
+    "download": "Download",
+    "setupTitle": "How to activate on MT4",
+    "setupSteps": "In MT4, go to Tools > Options > Expert Advisors, check \"Allow WebRequest for listed URL\" and add the address below. The robot uses it to check your license."
   }
 }

@@ -52,6 +52,9 @@ export function Header({ logoExists }: { logoExists: boolean }) {
           <Suspense fallback={<div className="h-6 w-14" />}>
             <LanguageSwitcher />
           </Suspense>
+          <Link href="/account" className="text-sm font-medium text-brand-ink-dim transition-colors hover:text-brand-accent">
+            {t("account")}
+          </Link>
           <Button href={siteConfig.telegramDmUrl} variant="neon" className="!px-4 !py-2 text-sm">
             <IconTelegram className="!h-5 !w-5" />
             {t("cta")}
@@ -90,6 +93,13 @@ export function Header({ logoExists }: { logoExists: boolean }) {
               {link.label}
             </Link>
           ))}
+          <Link
+            href="/account"
+            onClick={() => setOpen(false)}
+            className="nav-pill w-fit text-sm font-medium text-brand-accent"
+          >
+            {t("account")}
+          </Link>
           <Button href={siteConfig.telegramDmUrl} variant="neon">
             <IconTelegram className="h-4 w-4" />
             {t("cta")}

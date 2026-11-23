@@ -1,0 +1,220 @@
+import "server-only";
+import { randomBytes, randomUUID } from "node:crypto";
+import { and, eq, inArray, ne, notInArray } from "drizzle-orm";
+import { db, schema } from "@/lib/db";
+import type { License } from "@/lib/db/schema";
+import { findOrCreateUser } from "@/lib/auth";
+import { partnerBrokers } from "@/lib/site-config";
+import {
+  MONTHLY_DAYS,
+  MT4_LOGIN,
+  PLAN_DISCOUNT_USD,
+  PLAN_MAX_ACCOUNTS,
+  PLAN_PRICE_USD,
+  PRODUCT,
+  type PlanType,
+} from "@/lib/plans";
+
+const ALPHABET = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789"; // sem 0/O/1/I pra não confundir
+
+function randomCode(length: number) {
+  const bytes = randomBytes(length);
+  return Array.from(bytes, (b) => ALPHABET[b % ALPHABET.length]).join("");
+}
+
+export const newOrderCode = () => `AX-${randomCode(6)}`;
+export const newLicenseKey = () => `AXP-${randomCode(4)}-${randomCode(4)}-${randomCode(4)}`;
+
+export type LicenseState = "active" | "expired" | "suspended";
+
+export function licenseState(license: Pick<License, "status" | "expiresAt">, now = new Date()): LicenseState {
+  if (license.status === "suspended") return "suspended";
+  if (license.expiresAt && license.expiresAt <= now) return "expired";
+  return "active";
+}
+
+export function isPartnerBroker(slug: string | null | undefined): slug is string {
+  return Boolean(slug && partnerBrokers.some((b) => b.slug === slug));
+}
+
+export function priceFor(plan: PlanType, broker: string | null | undefined) {
+  return PLAN_PRICE_USD[plan] - (isPartnerBroker(broker) ? PLAN_DISCOUNT_USD[plan] : 0);
+}
+
+export function cleanLogins(logins: string[], max: number) {
+  const unique = [...new Set(logins.map((l) => l.trim()).filter(Boolean))];
+  if (unique.length > max) return { error: "tooMany" as const };
+  if (unique.some((l) => !MT4_LOGIN.test(l))) return { error: "invalid" as const };
+  return { logins: unique };
+}
+
+// Contas que já estão em outra licença do mesmo produto.
+export async function loginsInUse(logins: string[], exceptLicenseId?: string) {
+  if (logins.length === 0) return [];
+  const rows = await db()
+    .select({ login: schema.licenseAccounts.login })
+    .from(schema.licenseAccounts)
+    .where(
+      and(
+        eq(schema.licenseAccounts.product, PRODUCT.slug),
+        inArray(schema.licenseAccounts.login, logins),
+        exceptLicenseId ? ne(schema.licenseAccounts.licenseId, exceptLicenseId) : undefined
+      )
+    );
+  return rows.map((r) => r.login);
+}
+
+export async function createOrder(input: {
+  email: string;
+  name: string;
+  country: string;
+  plan: PlanType;
+  broker?: string | null;
+  logins: string[];
+  licenseId?: string;
+}) {
+  const user = await findOrCreateUser(input.email, { name: input.name, country: input.country });
+  const broker = isPartnerBroker(input.broker) ? input.broker : null;
+  const [order] = await db()
+    .insert(schema.orders)
+    .values({
+      code: newOrderCode(),
+      userId: user.id,
+      product: PRODUCT.slug,
+      plan: input.plan,
+      amountUsd: priceFor(input.plan, broker).toFixed(2),
+      broker,
+      mt4Logins: input.logins,
+      licenseId: input.licenseId,
+    })
+    .returning();
+  return order;
+}
+
+export type ApproveResult =
+  | { ok: true; licenseId: string; skippedLogins: string[] }
+  | { ok: false; error: "notPending" | "notFound" };
+
+// Confirma o pagamento: cria a licença (com as contas MT4 do pedido) ou estende a mensal na renovação.
+export async function approveOrder(orderId: string, payment: { method: string; ref?: string }): Promise<ApproveResult> {
+  const [order] = await db()
+    .update(schema.orders)
+    .set({ status: "paid", paidAt: new Date(), paymentMethod: payment.method, paymentRef: payment.ref ?? null })
+    .where(and(eq(schema.orders.id, orderId), eq(schema.orders.status, "pending")))
+    .returning();
+  if (!order) {
+    const [exists] = await db().select({ id: schema.orders.id }).from(schema.orders).where(eq(schema.orders.id, orderId));
+    return { ok: false, error: exists ? "notPending" : "notFound" };
+  }
+
+  try {
+    if (order.licenseId) {
+      const [license] = await db().select().from(schema.licenses).where(eq(schema.licenses.id, order.licenseId));
+      if (license) {
+        await extendLicense(license, MONTHLY_DAYS);
+        return { ok: true, licenseId: license.id, skippedLogins: [] };
+      }
+    }
+
+    const max = PLAN_MAX_ACCOUNTS[order.plan];
+    const wanted = order.mt4Logins.slice(0, max);
+    const taken = await loginsInUse(wanted);
+    const logins = wanted.filter((l) => !taken.includes(l));
+    const licenseId = randomUUID();
+    await db().batch([
+      db()
+        .insert(schema.licenses)
+        .values({
+          id: licenseId,
+          key: newLicenseKey(),
+          userId: order.userId,
+          product: order.product,
+          plan: order.plan,
+          maxAccounts: max,
+          broker: order.broker,
+          expiresAt: order.plan === "monthly" ? new Date(Date.now() + MONTHLY_DAYS * 86_400_000) : null,
+        }),
+      ...logins.map((login) =>
+        db().insert(schema.licenseAccounts).values({ licenseId, product: order.product, login })
+      ),
+      db().update(schema.orders).set({ licenseId }).where(eq(schema.orders.id, order.id)),
+    ]);
+    return { ok: true, licenseId, skippedLogins: taken };
+  } catch (error) {
+    // Não deixa o pedido marcado como pago se a licença não foi criada.
+    await db().update(schema.orders).set({ status: "pending", paidAt: null }).where(eq(schema.orders.id, order.id));
+    throw error;
+  }
+}
+
+// Soma dias a partir do vencimento atual (ou de hoje, se já venceu).
+export async function extendLicense(license: License, days: number) {
+  const base = license.expiresAt && license.expiresAt > new Date() ? license.expiresAt : new Date();
+  const expiresAt = new Date(base.getTime() + days * 86_400_000);
+  await db().update(schema.licenses).set({ expiresAt }).where(eq(schema.licenses.id, license.id));
+  return expiresAt;
+}
+
+export type SetAccountsResult = { ok: true } | { ok: false; error: "tooMany" | "invalid" | "inUse"; logins?: string[] };
+
+// Troca as contas MT4 de uma licença, mantendo o histórico de checagem das que continuam.
+export async function setLicenseAccounts(license: License, rawLogins: string[]): Promise<SetAccountsResult> {
+  const cleaned = cleanLogins(rawLogins, license.maxAccounts);
+  if ("error" in cleaned) return { ok: false, error: cleaned.error! };
+  const { logins } = cleaned;
+  const taken = await loginsInUse(logins, license.id);
+  if (taken.length) return { ok: false, error: "inUse", logins: taken };
+
+  const current = await db()
+    .select({ login: schema.licenseAccounts.login })
+    .from(schema.licenseAccounts)
+    .where(eq(schema.licenseAccounts.licenseId, license.id));
+  const toAdd = logins.filter((l) => !current.some((c) => c.login === l));
+
+  await db().batch([
+    db()
+      .delete(schema.licenseAccounts)
+      .where(
+        and(
+          eq(schema.licenseAccounts.licenseId, license.id),
+          logins.length ? notInArray(schema.licenseAccounts.login, logins) : undefined
+        )
+      ),
+    ...toAdd.map((login) =>
+      db().insert(schema.licenseAccounts).values({ licenseId: license.id, product: license.product, login })
+    ),
+  ]);
+  return { ok: true };
+}
+
+export type CheckStatus = "ACTIVE" | "EXPIRED" | "SUSPENDED" | "NOT_FOUND";
+
+export async function checkLicense(input: {
+  product: string;
+  login: string;
+  ip?: string | null;
+  eaVersion?: string | null;
+  server?: string | null;
+}): Promise<{ status: CheckStatus; plan: string; expiresAt: Date | null }> {
+  const [row] = await db()
+    .select({ account: schema.licenseAccounts, license: schema.licenses })
+    .from(schema.licenseAccounts)
+    .innerJoin(schema.licenses, eq(schema.licenses.id, schema.licenseAccounts.licenseId))
+    .where(and(eq(schema.licenseAccounts.product, input.product), eq(schema.licenseAccounts.login, input.login)))
+    .limit(1);
+  if (!row) return { status: "NOT_FOUND", plan: "-", expiresAt: null };
+
+  await db()
+    .update(schema.licenseAccounts)
+    .set({
+      lastCheckAt: new Date(),
+      lastIp: input.ip ?? null,
+      lastEaVersion: input.eaVersion?.slice(0, 32) ?? null,
+      lastServer: input.server?.slice(0, 64) ?? null,
+    })
+    .where(eq(schema.licenseAccounts.id, row.account.id));
+
+  const state = licenseState(row.license);
+  const status: CheckStatus = state === "active" ? "ACTIVE" : state === "expired" ? "EXPIRED" : "SUSPENDED";
+  return { status, plan: row.license.plan, expiresAt: row.license.expiresAt };
+}

@@ -1,31 +1,24 @@
 "use client";
 
-import { useRef, useState } from "react";
+import { useRef, useState, useTransition } from "react";
 import Image from "next/image";
 import { useTranslations } from "next-intl";
 import { GlowCard } from "@/components/brand/GlowCard";
 import { CopyButton } from "@/components/ui/CopyButton";
 import { Link } from "@/i18n/navigation";
-import { siteConfig, paymentAddresses, partnerBrokers } from "@/lib/site-config";
+import { siteConfig, partnerBrokers } from "@/lib/site-config";
 import { PLAN_ACCOUNTS, PLAN_KEYS, PLAN_PATH, type PlanKey } from "@/lib/plans";
 import { AccountIdSlots } from "@/components/payment/AccountIdSlots";
 import { InlineField } from "@/components/payment/InlineField";
 import { CountryField } from "@/components/payment/CountryField";
+import { PaymentMethods } from "@/components/payment/PaymentMethods";
+import { createOrderAction } from "@/app/actions/checkout";
+
+const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
 
 const STEPS = ["discount", "broker", "account", "payment"] as const;
 type Step = (typeof STEPS)[number];
 type BrokerSlug = (typeof partnerBrokers)[number]["slug"];
-
-const METHODS = [
-  { key: "binancePay", value: paymentAddresses.binancePayId },
-  { key: "btc", value: paymentAddresses.btc },
-  { key: "usdtTrc20", value: paymentAddresses.usdtTrc20 },
-  { key: "usdtErc20", value: paymentAddresses.usdtErc20 },
-  { key: "usdtBep20", value: paymentAddresses.usdtBep20 },
-  { key: "usdc", value: paymentAddresses.usdc },
-  { key: "ltc", value: paymentAddresses.ltc },
-  { key: "eth", value: paymentAddresses.eth },
-] as const;
 
 const primaryBtn =
   "inline-flex items-center justify-center gap-2 rounded-full bg-gradient-to-b from-brand-accent to-brand-accent-dark px-6 py-3 text-sm font-semibold text-brand-bg transition-[transform,filter] duration-200 hover:scale-[1.03] hover:brightness-110 active:scale-[0.98] disabled:pointer-events-none disabled:opacity-40";
@@ -45,6 +38,10 @@ export function CheckoutFlow({ initialPlan }: { initialPlan?: PlanKey }) {
   const [accountIds, setAccountIds] = useState<string[]>([]);
   const [customerName, setCustomerName] = useState("");
   const [customerCountry, setCustomerCountry] = useState("");
+  const [customerEmail, setCustomerEmail] = useState("");
+  // Pedido gravado no banco; a chave evita criar outro pedido se o cliente só voltou e avançou de novo.
+  const [order, setOrder] = useState<{ key: string; code: string } | null>(null);
+  const [saving, startSaving] = useTransition();
   const topRef = useRef<HTMLDivElement>(null);
 
   function goTo(next: Step) {
@@ -65,13 +62,34 @@ export function CheckoutFlow({ initialPlan }: { initialPlan?: PlanKey }) {
   // Ao trocar de vitalícia pra mensal, só as primeiras contas cabem no plano.
   const savedIds = accountIds.slice(0, maxAccounts).filter(Boolean);
   const accounts = savedIds.join(", ");
-  const accountStepDone = Boolean(customerName && customerCountry && savedIds.length > 0);
+  const accountStepDone = Boolean(customerName && customerCountry && customerEmail && savedIds.length > 0);
+  const orderKey = JSON.stringify([plan, brokerSlug, customerEmail, customerName, customerCountry, savedIds]);
+  const orderCode = order?.key === orderKey ? order.code : "";
+
+  function submitAccountStep() {
+    if (orderCode) return goTo("payment");
+    startSaving(async () => {
+      const result = await createOrderAction({
+        planKey: plan ?? "",
+        email: customerEmail,
+        name: customerName,
+        country: customerCountry,
+        broker: discountApplied ? brokerSlug : null,
+        logins: savedIds,
+      }).catch(() => null);
+      // Se o banco falhar, o cliente segue mesmo assim: os dados vão na mensagem do Telegram.
+      setOrder(result?.ok ? { key: orderKey, code: result.code } : null);
+      goTo("payment");
+    });
+  }
 
   const dmValues = {
     plan: planLabel,
     price: finalPrice,
     name: customerName,
     country: customerCountry,
+    email: customerEmail,
+    order: orderCode || "-",
     accounts,
   };
   const dmText = discountApplied
@@ -302,6 +320,17 @@ export function CheckoutFlow({ initialPlan }: { initialPlan?: PlanKey }) {
                     onSave={setCustomerName}
                   />
                   <CountryField value={customerCountry} onSave={setCustomerCountry} />
+                  <InlineField
+                    label={tFlow("account.emailLabel")}
+                    emptyText={tFlow("account.emailEmpty")}
+                    value={customerEmail}
+                    placeholder={tFlow("account.emailPlaceholder")}
+                    inputMode="email"
+                    autoComplete="email"
+                    sanitize={(raw) => raw.replace(/\s/g, "").toLowerCase()}
+                    validate={(v) => (EMAIL_RE.test(v) ? null : tFlow("account.emailInvalid"))}
+                    onSave={setCustomerEmail}
+                  />
                 </div>
               </div>
               <AccountIdSlots max={maxAccounts} ids={accountIds} onChange={setAccountIds} />
@@ -319,10 +348,10 @@ export function CheckoutFlow({ initialPlan }: { initialPlan?: PlanKey }) {
                 <button
                   type="button"
                   className={primaryBtn}
-                  disabled={!accountStepDone}
-                  onClick={() => goTo("payment")}
+                  disabled={!accountStepDone || saving}
+                  onClick={submitAccountStep}
                 >
-                  {tFlow("account.next")}
+                  {saving ? tFlow("account.saving") : tFlow("account.next")}
                 </button>
               </div>
             </GlowCard>
@@ -342,35 +371,22 @@ export function CheckoutFlow({ initialPlan }: { initialPlan?: PlanKey }) {
                   <p className="rounded-full bg-brand-accent/10 px-3 py-1 font-mono text-xs font-semibold text-brand-accent">
                     {tFlow("payment.accounts", { ids: savedIds.join(" · ") })}
                   </p>
+                  {orderCode && (
+                    <p className="rounded-full bg-brand-accent px-3 py-1 font-mono text-xs font-bold text-brand-bg">
+                      {tFlow("payment.order", { code: orderCode })}
+                    </p>
+                  )}
                 </div>
+                {orderCode && (
+                  <p className="mx-auto mt-3 max-w-md text-xs text-brand-ink-dim">
+                    {tFlow("payment.accountHint", { email: customerEmail })}
+                  </p>
+                )}
               </GlowCard>
 
-              <GlowCard className="mb-4 text-sm text-brand-ink-dim">
-                <p>⚠️ {t("warning")}</p>
-              </GlowCard>
+              <PaymentMethods dmHref={dmHref} />
 
-              <div className="mb-8 flex flex-col gap-4">
-                {METHODS.map(({ key, value }) => (
-                  <GlowCard key={key} className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-                    <div>
-                      <p className="font-display text-base font-bold text-chrome">{t(`methods.${key}.label`)}</p>
-                      <p className="text-xs text-brand-ink-dim">{t(`methods.${key}.network`)}</p>
-                      <p className="mt-1 break-all font-mono text-xs text-brand-ink">{value}</p>
-                    </div>
-                    <CopyButton value={value} label={t("copy")} copiedLabel={t("copied")} />
-                  </GlowCard>
-                ))}
-              </div>
-
-              <div className="flex flex-col items-center gap-4">
-                <a
-                  href={dmHref}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="cta-neon flex items-center gap-2 rounded-full bg-brand-surface px-6 py-3 text-center text-sm font-semibold text-brand-ink transition-colors duration-300 hover:text-brand-accent"
-                >
-                  {t("ctaTelegram")}
-                </a>
+              <div className="mt-4 flex flex-col items-center gap-4">
                 <button type="button" className={backBtn} onClick={() => goTo("account")}>
                   {tFlow("back")}
                 </button>
