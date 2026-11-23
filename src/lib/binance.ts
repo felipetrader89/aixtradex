@@ -5,8 +5,14 @@ import type { BinanceCreds } from "@/lib/config";
 // Leitura da conta pessoal da Binance com chave de API SÓ LEITURA (sem saque, sem trade).
 // Usa dois históricos: depósitos na rede (USDT TRC-20/ERC-20/BEP-20, USDC BASE, BTC...) e transferências Binance Pay.
 
-// BINANCE_API_URL só existe pra teste (simulador local); em produção fica sem e usa a API oficial.
+// A VPS principal fica nos EUA, e a Binance bloqueia a API vinda de lá (HTTP 451). Por isso as chamadas passam por uma
+// "ponte" numa VPS no Brasil: BINANCE_API_URL = endereço da ponte, BINANCE_RELAY_TOKEN = senha que só a ponte aceita.
+// Sem BINANCE_API_URL, vai direto na API oficial (funciona se o servidor estiver num país liberado).
 const BASE_URL = process.env.BINANCE_API_URL || "https://api.binance.com";
+const RELAY_TOKEN = process.env.BINANCE_RELAY_TOKEN;
+
+// IP que precisa estar liberado na chave da Binance (o da ponte, quando houver).
+export const binanceEgressIp = () => process.env.BINANCE_EGRESS_IP || "2.25.215.59";
 
 export class BinanceError extends Error {
   constructor(
@@ -27,6 +33,12 @@ function explain(status: number, body: string) {
     code = json.code;
     msg = json.msg ?? msg;
   } catch {}
+  if (status === 451) {
+    return new BinanceError(
+      "A Binance bloqueou o acesso pela localização do servidor (EUA). A conexão precisa passar pela ponte no Brasil.",
+      status
+    );
+  }
   const hints: Record<number, string> = {
     [-2014]: "API Key em formato inválido - confira se copiou inteira.",
     [-2015]: "Chave recusada: API Key/Secret errados, IP do servidor não liberado na chave, ou permissão de leitura desligada.",
@@ -42,7 +54,7 @@ async function signedGet<T>(creds: BinanceCreds, path: string, params: Record<st
   let res: Response;
   try {
     res = await fetch(`${BASE_URL}${path}?${query}&signature=${signature}`, {
-      headers: { "X-MBX-APIKEY": creds.apiKey },
+      headers: { "X-MBX-APIKEY": creds.apiKey, ...(RELAY_TOKEN ? { "X-Relay-Token": RELAY_TOKEN } : {}) },
       cache: "no-store",
       signal: AbortSignal.timeout(15_000),
     });

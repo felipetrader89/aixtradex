@@ -1,6 +1,7 @@
 import { getBinanceCreds, getBinanceSettings } from "@/lib/config";
 import { getBinanceState } from "@/lib/payments";
 import { maskTail } from "@/lib/secret-box";
+import { binanceEgressIp } from "@/lib/binance";
 import {
   removeBinanceKeyAction,
   saveBinanceKeyAction,
@@ -22,8 +23,6 @@ import {
   fmtDateTime,
 } from "@/components/admin/ui";
 
-const SERVER_IP = "2.25.215.59";
-
 type Props = { searchParams: Promise<{ msg?: string; err?: string }> };
 
 function Perm({ ok, good, label, hint }: { ok: boolean; good: boolean; label: string; hint: string }) {
@@ -42,6 +41,7 @@ function Perm({ ok, good, label, hint }: { ok: boolean; good: boolean; label: st
 export default async function BinanceSettings({ searchParams }: Props) {
   const { msg, err } = await searchParams;
   const [creds, saved, state] = await Promise.all([getBinanceCreds(), getBinanceSettings(), getBinanceState()]);
+  const SERVER_IP = binanceEgressIp();
   const autoPay = saved.autoPay !== false;
   const test = saved.lastTest;
   const lastRun = state ? new Date(state.lastRunAt) : null;
