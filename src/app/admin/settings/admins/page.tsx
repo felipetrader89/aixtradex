@@ -10,7 +10,7 @@ export default async function AdminsSettings({ searchParams }: Props) {
 
   return (
     <div className="flex flex-col gap-6">
-      <Flash msg={msg} err={err} />
+      <Flash msg={msg} err={err} tight />
 
       <Panel title={`Administradores (${owners.length + extra.length})`}>
         <ul className="flex flex-col divide-y divide-brand-hairline">

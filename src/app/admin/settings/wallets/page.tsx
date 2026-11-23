@@ -12,7 +12,7 @@ export default async function WalletsSettings({ searchParams }: Props) {
 
   return (
     <div className="flex flex-col gap-6">
-      <Flash msg={msg} err={err} />
+      <Flash msg={msg} err={err} tight />
 
       <Panel title="Formas de pagamento do checkout">
         <p className="mb-5 text-sm text-brand-ink-dim">

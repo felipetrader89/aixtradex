@@ -59,7 +59,7 @@ export default async function AdminBinance({ searchParams }: Props) {
           Configurar Binance
         </Link>
       </PageHeader>
-      <Flash msg={msg} />
+      <Flash msg={msg} tight />
 
       <Panel title="Leitura automática da Binance">
         <div className="flex flex-wrap items-center gap-3 text-sm text-brand-ink">

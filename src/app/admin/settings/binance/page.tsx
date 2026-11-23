@@ -48,7 +48,7 @@ export default async function BinanceSettings({ searchParams }: Props) {
 
   return (
     <div className="flex flex-col gap-6">
-      <Flash msg={msg} err={err} />
+      <Flash msg={msg} err={err} tight />
 
       <div className="grid gap-4 md:grid-cols-3">
         <Panel title="Conexão">

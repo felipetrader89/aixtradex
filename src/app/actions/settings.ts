@@ -70,6 +70,8 @@ export async function saveBinanceKeyAction(form: FormData) {
     lastTest: test,
   });
   await logEvent(admin.email, "binance.key", `Chave salva (…${apiKey.slice(-4)}), IP restrito: ${permissions.ipRestrict ? "sim" : "não"}`);
+  // Primeira leitura na hora, pra o status do painel já sair atualizado.
+  await syncBinance().catch((error) => console.error("primeira leitura da Binance", error));
   back(
     "binance",
     permissions.ipRestrict

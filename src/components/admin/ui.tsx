@@ -9,13 +9,15 @@ export const adminBtnGhost =
 export const adminBtnDanger =
   "rounded-full border border-red-500/40 px-4 py-2 text-xs font-semibold text-red-300 transition-colors hover:bg-red-500/10";
 
-export function Flash({ msg, err }: { msg?: string; err?: string }) {
+// `tight` = sem margem embaixo (quando já está dentro de uma coluna com espaçamento).
+export function Flash({ msg, err, tight }: { msg?: string; err?: string; tight?: boolean }) {
+  const space = tight ? "" : "mb-6 ";
   if (err) {
-    return <p className="mb-6 rounded-xl border border-red-400/40 bg-red-500/10 px-4 py-3 text-sm text-red-200">⚠️ {err}</p>;
+    return <p className={`${space}rounded-xl border border-red-400/40 bg-red-500/10 px-4 py-3 text-sm text-red-200`}>⚠️ {err}</p>;
   }
   if (!msg) return null;
   return (
-    <p className="mb-6 rounded-xl border border-brand-accent/40 bg-brand-accent/10 px-4 py-3 text-sm text-brand-ink">{msg}</p>
+    <p className={`${space}rounded-xl border border-brand-accent/40 bg-brand-accent/10 px-4 py-3 text-sm text-brand-ink`}>{msg}</p>
   );
 }
 
