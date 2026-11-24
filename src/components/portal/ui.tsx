@@ -92,9 +92,9 @@ export function AccountStatsCard({
           <p className="text-xs text-brand-ink-dim">{stats?.company ?? t("brokerUnknown")}</p>
           <p className="font-mono text-xl font-extrabold text-chrome">{login}</p>
           <p className="mt-0.5 text-xs text-brand-ink-dim">
-            {stats?.server ?? ""}
-            {stats?.leverage ? ` · 1:${stats.leverage}` : ""}
-            {` · ${t("licenseOf", { key: licenseKey })}`}
+            {[stats?.server, stats?.leverage ? `1:${stats.leverage}` : null, t("licenseOf", { key: licenseKey })]
+              .filter(Boolean)
+              .join(" · ")}
           </p>
         </div>
         <div className="flex flex-col items-end gap-1">

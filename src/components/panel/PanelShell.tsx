@@ -162,18 +162,19 @@ export function PanelShell({
       {/* Computador: menu no topo. */}
       {!side && (
         <header className="sticky top-0 z-50 hidden border-b border-brand-hairline bg-brand-bg/95 backdrop-blur lg:block">
-          <div className="mx-auto flex max-w-7xl items-center gap-6 px-8 py-3">
+          {/* Linha 1: marca + usuário; linha 2: menu com a largura toda (cabe tudo em telas de notebook). */}
+          <div className="mx-auto flex max-w-7xl items-center justify-between gap-6 px-8 pt-3">
             {brand}
-            <nav className="flex min-w-0 flex-1 gap-1 overflow-x-auto [scrollbar-width:none]">
-              {items.map((item) => (
-                <NavLink key={item.href} item={item} active={isActive(item)} compact />
-              ))}
-            </nav>
             <div className="flex shrink-0 items-center gap-4">
               {topRight}
               <PositionSwitch position={position} onChange={choose} labels={switchLabels} />
             </div>
           </div>
+          <nav className="mx-auto flex max-w-7xl flex-wrap gap-1 px-8 pb-3 pt-2">
+            {items.map((item) => (
+              <NavLink key={item.href} item={item} active={isActive(item)} compact />
+            ))}
+          </nav>
         </header>
       )}
 

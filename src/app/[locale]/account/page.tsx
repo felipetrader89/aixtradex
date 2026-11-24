@@ -62,13 +62,14 @@ export default async function AccountOverview({ params }: Props) {
     info: "border-brand-accent/30 bg-brand-accent/5",
   } as const;
 
-  const kpis = [
+  const kpis: { label: string; value: string; small?: boolean }[] = [
     { label: t("overview.kpis.activeLicenses"), value: String(active.length) },
     { label: t("overview.kpis.accounts"), value: String(rows.length) },
     { label: t("overview.kpis.running"), value: `${running}/${rows.length}` },
     {
       label: t("overview.kpis.nextExpiry"),
       value: nextExpiry ? date.format(nextExpiry) : active.length ? t("overview.kpis.lifetime") : "-",
+      small: true,
     },
   ];
 
@@ -80,7 +81,7 @@ export default async function AccountOverview({ params }: Props) {
         {kpis.map((k) => (
           <Card key={k.label} className="!p-4">
             <p className="text-xs text-brand-ink-dim">{k.label}</p>
-            <p className="mt-1 font-display text-2xl font-extrabold text-chrome">{k.value}</p>
+            <p className={`mt-1 font-display font-extrabold text-chrome ${k.small ? "text-lg leading-8" : "text-2xl"}`}>{k.value}</p>
           </Card>
         ))}
       </div>
