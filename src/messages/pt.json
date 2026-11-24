@@ -102,7 +102,7 @@
     "license": {
       "tag": "Licença do robô - até 2 contas (mensal) ou até 5 contas (vitalícia)",
       "description": "Você recebe o arquivo do robô e instala direto nas suas contas MT4, sem que eu faça a gestão. A licença mensal libera até 2 contas MT4 e a vitalícia até 5. Você informa o número de cada conta na compra e, se precisar, pode corrigir 1 vez em Minha Conta.",
-      "requirementsNote": "Todas as contas precisam ter spread abaixo de 35 pts pra o robô entregar um bom desempenho.",
+      "requirementsNote": "Todas as contas precisam ter spread abaixo de 30 pts pra o robô entregar um bom desempenho.",
       "oneMonth": { "label": "Licença Mensal", "price": "$99", "period": "/mês", "note": "Até 2 contas MT4", "discount": "$30", "discountPrice": "$69", "discountNote": "ou $69/mês com desconto de corretora parceira" },
       "lifetime": { "label": "Licença Vitalícia", "price": "$499", "period": "", "originalPrice": "$997", "badge": "50% OFF", "note": "Pagamento único, acesso vitalício - até 5 contas MT4", "discount": "$50", "discountPrice": "$449", "discountNote": "ou $449 com desconto de corretora parceira" },
       "discountTitle": "Ganhe até $50 de desconto na licença",
@@ -143,7 +143,7 @@
     ],
     "brokers": {
       "title": "Corretoras Parceiras",
-      "body": "O robô funciona em qualquer tipo de conta MetaTrader 4 (MT4), em qualquer corretora, com spread abaixo de 35 pts. Nas corretoras parceiras abaixo você ganha desconto na licença: abrindo conta pelo meu link ou mudando o Código IB da sua conta pro meu - $30 na Licença Mensal e $50 na Vitalícia. Isso não é indicação de investimento.",
+      "body": "O robô funciona em qualquer tipo de conta MetaTrader 4 (MT4), em qualquer corretora, com spread abaixo de 30 pts. Nas corretoras parceiras abaixo você ganha desconto na licença: abrindo conta pelo meu link ou mudando o Código IB da sua conta pro meu - $30 na Licença Mensal e $50 na Vitalícia. Isso não é indicação de investimento.",
       "comingSoon": "Mais Corretoras em Breve..."
     },
     "closing": {
@@ -193,11 +193,11 @@
       },
       {
         "q": "Quais corretoras são compatíveis?",
-        "a": "Qualquer corretora com MetaTrader 4, em qualquer tipo de conta, com spread abaixo de 35 pts. Se você abrir conta pelo meu link (ou mudar o Código IB pro meu) numa corretora parceira - FPMarkets, Tickmill, Vantage ou Exness - ganha $30 de desconto na Licença Mensal ou $50 na Vitalícia."
+        "a": "Qualquer corretora com MetaTrader 4, em qualquer tipo de conta, com spread abaixo de 30 pts. Se você abrir conta pelo meu link (ou mudar o Código IB pro meu) numa corretora parceira - FPMarkets, Tickmill, Vantage ou Exness - ganha $30 de desconto na Licença Mensal ou $50 na Vitalícia."
       },
       {
         "q": "Qual o depósito mínimo?",
-        "a": "O recomendado é a partir de $100, numa conta MT4 com alavancagem 1:500 - qualquer tipo de conta, com spread abaixo de 35 pts."
+        "a": "O recomendado é a partir de $100, numa conta MT4 com alavancagem 1:500 - qualquer tipo de conta, com spread abaixo de 30 pts."
       },
       {
         "q": "Como funciona a cobrança?",
@@ -205,7 +205,7 @@
       },
       {
         "q": "Quantas contas posso usar com a licença?",
-        "a": "A Licença Mensal libera o robô em até 2 contas MT4 suas, e a Licença Vitalícia em até 5. Você informa o número de cada conta na compra; depois, dá pra trocar as contas 1 vez em Minha Conta, e outras trocas só pelo suporte. Pra usar o robô em mais contas, é preciso outra licença. Todas as contas precisam ter spread abaixo de 35 pts pra o robô entregar um bom desempenho."
+        "a": "A Licença Mensal libera o robô em até 2 contas MT4 suas, e a Licença Vitalícia em até 5. Você informa o número de cada conta na compra; depois, dá pra trocar as contas 1 vez em Minha Conta, e outras trocas só pelo suporte. Pra usar o robô em mais contas, é preciso outra licença. Todas as contas precisam ter spread abaixo de 30 pts pra o robô entregar um bom desempenho."
       },
       {
         "q": "Como recebo o robô depois do pagamento?",
@@ -272,7 +272,7 @@
       "platform": "Plataforma", "platformValue": "MetaTrader 4",
       "pair": "Par Recomendado", "pairValue": "XAU/USD (Ouro)",
       "timeframe": "Timeframe", "timeframeValue": "M5 (ajuste automático)",
-      "accountType": "Tipo de Conta", "accountTypeValue": "Qualquer tipo (spread até 35 pts)",
+      "accountType": "Tipo de Conta", "accountTypeValue": "Qualquer tipo (spread até 30 pts)",
       "operation": "Modo de Operação", "operationValue": "Automático, com controles manuais",
       "dashboard": "Painel Visual", "dashboardValue": "Sim, em tempo real"
     },
@@ -551,7 +551,7 @@
       "tipsTitle": "Dicas",
       "tips": [
         "Pra operar 24 horas, use uma VPS: o robô só funciona com o MT4 aberto.",
-        "Use uma conta com spread de até 35 pontos no ouro.",
+        "Use uma conta com spread de até 30 pontos no ouro.",
         "Se a licença vencer, o robô não sai do gráfico, mas para de operar, inclusive de administrar ordens abertas. Ele volta sozinho quando a licença for liberada; por isso, renove antes do vencimento.",
         "Precisa trocar uma conta MT4? Você pode trocar 1 vez na página Licenças. Depois disso, fale comigo no Telegram.",
         "Pra ver os resultados da semana e do mês completos em Contas MT4, deixe a aba Histórico da conta, no MT4, em \"Todo o histórico\" (clique com o botão direito dentro da aba)."

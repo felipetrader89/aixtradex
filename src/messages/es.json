@@ -102,7 +102,7 @@
     "license": {
       "tag": "Licencia del robot - hasta 2 cuentas (mensual) o hasta 5 cuentas (vitalicia)",
       "description": "Recibes el archivo del robot y lo instalas directo en tus propias cuentas MT4, sin que yo gestione la cuenta. La licencia mensual cubre hasta 2 cuentas MT4 y la vitalicia hasta 5. Indicas el número de cada cuenta en la compra y, si lo necesitas, puedes corregirlas 1 vez en Mi Cuenta.",
-      "requirementsNote": "Todas las cuentas necesitan un spread por debajo de 35 pts para que el robot rinda bien.",
+      "requirementsNote": "Todas las cuentas necesitan un spread por debajo de 30 pts para que el robot rinda bien.",
       "oneMonth": { "label": "Licencia Mensual", "price": "$99", "period": "/mes", "note": "Hasta 2 cuentas MT4", "discount": "$30", "discountPrice": "$69", "discountNote": "o $69/mes con descuento de bróker asociado" },
       "lifetime": { "label": "Licencia Vitalicia", "price": "$499", "period": "", "originalPrice": "$997", "badge": "50% OFF", "note": "Pago único, acceso vitalicio - hasta 5 cuentas MT4", "discount": "$50", "discountPrice": "$449", "discountNote": "o $449 con descuento de bróker asociado" },
       "discountTitle": "Obtén hasta $50 de descuento en la licencia",
@@ -143,7 +143,7 @@
     ],
     "brokers": {
       "title": "Brókers Asociados",
-      "body": "El robot funciona en cualquier tipo de cuenta MetaTrader 4 (MT4), en cualquier bróker, con spread por debajo de 35 pts. En los brókers asociados de abajo obtienes descuento en la licencia: abriendo tu cuenta con mi enlace o cambiando el código IB de tu cuenta al mío - $30 en la Licencia Mensual y $50 en la Vitalicia. Esto no es una recomendación de inversión.",
+      "body": "El robot funciona en cualquier tipo de cuenta MetaTrader 4 (MT4), en cualquier bróker, con spread por debajo de 30 pts. En los brókers asociados de abajo obtienes descuento en la licencia: abriendo tu cuenta con mi enlace o cambiando el código IB de tu cuenta al mío - $30 en la Licencia Mensual y $50 en la Vitalicia. Esto no es una recomendación de inversión.",
       "comingSoon": "Más Brókers Próximamente..."
     },
     "closing": {
@@ -193,11 +193,11 @@
       },
       {
         "q": "¿Qué brókers son compatibles?",
-        "a": "Cualquier bróker con MetaTrader 4, en cualquier tipo de cuenta, con spread por debajo de 35 pts. Si abres tu cuenta con mi enlace (o cambias el código IB al mío) en un bróker asociado - FPMarkets, Tickmill, Vantage o Exness - obtienes $30 de descuento en la Licencia Mensual o $50 en la Vitalicia."
+        "a": "Cualquier bróker con MetaTrader 4, en cualquier tipo de cuenta, con spread por debajo de 30 pts. Si abres tu cuenta con mi enlace (o cambias el código IB al mío) en un bróker asociado - FPMarkets, Tickmill, Vantage o Exness - obtienes $30 de descuento en la Licencia Mensual o $50 en la Vitalicia."
       },
       {
         "q": "¿Cuál es el depósito mínimo?",
-        "a": "Lo recomendado es desde $100, en una cuenta MT4 con apalancamiento 1:500 - cualquier tipo de cuenta, con spread por debajo de 35 pts."
+        "a": "Lo recomendado es desde $100, en una cuenta MT4 con apalancamiento 1:500 - cualquier tipo de cuenta, con spread por debajo de 30 pts."
       },
       {
         "q": "¿Cómo funciona el cobro?",
@@ -205,7 +205,7 @@
       },
       {
         "q": "¿Cuántas cuentas puedo usar con la licencia?",
-        "a": "La Licencia Mensual activa el robot en hasta 2 cuentas MT4 tuyas, y la Licencia Vitalicia en hasta 5. Indicas el número de cada cuenta en la compra; después, puedes cambiar las cuentas 1 vez en Mi Cuenta, y otros cambios solo por soporte. Para usar el robot en más cuentas, necesitas otra licencia. Todas las cuentas necesitan un spread por debajo de 35 pts para que el robot rinda bien."
+        "a": "La Licencia Mensual activa el robot en hasta 2 cuentas MT4 tuyas, y la Licencia Vitalicia en hasta 5. Indicas el número de cada cuenta en la compra; después, puedes cambiar las cuentas 1 vez en Mi Cuenta, y otros cambios solo por soporte. Para usar el robot en más cuentas, necesitas otra licencia. Todas las cuentas necesitan un spread por debajo de 30 pts para que el robot rinda bien."
       },
       {
         "q": "¿Cómo recibo el robot después del pago?",
@@ -272,7 +272,7 @@
       "platform": "Plataforma", "platformValue": "MetaTrader 4",
       "pair": "Par Recomendado", "pairValue": "XAU/USD (Oro)",
       "timeframe": "Timeframe", "timeframeValue": "M5 (ajuste automático)",
-      "accountType": "Tipo de Cuenta", "accountTypeValue": "Cualquier tipo (spread hasta 35 pts)",
+      "accountType": "Tipo de Cuenta", "accountTypeValue": "Cualquier tipo (spread hasta 30 pts)",
       "operation": "Modo de Operación", "operationValue": "Automático, con controles manuales",
       "dashboard": "Panel Visual", "dashboardValue": "Sí, en tiempo real"
     },
@@ -551,7 +551,7 @@
       "tipsTitle": "Consejos",
       "tips": [
         "Para operar las 24 horas, usa una VPS: el robot solo funciona con MT4 abierto.",
-        "Usa una cuenta con spread de hasta 35 puntos en el oro.",
+        "Usa una cuenta con spread de hasta 30 puntos en el oro.",
         "Si la licencia vence, el robot no sale del gráfico, pero deja de operar, incluso de administrar órdenes abiertas. Vuelve solo cuando la licencia se active de nuevo; por eso, renueva antes del vencimiento.",
         "¿Necesitas cambiar una cuenta MT4? Puedes cambiarla 1 vez en la página Licencias. Después, escríbeme por Telegram.",
         "Para ver los resultados completos de la semana y del mes en Cuentas MT4, deja la pestaña Historial de la cuenta de MT4 en \"Todo el historial\" (clic derecho dentro de la pestaña)."
