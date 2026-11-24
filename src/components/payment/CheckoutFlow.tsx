@@ -390,7 +390,7 @@ export function CheckoutFlow({ initialPlan, methods }: { initialPlan?: PlanKey; 
                 <h2 className="font-display text-xl font-bold text-chrome">
                   {tFlow("payment.title", { price: finalPrice })}
                 </h2>
-                <p className="mt-2 text-sm text-brand-ink-dim">{tFlow("payment.body")}</p>
+                <p className="mt-2 text-sm text-brand-ink-dim">{tFlow(payAmount ? "payment.bodyAuto" : "payment.body")}</p>
                 <div className="mt-3 flex flex-wrap justify-center gap-2">
                   <p className="rounded-full bg-brand-accent/10 px-3 py-1 text-xs font-semibold text-brand-accent">
                     {customerName} · {customerCountry}

@@ -65,7 +65,7 @@ export function PaymentMethods({
           rel="noopener noreferrer"
           className="cta-neon flex items-center gap-2 rounded-full bg-brand-surface px-6 py-3 text-center text-sm font-semibold text-brand-ink transition-colors duration-300 hover:text-brand-accent"
         >
-          {t("ctaTelegram")}
+          {t(exactAmount ? "auto.ctaTelegram" : "ctaTelegram")}
         </a>
       </div>
     </>

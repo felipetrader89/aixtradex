@@ -6,11 +6,11 @@
     },
     "products": {
       "title": "Planos",
-      "description": "Ai X Pulse RS: licença do robô no plano mensal (até 2 contas MT4) ou vitalício (até 5 contas MT4), com meta de performance de até 10% ao dia."
+      "description": "Ai X PULSE RS: licença do robô no plano mensal (até 2 contas MT4) ou vitalício (até 5 contas MT4), com meta de performance de até 10% ao dia."
     },
     "about": {
       "title": "Sobre",
-      "description": "Alesson Felipe, desenvolvedor desde 2012, focado em forex desde 2015. Conheça a história por trás do Ai X Pulse RS."
+      "description": "Alesson Felipe, desenvolvedor desde 2012, focado em forex desde 2015. Conheça a história por trás do Ai X PULSE RS."
     },
     "contact": {
       "title": "Contato",
@@ -18,19 +18,19 @@
     },
     "faq": {
       "title": "Perguntas Frequentes",
-      "description": "Tire suas dúvidas sobre o Ai X Pulse RS - depósito mínimo, corretoras compatíveis, cobrança e como começar."
+      "description": "Tire suas dúvidas sobre o Ai X PULSE RS - depósito mínimo, corretoras compatíveis, cobrança e como começar."
     },
     "blog": {
       "title": "Blog",
-      "description": "Conteúdo e novidades sobre o Ai X Pulse RS - em breve."
+      "description": "Conteúdo e novidades sobre o Ai X PULSE RS - em breve."
     },
     "howItWorks": {
       "title": "Como Funciona",
-      "description": "Entenda como o Ai X Pulse RS opera XAU/USD no MetaTrader 4 - estratégia, gestão de risco, metas automáticas e painel em tempo real."
+      "description": "Entenda como o Ai X PULSE RS opera XAU/USD no MetaTrader 4 - estratégia, gestão de risco, metas automáticas e painel em tempo real."
     },
     "results": {
       "title": "Resultados",
-      "description": "Prints e vídeos reais de contas próprias e de clientes operando com o Ai X Pulse RS - resultado documentado, sem promessa vazia."
+      "description": "Prints e vídeos reais de contas minhas e de clientes operando com os robôs Ai X TradeX - resultado documentado, sem promessa vazia."
     }
   },
   "Nav": {
@@ -47,7 +47,10 @@
   },
   "Common": {
     "marketTicker": "Mercado em tempo real",
-    "backToTop": "Voltar ao topo"
+    "backToTop": "Voltar ao topo",
+    "close": "Fechar",
+    "previous": "Anterior",
+    "next": "Próximo"
   },
   "Home": {
     "hero": {
@@ -65,7 +68,7 @@
       "items": [
         { "title": "Conta 100% sua", "body": "A licença roda direto na sua própria conta - você deposita e saca quando quiser, sem terceiros administrando seu dinheiro." },
         { "title": "Até 5 Contas MT4", "body": "Você recebe o arquivo .ex4 do robô e instala nas suas próprias contas: até 2 na licença mensal, até 5 na vitalícia." },
-        { "title": "Performance Real", "body": "Lucre até 10% ao dia, seguindo o gerenciamento padrão do robô, a mesma lógica testada todos os dias." },
+        { "title": "Performance Real", "body": "Meta de até 10% ao dia, seguindo o gerenciamento padrão do robô - a mesma lógica que roda todos os dias nas minhas contas." },
         { "title": "Desconto nas Parceiras", "body": "Funciona em qualquer tipo de conta MT4. Na FPMarkets, Tickmill, Vantage ou Exness pelo meu link/Código IB, você ganha até $50 de desconto." }
       ]
     },
@@ -86,34 +89,6 @@
     "title": "Ai X PULSE RS",
     "intro": "Ai X PULSE RS é um robô híbrido HFT/Scalper, projetado pra entregar resultado no curto, médio e longo prazo. Adquira sua licença e comece a operar na sua conta ainda hoje.",
     "pulse": {
-      "tag": "Gestão de conta - assinatura mensal ou anual",
-      "description": "Você abre conta na corretora recomendada, deposita a partir de $100, e a gente instala e configura o robô numa VPS ligada à sua própria conta MT4. Você acompanha tudo em tempo real pelo app do MT4 e pode depositar ou sacar quando quiser - a conta é sua, não é fundo, não é conta agrupada.",
-      "performanceNote": "Meta de performance: até 5% ao dia, com +130% ao mês possível usando juros compostos. A programação de juros compostos pode ser ajustada pra curto, médio ou longo prazo, conforme seu objetivo.",
-      "riskNote": "Meta de performance, não garantia - trading envolve risco e resultado passado não garante resultado futuro.",
-      "monthly": {
-        "label": "Plano Mensal",
-        "price": "$49",
-        "period": "/mês",
-        "explain": "O retorno esperado de até 5% ao dia cobre a mensalidade tranquilamente."
-      },
-      "sixMonths": {
-        "label": "Plano 6 Meses",
-        "price": "$249",
-        "period": "/6 meses",
-        "originalPrice": "$294,00",
-        "badge": "15% OFF"
-      },
-      "annual": {
-        "label": "Plano Anual",
-        "price": "$399",
-        "period": "/ano",
-        "originalPrice": "$588,00",
-        "badge": "32% OFF",
-        "note": "Valor único, pagamento uma vez por ano - o retorno acumulado no período cobre o investimento com folga."
-      },
-      "ctaMonthly": "Obter Plano Mensal",
-      "ctaSixMonths": "Obter Plano de 6 Meses",
-      "ctaAnnual": "Obter Plano Anual",
       "specs": {
         "platform": "Plataforma", "platformValue": "MetaTrader 4 (Apenas MT4)",
         "accountType": "Tipo de Conta", "accountTypeValue": "Qualquer tipo",
@@ -126,7 +101,7 @@
     },
     "license": {
       "tag": "Licença do robô - até 2 contas (mensal) ou até 5 contas (vitalícia)",
-      "description": "Você recebe o arquivo do robô e instala direto nas suas contas MT4, sem que eu faça a gestão. A licença mensal libera até 2 contas MT4 e a vitalícia até 5 - me envia o ID de cada uma pra eu liberar o acesso.",
+      "description": "Você recebe o arquivo do robô e instala direto nas suas contas MT4, sem que eu faça a gestão. A licença mensal libera até 2 contas MT4 e a vitalícia até 5. Você informa o número de cada conta na compra e pode trocar quando quiser em Minha Conta.",
       "requirementsNote": "Todas as contas precisam ter spread abaixo de 35 pts pra o robô entregar um bom desempenho.",
       "oneMonth": { "label": "Licença Mensal", "price": "$99", "period": "/mês", "note": "Até 2 contas MT4", "discount": "$30", "discountPrice": "$69", "discountNote": "ou $69/mês com desconto de corretora parceira" },
       "lifetime": { "label": "Licença Vitalícia", "price": "$499", "period": "", "originalPrice": "$997", "badge": "50% OFF", "note": "Pagamento único, acesso vitalício - até 5 contas MT4", "discount": "$50", "discountPrice": "$449", "discountNote": "ou $449 com desconto de corretora parceira" },
@@ -155,16 +130,16 @@
   },
   "About": {
     "title": "Sobre",
-    "intro": "Do aluguel aos 15 anos ao Top 1 do Brasil em trading - a jornada completa por trás do Ai X Pulse RS.",
+    "intro": "Do aluguel aos 15 anos ao Top 1 do Brasil em trading - a jornada completa por trás do Ai X PULSE RS.",
     "story": [
       "Meu nome é Alesson Felipe, hoje com 36 anos. Sempre fui uma pessoa simples, com grandes sonhos. Aos 15 anos já morava de aluguel com minha esposa, que na época tinha 16 - só uma cama, um colchão, um fogão e um botijão de gás. Passei sete anos trabalhando num depósito de bebidas que abastecia os barraqueiros da praia de Boa Viagem, no Recife. Ficava olhando os prédios na orla e os carros passando pela Beira-Mar, me imaginando um dia saindo do aluguel, com um carro decente pra sair com a família.",
       "Foi nesse depósito que comprei meu primeiro PC, pagando aos poucos. Aprendi informática sozinho, baixando apostila na internet - formatar computador, instalar Windows, depois show de slide e coletânea em CD. Larguei o depósito, fui trabalhar como ajudante de garçom e continuei sonhando: um dia eu ia proporcionar pra minha família o que via as pessoas bem-sucedidas fazendo todos os dias.",
       "Comecei a estudar como ganhar dinheiro na internet - sistema de afiliados, dropshipping. Não vingou com afiliados, mas o dropshipping sim: vendi meus primeiros R$10 mil, R$15 mil importando da China. Quando os marketplaces passaram a banir quem fazia dropshipping no Brasil, aprendi programação e criei minha própria loja virtual. Faltava tráfego, então fui atrás de marketing, automatizei postagem em grupo de Facebook e cheguei a ter mais de 100 clientes recorrentes num sistema de afiliados que eu mesmo desenvolvi - até isso também esbarrar em banimento de conta.",
       "No fim de 2015 conheci as opções binárias. Perdi muito dinheiro no começo. Estudei a fundo - probabilidade, topo e fundo, LTA, LTB, pullback - até virar Top 1 do Brasil e Top 5 do mundo na IQ Option, em 2019.",
       "As contas de opções binárias também acabaram banidas, e foi assim que cheguei ao forex. Tentei aplicar a mesma estratégia, não fez sentido, e voltei a estudar do zero - agora padrão de mercado e estratégia automatizada. Entre 2022 e 2023 perdi dinheiro correndo atrás de robô milagroso, comprando EA de HFT que prometia transformar pouco em muito da noite pro dia. Caí em golpe mais de uma vez.",
-      "Decidi então desenvolver o meu próprio EA - um modelo híbrido HFT/Scalper, já que corretora séria não permite HFT puro. Foi aí que o lucro começou a ser consistente. E foi aí, também, que aprendi a lição mais importante: sem meta e sem juros compostos, conta quebra. Hoje o Ai X Pulse RS é esse aprendizado aplicado - uma meta diária realista, buscando retorno alto no longo prazo através do juro composto, não a promessa vazia de ficar rico da noite pro dia.",
+      "Decidi então desenvolver o meu próprio EA - um modelo híbrido HFT/Scalper, já que corretora séria não permite HFT puro. Foi aí que o lucro começou a ser consistente. E foi aí, também, que aprendi a lição mais importante: sem meta e sem juros compostos, conta quebra. Hoje o Ai X PULSE RS é esse aprendizado aplicado - uma meta diária realista, buscando retorno alto no longo prazo através do juro composto, não a promessa vazia de ficar rico da noite pro dia.",
       "Continuo casado com minha esposa há mais de 21 anos - ela acompanhou cada alto e baixo dessa jornada - hoje pai de três filhos. Sou cristão, e foi minha fé que me manteve firme nos períodos mais difíceis.",
-      "Se você já caiu em golpe, já tentou de tudo e ficou frustrado, ou só quer ver seu dinheiro trabalhando de verdade - é justamente pra isso que o Ai X Pulse RS existe."
+      "Se você já caiu em golpe, já tentou de tudo e ficou frustrado, ou só quer ver seu dinheiro trabalhando de verdade - é justamente pra isso que o Ai X PULSE RS existe."
     ],
     "brokers": {
       "title": "Corretoras Parceiras",
@@ -181,7 +156,7 @@
     "title": "Contato",
     "body": "Hoje, todo o suporte, dúvidas e onboarding passam pelo grupo do Telegram - é o canal mais rápido de falar comigo direto.",
     "cta": "Entrar no Telegram",
-    "note": "Sem formulário, sem fila de e-mail - é você e eu, direto no chat."
+    "note": "Prefere email? Escreva pra support@aixtradex.com - respondo por lá também."
   },
   "Footer": {
     "disclaimer": "Trading envolve risco. Resultados passados não garantem resultados futuros. Nada neste site é aconselhamento financeiro.",
@@ -202,15 +177,15 @@
   },
   "Faq": {
     "title": "Perguntas Frequentes",
-    "intro": "Tudo que você precisa saber antes de começar com o Ai X Pulse RS.",
+    "intro": "Tudo que você precisa saber antes de começar com o Ai X PULSE RS.",
     "items": [
       {
-        "q": "O que é o Ai X Pulse RS?",
+        "q": "O que é o Ai X PULSE RS?",
         "a": "É um robô (Expert Advisor) híbrido HFT/Scalper que opera automaticamente em XAU/USD no MetaTrader 4. Você adquire a licença, instala nas suas contas e o robô opera sozinho, seguindo a mesma lógica testada todos os dias."
       },
       {
         "q": "Preciso ter experiência em trading?",
-        "a": "Não. Você só precisa saber instalar um Expert Advisor no MetaTrader 4 - te explico o passo a passo depois da compra."
+        "a": "Não. Você só precisa saber instalar um Expert Advisor no MetaTrader 4 - depois da compra, o guia de instalação passo a passo fica em Minha Conta, e qualquer dúvida eu te ajudo no Telegram."
       },
       {
         "q": "É fundo de investimento ou conta agrupada?",
@@ -230,7 +205,15 @@
       },
       {
         "q": "Quantas contas posso usar com a licença?",
-        "a": "A Licença Mensal libera o robô em até 2 contas MT4 suas, e a Licença Vitalícia em até 5. Depois de contratar, você me manda o ID de cada conta e eu libero o acesso. Todas as contas precisam ter spread abaixo de 35 pts pra o robô entregar um bom desempenho."
+        "a": "A Licença Mensal libera o robô em até 2 contas MT4 suas, e a Licença Vitalícia em até 5. Você informa o número de cada conta na compra e pode trocar quando quiser em Minha Conta. Todas as contas precisam ter spread abaixo de 35 pts pra o robô entregar um bom desempenho."
+      },
+      {
+        "q": "Como recebo o robô depois do pagamento?",
+        "a": "Assim que o pagamento é confirmado, você recebe um email e a licença aparece em Minha Conta (você entra com o email da compra, por código, sem senha). Lá você baixa o robô e segue o guia de instalação no MT4."
+      },
+      {
+        "q": "O que acontece se a Licença Mensal vencer?",
+        "a": "O robô para de operar até a renovação, inclusive de administrar ordens abertas - por isso, renove antes do vencimento. A renovação é feita em Minha Conta e, com o pagamento confirmado, o robô volta a operar sozinho em até 5 minutos."
       },
       {
         "q": "O resultado é garantido?",
@@ -238,7 +221,7 @@
       },
       {
         "q": "Como faço pra começar?",
-        "a": "Escolhe o plano na página de Produtos e segue o passo a passo: desconto da corretora parceira (opcional), conta MT4 e pagamento em cripto. No final é só me mandar o print do pagamento no Telegram."
+        "a": "Escolhe o plano na página de Planos e segue o passo a passo: desconto da corretora parceira (opcional), seus dados e suas contas MT4, e pagamento em cripto. Em USDT ou USDC, pagando o valor exato, a confirmação é automática em poucos minutos; em BTC, ETH ou LTC, é só me mandar o comprovante no Telegram."
       }
     ],
     "cta": {
@@ -249,14 +232,14 @@
   },
   "Blog": {
     "title": "Blog",
-    "comingSoon": "Conteúdo e novidades sobre o Ai X Pulse RS chegando em breve. Por enquanto, acompanhe as atualizações direto no grupo do Telegram.",
+    "comingSoon": "Conteúdo e novidades sobre o Ai X PULSE RS chegando em breve. Por enquanto, acompanhe as atualizações direto no grupo do Telegram.",
     "cta": {
       "body": "Enquanto o blog não chega, fica ligado nas novidades no Telegram.",
       "button": "Entrar no Telegram"
     }
   },
   "HowItWorks": {
-    "title": "Ai X Pulse RS - Como Funciona",
+    "title": "Ai X PULSE RS - Como Funciona",
     "intro": "Um Expert Advisor criado especificamente para XAU/USD (Ouro) no MetaTrader 4 - automatizado, disciplinado por metas e com gestão de risco configurável.",
     "benefits": {
       "heading": "Por que o Ai X PULSE RS é diferente?",
@@ -288,13 +271,13 @@
       "heading": "Especificações",
       "platform": "Plataforma", "platformValue": "MetaTrader 4",
       "pair": "Par Recomendado", "pairValue": "XAU/USD (Ouro)",
-      "timeframe": "Timeframe", "timeframeValue": "M15 (ajuste automático)",
+      "timeframe": "Timeframe", "timeframeValue": "M5 (ajuste automático)",
       "accountType": "Tipo de Conta", "accountTypeValue": "Qualquer tipo (spread até 35 pts)",
       "operation": "Modo de Operação", "operationValue": "Automático, com controles manuais",
       "dashboard": "Painel Visual", "dashboardValue": "Sim, em tempo real"
     },
     "risk": {
-      "body": "O Ai X Pulse RS é uma ferramenta de automação de operações. Como toda operação no mercado financeiro, envolve risco, e resultados passados não garantem resultados futuros. Recomendamos testar em conta demo antes de operar com capital real, e usar sempre uma gestão de risco compatível com seu perfil."
+      "body": "O Ai X PULSE RS é uma ferramenta de automação de operações. Como toda operação no mercado financeiro, envolve risco, e resultados passados não garantem resultados futuros. Recomendamos testar em conta demo antes de operar com capital real, e usar sempre uma gestão de risco compatível com seu perfil."
     },
     "cta": {
       "title": "Quer usar esse robô na sua conta?",
@@ -304,7 +287,7 @@
   },
   "Results": {
     "title": "Resultados Reais",
-    "intro": "Prints e vídeos de contas reais - minhas e de clientes - operando com várias versões de todos os meus Robôs Ai X TradeX, desenvolvidos ao longo de mais de 1 ano. Sem edição, sem simulação, direto do app do MetaTrader 4.",
+    "intro": "Prints e vídeos de contas reais - minhas e de clientes - operando com as várias versões dos meus robôs Ai X TradeX, desenvolvidas ao longo de mais de 1 ano. Sem edição, sem simulação, direto do app do MetaTrader 4.",
     "tabs": {
       "images": "Imagens",
       "videos": "Vídeos"
@@ -323,10 +306,11 @@
       "waiting": "Aguardando o pagamento... esta página atualiza sozinha.",
       "paidTitle": "Pagamento confirmado! ✅",
       "paidBody": "Sua licença já está ativa. Entre em Minha Conta com o email {email} pra baixar o robô e ver o passo a passo.",
-      "paidCta": "Ir pra Minha Conta"
+      "paidCta": "Ir pra Minha Conta",
+      "ctaTelegram": "Pagou em BTC, ETH ou LTC? Enviar comprovante no Telegram"
     },
     "title": "Pagamento",
-    "intro": "Siga o passo a passo: escolha se quer o desconto da corretora parceira, crie sua conta MT4 e pague em cripto. No final, me envia o print do pagamento no Telegram que eu libero o acesso.",
+    "intro": "Siga o passo a passo: escolha se quer o desconto da corretora parceira, informe seus dados e suas contas MT4 e pague em cripto.",
     "planLabel": "Plano selecionado",
     "warning": "Envie somente pela rede indicada em cada opção abaixo. Transferência pela rede errada pode causar perda permanente dos fundos.",
     "addressLabel": "Endereço",
@@ -388,7 +372,7 @@
         "depositValue": "$100",
         "type": "Tipo de conta",
         "typeValue": "Qualquer tipo",
-        "note": "Depois de criar a conta, preencha seus dados e o número (login) de cada conta MT4 abaixo. Tudo vai junto na mensagem do Telegram pra eu liberar a licença.",
+        "note": "Depois de criar a conta, preencha seus dados e o número (login) de cada conta MT4 abaixo. A licença já sai vinculada a essas contas, e dá pra trocar depois em Minha Conta.",
         "accountsTitle": "Suas contas MT4 - até {max} no seu plano",
         "slotEmpty": "+ Conta MT4 {n} - toque pra adicionar",
         "slotLabel": "Conta {n}",
@@ -417,6 +401,7 @@
       "payment": {
         "title": "Pague {price} por uma das opções abaixo",
         "body": "Depois de pagar, toque no botão do final e me envie o print do pagamento no Telegram. A mensagem já vai com seus dados, seu plano e suas contas MT4.",
+        "bodyAuto": "Pague o valor exato abaixo em USDT ou USDC e a confirmação é automática. Pagou em BTC, ETH ou LTC? Toque no botão do final e me envie o comprovante no Telegram.",
         "accounts": "Contas MT4: {ids}",
         "order": "Pedido {code}",
         "accountHint": "Assim que o pagamento for confirmado, sua licença aparece em Minha Conta. Entre com o email {email}."
@@ -579,7 +564,7 @@
       "stepsTitle": "Próximos passos:",
       "step1": "Entre em {url} com o email {email} (você recebe um código de acesso).",
       "step2": "Baixe o robô em Downloads e instale no MT4.",
-      "step3": "No MT4, vá em Ferramentas > Opções > Expert Advisors e adicione {url} em \"Permitir WebRequest para as URLs listadas\".",
+      "step3": "No MT4, vá em Ferramentas > Opções > Expert Advisors e adicione {url} em \"Permitir WebRequest para as URL listadas\".",
       "help": "Dúvidas? Responda este email ou fale comigo no Telegram: @AlessonFelipe89",
       "cta": "Abrir Minha Conta"
     }

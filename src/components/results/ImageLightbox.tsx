@@ -2,6 +2,7 @@
 
 import { useCallback, useEffect } from "react";
 import Image from "next/image";
+import { useTranslations } from "next-intl";
 
 type Props = {
   images: { src: string }[];
@@ -11,6 +12,7 @@ type Props = {
 };
 
 export function ImageLightbox({ images, index, onClose, onNavigate }: Props) {
+  const t = useTranslations("Common");
   const goPrev = useCallback(
     () => onNavigate((index - 1 + images.length) % images.length),
     [index, images.length, onNavigate]
@@ -45,7 +47,7 @@ export function ImageLightbox({ images, index, onClose, onNavigate }: Props) {
       <button
         type="button"
         onClick={onClose}
-        aria-label="Fechar"
+        aria-label={t("close")}
         className="absolute right-4 top-4 z-10 flex h-10 w-10 items-center justify-center rounded-full border border-white/20 text-xl text-white transition-colors hover:border-brand-accent hover:text-brand-accent"
       >
         ×
@@ -58,7 +60,7 @@ export function ImageLightbox({ images, index, onClose, onNavigate }: Props) {
             e.stopPropagation();
             goPrev();
           }}
-          aria-label="Anterior"
+          aria-label={t("previous")}
           className="absolute left-2 top-1/2 z-10 flex h-11 w-11 -translate-y-1/2 items-center justify-center rounded-full border border-white/20 text-xl text-white transition-colors hover:border-brand-accent hover:text-brand-accent sm:left-6"
         >
           ‹
@@ -86,7 +88,7 @@ export function ImageLightbox({ images, index, onClose, onNavigate }: Props) {
             e.stopPropagation();
             goNext();
           }}
-          aria-label="Próximo"
+          aria-label={t("next")}
           className="absolute right-2 top-1/2 z-10 flex h-11 w-11 -translate-y-1/2 items-center justify-center rounded-full border border-white/20 text-xl text-white transition-colors hover:border-brand-accent hover:text-brand-accent sm:right-6"
         >
           ›
