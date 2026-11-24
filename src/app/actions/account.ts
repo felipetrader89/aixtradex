@@ -19,7 +19,7 @@ async function ownLicense(licenseId: string) {
 export async function updateMyAccountsAction(licenseId: string, logins: string[]): Promise<SetAccountsResult> {
   const owned = await ownLicense(licenseId);
   if (!owned) return { ok: false, error: "invalid" };
-  const result = await setLicenseAccounts(owned.license, logins);
+  const result = await setLicenseAccounts(owned.license, logins, { byCustomer: true });
   if (result.ok) revalidatePath("/[locale]/account", "page");
   return result;
 }

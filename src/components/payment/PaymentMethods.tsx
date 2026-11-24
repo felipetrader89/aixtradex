@@ -17,6 +17,9 @@ export function PaymentMethods({
   exactAmount?: string | null;
 }) {
   const t = useTranslations("Payment");
+  // Moedas sem confirmação automática (BTC/ETH/LTC, se ligadas no admin) precisam de comprovante no Telegram.
+  const hasManual = methods.some((m) => !m.auto);
+  const telegramLabel = !exactAmount ? t("ctaTelegram") : hasManual ? t("auto.ctaTelegram") : t("auto.ctaHelp");
   return (
     <>
       {exactAmount && (
@@ -30,7 +33,7 @@ export function PaymentMethods({
           </div>
           <p className="mt-3 text-sm text-brand-ink-dim">{t("auto.body")}</p>
           <p className="mt-2 text-xs text-brand-ink-dim">⚠️ {t("auto.exactHint", { amount: exactAmount })}</p>
-          <p className="mt-2 text-xs text-brand-ink-dim">{t("auto.otherCoins")}</p>
+          {hasManual && <p className="mt-2 text-xs text-brand-ink-dim">{t("auto.otherCoins")}</p>}
         </GlowCard>
       )}
 
@@ -65,7 +68,7 @@ export function PaymentMethods({
           rel="noopener noreferrer"
           className="cta-neon flex items-center gap-2 rounded-full bg-brand-surface px-6 py-3 text-center text-sm font-semibold text-brand-ink transition-colors duration-300 hover:text-brand-accent"
         >
-          {t(exactAmount ? "auto.ctaTelegram" : "ctaTelegram")}
+          {telegramLabel}
         </a>
       </div>
     </>

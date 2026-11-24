@@ -349,6 +349,9 @@ export function CheckoutFlow({ initialPlan, methods }: { initialPlan?: PlanKey; 
                 </div>
               </div>
               <AccountIdSlots max={maxAccounts} ids={accountIds} onChange={setAccountIds} />
+              <p className="mx-auto mt-3 max-w-md rounded-xl border border-amber-400/40 bg-amber-400/10 px-4 py-3 text-xs text-amber-200">
+                ⚠️ {tFlow("account.lockNote")}
+              </p>
               {!accountStepDone && (
                 <p className="mt-3 text-center text-xs text-brand-ink-dim">{tFlow("account.required")}</p>
               )}

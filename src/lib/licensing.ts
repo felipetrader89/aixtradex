@@ -1,11 +1,12 @@
 import "server-only";
 import { randomBytes, randomInt, randomUUID } from "node:crypto";
-import { and, eq, inArray, isNotNull, ne, notInArray } from "drizzle-orm";
+import { and, eq, inArray, isNotNull, lt, ne, notInArray, sql } from "drizzle-orm";
 import { db, schema } from "@/lib/db";
 import type { License } from "@/lib/db/schema";
 import { findOrCreateUser } from "@/lib/auth";
 import { partnerBrokers } from "@/lib/site-config";
 import {
+  FREE_ACCOUNT_SWAPS,
   MONTHLY_DAYS,
   MT4_LOGIN,
   PLAN_DISCOUNT_USD,
@@ -191,10 +192,22 @@ export async function extendLicense(license: License, days: number) {
   return expiresAt;
 }
 
-export type SetAccountsResult = { ok: true } | { ok: false; error: "tooMany" | "invalid" | "inUse"; logins?: string[] };
+export type SetAccountsResult =
+  | { ok: true; swapped?: boolean }
+  | { ok: false; error: "tooMany" | "invalid" | "inUse" | "locked"; logins?: string[] };
+
+// Trocas que o cliente ainda pode fazer sozinho nessa licença.
+export const swapsLeft = (license: Pick<License, "accountSwapsUsed">) =>
+  Math.max(0, FREE_ACCOUNT_SWAPS - license.accountSwapsUsed);
 
 // Troca as contas MT4 de uma licença, mantendo o histórico de checagem das que continuam.
-export async function setLicenseAccounts(license: License, rawLogins: string[]): Promise<SetAccountsResult> {
+// byCustomer: tirar uma conta já cadastrada gasta 1 troca (limite FREE_ACCOUNT_SWAPS); só adicionar em vaga vazia é livre.
+// O admin não tem limite.
+export async function setLicenseAccounts(
+  license: License,
+  rawLogins: string[],
+  opts: { byCustomer?: boolean } = {}
+): Promise<SetAccountsResult> {
   const cleaned = cleanLogins(rawLogins, license.maxAccounts);
   if ("error" in cleaned) return { ok: false, error: cleaned.error! };
   const { logins } = cleaned;
@@ -206,8 +219,20 @@ export async function setLicenseAccounts(license: License, rawLogins: string[]):
     .from(schema.licenseAccounts)
     .where(eq(schema.licenseAccounts.licenseId, license.id));
   const toAdd = logins.filter((l) => !current.some((c) => c.login === l));
+  const removed = current.filter((c) => !logins.includes(c.login));
+  const isSwap = Boolean(opts.byCustomer) && removed.length > 0;
+  if (isSwap && swapsLeft(license) <= 0) return { ok: false, error: "locked" };
 
-  await db().transaction(async (tx) => {
+  const done = await db().transaction(async (tx) => {
+    if (isSwap) {
+      // Gasta a troca de forma atômica (dois cliques ao mesmo tempo não viram duas trocas).
+      const spent = await tx
+        .update(schema.licenses)
+        .set({ accountSwapsUsed: sql`${schema.licenses.accountSwapsUsed} + 1` })
+        .where(and(eq(schema.licenses.id, license.id), lt(schema.licenses.accountSwapsUsed, FREE_ACCOUNT_SWAPS)))
+        .returning({ id: schema.licenses.id });
+      if (!spent.length) return false;
+    }
     await tx
       .delete(schema.licenseAccounts)
       .where(
@@ -221,8 +246,10 @@ export async function setLicenseAccounts(license: License, rawLogins: string[]):
         .insert(schema.licenseAccounts)
         .values(toAdd.map((login) => ({ licenseId: license.id, product: license.product, login })));
     }
+    return true;
   });
-  return { ok: true };
+  if (!done) return { ok: false, error: "locked" };
+  return { ok: true, swapped: isSwap };
 }
 
 export type CheckStatus = "ACTIVE" | "EXPIRED" | "SUSPENDED" | "NOT_FOUND";

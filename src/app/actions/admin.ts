@@ -122,8 +122,17 @@ export async function setLicenseAccountsAction(form: FormData) {
     tooMany: `Máximo de ${license.maxAccounts} contas nessa licença.`,
     invalid: "Número de conta MT4 inválido (só dígitos, 4 a 12).",
     inUse: `Já estão em outra licença: ${result.logins?.join(", ")}`,
+    locked: "Troca bloqueada.",
   }[result.error];
   back(form, reason);
+}
+
+// Devolve ao cliente a troca de conta MT4 (ex.: trocou de corretora e pediu no suporte).
+export async function resetAccountSwapsAction(form: FormData) {
+  const admin = await requireAdmin();
+  const license = await loadLicense(form);
+  await db().update(schema.licenses).set({ accountSwapsUsed: 0 }).where(eq(schema.licenses.id, license.id));
+  await done(form, admin.email, "license.swapReset", license.key, "Troca liberada: o cliente pode trocar as contas 1 vez em Minha Conta.");
 }
 
 // Troca o dono da licença pelo email informado (cliente importado do robô sem email, ou cliente que mudou de email).

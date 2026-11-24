@@ -36,4 +36,8 @@ export const PLAN_DISCOUNT_USD: Record<PlanType, number> = { monthly: 30, lifeti
 export const PLAN_MAX_ACCOUNTS: Record<PlanType, number> = { monthly: 2, lifetime: 5 };
 export const MONTHLY_DAYS = 30;
 
+// Trocas de conta MT4 que o cliente pode fazer sozinho por licença (pra corrigir número errado da compra).
+// Depois disso, só o admin troca - evita usar uma licença em contas infinitas.
+export const FREE_ACCOUNT_SWAPS = 1;
+
 export const MT4_LOGIN = /^\d{4,12}$/;

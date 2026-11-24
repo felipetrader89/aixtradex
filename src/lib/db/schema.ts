@@ -98,6 +98,9 @@ export const licenses = pgTable(
     broker: text("broker"),
     // null = vitalícia.
     expiresAt: timestamp("expires_at", { withTimezone: true }),
+    // Quantas vezes o CLIENTE já trocou uma conta MT4 cadastrada por outra (limite em FREE_ACCOUNT_SWAPS).
+    // Preencher vaga vazia não conta. Troca feita pelo admin não conta e o admin pode zerar.
+    accountSwapsUsed: integer("account_swaps_used").notNull().default(0),
     notes: text("notes"),
     createdAt: createdAt(),
   },

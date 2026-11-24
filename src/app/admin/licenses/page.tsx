@@ -1,9 +1,10 @@
 import { and, desc, eq, gt, ilike, inArray, isNotNull, lte, or } from "drizzle-orm";
 import { db, schema } from "@/lib/db";
-import { licenseState } from "@/lib/licensing";
+import { licenseState, swapsLeft } from "@/lib/licensing";
 import {
   createManualLicenseAction,
   extendLicenseAction,
+  resetAccountSwapsAction,
   saveLicenseNotesAction,
   setLicenseAccountsAction,
   setLicenseOwnerAction,
@@ -169,6 +170,22 @@ export default async function AdminLicenses({ searchParams }: Props) {
                     <p className="mt-1 flex flex-wrap items-center gap-2 text-sm text-brand-ink">
                       {user.name ?? "-"} · {user.country ?? "-"} ·{" "}
                       {isPlaceholderEmail(user.email) ? <Badge tone="warn">sem email</Badge> : user.email}
+                    </p>
+                    <p className="mt-1 flex flex-wrap items-center gap-2 text-xs text-brand-ink-dim">
+                      {swapsLeft(license) > 0 ? (
+                        <Badge tone="muted">troca de conta disponível</Badge>
+                      ) : (
+                        <>
+                          <Badge tone="warn">troca de conta já usada</Badge>
+                          <form action={resetAccountSwapsAction}>
+                            <input type="hidden" name="licenseId" value={license.id} />
+                            <input type="hidden" name="back" value={back} />
+                            <button type="submit" className="underline hover:text-brand-accent">
+                              liberar nova troca
+                            </button>
+                          </form>
+                        </>
+                      )}
                     </p>
                   </div>
                   <div className="flex flex-wrap gap-2">

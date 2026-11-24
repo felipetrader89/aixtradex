@@ -10,10 +10,15 @@ export function AccountIdSlots({
   max,
   ids,
   onChange,
+  lockedIds = [],
+  lockedText,
 }: {
   max: number;
   ids: string[];
   onChange: (ids: string[]) => void;
+  // Contas que não podem mais ser trocadas (vagas vazias continuam livres).
+  lockedIds?: string[];
+  lockedText?: string;
 }) {
   const t = useTranslations("Payment.flow.account");
   const slots = Array.from({ length: max }, (_, i) => ids[i] ?? "");
@@ -33,6 +38,8 @@ export function AccountIdSlots({
               placeholder={t("placeholder")}
               inputMode="numeric"
               mono
+              locked={Boolean(id) && lockedIds.includes(id)}
+              lockedText={lockedText}
               sanitize={(raw) => raw.replace(/\D/g, "")}
               validate={(v) =>
                 !MT4_LOGIN.test(v)

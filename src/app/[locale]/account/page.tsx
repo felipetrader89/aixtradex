@@ -11,7 +11,7 @@ import { PayOrder, RenewButton } from "@/components/account/AccountActions";
 import { logoutAction } from "@/app/actions/auth";
 import { getCurrentUser } from "@/lib/auth";
 import { db, schema } from "@/lib/db";
-import { licenseState, priceFor } from "@/lib/licensing";
+import { licenseState, priceFor, swapsLeft } from "@/lib/licensing";
 import { PRODUCT } from "@/lib/plans";
 import { licenseServerUrl, siteConfig } from "@/lib/site-config";
 import { getPublicPaymentMethods, isAutoPayActive } from "@/lib/config";
@@ -152,7 +152,13 @@ export default async function AccountPage({ params }: Props) {
                     <p className="mx-auto mt-4 max-w-md text-xs text-brand-ink-dim">
                       {t("accountsTitle", { count: logins.length, max: license.maxAccounts })}
                     </p>
-                    <LicenseAccountsEditor licenseId={license.id} max={license.maxAccounts} initial={logins} />
+                    <LicenseAccountsEditor
+                      licenseId={license.id}
+                      max={license.maxAccounts}
+                      initial={logins}
+                      swapsLeft={swapsLeft(license)}
+                      supportUrl={siteConfig.telegramDmUrl}
+                    />
                   </div>
                   {license.plan === "monthly" && license.status === "active" && (
                     <div className="mt-5 border-t border-brand-hairline pt-5">

@@ -101,7 +101,7 @@
     },
     "license": {
       "tag": "Robot license - up to 2 accounts (monthly) or up to 5 accounts (lifetime)",
-      "description": "You get the robot file and install it directly on your own MT4 accounts, no account management from me. The monthly license covers up to 2 MT4 accounts and the lifetime license up to 5. You enter each account number at checkout and can change them anytime in My Account.",
+      "description": "You get the robot file and install it directly on your own MT4 accounts, no account management from me. The monthly license covers up to 2 MT4 accounts and the lifetime license up to 5. You enter each account number at checkout and, if needed, can correct them once in My Account.",
       "requirementsNote": "All accounts need a spread below 35 pts for the robot to perform well.",
       "oneMonth": { "label": "Monthly License", "price": "$99", "period": "/month", "note": "Up to 2 MT4 accounts", "discount": "$30", "discountPrice": "$69", "discountNote": "or $69/month with a partner broker discount" },
       "lifetime": { "label": "Lifetime License", "price": "$499", "period": "", "originalPrice": "$997", "badge": "50% OFF", "note": "One-time payment, lifetime access - up to 5 MT4 accounts", "discount": "$50", "discountPrice": "$449", "discountNote": "or $449 with a partner broker discount" },
@@ -205,7 +205,7 @@
       },
       {
         "q": "How many accounts can I use with the license?",
-        "a": "The Monthly License activates the robot on up to 2 of your own MT4 accounts, and the Lifetime License on up to 5. You enter each account number at checkout and can change them anytime in My Account. All accounts need a spread below 35 pts for the robot to perform well."
+        "a": "The Monthly License activates the robot on up to 2 of your own MT4 accounts, and the Lifetime License on up to 5. You enter each account number at checkout; after that, you can change the accounts once in My Account, and further changes only through support. To use the robot on more accounts, you need another license. All accounts need a spread below 35 pts for the robot to perform well."
       },
       {
         "q": "How do I get the robot after paying?",
@@ -221,7 +221,7 @@
       },
       {
         "q": "How do I get started?",
-        "a": "Pick your plan on the Plans page and follow the steps: partner broker discount (optional), your details and MT4 accounts, and crypto payment. In USDT or USDC, paying the exact amount, confirmation is automatic within a few minutes; in BTC, ETH or LTC, just send me the receipt on Telegram."
+        "a": "Pick your plan on the Plans page and follow the steps: partner broker discount (optional), your details and MT4 accounts, and payment in USDT or USDC (Binance Pay or wallet). Paying the exact amount, confirmation is automatic: within a few minutes your license is activated and you get an email with access."
       }
     ],
     "cta": {
@@ -307,6 +307,7 @@
       "paidTitle": "Payment confirmed! ✅",
       "paidBody": "Your license is active. Log in to My Account with {email} to download the robot and see the setup steps.",
       "paidCta": "Go to My Account",
+      "ctaHelp": "Problem with the payment? Message me on Telegram",
       "ctaTelegram": "Paid with BTC, ETH or LTC? Send proof on Telegram"
     },
     "title": "Payment",
@@ -372,8 +373,9 @@
         "depositValue": "$100",
         "type": "Account type",
         "typeValue": "Any type",
-        "note": "After creating the account, fill in your details and the number (login) of each MT4 account below. The license is linked to these accounts right away, and you can change them later in My Account.",
+        "note": "After creating the account, fill in your details and the number (login) of each MT4 account below. The license is linked to these accounts right away.",
         "accountsTitle": "Your MT4 accounts - up to {max} on your plan",
+        "lockNote": "Double-check the numbers before continuing: these are the accounts that will be licensed. After purchase, you can change the accounts only once in My Account (to fix a wrong number, for example). Any slot left empty can be filled in later.",
         "slotEmpty": "+ MT4 account {n} - tap to add",
         "slotLabel": "Account {n}",
         "placeholder": "Account number (login)",
@@ -401,7 +403,7 @@
       "payment": {
         "title": "Pay {price} with one of the options below",
         "body": "After paying, tap the button at the bottom and send me the payment screenshot on Telegram. The message already includes your details, your plan and your MT4 accounts.",
-        "bodyAuto": "Pay the exact amount below in USDT or USDC and confirmation is automatic. Paid with BTC, ETH or LTC? Tap the button at the bottom and send me the receipt on Telegram.",
+        "bodyAuto": "Pay the exact amount below and confirmation is automatic: this page updates as soon as the payment arrives, and you get an email.",
         "accounts": "MT4 accounts: {ids}",
         "order": "Order {code}",
         "accountHint": "As soon as the payment is confirmed, your license shows up in My Account. Sign in with {email}."
@@ -460,14 +462,19 @@
     "expiredOn": "Expired on {date}",
     "lifetime": "Lifetime - no expiry",
     "accountsTitle": "Enabled MT4 accounts ({count}/{max})",
-    "accountsHint": "The robot only runs on the accounts registered here. You can change them whenever you need.",
+    "swapAvailableHint": "The robot only runs on the accounts registered here. You can change the accounts once on this license (to fix a wrong number, for example). Empty slots can be filled in anytime.",
+    "swapUsedHint": "The robot only runs on the accounts registered here. This license's account change has already been used; empty slots can still be filled in. To change a registered account,",
+    "swapSupport": "message me on Telegram.",
+    "swapConfirm": "Heads up: changing accounts is allowed only once on this license. After that, the accounts are locked and further changes only through support. Change {logins} now?",
+    "lockedAccount": "locked",
     "saveAccounts": "Save accounts",
     "savingAccounts": "Saving...",
     "accountsSaved": "Accounts saved.",
     "accountErrors": {
       "tooMany": "Your plan allows up to {max} accounts.",
       "invalid": "Check the MT4 account numbers.",
-      "inUse": "These accounts are already in another license: {logins}"
+      "inUse": "These accounts are already in another license: {logins}",
+      "locked": "This license's account change has already been used. To change again, message me on Telegram."
     },
     "renew": "Renew for 30 more days ({price})",
     "renewPending": "Renewal created - pay the order below.",
@@ -507,8 +514,8 @@
           "url": true
         },
         {
-          "title": "Register your MT4 account",
-          "body": "In Your licenses, above, enter the MT4 account number where the robot will trade and click Save accounts. The Monthly License allows up to 2 accounts and the Lifetime up to 5."
+          "title": "Check your MT4 accounts",
+          "body": "In Your licenses, above, you'll find the accounts you entered at checkout. If you left a slot empty, fill it in and click Save accounts. The Monthly License allows up to 2 accounts and the Lifetime up to 5."
         },
         {
           "title": "Open the gold chart on M5",
@@ -545,7 +552,7 @@
         "To trade 24 hours a day, use a VPS: the robot only works while MT4 is open.",
         "Use an account with a gold spread of up to 35 points.",
         "If the license expires, the robot stays on the chart but stops trading, including managing open orders. It comes back by itself when the license is active again, so renew before it expires.",
-        "Changed your MT4 account? Update the number in Your licenses, above."
+        "Need to change an MT4 account? You can change it once in Your licenses, above. After that, message me on Telegram."
       ],
       "help": "Questions? Message me on Telegram"
     }

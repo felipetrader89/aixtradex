@@ -1,0 +1,1 @@
+ALTER TABLE "licenses" ADD COLUMN "account_swaps_used" integer DEFAULT 0 NOT NULL;

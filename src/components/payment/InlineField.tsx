@@ -15,6 +15,8 @@ export function InlineField({
   inputMode,
   autoComplete = "off",
   mono = false,
+  locked = false,
+  lockedText,
 }: {
   label: string;
   emptyText: string;
@@ -26,6 +28,9 @@ export function InlineField({
   inputMode?: HTMLAttributes<HTMLInputElement>["inputMode"];
   autoComplete?: string;
   mono?: boolean;
+  // Valor travado: mostra, mas não deixa editar (ex.: conta MT4 depois de usar a troca).
+  locked?: boolean;
+  lockedText?: string;
 }) {
   const t = useTranslations("Payment.flow.account");
   const [editing, setEditing] = useState(false);
@@ -77,6 +82,19 @@ export function InlineField({
           </button>
         </div>
         {error && <p className="mt-1 px-1 text-xs text-red-400">{error}</p>}
+      </div>
+    );
+  }
+
+  if (value && locked) {
+    return (
+      <div className="flex w-full items-center gap-3 rounded-xl border border-brand-hairline bg-brand-surface-2/40 px-4 py-3 text-left">
+        <span className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-brand-accent text-xs font-bold text-brand-bg">
+          ✓
+        </span>
+        <span className="shrink-0 text-xs text-brand-ink-dim">{label}</span>
+        <span className={`min-w-0 flex-1 truncate text-base font-semibold text-brand-ink ${font}`}>{value}</span>
+        <span className="shrink-0 text-xs text-brand-ink-dim">🔒 {lockedText}</span>
       </div>
     );
   }

@@ -101,7 +101,7 @@
     },
     "license": {
       "tag": "Licencia del robot - hasta 2 cuentas (mensual) o hasta 5 cuentas (vitalicia)",
-      "description": "Recibes el archivo del robot y lo instalas directo en tus propias cuentas MT4, sin que yo gestione la cuenta. La licencia mensual cubre hasta 2 cuentas MT4 y la vitalicia hasta 5. Indicas el número de cada cuenta en la compra y puedes cambiarlas cuando quieras en Mi Cuenta.",
+      "description": "Recibes el archivo del robot y lo instalas directo en tus propias cuentas MT4, sin que yo gestione la cuenta. La licencia mensual cubre hasta 2 cuentas MT4 y la vitalicia hasta 5. Indicas el número de cada cuenta en la compra y, si lo necesitas, puedes corregirlas 1 vez en Mi Cuenta.",
       "requirementsNote": "Todas las cuentas necesitan un spread por debajo de 35 pts para que el robot rinda bien.",
       "oneMonth": { "label": "Licencia Mensual", "price": "$99", "period": "/mes", "note": "Hasta 2 cuentas MT4", "discount": "$30", "discountPrice": "$69", "discountNote": "o $69/mes con descuento de bróker asociado" },
       "lifetime": { "label": "Licencia Vitalicia", "price": "$499", "period": "", "originalPrice": "$997", "badge": "50% OFF", "note": "Pago único, acceso vitalicio - hasta 5 cuentas MT4", "discount": "$50", "discountPrice": "$449", "discountNote": "o $449 con descuento de bróker asociado" },
@@ -205,7 +205,7 @@
       },
       {
         "q": "¿Cuántas cuentas puedo usar con la licencia?",
-        "a": "La Licencia Mensual activa el robot en hasta 2 cuentas MT4 tuyas, y la Licencia Vitalicia en hasta 5. Indicas el número de cada cuenta en la compra y puedes cambiarlas cuando quieras en Mi Cuenta. Todas las cuentas necesitan un spread por debajo de 35 pts para que el robot rinda bien."
+        "a": "La Licencia Mensual activa el robot en hasta 2 cuentas MT4 tuyas, y la Licencia Vitalicia en hasta 5. Indicas el número de cada cuenta en la compra; después, puedes cambiar las cuentas 1 vez en Mi Cuenta, y otros cambios solo por soporte. Para usar el robot en más cuentas, necesitas otra licencia. Todas las cuentas necesitan un spread por debajo de 35 pts para que el robot rinda bien."
       },
       {
         "q": "¿Cómo recibo el robot después del pago?",
@@ -221,7 +221,7 @@
       },
       {
         "q": "¿Cómo empiezo?",
-        "a": "Elige el plan en la página de Planes y sigue el paso a paso: descuento del bróker asociado (opcional), tus datos y tus cuentas MT4, y pago en cripto. En USDT o USDC, pagando el valor exacto, la confirmación es automática en pocos minutos; en BTC, ETH o LTC, solo envíame el comprobante por Telegram."
+        "a": "Elige el plan en la página de Planes y sigue el paso a paso: descuento del bróker asociado (opcional), tus datos y tus cuentas MT4, y pago en USDT o USDC (Binance Pay o billetera). Pagando el valor exacto, la confirmación es automática: en pocos minutos tu licencia se activa y recibes un email con el acceso."
       }
     ],
     "cta": {
@@ -307,6 +307,7 @@
       "paidTitle": "¡Pago confirmado! ✅",
       "paidBody": "Tu licencia ya está activa. Entra en Mi Cuenta con el email {email} para descargar el robot y ver el paso a paso.",
       "paidCta": "Ir a Mi Cuenta",
+      "ctaHelp": "¿Problema con el pago? Escríbeme por Telegram",
       "ctaTelegram": "¿Pagaste con BTC, ETH o LTC? Enviar comprobante por Telegram"
     },
     "title": "Pago",
@@ -372,8 +373,9 @@
         "depositValue": "$100",
         "type": "Tipo de cuenta",
         "typeValue": "Cualquier tipo",
-        "note": "Después de crear la cuenta, completa tus datos y el número (login) de cada cuenta MT4 abajo. La licencia queda vinculada a esas cuentas, y puedes cambiarlas después en Mi Cuenta.",
+        "note": "Después de crear la cuenta, completa tus datos y el número (login) de cada cuenta MT4 abajo. La licencia queda vinculada a esas cuentas.",
         "accountsTitle": "Tus cuentas MT4 - hasta {max} en tu plan",
+        "lockNote": "Revisa los números antes de seguir: estas son las cuentas que se van a licenciar. Después de la compra, puedes cambiar las cuentas solo 1 vez en Mi Cuenta (para corregir un número equivocado, por ejemplo). Un espacio que quede vacío se puede completar después.",
         "slotEmpty": "+ Cuenta MT4 {n} - toca para agregar",
         "slotLabel": "Cuenta {n}",
         "placeholder": "Número de cuenta (login)",
@@ -401,7 +403,7 @@
       "payment": {
         "title": "Paga {price} con una de las opciones de abajo",
         "body": "Después de pagar, toca el botón del final y envíame la captura del pago por Telegram. El mensaje ya incluye tus datos, tu plan y tus cuentas MT4.",
-        "bodyAuto": "Paga el valor exacto de abajo en USDT o USDC y la confirmación es automática. ¿Pagaste con BTC, ETH o LTC? Toca el botón del final y envíame el comprobante por Telegram.",
+        "bodyAuto": "Paga el valor exacto de abajo y la confirmación es automática: esta página avisa en cuanto llegue el pago, y recibes un email.",
         "accounts": "Cuentas MT4: {ids}",
         "order": "Pedido {code}",
         "accountHint": "En cuanto se confirme el pago, tu licencia aparece en Mi Cuenta. Entra con el email {email}."
@@ -460,14 +462,19 @@
     "expiredOn": "Venció el {date}",
     "lifetime": "Vitalicia - sin vencimiento",
     "accountsTitle": "Cuentas MT4 habilitadas ({count}/{max})",
-    "accountsHint": "El robot solo funciona en las cuentas registradas aquí. Puedes cambiarlas cuando lo necesites.",
+    "swapAvailableHint": "El robot solo funciona en las cuentas registradas aquí. Puedes cambiar las cuentas 1 vez en esta licencia (para corregir un número equivocado, por ejemplo). Un espacio vacío se puede completar cuando quieras.",
+    "swapUsedHint": "El robot solo funciona en las cuentas registradas aquí. El cambio de cuentas de esta licencia ya fue usado; los espacios vacíos todavía se pueden completar. Para cambiar una cuenta registrada,",
+    "swapSupport": "escríbeme por Telegram.",
+    "swapConfirm": "Atención: el cambio de cuentas se permite solo 1 vez en esta licencia. Después, las cuentas quedan bloqueadas y otros cambios solo por soporte. ¿Cambiar {logins} ahora?",
+    "lockedAccount": "bloqueada",
     "saveAccounts": "Guardar cuentas",
     "savingAccounts": "Guardando...",
     "accountsSaved": "Cuentas guardadas.",
     "accountErrors": {
       "tooMany": "Tu plan permite hasta {max} cuentas.",
       "invalid": "Revisa los números de las cuentas MT4.",
-      "inUse": "Estas cuentas ya están en otra licencia: {logins}"
+      "inUse": "Estas cuentas ya están en otra licencia: {logins}",
+      "locked": "El cambio de cuentas de esta licencia ya fue usado. Para cambiar de nuevo, escríbeme por Telegram."
     },
     "renew": "Renovar por 30 días más ({price})",
     "renewPending": "Renovación creada - paga el pedido de abajo.",
@@ -507,8 +514,8 @@
           "url": true
         },
         {
-          "title": "Registra tu cuenta MT4",
-          "body": "En Tus licencias, arriba, escribe el número de la cuenta MT4 donde el robot va a operar y haz clic en Guardar cuentas. La Licencia Mensual permite hasta 2 cuentas y la Vitalicia hasta 5."
+          "title": "Revisa tus cuentas MT4",
+          "body": "En Tus licencias, arriba, están las cuentas que registraste en la compra. Si dejaste algún espacio vacío, complétalo y haz clic en Guardar cuentas. La Licencia Mensual permite hasta 2 cuentas y la Vitalicia hasta 5."
         },
         {
           "title": "Abre el gráfico del oro en M5",
@@ -545,7 +552,7 @@
         "Para operar las 24 horas, usa una VPS: el robot solo funciona con MT4 abierto.",
         "Usa una cuenta con spread de hasta 35 puntos en el oro.",
         "Si la licencia vence, el robot no sale del gráfico, pero deja de operar, incluso de administrar órdenes abiertas. Vuelve solo cuando la licencia se active de nuevo; por eso, renueva antes del vencimiento.",
-        "¿Cambiaste de cuenta MT4? Actualiza el número en Tus licencias, arriba."
+        "¿Necesitas cambiar una cuenta MT4? Puedes cambiarla 1 vez en Tus licencias, arriba. Después, escríbeme por Telegram."
       ],
       "help": "¿Dudas? Escríbeme en Telegram"
     }
