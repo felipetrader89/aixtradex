@@ -504,8 +504,66 @@
     "downloadsEmpty": "No files available yet.",
     "current": "Current",
     "download": "Download",
-    "setupTitle": "How to activate on MT4",
-    "setupSteps": "In MT4, go to Tools > Options > Expert Advisors, check \"Allow WebRequest for listed URL\" and add the address below. The robot uses it to check your license."
+    "guide": {
+      "title": "MT4 installation guide",
+      "intro": "Follow the steps in order. It takes about 5 minutes.",
+      "steps": [
+        {
+          "title": "Download the robot",
+          "body": "Click Download above and save the .ex4 file on the computer or VPS where MT4 will run."
+        },
+        {
+          "title": "Put the file in MT4",
+          "body": "In MT4, go to File > Open Data Folder and open MQL4 > Experts. Paste the .ex4 file there. Then close and reopen MT4: the robot shows up in the Navigator, under Expert Advisors."
+        },
+        {
+          "title": "Allow the license server",
+          "body": "Go to Tools > Options > Expert Advisors tab. Check \"Allow automated trading\" and \"Allow WebRequest for listed URL\", add the address below and click OK. Without this the robot can't check your license.",
+          "url": true
+        },
+        {
+          "title": "Register your MT4 account",
+          "body": "In Your licenses, above, enter the MT4 account number where the robot will trade and click Save accounts. The Monthly License allows up to 2 accounts and the Lifetime up to 5."
+        },
+        {
+          "title": "Open the gold chart on M5",
+          "body": "Open the XAUUSD chart on the M5 timeframe. Some brokers use another name for gold, like XAUUSDm (Exness Standard) or XAUUSD.r. Use the name shown in your Market Watch."
+        },
+        {
+          "title": "Attach the robot to the chart",
+          "body": "Drag Ai X PULSE RS from the Navigator onto the chart. On the Common tab, check \"Allow live trading\" and click OK. Make sure the AutoTrading button on the top bar is on."
+        },
+        {
+          "title": "Accept the terms",
+          "body": "The first time on each account, a window with the terms of use appears. Click OK. It won't show again on that account, not even when MT4 or the VPS restarts."
+        },
+        {
+          "title": "Check the panel",
+          "body": "The license status shows at the bottom of the robot's panel. If everything is fine, it shows the license type (and the expiry date, for monthly). Below is what each message means."
+        }
+      ],
+      "statusTitle": "What each panel message means",
+      "statuses": [
+        { "code": "MONTHLY - Expires: date", "meaning": "Monthly license active, with its expiry date. All good." },
+        { "code": "LIFETIME LICENSE", "meaning": "Lifetime license active. All good." },
+        { "code": "CHECKING LICENSE", "meaning": "The robot hasn't checked the license yet. It shows right after opening MT4 or while the market is closed, and goes away with the first price move." },
+        { "code": "UNLICENSED", "meaning": "This MT4 account isn't registered on any license. Add the number in Your licenses, above. The robot unlocks by itself within 5 minutes." },
+        { "code": "EXPIRED LICENSE", "meaning": "The license expired. Renew it here in the portal: once the payment is confirmed, the robot unlocks by itself within 5 minutes." },
+        { "code": "LICENSE BLOCKED", "meaning": "The license was blocked. Contact support." },
+        { "code": "ALLOW WEBREQUEST: license.aixtradex.com", "meaning": "Step 3 is missing: allow the license server address in MT4." },
+        { "code": "LICENSE: NO CONNECTION", "meaning": "The robot couldn't reach the license server (internet or server down). It tries again every 5 minutes." },
+        { "code": "(OFFLINE)", "meaning": "No connection right now, but the license was confirmed recently. The robot keeps trading for up to 48 hours while the connection comes back." },
+        { "code": "LICENSE OFFLINE > 48H", "meaning": "More than 48 hours without checking the license. Check your internet and step 3." }
+      ],
+      "tipsTitle": "Tips",
+      "tips": [
+        "To trade 24 hours a day, use a VPS: the robot only works while MT4 is open.",
+        "Use an account with a gold spread of up to 35 points.",
+        "If the license expires, the robot stays on the chart but stops trading, including managing open orders. It comes back by itself when the license is active again, so renew before it expires.",
+        "Changed your MT4 account? Update the number in Your licenses, above."
+      ],
+      "help": "Questions? Message me on Telegram"
+    }
   },
   "Emails": {
     "paid": {

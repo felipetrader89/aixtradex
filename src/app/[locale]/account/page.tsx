@@ -13,7 +13,7 @@ import { getCurrentUser } from "@/lib/auth";
 import { db, schema } from "@/lib/db";
 import { licenseState, priceFor } from "@/lib/licensing";
 import { PRODUCT } from "@/lib/plans";
-import { licenseServerUrl } from "@/lib/site-config";
+import { licenseServerUrl, siteConfig } from "@/lib/site-config";
 import { getPublicPaymentMethods, isAutoPayActive } from "@/lib/config";
 
 type Props = { params: Promise<{ locale: string }> };
@@ -64,6 +64,9 @@ export default async function AccountPage({ params }: Props) {
     .where(eq(schema.orders.userId, user.id))
     .orderBy(desc(schema.orders.createdAt));
   const [payMethods, autoPay] = await Promise.all([getPublicPaymentMethods(), isAutoPayActive()]);
+  const guideSteps = t.raw("guide.steps") as { title: string; body: string; url?: boolean }[];
+  const guideStatuses = t.raw("guide.statuses") as { code: string; meaning: string }[];
+  const guideTips = t.raw("guide.tips") as string[];
   const hasActive = licenses.some((l) => licenseState(l) === "active");
   const versions = hasActive
     ? await db()
@@ -206,13 +209,62 @@ export default async function AccountPage({ params }: Props) {
                 </ul>
               </>
             )}
-            <div className="mt-6 rounded-xl border border-brand-accent/30 p-4">
-              <p className="text-sm font-semibold text-brand-ink">{t("setupTitle")}</p>
-              <p className="mt-1 text-xs text-brand-ink-dim">{t("setupSteps")}</p>
-              <div className="mt-3 flex items-center justify-between gap-3 rounded-lg bg-brand-bg px-3 py-2">
-                <code className="break-all font-mono text-sm text-brand-accent">{licenseServerUrl}</code>
-                <CopyButton value={licenseServerUrl} label={tPay("copy")} copiedLabel={tPay("copied")} />
+            {/* Guia de instalação do .ex4 no MT4 */}
+            <div id="install-guide" className="mt-6 rounded-xl border border-brand-accent/30 p-4 sm:p-5">
+              <p className="text-sm font-semibold text-brand-ink">{t("guide.title")}</p>
+              <p className="mt-1 text-xs text-brand-ink-dim">{t("guide.intro")}</p>
+              <ol className="mt-4 flex flex-col gap-4">
+                {guideSteps.map((step, i) => (
+                  <li key={step.title} className="flex gap-3">
+                    <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-brand-accent text-xs font-bold text-brand-bg">
+                      {i + 1}
+                    </span>
+                    <div className="min-w-0 flex-1">
+                      <p className="text-sm font-semibold text-brand-ink">{step.title}</p>
+                      <p className="mt-1 text-xs leading-relaxed text-brand-ink-dim">{step.body}</p>
+                      {step.url && (
+                        <div className="mt-2 flex items-center justify-between gap-3 rounded-lg bg-brand-bg px-3 py-2">
+                          <code className="break-all font-mono text-sm text-brand-accent">{licenseServerUrl}</code>
+                          <CopyButton value={licenseServerUrl} label={tPay("copy")} copiedLabel={tPay("copied")} />
+                        </div>
+                      )}
+                    </div>
+                  </li>
+                ))}
+              </ol>
+
+              <details className="mt-5 rounded-lg bg-brand-surface-2 px-4 py-3">
+                <summary className="cursor-pointer text-sm font-semibold text-brand-ink">{t("guide.statusTitle")}</summary>
+                <dl className="mt-3 flex flex-col gap-3">
+                  {guideStatuses.map((s) => (
+                    <div key={s.code}>
+                      <dt className="break-all font-mono text-xs font-semibold text-brand-accent">{s.code}</dt>
+                      <dd className="mt-0.5 text-xs leading-relaxed text-brand-ink-dim">{s.meaning}</dd>
+                    </div>
+                  ))}
+                </dl>
+              </details>
+
+              <div className="mt-5">
+                <p className="text-sm font-semibold text-brand-ink">{t("guide.tipsTitle")}</p>
+                <ul className="mt-2 flex list-disc flex-col gap-1 pl-5 text-xs leading-relaxed text-brand-ink-dim">
+                  {guideTips.map((tip) => (
+                    <li key={tip}>{tip}</li>
+                  ))}
+                </ul>
               </div>
+
+              <p className="mt-5 text-xs text-brand-ink-dim">
+                {t("guide.help")}:{" "}
+                <a
+                  href={siteConfig.telegramDmUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="font-semibold text-brand-accent hover:underline"
+                >
+                  @AlessonFelipe89
+                </a>
+              </p>
             </div>
           </GlowCard>
         </section>

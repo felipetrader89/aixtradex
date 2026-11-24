@@ -504,8 +504,66 @@
     "downloadsEmpty": "Nenhum arquivo disponível ainda.",
     "current": "Atual",
     "download": "Baixar",
-    "setupTitle": "Como ativar no MT4",
-    "setupSteps": "No MT4, vá em Ferramentas > Opções > Expert Advisors, marque \"Permitir WebRequest para as URLs listadas\" e adicione o endereço abaixo. É por ele que o robô confere sua licença."
+    "guide": {
+      "title": "Guia de instalação no MT4",
+      "intro": "Siga os passos na ordem. Leva uns 5 minutos.",
+      "steps": [
+        {
+          "title": "Baixe o robô",
+          "body": "Clique em Baixar, aqui em cima, e salve o arquivo .ex4 no computador ou na VPS onde o MT4 vai rodar."
+        },
+        {
+          "title": "Coloque o arquivo no MT4",
+          "body": "No MT4, vá em Arquivo > Abrir Pasta de Dados e entre em MQL4 > Experts. Cole o arquivo .ex4 ali. Depois feche e abra o MT4 de novo: o robô aparece no Navegador, em Expert Advisors."
+        },
+        {
+          "title": "Libere o servidor de licença",
+          "body": "Vá em Ferramentas > Opções > aba Expert Advisors. Marque \"Permitir Negociação Automatizada\" e \"Permitir WebRequest para as URL listadas\", adicione o endereço abaixo e clique em OK. Sem isso o robô não consegue conferir sua licença.",
+          "url": true
+        },
+        {
+          "title": "Cadastre sua conta MT4",
+          "body": "Em Suas licenças, aqui em cima, coloque o número da conta MT4 onde o robô vai operar e clique em Salvar contas. A Licença Mensal libera até 2 contas e a Vitalícia até 5."
+        },
+        {
+          "title": "Abra o gráfico do ouro em M5",
+          "body": "Abra o gráfico do XAUUSD no tempo M5. Algumas corretoras usam outro nome pro ouro, como XAUUSDm (Exness Standard) ou XAUUSD.r. Use o nome que aparece na sua Observação do Mercado."
+        },
+        {
+          "title": "Coloque o robô no gráfico",
+          "body": "Arraste o Ai X PULSE RS do Navegador para o gráfico. Na aba Comum, marque \"Permitir negociação real\" e clique em OK. Confira se o botão Negociação Automatizada, na barra de cima, está ligado."
+        },
+        {
+          "title": "Aceite os termos",
+          "body": "Na primeira vez em cada conta aparece uma janela com os termos de uso. Clique em OK. Ela não aparece mais nessa conta, nem quando o MT4 ou a VPS reiniciar."
+        },
+        {
+          "title": "Confira o painel",
+          "body": "O status da licença aparece no rodapé do painel do robô. Se estiver tudo certo, mostra o tipo da licença (e o vencimento, na mensal). Abaixo está o que cada mensagem quer dizer."
+        }
+      ],
+      "statusTitle": "O que significa cada mensagem do painel",
+      "statuses": [
+        { "code": "MONTHLY - Expires: data", "meaning": "Licença mensal ativa, com a data de vencimento. Está tudo certo." },
+        { "code": "LIFETIME LICENSE", "meaning": "Licença vitalícia ativa. Está tudo certo." },
+        { "code": "CHECKING LICENSE", "meaning": "O robô ainda vai conferir a licença. Aparece logo depois de abrir o MT4 ou com o mercado fechado, e some no primeiro movimento de preço." },
+        { "code": "UNLICENSED", "meaning": "Essa conta MT4 não está cadastrada em nenhuma licença. Cadastre o número em Suas licenças, aqui em cima. O robô libera sozinho em até 5 minutos." },
+        { "code": "EXPIRED LICENSE", "meaning": "A licença venceu. Renove aqui no portal: com o pagamento confirmado, o robô libera sozinho em até 5 minutos." },
+        { "code": "LICENSE BLOCKED", "meaning": "A licença foi bloqueada. Fale com o suporte." },
+        { "code": "ALLOW WEBREQUEST: license.aixtradex.com", "meaning": "Falta o passo 3: liberar o endereço do servidor de licença no MT4." },
+        { "code": "LICENSE: NO CONNECTION", "meaning": "O robô não conseguiu falar com o servidor de licença (internet ou servidor fora do ar). Ele tenta de novo a cada 5 minutos." },
+        { "code": "(OFFLINE)", "meaning": "Está sem conexão agora, mas a licença foi confirmada há pouco. O robô continua operando por até 48 horas enquanto a conexão volta." },
+        { "code": "LICENSE OFFLINE > 48H", "meaning": "Ficou mais de 48 horas sem conseguir conferir a licença. Verifique a internet e o passo 3." }
+      ],
+      "tipsTitle": "Dicas",
+      "tips": [
+        "Pra operar 24 horas, use uma VPS: o robô só funciona com o MT4 aberto.",
+        "Use uma conta com spread de até 35 pontos no ouro.",
+        "Se a licença vencer, o robô não sai do gráfico, mas para de operar, inclusive de administrar ordens abertas. Ele volta sozinho quando a licença for liberada; por isso, renove antes do vencimento.",
+        "Trocou de conta MT4? Atualize o número em Suas licenças, aqui em cima."
+      ],
+      "help": "Ficou com dúvida? Fale comigo no Telegram"
+    }
   },
   "Emails": {
     "paid": {
