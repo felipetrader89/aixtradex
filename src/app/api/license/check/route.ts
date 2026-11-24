@@ -2,6 +2,7 @@ import { createHmac } from "node:crypto";
 import { checkLicense } from "@/lib/licensing";
 import { parseReport, saveReport, validReportSignature } from "@/lib/account-stats";
 import { MT4_LOGIN, PRODUCT } from "@/lib/plans";
+import { configPayload, getRobotConfig } from "@/lib/robot-settings";
 
 // Consulta feita pelo robô (MQL4 WebRequest):
 //   GET /api/license/check?account=12345678&product=pulse-rs&nonce=abc123&v=1.00&server=Broker-Live
@@ -12,6 +13,9 @@ import { MT4_LOGIN, PRODUCT } from "@/lib/plans";
 // pra ninguém conseguir fingir ser o servidor (o nonce muda a cada consulta).
 // Opcional (robô a partir de 2026-11-24): &d=<dados da conta>&ds=<assinatura> - ver src/lib/account-stats.ts.
 // Os dados vão pro painel do cliente; se vierem errados/sem assinatura, são ignorados e a licença responde normal.
+// Opcional (robô v6.7+): &cfg=1 acrescenta uma 2ª linha com a configuração escolhida no portal:
+//   CFG|sym=XAUUSD,EURUSD;risk=2;...|assinatura   (assinatura = HMAC(LICENSE_SECRET, "conta|nonce|configuração"))
+// Robôs antigos não mandam cfg=1 e recebem exatamente a resposta de sempre.
 
 const NONCE = /^[A-Za-z0-9]{8,64}$/;
 
@@ -59,7 +63,13 @@ export async function GET(request: Request) {
     const now = Math.floor(Date.now() / 1000);
     const payload = `${account}|${result.status}|${result.plan}|${expires}|${now}|${nonce}`;
     const sig = createHmac("sha256", secret).update(payload).digest("hex");
-    return reply(`${result.status}|${result.plan}|${expires}|${now}|${sig}`);
+    let body = `${result.status}|${result.plan}|${expires}|${now}|${sig}`;
+    if (params.get("cfg") === "1" && result.status !== "NOT_FOUND") {
+      const cfg = configPayload(await getRobotConfig(product, account));
+      body += `
+CFG|${cfg}|${createHmac("sha256", secret).update(`${account}|${nonce}|${cfg}`).digest("hex")}`;
+    }
+    return reply(body);
   } catch (error) {
     console.error("license check failed", error);
     return reply("ERROR|server", 500);

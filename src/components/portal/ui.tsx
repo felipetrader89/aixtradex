@@ -72,12 +72,16 @@ export function AccountStatsCard({
   state,
   stats,
   lastCheckAt,
+  configureHref,
+  configureLabel,
 }: {
   login: string;
   planLabel: string;
   state: AccountLiveState;
   stats?: AccountStats;
   lastCheckAt?: Date | null;
+  configureHref?: string;
+  configureLabel?: string;
 }) {
   const t = useTranslations("Portal.stats");
   const locale = useLocale();
@@ -100,6 +104,11 @@ export function AccountStatsCard({
         <div className="flex flex-col items-end gap-1">
           <StateBadge state={state} />
           {stats && <p className="text-[11px] text-brand-ink-dim">{t("updated", { time: when.format(stats.reportedAt) })}</p>}
+          {configureHref && (
+            <a href={configureHref} className="mt-1 text-xs font-semibold text-brand-accent hover:underline">
+              ⚙ {configureLabel}
+            </a>
+          )}
         </div>
       </div>
 

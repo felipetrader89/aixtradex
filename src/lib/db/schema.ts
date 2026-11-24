@@ -254,6 +254,32 @@ export const licenseClaims = pgTable(
   (t) => [index("license_claims_status_idx").on(t.status, t.createdAt)]
 );
 
+// Configuração do robô por conta MT4 (o cliente escolhe na Área do cliente; o robô v6.7+ lê a cada 5 min).
+export const robotSettings = pgTable(
+  "robot_settings",
+  {
+    id: serial("id").primaryKey(),
+    product: text("product").notNull(),
+    login: text("login").notNull(),
+    // Pares que o robô opera (nome base, sem sufixo da corretora: XAUUSD, EURUSD...).
+    symbols: text("symbols").array().notNull().default(sql`ARRAY['XAUUSD']::text[]`),
+    riskProfile: text("risk_profile", { enum: ["conservative", "moderate", "aggressive", "custom"] }).notNull().default("moderate"),
+    // Só no perfil "custom" (testes do admin): % do saldo arriscado por entrada.
+    riskPct: numeric("risk_pct", { precision: 5, scale: 2 }),
+    dailyGoalPct: numeric("daily_goal_pct", { precision: 5, scale: 2 }).notNull().default("10.5"),
+    dailyLossPct: numeric("daily_loss_pct", { precision: 5, scale: 2 }).notNull().default("5.5"),
+    recovery: boolean("recovery").notNull().default(true),
+    recoveryLevels: integer("recovery_levels").notNull().default(10),
+    newsFilter: boolean("news_filter").notNull().default(true),
+    maxPositions: integer("max_positions").notNull().default(10),
+    startHour: integer("start_hour").notNull().default(0),
+    endHour: integer("end_hour").notNull().default(22),
+    updatedBy: text("updated_by"),
+    updatedAt: timestamp("updated_at", { withTimezone: true }).notNull().defaultNow(),
+  },
+  (t) => [uniqueIndex("robot_settings_product_login_idx").on(t.product, t.login)]
+);
+
 // O que os clientes fazem no portal, pro sininho do admin: cadastro, entrou no portal, pedido, pagamento, pedido de acesso.
 export const activity = pgTable(
   "activity",
@@ -270,6 +296,7 @@ export const activity = pgTable(
 
 export type User = typeof users.$inferSelect;
 export type Activity = typeof activity.$inferSelect;
+export type RobotSettings = typeof robotSettings.$inferSelect;
 export type Order = typeof orders.$inferSelect;
 export type License = typeof licenses.$inferSelect;
 export type LicenseAccount = typeof licenseAccounts.$inferSelect;

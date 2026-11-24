@@ -39,6 +39,8 @@ export default async function AccountsPage({ params }: Props) {
             state={state}
             stats={stats}
             lastCheckAt={account.lastCheckAt}
+            configureHref={`/${locale}/account/accounts/${account.login}`}
+            configureLabel={t("robot.configure")}
           />
         ))
       )}
