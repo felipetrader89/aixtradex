@@ -29,10 +29,12 @@ export async function GET(request: Request, { params }: { params: Promise<{ id: 
   if (!file) return new Response("Not found", { status: 404 });
 
   const bytes = Buffer.from(file.dataBase64, "base64");
+  // Arquivo por idioma sai com o idioma no nome (ex.: "Ai X PULSE RS v6.6 VIP PT.ex4") - dá pra guardar os 3 lado a lado.
+  const name = file.lang ? version.fileName.replace(/(\.\w+)$/, ` ${file.lang.toUpperCase()}$1`) : version.fileName;
   return new Response(bytes, {
     headers: {
       "Content-Type": "application/octet-stream",
-      "Content-Disposition": `attachment; filename="${version.fileName.replace(/[^\w.\- ]/g, "_")}"`,
+      "Content-Disposition": `attachment; filename="${name.replace(/[^\w.\- ]/g, "_")}"`,
       "Content-Length": String(bytes.length),
       "Cache-Control": "private, no-store",
     },

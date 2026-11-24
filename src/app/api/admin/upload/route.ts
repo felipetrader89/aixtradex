@@ -48,7 +48,8 @@ export async function POST(request: Request) {
       version,
       notes,
       notesI18n,
-      fileName: main.name.slice(0, 120),
+      // Nome base, sem o idioma (o download acrescenta " PT"/" EN"/" ES" conforme o arquivo).
+      fileName: main.name.replace(/ (PT|EN|ES)(\.\w+)$/i, "$2").slice(0, 120),
       size: main.size,
       isCurrent: false,
     })
