@@ -77,7 +77,7 @@ export default async function AccountOverview({ params }: Props) {
     <div className="flex flex-col gap-6">
       <PortalHeader title={user.name ? t("overview.title", { name: user.name.split(" ")[0] }) : t("overview.titleNoName")} intro={t("overview.intro", { product: PRODUCT.name })} />
 
-      <div className="grid grid-cols-2 gap-3 lg:grid-cols-4">
+      <div className="stagger grid grid-cols-2 gap-3 lg:grid-cols-4">
         {kpis.map((k) => (
           <Card key={k.label} className="!p-4">
             <p className="text-xs text-brand-ink-dim">{k.label}</p>

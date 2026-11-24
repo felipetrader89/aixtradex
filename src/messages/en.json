@@ -459,7 +459,6 @@
       "expired": "Expired",
       "suspended": "Blocked"
     },
-    "key": "Key",
     "expires": "Expires on {date}",
     "expiredOn": "Expired on {date}",
     "lifetime": "Lifetime - no expiry",
@@ -564,7 +563,6 @@
     "paid": {
       "subject": "Payment confirmed - order {code}",
       "intro": "Hi! I received the payment for order {code}. Your Ai X PULSE RS license is now active.",
-      "key": "License key",
       "plan": "Plan",
       "planMonthly": "Monthly",
       "planLifetime": "Lifetime",
@@ -670,7 +668,6 @@
         "waiting": "No data from this account yet. Install the current robot version (Downloads page) and allow the license server address in MT4."
       },
       "brokerUnknown": "Broker",
-      "licenseOf": "License {key}",
       "updated": "Updated {time}",
       "balance": "Current balance",
       "equity": "Equity",
@@ -696,7 +693,9 @@
     "licenses": {
       "title": "Licenses",
       "intro": "Your licenses, expiry and enabled MT4 accounts.",
-      "validity": "Validity"
+      "validity": "Validity",
+      "checkTitle": "Validation",
+      "checkBody": "By MT4 account number. The robot checks it by itself, no key to type."
     },
     "orders": {
       "title": "Orders",
@@ -704,7 +703,8 @@
     },
     "downloads": {
       "title": "Downloads",
-      "intro": "Always download the version marked as Current.",
+      "intro": "Always download the version marked as Current. The main button already gives you the robot in your language: panel, settings and alerts.",
+      "otherLangs": "Also in:",
       "next": "Downloaded it? Now follow the"
     }
   },

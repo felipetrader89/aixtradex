@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { MENU_COOKIE, type MenuPosition } from "@/lib/panel";
@@ -55,11 +55,13 @@ function useActive() {
 
 function NavLink({ item, active, compact }: { item: PanelNavItem; active: boolean; compact?: boolean }) {
   const base = compact
-    ? `flex shrink-0 items-center gap-1.5 rounded-full px-3 py-1.5 text-sm ${
-        active ? "bg-brand-accent text-brand-bg font-semibold" : "text-brand-ink-dim hover:text-brand-ink"
+    ? `panel-nav-item flex shrink-0 items-center gap-1.5 rounded-full px-3 py-1.5 text-sm transition-colors ${
+        active ? "bg-brand-accent text-brand-bg font-semibold shadow-[0_0_18px_rgba(51,214,160,0.35)]" : "text-brand-ink-dim hover:bg-brand-surface-2 hover:text-brand-ink"
       }`
-    : `flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm transition-colors ${
-        active ? "bg-brand-accent/12 font-semibold text-brand-accent" : "text-brand-ink-dim hover:bg-brand-surface-2 hover:text-brand-ink"
+    : `panel-nav-item flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm transition-colors ${
+        active
+          ? "panel-nav-active bg-brand-accent/12 font-semibold text-brand-accent"
+          : "text-brand-ink-dim hover:bg-brand-surface-2 hover:text-brand-ink"
       }`;
   const content = (
     <>
@@ -67,7 +69,7 @@ function NavLink({ item, active, compact }: { item: PanelNavItem; active: boolea
       <span className={compact ? "" : "flex-1"}>{item.label}</span>
       {item.external && !compact && <span className="text-xs opacity-60">↗</span>}
       {item.count ? (
-        <span className="rounded-full bg-amber-400 px-1.5 py-0.5 text-[10px] font-bold leading-none text-brand-bg">{item.count}</span>
+        <span className="badge-pop rounded-full bg-amber-400 px-1.5 py-0.5 text-[10px] font-bold leading-none text-brand-bg">{item.count}</span>
       ) : null}
     </>
   );
@@ -123,6 +125,7 @@ export function PanelShell({
   initialPosition,
   sideFooter,
   topRight,
+  actions,
   switchLabels,
   children,
 }: {
@@ -132,11 +135,43 @@ export function PanelShell({
   // Rodapé do menu lateral (usuário, sair...) e a versão compacta usada no topo/celular.
   sideFooter: React.ReactNode;
   topRight: React.ReactNode;
+  // Botões que ficam sempre à vista, ao lado da marca (ex.: o sininho do admin).
+  actions?: React.ReactNode;
   switchLabels: { title: string; left: string; top: string; right: string };
   children: React.ReactNode;
 }) {
   const [position, setPosition] = useState<MenuPosition>(initialPosition);
   const isActive = useActive();
+  const pathname = usePathname();
+
+  // Barra de rolagem fina que só aparece ao rolar ou com o mouse perto dela + brilho dos cartões seguindo o mouse.
+  useEffect(() => {
+    const root = document.documentElement;
+    root.classList.add("panel-scroll");
+    let hide: ReturnType<typeof setTimeout> | undefined;
+    const onScroll = () => {
+      root.classList.add("is-scrolling");
+      clearTimeout(hide);
+      hide = setTimeout(() => root.classList.remove("is-scrolling"), 900);
+    };
+    const onMove = (e: PointerEvent) => {
+      root.classList.toggle("near-bar", e.clientX > window.innerWidth - 18);
+      const card = (e.target as Element | null)?.closest?.(".panel-card") as HTMLElement | null;
+      if (card) {
+        const r = card.getBoundingClientRect();
+        card.style.setProperty("--mx", `${e.clientX - r.left}px`);
+        card.style.setProperty("--my", `${e.clientY - r.top}px`);
+      }
+    };
+    window.addEventListener("scroll", onScroll, { passive: true });
+    window.addEventListener("pointermove", onMove, { passive: true });
+    return () => {
+      clearTimeout(hide);
+      window.removeEventListener("scroll", onScroll);
+      window.removeEventListener("pointermove", onMove);
+      root.classList.remove("panel-scroll", "is-scrolling", "near-bar");
+    };
+  }, []);
 
   function choose(p: MenuPosition) {
     setPosition(p);
@@ -146,11 +181,15 @@ export function PanelShell({
   const side = position !== "top";
   return (
     <div className="min-h-screen">
+      <div className="panel-bg" aria-hidden />
       {/* Celular/tablet: barra fixa no topo com o menu rolando de lado. */}
       <header className="sticky top-0 z-50 border-b border-brand-hairline bg-brand-bg/95 px-4 pt-3 backdrop-blur lg:hidden">
         <div className="mb-2 flex items-center justify-between gap-3">
           {brand}
-          <div className="flex items-center gap-3">{topRight}</div>
+          <div className="flex items-center gap-3">
+            {actions}
+            {topRight}
+          </div>
         </div>
         <nav className="-mx-4 flex gap-1 overflow-x-auto px-4 pb-2 [scrollbar-width:none]">
           {items.map((item) => (
@@ -166,6 +205,7 @@ export function PanelShell({
           <div className="mx-auto flex max-w-7xl items-center justify-between gap-6 px-8 pt-3">
             {brand}
             <div className="flex shrink-0 items-center gap-4">
+              {actions}
               {topRight}
               <PositionSwitch position={position} onChange={choose} labels={switchLabels} />
             </div>
@@ -185,8 +225,11 @@ export function PanelShell({
               position === "right" ? "border-l" : "border-r"
             }`}
           >
-            <div className="mb-8 px-3">{brand}</div>
-            <nav className="flex flex-col gap-1 overflow-y-auto">
+            <div className="mb-8 flex items-center justify-between gap-2 px-3">
+              {brand}
+              {actions}
+            </div>
+            <nav className="panel-scroll-area -mx-2 flex flex-col gap-1 overflow-y-auto px-2">
               {items.map((item) => (
                 <NavLink key={item.href} item={item} active={isActive(item)} />
               ))}
@@ -198,7 +241,9 @@ export function PanelShell({
           </aside>
         )}
         <main className={`min-w-0 flex-1 px-4 py-8 lg:px-8 ${side ? "" : "mx-auto max-w-7xl"}`}>
-          <div className={side ? "mx-auto max-w-6xl" : ""}>{children}</div>
+          <div key={pathname} className={`panel-enter ${side ? "mx-auto max-w-6xl" : ""}`}>
+            {children}
+          </div>
         </main>
       </div>
     </div>

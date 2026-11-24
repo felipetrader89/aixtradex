@@ -4,7 +4,10 @@ import { db, schema } from "@/lib/db";
 import { licenseState } from "@/lib/licensing";
 
 // Download do robô: só pra quem tem licença ativa do produto (ou admin).
-export async function GET(_request: Request, { params }: { params: Promise<{ id: string }> }) {
+// ?lang=pt|en|es escolhe o arquivo do idioma; se a versão não tiver esse idioma, vai o arquivo único, depois inglês.
+const FALLBACK = ["", "en", "pt", "es"];
+
+export async function GET(request: Request, { params }: { params: Promise<{ id: string }> }) {
   const id = Number((await params).id);
   if (!Number.isInteger(id)) return new Response("Not found", { status: 404 });
 
@@ -20,7 +23,9 @@ export async function GET(_request: Request, { params }: { params: Promise<{ id:
     if (!allowed) return new Response("Forbidden", { status: 403 });
   }
 
-  const [file] = await db().select().from(schema.productFiles).where(eq(schema.productFiles.versionId, id));
+  const wanted = new URL(request.url).searchParams.get("lang") ?? "";
+  const files = await db().select().from(schema.productFiles).where(eq(schema.productFiles.versionId, id));
+  const file = [wanted, ...FALLBACK].map((lang) => files.find((f) => f.lang === lang)).find(Boolean) ?? files[0];
   if (!file) return new Response("Not found", { status: 404 });
 
   const bytes = Buffer.from(file.dataBase64, "base64");

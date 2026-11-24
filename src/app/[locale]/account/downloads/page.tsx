@@ -7,6 +7,9 @@ import { PRODUCT } from "@/lib/plans";
 
 type Props = { params: Promise<{ locale: string }> };
 
+// Nome de cada idioma escrito nele mesmo (o cliente reconhece o dele em qualquer página).
+const LANG_NAMES: Record<string, string> = { pt: "Português", en: "English", es: "Español" };
+
 export async function generateMetadata({ params }: Props) {
   const { locale } = await params;
   const t = await getTranslations({ locale, namespace: "Portal" });
@@ -50,12 +53,36 @@ export default async function DownloadsPage({ params }: Props) {
                     </p>
                     {notes && <p className="mt-1 whitespace-pre-line text-xs text-brand-ink-dim">{notes}</p>}
                   </div>
-                  <a
-                    href={`/api/download/${v.id}`}
-                    className="rounded-full bg-brand-accent px-4 py-2 text-xs font-semibold text-brand-bg hover:brightness-110"
-                  >
-                    {t("download")} ↓
-                  </a>
+                  {(() => {
+                    // Botão principal no idioma do cliente (o mesmo do site); os outros idiomas ficam como link.
+                    const langs = v.langs.filter((l) => l in LANG_NAMES);
+                    const main = langs.includes(locale) ? locale : langs.includes("en") ? "en" : (langs[0] ?? "");
+                    const others = langs.filter((l) => l !== main);
+                    return (
+                      <div className="flex flex-col items-end gap-1.5">
+                        <a
+                          href={`/api/download/${v.id}${main ? `?lang=${main}` : ""}`}
+                          className="btn-glow rounded-full bg-brand-accent px-4 py-2 text-xs font-semibold text-brand-bg hover:brightness-110"
+                        >
+                          {t("download")}
+                          {main ? ` · ${LANG_NAMES[main]}` : ""} ↓
+                        </a>
+                        {others.length > 0 && (
+                          <p className="text-[11px] text-brand-ink-dim">
+                            {tp("downloads.otherLangs")}{" "}
+                            {others.map((l, i) => (
+                              <span key={l}>
+                                {i > 0 && " · "}
+                                <a href={`/api/download/${v.id}?lang=${l}`} className="font-semibold text-brand-accent hover:underline">
+                                  {LANG_NAMES[l]}
+                                </a>
+                              </span>
+                            ))}
+                          </p>
+                        )}
+                      </div>
+                    );
+                  })()}
                 </li>
               );
             })}

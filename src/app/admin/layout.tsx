@@ -7,7 +7,8 @@ import { count, eq } from "drizzle-orm";
 import { getCurrentUser } from "@/lib/auth";
 import { db, schema } from "@/lib/db";
 import { logoutAction } from "@/app/actions/auth";
-import { PanelShell, type PanelNavItem } from "@/components/panel/PanelShell";
+import { PanelIconSvg, PanelShell, type PanelNavItem } from "@/components/panel/PanelShell";
+import { AdminBell } from "@/components/admin/AdminBell";
 import { MENU_COOKIE, parseMenuPosition } from "@/lib/panel";
 import "../globals.css";
 
@@ -62,6 +63,7 @@ export default async function AdminLayout({ children }: { children: React.ReactN
             </Link>
           }
           items={nav}
+          actions={<AdminBell />}
           initialPosition={parseMenuPosition(jar.get(MENU_COOKIE)?.value)}
           switchLabels={{ title: "Posição do menu", left: "Menu à esquerda", top: "Menu no topo", right: "Menu à direita" }}
           sideFooter={
@@ -80,6 +82,13 @@ export default async function AdminLayout({ children }: { children: React.ReactN
           }
           topRight={
             <>
+              <Link href="/pt/account" className="hidden text-xs text-brand-ink-dim hover:text-brand-accent sm:inline">
+                Área do cliente
+              </Link>
+              <Link href="/pt" className="flex items-center gap-1 text-xs text-brand-ink-dim hover:text-brand-accent" title="Ver o site">
+                <PanelIconSvg name="site" className="h-4 w-4" />
+                <span className="hidden sm:inline">Ver o site</span>
+              </Link>
               <span className="hidden max-w-48 truncate text-xs text-brand-ink-dim xl:inline" title={user.email}>
                 {user.email}
               </span>

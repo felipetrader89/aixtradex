@@ -4,6 +4,8 @@ import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
 import { MarketTicker } from "@/components/sections/MarketTicker";
 import { ScrollToTopButton } from "@/components/ui/ScrollToTopButton";
+import { LocaleSuggest } from "@/components/layout/LocaleSuggest";
+import { Suspense } from "react";
 
 // Páginas públicas: cabeçalho, cotações e rodapé do site.
 export default async function SiteLayout({ children, params }: { children: React.ReactNode; params: Promise<{ locale: string }> }) {
@@ -18,6 +20,9 @@ export default async function SiteLayout({ children, params }: { children: React
       </section>
       <Footer />
       <ScrollToTopButton />
+      <Suspense fallback={null}>
+        <LocaleSuggest />
+      </Suspense>
     </>
   );
 }

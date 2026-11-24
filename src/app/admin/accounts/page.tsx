@@ -2,7 +2,7 @@ import Link from "next/link";
 import { eq } from "drizzle-orm";
 import { db, schema } from "@/lib/db";
 import { isPlaceholderEmail } from "@/lib/auth";
-import { liveState, statsFor, type AccountLiveState } from "@/lib/account-stats";
+import { compareAccounts, liveState, statsFor, type AccountLiveState } from "@/lib/account-stats";
 import { PRODUCT } from "@/lib/plans";
 import { Badge, PageHeader, Panel, adminBtn, adminInput, fmtDateTime } from "@/components/admin/ui";
 
@@ -63,7 +63,7 @@ export default async function AdminAccounts({ searchParams }: Props) {
             ? r.state === "waiting"
             : true
     )
-    .sort((a, b) => (b.stats?.reportedAt.getTime() ?? 0) - (a.stats?.reportedAt.getTime() ?? 0));
+    .sort(compareAccounts);
 
   const counts = { running: 0, autotradingOff: 0, inactive: 0, waiting: 0 };
   for (const r of rows) counts[liveState(stats.get(r.account.login), now)]++;
@@ -77,7 +77,7 @@ export default async function AdminAccounts({ searchParams }: Props) {
 
       <div className="grid grid-cols-2 gap-3 md:grid-cols-4">
         {(Object.keys(counts) as AccountLiveState[]).map((k) => (
-          <div key={k} className="rounded-2xl border border-brand-hairline bg-brand-surface p-4">
+          <div key={k} className="panel-card rounded-2xl border border-brand-hairline bg-brand-surface/90 p-4">
             <p className="text-xs text-brand-ink-dim">{STATE[k].label}</p>
             <p className="mt-1 font-display text-2xl font-extrabold text-chrome">{counts[k]}</p>
           </div>

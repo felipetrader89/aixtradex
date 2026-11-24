@@ -17,7 +17,7 @@ export function PortalHeader({ title, intro, children }: { title: string; intro?
 }
 
 export function Card({ children, className = "" }: { children: React.ReactNode; className?: string }) {
-  return <section className={`rounded-2xl border border-brand-hairline bg-brand-surface p-5 ${className}`}>{children}</section>;
+  return <section className={`panel-card rounded-2xl border border-brand-hairline bg-brand-surface/90 p-5 backdrop-blur-sm ${className}`}>{children}</section>;
 }
 
 export function CardTitle({ children }: { children: React.ReactNode }) {
@@ -57,7 +57,7 @@ export function StateBadge({ state }: { state: AccountLiveState }) {
 
 function Metric({ label, value, tone = "text-brand-ink", hint }: { label: string; value: string; tone?: string; hint?: string }) {
   return (
-    <div className="rounded-xl bg-brand-surface-2 p-3">
+    <div className="panel-tile rounded-xl bg-brand-surface-2 p-3">
       <p className="text-[11px] text-brand-ink-dim">{label}</p>
       <p className={`mt-1 font-mono text-base font-bold sm:text-lg ${tone}`}>{value}</p>
       {hint && <p className="mt-0.5 text-[11px] text-brand-ink-dim">{hint}</p>}
@@ -68,13 +68,13 @@ function Metric({ label, value, tone = "text-brand-ink", hint }: { label: string
 // Cartão completo de uma conta MT4: corretora, status, saldo, resultados e ordens abertas.
 export function AccountStatsCard({
   login,
-  licenseKey,
+  planLabel,
   state,
   stats,
   lastCheckAt,
 }: {
   login: string;
-  licenseKey: string;
+  planLabel: string;
   state: AccountLiveState;
   stats?: AccountStats;
   lastCheckAt?: Date | null;
@@ -92,7 +92,7 @@ export function AccountStatsCard({
           <p className="text-xs text-brand-ink-dim">{stats?.company ?? t("brokerUnknown")}</p>
           <p className="font-mono text-xl font-extrabold text-chrome">{login}</p>
           <p className="mt-0.5 text-xs text-brand-ink-dim">
-            {[stats?.server, stats?.leverage ? `1:${stats.leverage}` : null, t("licenseOf", { key: licenseKey })]
+            {[stats?.server, stats?.leverage ? `1:${stats.leverage}` : null, planLabel]
               .filter(Boolean)
               .join(" · ")}
           </p>
@@ -111,7 +111,7 @@ export function AccountStatsCard({
 
       {stats && (
         <>
-          <div className="mt-4 grid grid-cols-2 gap-2 md:grid-cols-3">
+          <div className="stagger mt-4 grid grid-cols-2 gap-2 md:grid-cols-3">
             <Metric label={t("balance")} value={money(stats.balance, cur)} />
             <Metric label={t("equity")} value={money(stats.equity, cur)} />
             <Metric
@@ -125,7 +125,7 @@ export function AccountStatsCard({
             <Metric label={t("balanceMonth")} value={money(stats.balanceMonthStart, cur)} />
           </div>
           <p className="mb-2 mt-5 text-[11px] font-semibold uppercase tracking-wide text-brand-ink-dim">{t("results")}</p>
-          <div className="grid grid-cols-2 gap-2 md:grid-cols-4">
+          <div className="stagger grid grid-cols-2 gap-2 md:grid-cols-4">
             <Metric label={t("today")} value={money(stats.resultToday, cur, true)} tone={resultTone(stats.resultToday)} />
             <Metric label={t("yesterday")} value={money(stats.resultYesterday, cur, true)} tone={resultTone(stats.resultYesterday)} />
             <Metric label={t("week")} value={money(stats.resultWeek, cur, true)} tone={resultTone(stats.resultWeek)} />

@@ -16,6 +16,7 @@ export default async function AccountsPage({ params }: Props) {
   setRequestLocale(locale);
   const user = await requireCustomer(locale);
   const t = await getTranslations("Portal");
+  const ta = await getTranslations("Account");
   const { rows } = await loadAccountsWithStats(user.id);
 
   return (
@@ -34,7 +35,7 @@ export default async function AccountsPage({ params }: Props) {
           <AccountStatsCard
             key={account.id}
             login={account.login}
-            licenseKey={license.key}
+            planLabel={ta(`plan.${license.plan}`)}
             state={state}
             stats={stats}
             lastCheckAt={account.lastCheckAt}

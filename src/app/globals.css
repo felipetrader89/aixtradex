@@ -242,6 +242,216 @@ button:focus-visible {
   animation: rocket-launch 0.6s ease-out forwards;
 }
 
+/* ---------- Painéis (cliente e admin) ---------- */
+
+/* Barra de rolagem fina que só aparece ao rolar ou com o mouse perto dela (o PanelShell liga as classes). */
+html.panel-scroll {
+  scrollbar-width: thin;
+  scrollbar-color: transparent transparent;
+  scroll-behavior: smooth;
+}
+html.panel-scroll.is-scrolling,
+html.panel-scroll.near-bar {
+  scrollbar-color: rgba(51, 214, 160, 0.45) transparent;
+}
+.panel-scroll-area {
+  scrollbar-width: thin;
+  scrollbar-color: transparent transparent;
+}
+.panel-scroll-area:hover {
+  scrollbar-color: rgba(51, 214, 160, 0.35) transparent;
+}
+
+/* Fundo com brilhos suaves se movendo devagar. */
+.panel-bg {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  overflow: hidden;
+}
+.panel-bg::before,
+.panel-bg::after {
+  content: "";
+  position: absolute;
+  width: 55vmax;
+  height: 55vmax;
+  border-radius: 9999px;
+  filter: blur(90px);
+  opacity: 0.16;
+  animation: panel-orb 26s ease-in-out infinite alternate;
+}
+.panel-bg::before {
+  background: #33d6a0;
+  top: -25vmax;
+  right: -18vmax;
+}
+.panel-bg::after {
+  background: #2b6cff;
+  bottom: -30vmax;
+  left: -20vmax;
+  opacity: 0.1;
+  animation-duration: 32s;
+  animation-direction: alternate-reverse;
+}
+@keyframes panel-orb {
+  from {
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+  to {
+    transform: translate3d(-6vmax, 5vmax, 0) scale(1.12);
+  }
+}
+
+/* Conteúdo entrando ao trocar de página, e itens em cascata. */
+@keyframes panel-enter {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+.panel-enter {
+  animation: panel-enter 0.45s cubic-bezier(0.2, 0.7, 0.2, 1) both;
+}
+.stagger > * {
+  animation: panel-enter 0.5s cubic-bezier(0.2, 0.7, 0.2, 1) both;
+}
+.stagger > *:nth-child(2) { animation-delay: 0.05s; }
+.stagger > *:nth-child(3) { animation-delay: 0.1s; }
+.stagger > *:nth-child(4) { animation-delay: 0.15s; }
+.stagger > *:nth-child(5) { animation-delay: 0.2s; }
+.stagger > *:nth-child(6) { animation-delay: 0.25s; }
+.stagger > *:nth-child(n + 7) { animation-delay: 0.3s; }
+
+/* Cartões: sobem um pouco, borda acende e um brilho segue o mouse. */
+.panel-card {
+  position: relative;
+  transition:
+    transform 0.25s ease,
+    border-color 0.25s ease,
+    box-shadow 0.25s ease;
+}
+.panel-card::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  background: radial-gradient(420px circle at var(--mx, 50%) var(--my, 0%), rgba(51, 214, 160, 0.09), transparent 60%);
+}
+.panel-card:hover {
+  transform: translateY(-2px);
+  border-color: rgba(51, 214, 160, 0.4);
+  box-shadow:
+    0 18px 40px -18px rgba(0, 0, 0, 0.6),
+    0 0 0 1px rgba(51, 214, 160, 0.08),
+    0 0 28px rgba(51, 214, 160, 0.08);
+}
+.panel-card:hover::before {
+  opacity: 1;
+}
+.panel-tile {
+  transition:
+    transform 0.2s ease,
+    background-color 0.2s ease;
+}
+.panel-tile:hover {
+  transform: translateY(-1px);
+  background-color: color-mix(in srgb, var(--color-brand-surface-2) 80%, var(--color-brand-accent) 6%);
+}
+
+/* Item ativo do menu com barrinha acesa. */
+.panel-nav-active {
+  position: relative;
+  box-shadow: inset 0 0 0 1px rgba(51, 214, 160, 0.18);
+}
+.panel-nav-active::before {
+  content: "";
+  position: absolute;
+  left: -0.5rem;
+  top: 22%;
+  bottom: 22%;
+  width: 3px;
+  border-radius: 3px;
+  background: var(--color-brand-accent);
+  box-shadow: 0 0 12px var(--color-brand-accent);
+  animation: panel-enter 0.3s ease both;
+}
+.panel-nav-item svg {
+  transition: transform 0.2s ease;
+}
+.panel-nav-item:hover svg {
+  transform: scale(1.12) rotate(-3deg);
+}
+
+/* Botão com brilho passando. */
+.btn-glow {
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 0 18px rgba(51, 214, 160, 0.25);
+  transition:
+    box-shadow 0.3s ease,
+    transform 0.2s ease;
+}
+.btn-glow::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  left: -120%;
+  background: linear-gradient(100deg, transparent, rgba(255, 255, 255, 0.35), transparent);
+  transition: left 0.6s ease;
+}
+.btn-glow:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 0 26px rgba(51, 214, 160, 0.45);
+}
+.btn-glow:hover::after {
+  left: 120%;
+}
+
+/* Sininho balançando quando chega novidade; número pulsando. */
+@keyframes bell-ring {
+  0%, 100% { transform: rotate(0); }
+  15% { transform: rotate(14deg); }
+  30% { transform: rotate(-12deg); }
+  45% { transform: rotate(9deg); }
+  60% { transform: rotate(-6deg); }
+  75% { transform: rotate(3deg); }
+}
+.bell-ring {
+  animation: bell-ring 0.9s ease both;
+  transform-origin: 50% 4px;
+}
+@keyframes badge-pop {
+  0% { transform: scale(0.4); }
+  60% { transform: scale(1.25); }
+  100% { transform: scale(1); }
+}
+.badge-pop {
+  animation: badge-pop 0.4s ease both;
+}
+
+/* Barra de sugestão de idioma / avisos subindo. */
+@keyframes slide-up-in {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+.animate-slide-down {
+  animation: slide-up-in 0.4s cubic-bezier(0.2, 0.7, 0.2, 1) both;
+}
+
 @media (prefers-reduced-motion: reduce) {
   .ticker-track,
   .hover-card,
@@ -250,7 +460,16 @@ button:focus-visible {
   .nav-pill::before,
   .cta-neon::before,
   .rocket-float,
-  .rocket-launch {
+  .rocket-launch,
+  .panel-bg::before,
+  .panel-bg::after,
+  .panel-enter,
+  .stagger > *,
+  .panel-card,
+  .panel-tile,
+  .bell-ring,
+  .badge-pop,
+  .animate-slide-down {
     transition: none;
     animation: none;
   }

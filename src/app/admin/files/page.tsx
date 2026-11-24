@@ -1,4 +1,4 @@
-import { desc, eq } from "drizzle-orm";
+import { desc, eq, inArray } from "drizzle-orm";
 import { db, schema } from "@/lib/db";
 import { PRODUCT } from "@/lib/plans";
 import { deleteVersionAction, setCurrentVersionAction } from "@/app/actions/admin";
@@ -21,6 +21,17 @@ export default async function AdminFiles({ searchParams }: Props) {
     .from(schema.productVersions)
     .where(eq(schema.productVersions.product, PRODUCT.slug))
     .orderBy(desc(schema.productVersions.createdAt));
+  const files = versions.length
+    ? await db()
+        .select({ versionId: schema.productFiles.versionId, lang: schema.productFiles.lang, size: schema.productFiles.size })
+        .from(schema.productFiles)
+        .where(inArray(schema.productFiles.versionId, versions.map((v) => v.id)))
+    : [];
+  const langsOf = (id: number) =>
+    files
+      .filter((f) => f.versionId === id)
+      .map((f) => f.lang.toUpperCase() || "arquivo único")
+      .join(" · ");
 
   return (
     <div>
@@ -28,8 +39,19 @@ export default async function AdminFiles({ searchParams }: Props) {
       <Flash msg={msg} />
       <Panel title={`Enviar versão nova - ${PRODUCT.name}`} className="mb-6">
         <form action="/api/admin/upload" method="post" encType="multipart/form-data" className="grid gap-3 sm:grid-cols-2">
-          <input name="version" required placeholder="Versão (ex.: 1.02)" className={adminInput} />
-          <input name="file" type="file" required className={`${adminInput} file:mr-3 file:rounded-full file:border-0 file:bg-brand-accent file:px-3 file:py-1 file:text-xs file:font-semibold file:text-brand-bg`} />
+          <input name="version" required placeholder="Versão (ex.: 1.02)" className={`${adminInput} sm:col-span-2`} />
+          {/* Um .ex4 por idioma (gerados pelo ea/build_langs.py). O cliente baixa o do idioma dele; o nome do arquivo é o mesmo nos 3. */}
+          {[
+            ["file_pt", "Arquivo em Português (.ex4)"],
+            ["file_en", "Arquivo em Inglês (.ex4)"],
+            ["file_es", "Arquivo em Espanhol (.ex4)"],
+          ].map(([name, label]) => (
+            <label key={name} className="flex flex-col gap-1 text-xs text-brand-ink-dim sm:col-span-2 lg:col-span-1">
+              {label}
+              <input name={name} type="file" className={`${adminInput} file:mr-3 file:rounded-full file:border-0 file:bg-brand-accent file:px-3 file:py-1 file:text-xs file:font-semibold file:text-brand-bg`} />
+            </label>
+          ))}
+          <p className="text-[11px] text-brand-ink-dim sm:col-span-2">Envie pelo menos um. Idioma sem arquivo = o cliente recebe o inglês.</p>
           <textarea
             name="notes"
             rows={3}
@@ -62,7 +84,7 @@ export default async function AdminFiles({ searchParams }: Props) {
                   {v.version} {v.isCurrent && <Badge tone="ok">Atual</Badge>}
                 </p>
                 <p className="text-xs text-brand-ink-dim">
-                  {v.fileName} · {(v.size / 1024).toFixed(0)} KB · {fmtDate(v.createdAt)}
+                  {v.fileName} · {(v.size / 1024).toFixed(0)} KB · {langsOf(v.id)} · {fmtDate(v.createdAt)}
                 </p>
                 {v.notes && <p className="mt-1 whitespace-pre-line text-xs text-brand-ink-dim">{v.notes}</p>}
               </div>

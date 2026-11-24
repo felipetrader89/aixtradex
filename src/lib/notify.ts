@@ -69,7 +69,6 @@ export async function notifyOrderPaid(orderId: string, via: string) {
     const lines = [
       t("intro", { code: order.code }),
       "",
-      `${t("key")}: ${license?.key ?? "-"}`,
       `${t("plan")}: ${order.plan === "lifetime" ? t("planLifetime") : t("planMonthly")}`,
       `${t("expires")}: ${expires}`,
       `${t("accounts")}: ${accounts.map((a) => a.login).join(", ") || "-"}`,

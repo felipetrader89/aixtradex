@@ -36,6 +36,13 @@
       "when": 1795521677382,
       "tag": "0004_portal_stats_claims",
       "breakpoints": true
+    },
+    {
+      "idx": 5,
+      "version": "7",
+      "when": 1795537588554,
+      "tag": "0005_langs_activity",
+      "breakpoints": true
     }
   ]
 }

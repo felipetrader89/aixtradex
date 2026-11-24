@@ -48,7 +48,7 @@ export const adminLabel = "mb-1.5 block text-xs font-semibold uppercase tracking
 
 export function Panel({ title, children, className = "" }: { title?: string; children: React.ReactNode; className?: string }) {
   return (
-    <section className={`rounded-2xl border border-brand-hairline bg-brand-surface p-5 ${className}`}>
+    <section className={`panel-card rounded-2xl border border-brand-hairline bg-brand-surface/90 p-5 backdrop-blur-sm ${className}`}>
       {title && <h2 className="mb-4 text-xs font-semibold uppercase tracking-wide text-brand-accent">{title}</h2>}
       {children}
     </section>

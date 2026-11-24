@@ -6,6 +6,7 @@ import { findOrCreateUser, isPlaceholderEmail } from "@/lib/auth";
 import { sendEmail } from "@/lib/email";
 import { PRODUCT } from "@/lib/plans";
 import { SITE_URL, customerEmailHtml, notifyAdmins, pickLocale } from "@/lib/notify";
+import { recordActivity } from "@/lib/activity";
 
 // Cliente antigo (importado do robô, sem email) pede acesso ao portal informando email + uma conta MT4 dele.
 // O admin confere (ex.: no Telegram) e aprova: TODAS as licenças do cadastro provisório passam pro email informado.
@@ -50,6 +51,7 @@ export async function createClaim(input: { email: string; login: string; locale:
     locale: input.locale,
     ip: input.ip,
   });
+  await recordActivity("claim", { email: input.email }, `conta ${input.login} · ${row.user.name ?? "-"}`);
   await notifyAdmins(`🔑 Pedido de acesso: ${input.email} (conta ${input.login})`, [
     `Cliente antigo pedindo acesso ao portal.`,
     `Email: ${input.email}`,

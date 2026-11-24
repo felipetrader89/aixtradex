@@ -459,7 +459,6 @@
       "expired": "Vencida",
       "suspended": "Bloqueada"
     },
-    "key": "Chave",
     "expires": "Vence em {date}",
     "expiredOn": "Venceu em {date}",
     "lifetime": "Vitalícia - sem vencimento",
@@ -564,7 +563,6 @@
     "paid": {
       "subject": "Pagamento confirmado - pedido {code}",
       "intro": "Olá! Recebi o pagamento do pedido {code}. Sua licença do Ai X PULSE RS já está ativa.",
-      "key": "Chave da licença",
       "plan": "Plano",
       "planMonthly": "Mensal",
       "planLifetime": "Vitalícia",
@@ -670,7 +668,6 @@
         "waiting": "Ainda sem dados dessa conta. Instale a versão atual do robô (página Downloads) e libere o endereço do servidor de licença no MT4."
       },
       "brokerUnknown": "Corretora",
-      "licenseOf": "Licença {key}",
       "updated": "Atualizado {time}",
       "balance": "Saldo atual",
       "equity": "Patrimônio",
@@ -696,7 +693,9 @@
     "licenses": {
       "title": "Licenças",
       "intro": "Suas licenças, vencimento e contas MT4 liberadas.",
-      "validity": "Validade"
+      "validity": "Validade",
+      "checkTitle": "Validação",
+      "checkBody": "Pelo número da conta MT4. O robô confere sozinho, não precisa digitar chave."
     },
     "orders": {
       "title": "Pedidos",
@@ -704,7 +703,8 @@
     },
     "downloads": {
       "title": "Downloads",
-      "intro": "Baixe sempre a versão marcada como Atual.",
+      "intro": "Baixe sempre a versão marcada como Atual. O botão principal já traz o robô no seu idioma: painel, parâmetros e avisos.",
+      "otherLangs": "Também em:",
       "next": "Baixou? Agora siga o"
     }
   },

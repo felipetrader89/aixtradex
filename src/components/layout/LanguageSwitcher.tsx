@@ -6,6 +6,7 @@ import { useSearchParams } from "next/navigation";
 import { usePathname, useRouter } from "@/i18n/navigation";
 import { routing } from "@/i18n/routing";
 import { FlagBR, FlagUS, FlagES } from "@/components/brand/flags";
+import { LOCALE_CHOICE_KEY } from "@/components/layout/LocaleSuggest";
 
 const flags: Record<string, typeof FlagBR> = {
   pt: FlagBR,
@@ -39,6 +40,10 @@ export function LanguageSwitcher({ up = false, align = "right" }: { up?: boolean
   }, []);
 
   function handleSwitch(loc: string) {
+    // Escolha feita na mão: a barra "ver em outro idioma" não aparece mais.
+    try {
+      localStorage.setItem(LOCALE_CHOICE_KEY, loc);
+    } catch {}
     const query = searchParams.toString();
     const href = query ? `${pathname}?${query}` : pathname;
     router.replace(href, { locale: loc });
@@ -54,7 +59,7 @@ export function LanguageSwitcher({ up = false, align = "right" }: { up?: boolean
         onClick={() => setOpen((v) => !v)}
         aria-label={names[locale]}
         aria-expanded={open}
-        className="flex items-center gap-1.5 rounded-full border-2 border-transparent p-0.5 transition-colors duration-200 hover:border-brand-accent/40"
+        className="flex items-center gap-1.5 rounded-full p-0.5 outline-none transition-transform duration-200 hover:scale-105 focus-visible:ring-2 focus-visible:ring-brand-accent/50"
       >
         <span className="h-6 w-8 shrink-0 overflow-hidden rounded-[4px]">
           <CurrentFlag className="h-full w-full" />

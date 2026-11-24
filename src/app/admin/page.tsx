@@ -3,6 +3,7 @@ import { db, schema } from "@/lib/db";
 import { PLACEHOLDER_EMAIL_DOMAIN } from "@/lib/auth";
 import { getBinanceCreds, getBinanceSettings, getSmtpConfig } from "@/lib/config";
 import { getBinanceState } from "@/lib/payments";
+import { onlineCustomers } from "@/lib/activity";
 import { Flash, PageHeader, Panel } from "@/components/admin/ui";
 import { OrdersTable } from "@/components/admin/OrdersTable";
 
@@ -84,7 +85,9 @@ export default async function AdminHome({ searchParams }: Props) {
     expiring.n > 0 ? { text: `${expiring.n} licença(s) vencem nos próximos 7 dias.`, href: "/admin/licenses?filter=expiring" } : null,
   ].filter((a): a is { text: string; href: string } => Boolean(a));
 
+  const onlineNow = await onlineCustomers();
   const stats = [
+    { label: "Clientes online agora", value: onlineNow.length, href: "/admin/customers" },
     { label: "Pedidos pendentes", value: pending.n, href: "/admin/orders" },
     { label: "Licenças ativas", value: active.n, href: "/admin/licenses" },
     { label: "Contas MT4 online (24h)", value: online.n, href: "/admin/licenses" },
@@ -112,12 +115,12 @@ export default async function AdminHome({ searchParams }: Props) {
         </div>
       )}
 
-      <div className="mb-8 grid grid-cols-2 gap-3 md:grid-cols-5">
+      <div className="stagger mb-8 grid grid-cols-2 gap-3 md:grid-cols-3 xl:grid-cols-6">
         {stats.map((s) => (
           <a
             key={s.label}
             href={s.href}
-            className="rounded-2xl border border-brand-hairline bg-brand-surface p-4 transition-colors hover:border-brand-accent"
+            className="panel-card rounded-2xl border border-brand-hairline bg-brand-surface/90 p-4"
           >
             <p className="font-display text-2xl font-extrabold text-chrome">{s.value}</p>
             <p className="mt-1 text-xs text-brand-ink-dim">{s.label}</p>

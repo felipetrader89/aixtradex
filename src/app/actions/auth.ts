@@ -56,7 +56,7 @@ export async function verifyCodeAction(rawEmail: string, code: string, rawLocale
   if (!EMAIL_RE.test(email) || !/^\d{6}$/.test(code.trim())) return { ok: false, error: "code" };
   try {
     if (!(await verifyLoginCode(email, code))) return { ok: false, error: "code" };
-    const user = await findOrCreateUser(email);
+    const user = await findOrCreateUser(email, { track: true });
     await startSession(user.id);
   } catch (error) {
     console.error("verifyCodeAction", error);

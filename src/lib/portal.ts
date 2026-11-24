@@ -4,7 +4,7 @@ import { desc, eq, inArray } from "drizzle-orm";
 import { getCurrentUser } from "@/lib/auth";
 import { db, schema } from "@/lib/db";
 import { licenseState } from "@/lib/licensing";
-import { liveState, statsFor } from "@/lib/account-stats";
+import { compareAccounts, liveState, statsFor } from "@/lib/account-stats";
 import { PRODUCT } from "@/lib/plans";
 
 // Dados da área do cliente (Minha Conta). Toda página do portal passa por aqui.
@@ -48,6 +48,7 @@ export async function loadAccountsWithStats(userId: string) {
     const s = stats.get(account.login);
     return { account, license, licenseState: licenseState(license, now), stats: s, state: liveState(s, now) };
   });
+  rows.sort(compareAccounts);
   return { licenses, accounts, rows };
 }
 
@@ -56,7 +57,7 @@ export async function loadOrders(userId: string) {
 }
 
 export async function loadVersions() {
-  return db()
+  const versions = await db()
     .select({
       id: schema.productVersions.id,
       version: schema.productVersions.version,
@@ -69,6 +70,14 @@ export async function loadVersions() {
     .from(schema.productVersions)
     .where(eq(schema.productVersions.product, PRODUCT.slug))
     .orderBy(desc(schema.productVersions.isCurrent), desc(schema.productVersions.createdAt));
+  // Idiomas de cada versão (sem carregar os arquivos).
+  const files = versions.length
+    ? await db()
+        .select({ versionId: schema.productFiles.versionId, lang: schema.productFiles.lang })
+        .from(schema.productFiles)
+        .where(inArray(schema.productFiles.versionId, versions.map((v) => v.id)))
+    : [];
+  return versions.map((v) => ({ ...v, langs: files.filter((f) => f.versionId === v.id).map((f) => f.lang) }));
 }
 
 export const DAY_MS = 86_400_000;

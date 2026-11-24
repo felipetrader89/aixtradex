@@ -7,7 +7,7 @@ import { requireCustomer } from "@/lib/portal";
 import { logoutAction } from "@/app/actions/auth";
 import { LogoMark } from "@/components/brand/LogoMark";
 import { LanguageSwitcher } from "@/components/layout/LanguageSwitcher";
-import { PanelShell, type PanelNavItem } from "@/components/panel/PanelShell";
+import { PanelIconSvg, PanelShell, type PanelNavItem } from "@/components/panel/PanelShell";
 import { MENU_COOKIE, parseMenuPosition } from "@/lib/panel";
 import { hasLogo } from "@/lib/logo";
 import { siteConfig } from "@/lib/site-config";
@@ -81,6 +81,10 @@ export default async function AccountLayout({ children, params }: { children: Re
       }
       topRight={
         <>
+          <NextLink href={`/${locale}`} className="flex items-center gap-1 text-xs text-brand-ink-dim hover:text-brand-accent" title={t("viewSite")}>
+            <PanelIconSvg name="site" className="h-4 w-4" />
+            <span className="hidden sm:inline">{t("viewSite")}</span>
+          </NextLink>
           {user.isAdmin && (
             <NextLink href="/admin" className="hidden text-xs font-semibold text-brand-accent hover:underline sm:inline">
               {t("admin")}

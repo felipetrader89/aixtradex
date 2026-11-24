@@ -5,6 +5,7 @@ import { and, desc, eq, gt, isNull } from "drizzle-orm";
 import { db, schema } from "@/lib/db";
 import { isAdmin } from "@/lib/config";
 import type { User } from "@/lib/db/schema";
+import { recordActivity, touchLastSeen } from "@/lib/activity";
 
 const SESSION_COOKIE = "aix_session";
 const SESSION_DAYS = 30;
@@ -83,7 +84,8 @@ export async function verifyLoginCode(email: string, code: string): Promise<bool
   return true;
 }
 
-export async function findOrCreateUser(email: string, data: { name?: string; country?: string } = {}) {
+// track: cadastro feito pelo próprio cliente (login ou checkout) - entra no sininho do admin.
+export async function findOrCreateUser(email: string, data: { name?: string; country?: string; track?: boolean } = {}) {
   const normalized = normalizeEmail(email);
   const [existing] = await db().select().from(schema.users).where(eq(schema.users.email, normalized)).limit(1);
   if (existing) {
@@ -102,7 +104,10 @@ export async function findOrCreateUser(email: string, data: { name?: string; cou
     .values({ email: normalized, name: data.name, country: data.country })
     .onConflictDoNothing()
     .returning();
-  if (created) return created;
+  if (created) {
+    if (data.track) await recordActivity("signup", created, [created.name, created.country].filter(Boolean).join(" · ") || undefined);
+    return created;
+  }
   const [raced] = await db().select().from(schema.users).where(eq(schema.users.email, normalized)).limit(1);
   return raced;
 }
@@ -148,5 +153,8 @@ export async function getCurrentUser(): Promise<SessionUser | null> {
     .where(and(eq(schema.sessions.tokenHash, sha256(token)), gt(schema.sessions.expiresAt, new Date())))
     .limit(1);
   if (!row) return null;
-  return { ...row.user, isAdmin: await isAdmin(row.user.email) };
+  const admin = await isAdmin(row.user.email);
+  // Cliente com o portal aberto: atualiza o "visto por último" (pro admin ver quem está online).
+  if (!admin) await touchLastSeen(row.user);
+  return { ...row.user, isAdmin: admin };
 }

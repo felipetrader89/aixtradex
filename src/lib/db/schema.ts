@@ -5,6 +5,7 @@ import {
   jsonb,
   numeric,
   pgTable,
+  primaryKey,
   serial,
   text,
   timestamp,
@@ -21,6 +22,10 @@ export const users = pgTable("users", {
   email: text("email").notNull().unique(),
   name: text("name"),
   country: text("country"),
+  // Última vez que o cliente abriu o portal (atualizado no máximo 1x por minuto) - mostra quem está online no admin.
+  lastSeenAt: timestamp("last_seen_at", { withTimezone: true }),
+  // Admin: até qual item do feed de atividade ele já viu (o sininho conta o que vier depois).
+  activitySeenId: integer("activity_seen_id").notNull().default(0),
   createdAt: createdAt(),
 });
 
@@ -141,12 +146,19 @@ export const productVersions = pgTable("product_versions", {
   createdAt: createdAt(),
 });
 
-export const productFiles = pgTable("product_files", {
-  versionId: integer("version_id")
-    .primaryKey()
-    .references(() => productVersions.id, { onDelete: "cascade" }),
-  dataBase64: text("data_base64").notNull(),
-});
+// Arquivo do robô por idioma (pt/en/es). lang "" = arquivo único, sem idioma (versões antigas).
+export const productFiles = pgTable(
+  "product_files",
+  {
+    versionId: integer("version_id")
+      .notNull()
+      .references(() => productVersions.id, { onDelete: "cascade" }),
+    lang: text("lang").notNull().default(""),
+    size: integer("size").notNull().default(0),
+    dataBase64: text("data_base64").notNull(),
+  },
+  (t) => [primaryKey({ columns: [t.versionId, t.lang] })]
+);
 
 // Depósitos lidos da Binance (rede: USDT/USDC; Binance Pay). "matched" = pagou um pedido sozinho;
 // "unmatched" = valor não bateu com nenhum pedido (admin decide); "ignored" = admin marcou como não sendo de cliente.
@@ -242,7 +254,22 @@ export const licenseClaims = pgTable(
   (t) => [index("license_claims_status_idx").on(t.status, t.createdAt)]
 );
 
+// O que os clientes fazem no portal, pro sininho do admin: cadastro, entrou no portal, pedido, pagamento, pedido de acesso.
+export const activity = pgTable(
+  "activity",
+  {
+    id: serial("id").primaryKey(),
+    kind: text("kind", { enum: ["signup", "online", "order", "paid", "claim"] }).notNull(),
+    userId: uuid("user_id").references(() => users.id, { onDelete: "set null" }),
+    email: text("email"),
+    detail: text("detail"),
+    createdAt: createdAt(),
+  },
+  (t) => [index("activity_created_idx").on(t.createdAt)]
+);
+
 export type User = typeof users.$inferSelect;
+export type Activity = typeof activity.$inferSelect;
 export type Order = typeof orders.$inferSelect;
 export type License = typeof licenses.$inferSelect;
 export type LicenseAccount = typeof licenseAccounts.$inferSelect;

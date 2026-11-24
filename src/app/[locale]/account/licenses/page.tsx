@@ -1,6 +1,5 @@
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import NextLink from "next/link";
-import { CopyButton } from "@/components/ui/CopyButton";
 import { LicenseAccountsEditor } from "@/components/account/LicenseAccountsEditor";
 import { RenewButton } from "@/components/account/AccountActions";
 import { Card, PortalHeader } from "@/components/portal/ui";
@@ -29,7 +28,6 @@ export default async function LicensesPage({ params }: Props) {
   const user = await requireCustomer(locale);
   const t = await getTranslations("Account");
   const tp = await getTranslations("Portal");
-  const tPay = await getTranslations("Payment");
   const date = new Intl.DateTimeFormat(locale, { dateStyle: "medium" });
   const { licenses, accounts } = await loadLicenses(user.id);
 
@@ -58,11 +56,8 @@ export default async function LicensesPage({ params }: Props) {
               </div>
               <dl className="mt-4 grid gap-3 text-sm sm:grid-cols-2">
                 <div className="rounded-xl bg-brand-surface-2 p-3">
-                  <dt className="text-xs text-brand-ink-dim">{t("key")}</dt>
-                  <dd className="mt-1 flex items-center justify-between gap-2 font-mono font-semibold text-brand-accent">
-                    {license.key}
-                    <CopyButton value={license.key} label={tPay("copy")} copiedLabel={tPay("copied")} />
-                  </dd>
+                  <dt className="text-xs text-brand-ink-dim">{tp("licenses.checkTitle")}</dt>
+                  <dd className="mt-1 text-sm text-brand-ink">{tp("licenses.checkBody")}</dd>
                 </div>
                 <div className="rounded-xl bg-brand-surface-2 p-3">
                   <dt className="text-xs text-brand-ink-dim">{tp("licenses.validity")}</dt>

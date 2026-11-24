@@ -5,6 +5,7 @@ import { db, schema } from "@/lib/db";
 import type { License } from "@/lib/db/schema";
 import { findOrCreateUser } from "@/lib/auth";
 import { partnerBrokers } from "@/lib/site-config";
+import { recordActivity } from "@/lib/activity";
 import {
   FREE_ACCOUNT_SWAPS,
   MONTHLY_DAYS,
@@ -101,7 +102,7 @@ export async function createOrder(input: {
   licenseId?: string;
   locale?: string;
 }) {
-  const user = await findOrCreateUser(input.email, { name: input.name, country: input.country });
+  const user = await findOrCreateUser(input.email, { name: input.name, country: input.country, track: true });
   const broker = isPartnerBroker(input.broker) ? input.broker : null;
   const price = priceFor(input.plan, broker);
   // Dois clientes no mesmo segundo podem sortear o mesmo valor: o índice único barra e tentamos de novo.
@@ -122,6 +123,11 @@ export async function createOrder(input: {
           licenseId: input.licenseId,
         })
         .returning();
+      await recordActivity(
+        "order",
+        user,
+        `${order.code} · ${input.plan === "lifetime" ? "Vitalícia" : "Mensal"} $${order.amountUsd}${input.licenseId ? " · renovação" : ""}`
+      );
       return order;
     } catch (error) {
       if (attempt >= 4 || !isUniqueViolation(error)) throw error;
@@ -136,6 +142,19 @@ export type ApproveResult =
 // Confirma o pagamento: cria a licença (com as contas MT4 do pedido) ou estende a mensal na renovação.
 // Tudo numa transação: ou grava pedido pago + licença, ou nada.
 export async function approveOrder(orderId: string, payment: { method: string; ref?: string }): Promise<ApproveResult> {
+  const result = await approveOrderTx(orderId, payment);
+  if (result.ok) {
+    const [row] = await db()
+      .select({ order: schema.orders, user: schema.users })
+      .from(schema.orders)
+      .innerJoin(schema.users, eq(schema.users.id, schema.orders.userId))
+      .where(eq(schema.orders.id, orderId));
+    if (row) await recordActivity("paid", row.user, `${row.order.code} · $${row.order.payAmount ?? row.order.amountUsd} · ${payment.method}`);
+  }
+  return result;
+}
+
+function approveOrderTx(orderId: string, payment: { method: string; ref?: string }): Promise<ApproveResult> {
   return db().transaction(async (tx) => {
     const [order] = await tx
       .update(schema.orders)

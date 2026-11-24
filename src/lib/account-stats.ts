@@ -91,3 +91,17 @@ export function liveState(stats: AccountStats | undefined, now = new Date()): Ac
   if (now.getTime() - stats.reportedAt.getTime() > STATS_STALE_MS) return "inactive";
   return stats.tradeAllowed ? "running" : "autotradingOff";
 }
+
+// Ordem das listas de contas: primeiro as que estão operando (com dados), depois inativas e por último as sem dados;
+// dentro de cada grupo, o melhor resultado do mês em cima (positivas acima das negativas), desempate pelo de hoje.
+const STATE_ORDER: Record<AccountLiveState, number> = { running: 0, autotradingOff: 0, inactive: 1, waiting: 2 };
+export function compareAccounts(
+  a: { state: AccountLiveState; stats?: AccountStats },
+  b: { state: AccountLiveState; stats?: AccountStats }
+) {
+  return (
+    STATE_ORDER[a.state] - STATE_ORDER[b.state] ||
+    Number(b.stats?.resultMonth ?? 0) - Number(a.stats?.resultMonth ?? 0) ||
+    Number(b.stats?.resultToday ?? 0) - Number(a.stats?.resultToday ?? 0)
+  );
+}
