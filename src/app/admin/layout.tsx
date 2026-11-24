@@ -1,12 +1,14 @@
 import type { Metadata } from "next";
 import { notFound, redirect } from "next/navigation";
+import { cookies } from "next/headers";
 import { Inter, Poppins } from "next/font/google";
 import Link from "next/link";
 import { count, eq } from "drizzle-orm";
 import { getCurrentUser } from "@/lib/auth";
 import { db, schema } from "@/lib/db";
 import { logoutAction } from "@/app/actions/auth";
-import { AdminNav, type NavItem } from "@/components/admin/AdminNav";
+import { PanelShell, type PanelNavItem } from "@/components/panel/PanelShell";
+import { MENU_COOKIE, parseMenuPosition } from "@/lib/panel";
 import "../globals.css";
 
 const poppins = Poppins({ subsets: ["latin"], weight: ["600", "700", "800"], variable: "--font-poppins" });
@@ -22,17 +24,21 @@ export default async function AdminLayout({ children }: { children: React.ReactN
   if (!user) redirect("/pt/login?next=/admin");
   if (!user.isAdmin) notFound();
 
-  const [[pending], [unmatched]] = await Promise.all([
+  const [[pending], [unmatched], [claims], jar] = await Promise.all([
     db().select({ n: count() }).from(schema.orders).where(eq(schema.orders.status, "pending")),
     db().select({ n: count() }).from(schema.cryptoDeposits).where(eq(schema.cryptoDeposits.status, "unmatched")),
+    db().select({ n: count() }).from(schema.licenseClaims).where(eq(schema.licenseClaims.status, "pending")),
+    cookies(),
   ]);
 
-  const nav: NavItem[] = [
-    { href: "/admin", label: "Painel", icon: "dashboard" },
+  const nav: PanelNavItem[] = [
+    { href: "/admin", label: "Painel", icon: "dashboard", exact: true },
     { href: "/admin/orders", label: "Pedidos", icon: "orders", count: pending.n },
     { href: "/admin/binance", label: "Recebimentos", icon: "receipts", count: unmatched.n },
     { href: "/admin/licenses", label: "Licenças", icon: "licenses" },
+    { href: "/admin/accounts", label: "Contas MT4", icon: "accounts" },
     { href: "/admin/customers", label: "Clientes", icon: "customers" },
+    { href: "/admin/claims", label: "Pedidos de acesso", icon: "claims", count: claims.n },
     { href: "/admin/files", label: "Arquivos do robô", icon: "files" },
     { href: "/admin/settings", label: "Configurações", icon: "settings" },
   ];
@@ -49,14 +55,20 @@ export default async function AdminLayout({ children }: { children: React.ReactN
   return (
     <html lang="pt">
       <body className={`${poppins.variable} ${inter.variable} font-body antialiased`}>
-        <div className="flex min-h-screen">
-          {/* Menu lateral (computador) */}
-          <aside className="sticky top-0 hidden h-screen w-64 shrink-0 flex-col border-r border-brand-hairline bg-brand-bg/60 px-4 py-6 lg:flex">
-            <Link href="/admin" className="mb-8 px-3 font-display text-lg font-extrabold text-chrome">
+        <PanelShell
+          brand={
+            <Link href="/admin" className="font-display text-base font-extrabold text-chrome lg:text-lg">
               Ai X TradeX <span className="text-brand-accent">Admin</span>
             </Link>
-            <AdminNav items={nav} variant="side" />
-            <div className="mt-auto flex flex-col gap-3 border-t border-brand-hairline px-3 pt-4">
+          }
+          items={nav}
+          initialPosition={parseMenuPosition(jar.get(MENU_COOKIE)?.value)}
+          switchLabels={{ title: "Posição do menu", left: "Menu à esquerda", top: "Menu no topo", right: "Menu à direita" }}
+          sideFooter={
+            <>
+              <Link href="/pt/account" className="text-xs text-brand-ink-dim hover:text-brand-accent">
+                Área do cliente ↗
+              </Link>
               <Link href="/pt" className="text-xs text-brand-ink-dim hover:text-brand-accent">
                 Ver o site ↗
               </Link>
@@ -64,23 +76,19 @@ export default async function AdminLayout({ children }: { children: React.ReactN
                 {user.email}
               </p>
               {logout}
-            </div>
-          </aside>
-
-          <div className="min-w-0 flex-1">
-            {/* Barra do topo (celular/tablet) */}
-            <header className="sticky top-0 z-50 border-b border-brand-hairline bg-brand-bg/95 px-4 pt-3 backdrop-blur lg:hidden">
-              <div className="mb-2 flex items-center justify-between">
-                <Link href="/admin" className="font-display text-base font-extrabold text-chrome">
-                  Ai X TradeX <span className="text-brand-accent">Admin</span>
-                </Link>
-                {logout}
-              </div>
-              <AdminNav items={nav} variant="top" />
-            </header>
-            <main className="mx-auto max-w-6xl px-4 py-8 lg:px-8">{children}</main>
-          </div>
-        </div>
+            </>
+          }
+          topRight={
+            <>
+              <span className="hidden max-w-48 truncate text-xs text-brand-ink-dim xl:inline" title={user.email}>
+                {user.email}
+              </span>
+              {logout}
+            </>
+          }
+        >
+          {children}
+        </PanelShell>
       </body>
     </html>
   );

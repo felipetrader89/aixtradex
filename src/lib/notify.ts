@@ -8,13 +8,35 @@ import { sendEmail } from "@/lib/email";
 import { licenseServerUrl } from "@/lib/site-config";
 import { getAdminEmails } from "@/lib/config";
 
-const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "https://app.aixtradex.com";
+export const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "https://app.aixtradex.com";
 
-const escapeHtml = (s: string) =>
+export const escapeHtml = (s: string) =>
   s.replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[c]!);
 
-function pickLocale(locale: string | null | undefined) {
+export function pickLocale(locale: string | null | undefined) {
   return (routing.locales as readonly string[]).includes(locale ?? "") ? locale! : "en";
+}
+
+// Email simples pro cliente: parágrafos + botão.
+export function customerEmailHtml(lines: string[], cta?: { href: string; label: string }) {
+  return `<div style="font-family:Arial,sans-serif;max-width:520px;margin:auto;padding:24px;color:#111;line-height:1.5">${lines
+    .map((l) => (l ? `<p style="margin:0 0 8px">${escapeHtml(l)}</p>` : "<br>"))
+    .join("")}${
+    cta
+      ? `<p style="margin-top:20px"><a href="${cta.href}" style="background:#33d6a0;color:#0b1929;padding:12px 20px;border-radius:999px;text-decoration:none;font-weight:bold">${escapeHtml(cta.label)}</a></p>`
+      : ""
+  }</div>`;
+}
+
+export async function notifyAdmins(subject: string, lines: string[]) {
+  const admins = (await getAdminEmails()).all;
+  if (!admins.length) return;
+  await sendEmail({
+    to: admins.join(","),
+    subject,
+    text: lines.join("\n"),
+    html: lines.map((l) => `<p style="margin:0 0 6px;font-family:Arial,sans-serif">${l ? escapeHtml(l) : "&nbsp;"}</p>`).join(""),
+  });
 }
 
 // Email pro cliente quando o pedido é pago (automático pela Binance ou aprovado no admin).

@@ -133,6 +133,8 @@ export const productVersions = pgTable("product_versions", {
   product: text("product").notNull(),
   version: text("version").notNull(),
   notes: text("notes"),
+  // Observações por idioma ({ pt, en, es }); o cliente vê a do idioma dele (cai em `notes` se faltar).
+  notesI18n: jsonb("notes_i18n").$type<Partial<Record<"pt" | "en" | "es", string>>>(),
   fileName: text("file_name").notNull(),
   size: integer("size").notNull(),
   isCurrent: boolean("is_current").notNull().default(false),
@@ -187,9 +189,64 @@ export const adminEvents = pgTable(
   (t) => [index("admin_events_created_idx").on(t.createdAt)]
 );
 
+// Últimos dados de cada conta MT4, enviados pelo robô junto com a consulta de licença (a cada 5 min).
+// Dias pelo horário da corretora. Resultado = trades fechados; saldo no início do período já desconta depósitos/saques.
+export const accountStats = pgTable(
+  "account_stats",
+  {
+    id: serial("id").primaryKey(),
+    product: text("product").notNull(),
+    login: text("login").notNull(),
+    company: text("company"),
+    server: text("server"),
+    currency: text("currency"),
+    leverage: integer("leverage"),
+    balance: numeric("balance", { precision: 18, scale: 2 }).notNull(),
+    equity: numeric("equity", { precision: 18, scale: 2 }).notNull(),
+    floating: numeric("floating", { precision: 18, scale: 2 }).notNull(),
+    openOrders: integer("open_orders").notNull(),
+    pendingOrders: integer("pending_orders").notNull(),
+    resultToday: numeric("result_today", { precision: 18, scale: 2 }).notNull(),
+    resultYesterday: numeric("result_yesterday", { precision: 18, scale: 2 }).notNull(),
+    resultWeek: numeric("result_week", { precision: 18, scale: 2 }).notNull(),
+    resultMonth: numeric("result_month", { precision: 18, scale: 2 }).notNull(),
+    balanceDayStart: numeric("balance_day_start", { precision: 18, scale: 2 }).notNull(),
+    balanceWeekStart: numeric("balance_week_start", { precision: 18, scale: 2 }).notNull(),
+    balanceMonthStart: numeric("balance_month_start", { precision: 18, scale: 2 }).notNull(),
+    tradeAllowed: boolean("trade_allowed").notNull(),
+    licenseStatus: text("license_status"),
+    eaVersion: text("ea_version"),
+    reportedAt: timestamp("reported_at", { withTimezone: true }).notNull(),
+  },
+  (t) => [uniqueIndex("account_stats_product_login_uq").on(t.product, t.login)]
+);
+
+// Cliente antigo (importado do robô, sem email) pedindo acesso ao portal: informa email + conta MT4,
+// o admin confere e aprova; aí as licenças do cadastro provisório passam pro email dele.
+export const licenseClaims = pgTable(
+  "license_claims",
+  {
+    id: uuid("id").primaryKey().defaultRandom(),
+    email: text("email").notNull(),
+    login: text("login").notNull(),
+    licenseId: uuid("license_id")
+      .notNull()
+      .references(() => licenses.id, { onDelete: "cascade" }),
+    locale: text("locale"),
+    ip: text("ip"),
+    status: text("status", { enum: ["pending", "approved", "rejected"] }).notNull().default("pending"),
+    decidedBy: text("decided_by"),
+    decidedAt: timestamp("decided_at", { withTimezone: true }),
+    createdAt: createdAt(),
+  },
+  (t) => [index("license_claims_status_idx").on(t.status, t.createdAt)]
+);
+
 export type User = typeof users.$inferSelect;
 export type Order = typeof orders.$inferSelect;
 export type License = typeof licenses.$inferSelect;
 export type LicenseAccount = typeof licenseAccounts.$inferSelect;
 export type ProductVersion = typeof productVersions.$inferSelect;
 export type CryptoDeposit = typeof cryptoDeposits.$inferSelect;
+export type AccountStats = typeof accountStats.$inferSelect;
+export type LicenseClaim = typeof licenseClaims.$inferSelect;

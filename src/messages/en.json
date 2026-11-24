@@ -426,6 +426,8 @@
     "changeEmail": "Use another email",
     "resend": "Resend code",
     "resent": "Code resent.",
+    "claimHint": "Bought the robot before the portal and never signed in here?",
+    "claimCta": "Request access",
     "errors": {
       "email": "Invalid email.",
       "wait": "Wait 1 minute before requesting another code.",
@@ -502,7 +504,7 @@
       "steps": [
         {
           "title": "Download the robot",
-          "body": "Click Download above and save the .ex4 file on the computer or VPS where MT4 will run."
+          "body": "On the Downloads page, click Download on the Current version and save the .ex4 file on the computer or VPS where MT4 will run."
         },
         {
           "title": "Put the file in MT4",
@@ -515,7 +517,7 @@
         },
         {
           "title": "Check your MT4 accounts",
-          "body": "In Your licenses, above, you'll find the accounts you entered at checkout. If you left a slot empty, fill it in and click Save accounts. The Monthly License allows up to 2 accounts and the Lifetime up to 5."
+          "body": "On the Licenses page you'll find the accounts you entered at checkout. If you left a slot empty, fill it in and click Save accounts. The Monthly License allows up to 2 accounts and the Lifetime up to 5."
         },
         {
           "title": "Open the gold chart on M5",
@@ -531,7 +533,7 @@
         },
         {
           "title": "Check the panel",
-          "body": "The license status shows at the bottom of the robot's panel. If everything is fine, it shows the license type (and the expiry date, for monthly). Below is what each message means."
+          "body": "The license status shows at the bottom of the robot's panel. If everything is fine, it shows the license type (and the expiry date, for monthly). Within a few minutes the account shows as Active on the MT4 Accounts page, here in the portal. Below is what each message means."
         }
       ],
       "statusTitle": "What each panel message means",
@@ -539,7 +541,7 @@
         { "code": "MONTHLY - Expires: date", "meaning": "Monthly license active, with its expiry date. All good." },
         { "code": "LIFETIME LICENSE", "meaning": "Lifetime license active. All good." },
         { "code": "CHECKING LICENSE", "meaning": "The robot hasn't checked the license yet. It shows right after opening MT4 or while the market is closed, and goes away with the first price move." },
-        { "code": "UNLICENSED", "meaning": "This MT4 account isn't registered on any license. Add the number in Your licenses, above. The robot unlocks by itself within 5 minutes." },
+        { "code": "UNLICENSED", "meaning": "This MT4 account isn't registered on any license. Add the number on the Licenses page. The robot unlocks by itself within 5 minutes." },
         { "code": "EXPIRED LICENSE", "meaning": "The license expired. Renew it here in the portal: once the payment is confirmed, the robot unlocks by itself within 5 minutes." },
         { "code": "LICENSE BLOCKED", "meaning": "The license was blocked. Contact support." },
         { "code": "ALLOW WEBREQUEST: license.aixtradex.com", "meaning": "Step 3 is missing: allow the license server address in MT4." },
@@ -552,7 +554,8 @@
         "To trade 24 hours a day, use a VPS: the robot only works while MT4 is open.",
         "Use an account with a gold spread of up to 35 points.",
         "If the license expires, the robot stays on the chart but stops trading, including managing open orders. It comes back by itself when the license is active again, so renew before it expires.",
-        "Need to change an MT4 account? You can change it once in Your licenses, above. After that, message me on Telegram."
+        "Need to change an MT4 account? You can change it once on the Licenses page. After that, message me on Telegram.",
+        "To see full week and month results on MT4 Accounts, set the Account History tab in MT4 to \"All History\" (right-click inside the tab)."
       ],
       "help": "Questions? Message me on Telegram"
     }
@@ -574,6 +577,161 @@
       "step3": "In MT4, go to Tools > Options > Expert Advisors and add {url} to \"Allow WebRequest for listed URL\".",
       "help": "Questions? Reply to this email or message me on Telegram: @AlessonFelipe89",
       "cta": "Open My Account"
+    },
+    "claimApproved": {
+      "subject": "Your Ai X TradeX portal access is ready",
+      "intro": "Hi! I confirmed your request: your Ai X PULSE RS license is now linked to this email.",
+      "stepsTitle": "Next steps:",
+      "step1": "Sign in at {url} with this email (you'll get an access code, no password).",
+      "step2": "Under Licenses, check your MT4 accounts (if needed, you can change them once).",
+      "step3": "Under Downloads, get the current robot version and follow the Installation guide.",
+      "help": "Questions? Reply to this email or message me on Telegram: @AlessonFelipe89",
+      "cta": "Sign in to the portal"
+    },
+    "claimRejected": {
+      "subject": "About your access request - Ai X TradeX",
+      "intro": "Hi! I couldn't confirm your portal access request with the details you sent.",
+      "help": "Message me on Telegram (@AlessonFelipe89) and I'll sort it out with you."
+    }
+  },
+  "Portal": {
+    "nav": {
+      "overview": "Overview",
+      "accounts": "MT4 Accounts",
+      "licenses": "Licenses",
+      "orders": "Orders",
+      "downloads": "Downloads",
+      "guide": "Installation guide",
+      "support": "Support"
+    },
+    "menu": {
+      "title": "Menu position",
+      "left": "Menu on the left",
+      "top": "Menu on top",
+      "right": "Menu on the right"
+    },
+    "viewSite": "View site",
+    "admin": "Admin panel",
+    "logout": "Sign out",
+    "signedInAs": "Signed in as",
+    "overview": {
+      "title": "Hi, {name}!",
+      "titleNoName": "Overview",
+      "intro": "Summary of your {product} licenses and MT4 accounts.",
+      "kpis": {
+        "activeLicenses": "Active licenses",
+        "accounts": "MT4 accounts",
+        "running": "Trading now",
+        "nextExpiry": "Next expiry",
+        "lifetime": "Lifetime"
+      },
+      "alerts": {
+        "expiring": "Your Monthly License expires in {days, plural, one {# day} other {# days}} ({date}). Renew so the robot doesn't stop.",
+        "expired": "One of your licenses expired on {date}. The robot stops trading on its accounts until you renew.",
+        "pending": "Order {code} is awaiting payment.",
+        "autotradingOff": "Account {login}: AutoTrading is off in MT4, so the robot isn't trading.",
+        "inactive": "Account {login}: no signal from the robot for over 15 minutes. Check that MT4/VPS is running.",
+        "waiting": "No data from your accounts yet. Install the current robot version to see balance and results here.",
+        "emptySlot": "You have {count, plural, one {# free slot} other {# free slots}} to register an MT4 account."
+      },
+      "actions": {
+        "renew": "Renew",
+        "pay": "Pay",
+        "guide": "See the guide",
+        "seeAccounts": "See accounts",
+        "download": "Go to Downloads",
+        "addAccount": "Add account",
+        "seePlans": "See plans"
+      },
+      "accountsTitle": "Your MT4 accounts",
+      "seeAll": "See details",
+      "table": {
+        "account": "Account",
+        "status": "Status",
+        "balance": "Balance",
+        "floating": "Floating (orders)",
+        "today": "Today's result"
+      },
+      "noLicense": "You don't have a license yet. As soon as the payment is confirmed, it shows up here.",
+      "oldClient": "Already used the robot before the portal?",
+      "oldClientCta": "Request access"
+    },
+    "stats": {
+      "state": {
+        "running": "Active - trading",
+        "autotradingOff": "AutoTrading off",
+        "inactive": "Inactive",
+        "waiting": "Waiting for data"
+      },
+      "stateHint": {
+        "running": "Robot on and sending data normally.",
+        "autotradingOff": "MT4 is open, but the AutoTrading button (or the robot's \"Allow live trading\") is off.",
+        "inactive": "No signal from the robot since {date}. Check that MT4/VPS is on, online and with the robot on the chart.",
+        "waiting": "No data from this account yet. Install the current robot version (Downloads page) and allow the license server address in MT4."
+      },
+      "brokerUnknown": "Broker",
+      "licenseOf": "License {key}",
+      "updated": "Updated {time}",
+      "balance": "Current balance",
+      "equity": "Equity",
+      "floating": "Floating",
+      "openOrders": "{count, plural, =0 {no open orders} one {# open order} other {# open orders}}",
+      "pendingOrders": "{count, plural, one {# pending} other {# pending}}",
+      "balanceYesterday": "Yesterday's balance (close)",
+      "balanceWeek": "Balance at start of week",
+      "balanceMonth": "Balance at start of month",
+      "results": "Results (profit or loss)",
+      "today": "Today",
+      "yesterday": "Yesterday",
+      "week": "This week",
+      "month": "This month",
+      "note": "Data comes from the robot every 5 minutes. Days and weeks follow the broker's time (the week starts on Monday). Results = closed trades, including swap and commission; deposits and withdrawals only affect the balance. For full week and month figures, set MT4's Account History tab to \"All History\"."
+    },
+    "accounts": {
+      "title": "MT4 Accounts",
+      "intro": "Balance, results and open orders for each account, straight from the robot.",
+      "manage": "Change or add accounts",
+      "empty": "No MT4 account registered yet. Add one on the Licenses page."
+    },
+    "licenses": {
+      "title": "Licenses",
+      "intro": "Your licenses, expiry and enabled MT4 accounts.",
+      "validity": "Validity"
+    },
+    "orders": {
+      "title": "Orders",
+      "intro": "Your orders and payments."
+    },
+    "downloads": {
+      "title": "Downloads",
+      "intro": "Always download the version marked as Current.",
+      "next": "Downloaded it? Now follow the"
+    }
+  },
+  "Claim": {
+    "title": "I'm already a client",
+    "intro": "Bought the robot before the portal? Enter your email and the number of an MT4 account that already uses the robot. I'll check and unlock your access - you'll get an email.",
+    "emailLabel": "Your email",
+    "emailPlaceholder": "you@email.com",
+    "loginLabel": "MT4 account (login number)",
+    "loginPlaceholder": "e.g. 12345678",
+    "loginHint": "An account that's already enabled on the robot.",
+    "submit": "Request access",
+    "sending": "Sending...",
+    "sentTitle": "Request sent!",
+    "sentBody": "As soon as I confirm, you'll get an email at {email} with access. To speed it up, let me know on Telegram.",
+    "sentCta": "Message me on Telegram",
+    "dm": "Hi! I requested access to the Ai X TradeX portal.\nEmail: {email}\nMT4 account: {login}",
+    "haveAccess": "Already have access?",
+    "loginLink": "Sign in",
+    "errors": {
+      "email": "Enter a valid email.",
+      "login": "Enter the MT4 account number (digits only).",
+      "notFound": "I couldn't find a license with this MT4 account. Check the number or message me on Telegram.",
+      "registered": "This account already has portal access. Sign in with the registered email; if you don't remember it, message me on Telegram.",
+      "already": "You've already requested access with this email. As soon as I confirm, you'll get an email.",
+      "tooMany": "Too many requests in a row. Try again in 1 hour or message me on Telegram.",
+      "server": "Server error. Please try again in a moment."
     }
   }
 }

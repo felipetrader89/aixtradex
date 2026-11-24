@@ -1,5 +1,6 @@
 import { createHmac } from "node:crypto";
 import { checkLicense } from "@/lib/licensing";
+import { parseReport, saveReport, validReportSignature } from "@/lib/account-stats";
 import { MT4_LOGIN, PRODUCT } from "@/lib/plans";
 
 // Consulta feita pelo robô (MQL4 WebRequest):
@@ -9,6 +10,8 @@ import { MT4_LOGIN, PRODUCT } from "@/lib/plans";
 // STATUS: ACTIVE, EXPIRED, SUSPENDED, NOT_FOUND ou ERROR. Vencimento 0 = vitalícia.
 // Assinatura = HMAC-SHA256(LICENSE_SECRET, "conta|STATUS|plano|vencimento|hora|nonce") em hex,
 // pra ninguém conseguir fingir ser o servidor (o nonce muda a cada consulta).
+// Opcional (robô a partir de 2026-11-24): &d=<dados da conta>&ds=<assinatura> - ver src/lib/account-stats.ts.
+// Os dados vão pro painel do cliente; se vierem errados/sem assinatura, são ignorados e a licença responde normal.
 
 const NONCE = /^[A-Za-z0-9]{8,64}$/;
 
@@ -37,6 +40,21 @@ export async function GET(request: Request) {
       eaVersion: params.get("v"),
       server: params.get("server"),
     });
+    const d = params.get("d");
+    const ds = params.get("ds");
+    if (d && ds && d.length <= 600 && validReportSignature(secret, account, nonce, d, ds)) {
+      const report = parseReport(d);
+      if (report) {
+        await saveReport({
+          product,
+          login: account,
+          report,
+          server: params.get("server"),
+          eaVersion: params.get("v"),
+          licenseStatus: result.status,
+        }).catch((error) => console.error("account report failed", account, error));
+      }
+    }
     const expires = result.expiresAt ? Math.floor(result.expiresAt.getTime() / 1000) : 0;
     const now = Math.floor(Date.now() / 1000);
     const payload = `${account}|${result.status}|${result.plan}|${expires}|${now}|${nonce}`;

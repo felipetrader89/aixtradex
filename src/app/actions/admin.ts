@@ -8,6 +8,7 @@ import { db, schema } from "@/lib/db";
 import { approveOrder, extendLicense, loginsInUse, newLicenseKey, setLicenseAccounts } from "@/lib/licensing";
 import { MONTHLY_DAYS, PLAN_MAX_ACCOUNTS, PRODUCT, type PlanType } from "@/lib/plans";
 import { notifyOrderPaid } from "@/lib/notify";
+import { approveClaim, rejectClaim } from "@/lib/claims";
 import { logEvent } from "@/lib/config";
 
 const field = (form: FormData, name: string) => String(form.get(name) ?? "").trim();
@@ -125,6 +126,21 @@ export async function setLicenseAccountsAction(form: FormData) {
     locked: "Troca bloqueada.",
   }[result.error];
   back(form, reason);
+}
+
+// Pedido de acesso de cliente antigo ("Já sou cliente").
+export async function approveClaimAction(form: FormData) {
+  const admin = await requireAdmin();
+  const result = await approveClaim(field(form, "claimId"), admin.email);
+  if (!result.ok) back(form, result.reason);
+  await done(form, admin.email, "claim.approve", result.email, `Acesso liberado pra ${result.email}. O cliente recebeu um email com o passo a passo.`);
+}
+
+export async function rejectClaimAction(form: FormData) {
+  const admin = await requireAdmin();
+  const result = await rejectClaim(field(form, "claimId"), admin.email);
+  if (!result.ok) back(form, result.reason);
+  await done(form, admin.email, "claim.reject", result.email, `Pedido de ${result.email} recusado. O cliente recebeu um email pra falar com você no Telegram.`);
 }
 
 // Devolve ao cliente a troca de conta MT4 (ex.: trocou de corretora e pediu no suporte).

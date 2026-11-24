@@ -3,6 +3,7 @@
 import { useState, useTransition } from "react";
 import { useLocale, useTranslations } from "next-intl";
 import { GlowCard } from "@/components/brand/GlowCard";
+import { Link } from "@/i18n/navigation";
 import { requestCodeAction, verifyCodeAction, type AuthResult } from "@/app/actions/auth";
 
 const inputClass =
@@ -73,6 +74,12 @@ export function LoginForm({ next }: { next?: string }) {
           <button type="submit" disabled={pending || !email} className={primaryBtn}>
             {pending ? t("sending") : t("send")}
           </button>
+          <p className="rounded-xl bg-brand-surface-2 px-4 py-3 text-center text-xs text-brand-ink-dim">
+            {t("claimHint")}{" "}
+            <Link href="/claim" className="font-semibold text-brand-accent hover:underline">
+              {t("claimCta")} →
+            </Link>
+          </p>
         </form>
       ) : (
         <form

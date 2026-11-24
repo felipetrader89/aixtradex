@@ -20,7 +20,7 @@ export async function updateMyAccountsAction(licenseId: string, logins: string[]
   const owned = await ownLicense(licenseId);
   if (!owned) return { ok: false, error: "invalid" };
   const result = await setLicenseAccounts(owned.license, logins, { byCustomer: true });
-  if (result.ok) revalidatePath("/[locale]/account", "page");
+  if (result.ok) revalidatePath("/[locale]/account", "layout");
   return result;
 }
 
@@ -46,6 +46,6 @@ export async function renewMyLicenseAction(licenseId: string, locale?: string): 
       locale: locale?.slice(0, 5),
     });
   }
-  revalidatePath("/[locale]/account", "page");
+  revalidatePath("/[locale]/account", "layout");
   return { ok: true };
 }

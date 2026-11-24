@@ -19,7 +19,8 @@ const names: Record<string, string> = {
   es: "Español",
 };
 
-export function LanguageSwitcher() {
+// `up`: abre a lista pra cima (ex.: no rodapé do menu lateral do painel).
+export function LanguageSwitcher({ up = false, align = "right" }: { up?: boolean; align?: "left" | "right" } = {}) {
   const locale = useLocale();
   const pathname = usePathname();
   const searchParams = useSearchParams();
@@ -73,7 +74,7 @@ export function LanguageSwitcher() {
       </button>
 
       {open && (
-        <div className="absolute right-0 top-full z-50 mt-2 flex w-40 flex-col gap-1 rounded-xl border border-brand-hairline bg-brand-surface p-2 shadow-lg">
+        <div className={`absolute ${align === "left" ? "left-0" : "right-0"} ${up ? "bottom-full mb-2" : "top-full mt-2"} z-50 flex w-40 flex-col gap-1 rounded-xl border border-brand-hairline bg-brand-surface p-2 shadow-lg`}>
           {routing.locales.map((loc) => {
             const Flag = flags[loc];
             const isActive = loc === locale;

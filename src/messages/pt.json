@@ -426,6 +426,8 @@
     "changeEmail": "Usar outro email",
     "resend": "Reenviar código",
     "resent": "Código reenviado.",
+    "claimHint": "Comprou o robô antes do portal e nunca entrou aqui?",
+    "claimCta": "Peça seu acesso",
     "errors": {
       "email": "Email inválido.",
       "wait": "Aguarde 1 minuto pra pedir outro código.",
@@ -502,7 +504,7 @@
       "steps": [
         {
           "title": "Baixe o robô",
-          "body": "Clique em Baixar, aqui em cima, e salve o arquivo .ex4 no computador ou na VPS onde o MT4 vai rodar."
+          "body": "Na página Downloads, clique em Baixar na versão Atual e salve o arquivo .ex4 no computador ou na VPS onde o MT4 vai rodar."
         },
         {
           "title": "Coloque o arquivo no MT4",
@@ -515,7 +517,7 @@
         },
         {
           "title": "Confira suas contas MT4",
-          "body": "Em Suas licenças, aqui em cima, estão as contas que você cadastrou na compra. Se deixou alguma vaga vazia, preencha e clique em Salvar contas. A Licença Mensal libera até 2 contas e a Vitalícia até 5."
+          "body": "Na página Licenças estão as contas que você cadastrou na compra. Se deixou alguma vaga vazia, preencha e clique em Salvar contas. A Licença Mensal libera até 2 contas e a Vitalícia até 5."
         },
         {
           "title": "Abra o gráfico do ouro em M5",
@@ -531,7 +533,7 @@
         },
         {
           "title": "Confira o painel",
-          "body": "O status da licença aparece no rodapé do painel do robô. Se estiver tudo certo, mostra o tipo da licença (e o vencimento, na mensal). Abaixo está o que cada mensagem quer dizer."
+          "body": "O status da licença aparece no rodapé do painel do robô. Se estiver tudo certo, mostra o tipo da licença (e o vencimento, na mensal). Em poucos minutos a conta aparece como Ativa na página Contas MT4, aqui no portal. Abaixo está o que cada mensagem quer dizer."
         }
       ],
       "statusTitle": "O que significa cada mensagem do painel",
@@ -539,7 +541,7 @@
         { "code": "MONTHLY - Expires: data", "meaning": "Licença mensal ativa, com a data de vencimento. Está tudo certo." },
         { "code": "LIFETIME LICENSE", "meaning": "Licença vitalícia ativa. Está tudo certo." },
         { "code": "CHECKING LICENSE", "meaning": "O robô ainda vai conferir a licença. Aparece logo depois de abrir o MT4 ou com o mercado fechado, e some no primeiro movimento de preço." },
-        { "code": "UNLICENSED", "meaning": "Essa conta MT4 não está cadastrada em nenhuma licença. Cadastre o número em Suas licenças, aqui em cima. O robô libera sozinho em até 5 minutos." },
+        { "code": "UNLICENSED", "meaning": "Essa conta MT4 não está cadastrada em nenhuma licença. Cadastre o número na página Licenças. O robô libera sozinho em até 5 minutos." },
         { "code": "EXPIRED LICENSE", "meaning": "A licença venceu. Renove aqui no portal: com o pagamento confirmado, o robô libera sozinho em até 5 minutos." },
         { "code": "LICENSE BLOCKED", "meaning": "A licença foi bloqueada. Fale com o suporte." },
         { "code": "ALLOW WEBREQUEST: license.aixtradex.com", "meaning": "Falta o passo 3: liberar o endereço do servidor de licença no MT4." },
@@ -552,7 +554,8 @@
         "Pra operar 24 horas, use uma VPS: o robô só funciona com o MT4 aberto.",
         "Use uma conta com spread de até 35 pontos no ouro.",
         "Se a licença vencer, o robô não sai do gráfico, mas para de operar, inclusive de administrar ordens abertas. Ele volta sozinho quando a licença for liberada; por isso, renove antes do vencimento.",
-        "Precisa trocar uma conta MT4? Você pode trocar 1 vez em Suas licenças, aqui em cima. Depois disso, fale comigo no Telegram."
+        "Precisa trocar uma conta MT4? Você pode trocar 1 vez na página Licenças. Depois disso, fale comigo no Telegram.",
+        "Pra ver os resultados da semana e do mês completos em Contas MT4, deixe a aba Histórico da conta, no MT4, em \"Todo o histórico\" (clique com o botão direito dentro da aba)."
       ],
       "help": "Ficou com dúvida? Fale comigo no Telegram"
     }
@@ -574,6 +577,161 @@
       "step3": "No MT4, vá em Ferramentas > Opções > Expert Advisors e adicione {url} em \"Permitir WebRequest para as URL listadas\".",
       "help": "Dúvidas? Responda este email ou fale comigo no Telegram: @AlessonFelipe89",
       "cta": "Abrir Minha Conta"
+    },
+    "claimApproved": {
+      "subject": "Seu acesso ao portal Ai X TradeX foi liberado",
+      "intro": "Olá! Confirmei seu pedido: sua licença do Ai X PULSE RS agora está ligada a este email.",
+      "stepsTitle": "Próximos passos:",
+      "step1": "Entre em {url} com este email (você recebe um código de acesso, sem senha).",
+      "step2": "Em Licenças, confira suas contas MT4 (se precisar, você pode trocar 1 vez).",
+      "step3": "Em Downloads, baixe a versão atual do robô e siga o Guia de instalação.",
+      "help": "Dúvidas? Responda este email ou fale comigo no Telegram: @AlessonFelipe89",
+      "cta": "Entrar no portal"
+    },
+    "claimRejected": {
+      "subject": "Sobre seu pedido de acesso - Ai X TradeX",
+      "intro": "Olá! Não consegui confirmar seu pedido de acesso ao portal com os dados enviados.",
+      "help": "Fale comigo no Telegram (@AlessonFelipe89) que eu resolvo com você."
+    }
+  },
+  "Portal": {
+    "nav": {
+      "overview": "Visão geral",
+      "accounts": "Contas MT4",
+      "licenses": "Licenças",
+      "orders": "Pedidos",
+      "downloads": "Downloads",
+      "guide": "Guia de instalação",
+      "support": "Suporte"
+    },
+    "menu": {
+      "title": "Posição do menu",
+      "left": "Menu à esquerda",
+      "top": "Menu no topo",
+      "right": "Menu à direita"
+    },
+    "viewSite": "Ver o site",
+    "admin": "Painel admin",
+    "logout": "Sair",
+    "signedInAs": "Conectado como",
+    "overview": {
+      "title": "Olá, {name}!",
+      "titleNoName": "Visão geral",
+      "intro": "Resumo das suas licenças do {product} e das suas contas MT4.",
+      "kpis": {
+        "activeLicenses": "Licenças ativas",
+        "accounts": "Contas MT4",
+        "running": "Operando agora",
+        "nextExpiry": "Próximo vencimento",
+        "lifetime": "Vitalícia"
+      },
+      "alerts": {
+        "expiring": "Sua Licença Mensal vence em {days, plural, one {# dia} other {# dias}} ({date}). Renove pra o robô não parar.",
+        "expired": "Uma licença sua venceu em {date}. O robô para de operar nas contas dela até a renovação.",
+        "pending": "O pedido {code} está aguardando pagamento.",
+        "autotradingOff": "Conta {login}: o AutoTrading está desligado no MT4, então o robô não opera.",
+        "inactive": "Conta {login}: sem sinal do robô há mais de 15 minutos. Confira se o MT4/VPS está ligado.",
+        "waiting": "Ainda não chegaram dados das suas contas. Instale a versão atual do robô pra ver saldo e resultados aqui.",
+        "emptySlot": "Você tem {count, plural, one {# vaga livre} other {# vagas livres}} pra cadastrar conta MT4."
+      },
+      "actions": {
+        "renew": "Renovar",
+        "pay": "Pagar",
+        "guide": "Ver o guia",
+        "seeAccounts": "Ver contas",
+        "download": "Ir pra Downloads",
+        "addAccount": "Cadastrar conta",
+        "seePlans": "Ver planos"
+      },
+      "accountsTitle": "Suas contas MT4",
+      "seeAll": "Ver detalhes",
+      "table": {
+        "account": "Conta",
+        "status": "Status",
+        "balance": "Saldo",
+        "floating": "Flutuante (ordens)",
+        "today": "Resultado hoje"
+      },
+      "noLicense": "Você ainda não tem licença. Assim que o pagamento for confirmado, ela aparece aqui.",
+      "oldClient": "Já usava o robô antes do portal?",
+      "oldClientCta": "Peça seu acesso"
+    },
+    "stats": {
+      "state": {
+        "running": "Ativa - operando",
+        "autotradingOff": "AutoTrading desligado",
+        "inactive": "Inativa",
+        "waiting": "Aguardando dados"
+      },
+      "stateHint": {
+        "running": "Robô ligado e enviando dados normalmente.",
+        "autotradingOff": "O MT4 está aberto, mas o botão AutoTrading (ou \"Permitir negociação real\" do robô) está desligado.",
+        "inactive": "Sem sinal do robô desde {date}. Confira se o MT4/VPS está ligado, com internet e com o robô no gráfico.",
+        "waiting": "Ainda sem dados dessa conta. Instale a versão atual do robô (página Downloads) e libere o endereço do servidor de licença no MT4."
+      },
+      "brokerUnknown": "Corretora",
+      "licenseOf": "Licença {key}",
+      "updated": "Atualizado {time}",
+      "balance": "Saldo atual",
+      "equity": "Patrimônio",
+      "floating": "Flutuante",
+      "openOrders": "{count, plural, =0 {nenhuma ordem aberta} one {# ordem aberta} other {# ordens abertas}}",
+      "pendingOrders": "{count, plural, one {# pendente} other {# pendentes}}",
+      "balanceYesterday": "Saldo de ontem (fechamento)",
+      "balanceWeek": "Saldo no início da semana",
+      "balanceMonth": "Saldo no início do mês",
+      "results": "Resultados (lucro ou perda)",
+      "today": "Hoje",
+      "yesterday": "Ontem",
+      "week": "Esta semana",
+      "month": "Este mês",
+      "note": "Os dados chegam do robô a cada 5 minutos. Dias e semanas seguem o horário da corretora (a semana começa na segunda). Resultados = trades fechados, já com swap e comissão; depósitos e saques mexem só no saldo. Pra semana e mês completos, deixe a aba Histórico da conta, no MT4, em \"Todo o histórico\"."
+    },
+    "accounts": {
+      "title": "Contas MT4",
+      "intro": "Saldo, resultados e ordens abertas de cada conta, direto do robô.",
+      "manage": "Trocar ou cadastrar contas",
+      "empty": "Nenhuma conta MT4 cadastrada ainda. Cadastre na página Licenças."
+    },
+    "licenses": {
+      "title": "Licenças",
+      "intro": "Suas licenças, vencimento e contas MT4 liberadas.",
+      "validity": "Validade"
+    },
+    "orders": {
+      "title": "Pedidos",
+      "intro": "Seus pedidos e pagamentos."
+    },
+    "downloads": {
+      "title": "Downloads",
+      "intro": "Baixe sempre a versão marcada como Atual.",
+      "next": "Baixou? Agora siga o"
+    }
+  },
+  "Claim": {
+    "title": "Já sou cliente",
+    "intro": "Comprou o robô antes do portal? Informe seu email e o número de uma conta MT4 que já usa o robô. Eu confiro e libero seu acesso - você recebe um email.",
+    "emailLabel": "Seu email",
+    "emailPlaceholder": "seu@email.com",
+    "loginLabel": "Conta MT4 (número de login)",
+    "loginPlaceholder": "Ex.: 12345678",
+    "loginHint": "Uma conta que já está liberada no robô.",
+    "submit": "Pedir acesso",
+    "sending": "Enviando...",
+    "sentTitle": "Pedido enviado!",
+    "sentBody": "Assim que eu confirmar, você recebe um email em {email} com o acesso. Pra agilizar, me avise no Telegram.",
+    "sentCta": "Avisar no Telegram",
+    "dm": "Olá! Pedi acesso ao portal Ai X TradeX.\nEmail: {email}\nConta MT4: {login}",
+    "haveAccess": "Já tem acesso?",
+    "loginLink": "Entrar",
+    "errors": {
+      "email": "Informe um email válido.",
+      "login": "Informe o número da conta MT4 (só números).",
+      "notFound": "Não encontrei licença com essa conta MT4. Confira o número ou fale comigo no Telegram.",
+      "registered": "Essa conta já tem acesso ao portal. Entre com o email cadastrado; se não lembrar qual é, fale comigo no Telegram.",
+      "already": "Você já pediu acesso com esse email. Assim que eu confirmar, você recebe um email.",
+      "tooMany": "Muitos pedidos seguidos. Tente de novo em 1 hora ou fale comigo no Telegram.",
+      "server": "Erro no servidor. Tente de novo em instantes."
     }
   }
 }

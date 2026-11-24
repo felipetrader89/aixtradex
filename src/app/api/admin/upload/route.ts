@@ -23,7 +23,10 @@ export async function POST(request: Request) {
   const form = await request.formData();
   const file = form.get("file");
   const version = String(form.get("version") ?? "").trim().slice(0, 32);
-  const notes = String(form.get("notes") ?? "").trim().slice(0, 2000) || null;
+  // Observação por idioma: o cliente vê a do idioma dele (PT é a principal e vale de reserva).
+  const note = (name: string) => String(form.get(name) ?? "").trim().slice(0, 2000);
+  const notes = note("notes") || null;
+  const notesI18n = { pt: note("notes") || undefined, en: note("notes_en") || undefined, es: note("notes_es") || undefined };
   const makeCurrent = form.get("current") === "on";
 
   if (!version) return backTo(request, "Informe o número da versão.");
@@ -37,6 +40,7 @@ export async function POST(request: Request) {
       product: PRODUCT.slug,
       version,
       notes,
+      notesI18n,
       fileName: file.name.slice(0, 120),
       size: file.size,
       isCurrent: false,

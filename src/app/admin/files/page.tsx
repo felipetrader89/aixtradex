@@ -33,9 +33,11 @@ export default async function AdminFiles({ searchParams }: Props) {
           <textarea
             name="notes"
             rows={3}
-            placeholder="O que mudou nessa versão (aparece pro cliente)"
+            placeholder="O que mudou nessa versão - Português (aparece pro cliente)"
             className={`${adminInput} sm:col-span-2`}
           />
+          <textarea name="notes_en" rows={2} placeholder="Mesma observação em Inglês" className={adminInput} />
+          <textarea name="notes_es" rows={2} placeholder="Mesma observação em Espanhol" className={adminInput} />
           <label className="flex items-center gap-2 text-sm text-brand-ink">
             <input type="checkbox" name="current" defaultChecked /> Marcar como versão atual
           </label>
@@ -46,7 +48,7 @@ export default async function AdminFiles({ searchParams }: Props) {
           </div>
         </form>
         <p className="mt-3 text-xs text-brand-ink-dim">
-          Até 4 MB por arquivo. Pra mandar .ex4 + .set + manual juntos, compacte num .zip.
+          Preencha a observação nos 3 idiomas: o cliente vê a do idioma dele (sem tradução, aparece a em Português). Até 4 MB por arquivo. Pra mandar .ex4 + .set + manual juntos, compacte num .zip.
         </p>
       </Panel>
 

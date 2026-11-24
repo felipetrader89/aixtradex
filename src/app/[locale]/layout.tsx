@@ -5,11 +5,6 @@ import { notFound } from "next/navigation";
 import { Poppins, Inter } from "next/font/google";
 import { routing } from "@/i18n/routing";
 import { siteConfig } from "@/lib/site-config";
-import { hasLogo } from "@/lib/logo";
-import { Header } from "@/components/layout/Header";
-import { Footer } from "@/components/layout/Footer";
-import { MarketTicker } from "@/components/sections/MarketTicker";
-import { ScrollToTopButton } from "@/components/ui/ScrollToTopButton";
 import "../globals.css";
 
 const OG_LOCALE: Record<string, string> = {
@@ -79,22 +74,14 @@ export default async function LocaleLayout({
 
   setRequestLocale(locale);
   const messages = await getMessages();
-  const t = await getTranslations({ locale, namespace: "Common" });
 
   return (
     <html lang={locale}>
       <body
         className={`${poppins.variable} ${inter.variable} font-body antialiased`}
       >
-        <NextIntlClientProvider messages={messages}>
-          <Header logoExists={hasLogo()} />
-          <main>{children}</main>
-          <section aria-label={t("marketTicker")}>
-            <MarketTicker />
-          </section>
-          <Footer />
-          <ScrollToTopButton />
-        </NextIntlClientProvider>
+        {/* Site público em (site)/layout.tsx; área do cliente em account/layout.tsx (painel). */}
+        <NextIntlClientProvider messages={messages}>{children}</NextIntlClientProvider>
       </body>
     </html>
   );
