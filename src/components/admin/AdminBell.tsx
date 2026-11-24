@@ -78,6 +78,9 @@ export function AdminBell() {
   const lastId = useRef<number | null>(null);
   const soundRef = useRef(true);
   const panelRef = useRef<HTMLDivElement>(null);
+  const buttonRef = useRef<HTMLButtonElement>(null);
+  // Lista abre colada no sino, qualquer que seja a posição do menu (esquerda, direita ou topo).
+  const [pos, setPos] = useState<{ top: number; left: number }>({ top: 64, left: 12 });
 
   const load = useCallback(async () => {
     try {
@@ -152,6 +155,12 @@ export function AdminBell() {
 
   function toggle() {
     const next = !open;
+    const rect = buttonRef.current?.getBoundingClientRect();
+    if (next && rect) {
+      const width = Math.min(384, window.innerWidth - 24);
+      const left = Math.max(12, Math.min(rect.left + rect.width / 2 - width / 2, window.innerWidth - width - 12));
+      setPos({ top: rect.bottom + 10, left });
+    }
     setOpen(next);
     setToast(null);
     const newest = feed?.items[0]?.id ?? 0;
@@ -176,6 +185,7 @@ export function AdminBell() {
   return (
     <div ref={panelRef} className="relative">
       <button
+        ref={buttonRef}
         type="button"
         onClick={toggle}
         aria-label={`Notificações${unread ? ` (${unread} novas)` : ""}`}
@@ -206,7 +216,10 @@ export function AdminBell() {
       </button>
 
       {open && (
-        <div className="animate-slide-down fixed right-3 top-16 z-[70] flex max-h-[75vh] w-[min(24rem,calc(100vw-1.5rem))] flex-col overflow-hidden rounded-2xl border border-brand-hairline bg-brand-surface/95 shadow-2xl shadow-black/50 backdrop-blur lg:top-4">
+        <div
+          style={{ top: pos.top, left: pos.left }}
+          className="animate-slide-down fixed z-[70] flex max-h-[75vh] w-[min(24rem,calc(100vw-1.5rem))] flex-col overflow-hidden rounded-2xl border border-brand-hairline bg-brand-surface/95 shadow-2xl shadow-black/50 backdrop-blur"
+        >
           <div className="flex items-center justify-between gap-2 border-b border-brand-hairline px-4 py-3">
             <p className="font-display text-sm font-bold text-chrome">Notificações</p>
             <button
