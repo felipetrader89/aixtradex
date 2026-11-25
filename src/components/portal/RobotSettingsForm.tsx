@@ -54,13 +54,21 @@ function Toggle({ checked, onChange, label, hint }: { checked: boolean; onChange
   );
 }
 
-function Field({ label, children, hint }: { label: string; children: React.ReactNode; hint?: string }) {
-  return (
-    <label className="flex flex-col gap-1.5">
+// group = conteúdo é um grupo de botões (não um campo): vira <div role="group"> pra cada botão manter o próprio nome.
+function Field({ label, children, hint, group }: { label: string; children: React.ReactNode; hint?: string; group?: boolean }) {
+  const inner = (
+    <>
       <span className="text-sm font-semibold text-brand-ink">{label}</span>
       {children}
       {hint && <span className="text-xs text-brand-ink-dim">{hint}</span>}
-    </label>
+    </>
+  );
+  return group ? (
+    <div role="group" aria-label={label} className="flex flex-col gap-1.5">
+      {inner}
+    </div>
+  ) : (
+    <label className="flex flex-col gap-1.5">{inner}</label>
   );
 }
 
@@ -267,7 +275,7 @@ export function RobotSettingsForm({
           <p className="-mt-2 text-xs text-brand-ink-dim sm:col-span-2">{t("pairGoalHint")}</p>
         </div>
 
-        <Field label={t("direction")}>
+        <Field label={t("direction")} group>
           <Segmented
             value={p.direction}
             onChange={(x) => setPair(editing, { direction: x })}
@@ -288,7 +296,7 @@ export function RobotSettingsForm({
                   ))}
                 </select>
               </Field>
-              <Field label={t("recoveryDir")}>
+              <Field label={t("recoveryDir")} group>
                 <Segmented
                   value={p.recoveryOpposite ? 1 : 0}
                   onChange={(x) => setPair(editing, { recoveryOpposite: x === 1 })}
@@ -330,7 +338,7 @@ export function RobotSettingsForm({
             </Field>
           </div>
           <div className="mt-4 grid gap-4 sm:grid-cols-2">
-            <Field label={t("logic")}>
+            <Field label={t("logic")} group>
               <Segmented
                 value={p.breakout ? 1 : 0}
                 onChange={(x) => setPair(editing, { breakout: x === 1 })}
@@ -340,7 +348,7 @@ export function RobotSettingsForm({
                 ]}
               />
             </Field>
-            <Field label={t("entry")}>
+            <Field label={t("entry")} group>
               <Segmented
                 value={p.pending ? 1 : 0}
                 onChange={(x) => setPair(editing, { pending: x === 1 })}
@@ -374,7 +382,7 @@ export function RobotSettingsForm({
             <div className="flex flex-col gap-3 sm:col-span-2">
               <Toggle checked={p.zones} onChange={(x) => setPair(editing, { zones: x })} label={t("zones")} hint={t("zonesHint")} />
               {p.zones && (
-                <Field label={t("zonesMode")}>
+                <Field label={t("zonesMode")} group>
                   <Segmented
                     value={p.zonesMode}
                     onChange={(x) => setPair(editing, { zonesMode: x })}
