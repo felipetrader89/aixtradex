@@ -37,7 +37,7 @@ export function EquityChart({
   const y = (v: number) => pad.t + (1 - (v - lo) / span) * (h - pad.t - pad.b);
   const d = points.map((p, i) => `${i ? "L" : "M"}${x(i).toFixed(1)},${y(p.v).toFixed(1)}`).join("");
   const money = (v: number) => `${v.toLocaleString(locale, { minimumFractionDigits: 2, maximumFractionDigits: 2 })} ${currency}`;
-  const date = new Intl.DateTimeFormat(locale, { dateStyle: "short" });
+  const date = new Intl.DateTimeFormat(locale, { dateStyle: "short", timeZone: "UTC" }); // igual no servidor e no navegador (sem erro de hidratação)
   const last = points[points.length - 1];
 
   const pick = (clientX: number) => {
