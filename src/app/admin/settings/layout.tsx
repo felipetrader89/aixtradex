@@ -14,13 +14,14 @@ export default async function SettingsLayout({ children }: { children: React.Rea
     <div>
       <PageHeader
         title="Configurações"
-        description="Conexão com a Binance, carteiras do checkout, email de envio e administradores. Tudo salvo aqui vale na hora, sem mexer no servidor."
+        description="Conexão com a Binance, carteiras do checkout, email de envio, limites do robô e administradores. Tudo salvo aqui vale na hora, sem mexer no servidor."
       />
       <SettingsTabs
         tabs={[
           { href: "/admin/settings/binance", label: "Binance", dot: binanceDot },
           { href: "/admin/settings/wallets", label: "Carteiras", dot: walletsDot },
           { href: "/admin/settings/email", label: "Email", dot: smtp.pass ? "ok" : "bad" },
+          { href: "/admin/settings/robot", label: "Robô" },
           { href: "/admin/settings/admins", label: "Administradores" },
           { href: "/admin/settings/system", label: "Sistema" },
         ]}

@@ -1,4 +1,4 @@
-import { createHmac } from "node:crypto";
+import { createHmac, timingSafeEqual } from "node:crypto";
 import { checkLicense } from "@/lib/licensing";
 import { parseReport, saveReport, validReportSignature } from "@/lib/account-stats";
 import { MT4_LOGIN, PRODUCT } from "@/lib/plans";
@@ -16,6 +16,8 @@ import { configPayload, getRobotConfig } from "@/lib/robot-settings";
 // Opcional (robô v6.7+): &cfg=1 acrescenta uma 2ª linha com a configuração escolhida no portal:
 //   CFG|sym=XAUUSD,EURUSD;risk=2;...|assinatura   (assinatura = HMAC(LICENSE_SECRET, "conta|nonce|configuração"))
 // Robôs antigos não mandam cfg=1 e recebem exatamente a resposta de sempre.
+// Consulta leve (robô v6.8+, a cada 30 s): &cfgonly=1&cv=<versão que o robô tem>&cs=HMAC(LICENSE_SECRET, "conta|nonce|cfg")
+//   → "SAME" se nada mudou, ou só a linha "CFG|..." (mesmo formato acima). Não confere licença nem grava dados da conta.
 
 const NONCE = /^[A-Za-z0-9]{8,64}$/;
 
@@ -35,6 +37,21 @@ export async function GET(request: Request) {
 
   if (!MT4_LOGIN.test(account) || !NONCE.test(nonce)) return reply("ERROR|bad_request", 400);
   if (!secret) return reply("ERROR|not_configured", 500);
+  const sign = (text: string) => createHmac("sha256", secret).update(text).digest("hex");
+
+  if (params.get("cfgonly") === "1") {
+    const cs = Buffer.from(params.get("cs") ?? "");
+    const expected = Buffer.from(sign(`${account}|${nonce}|cfg`));
+    if (cs.length !== expected.length || !timingSafeEqual(cs, expected)) return reply("ERROR|bad_signature", 403);
+    try {
+      const cfg = configPayload(await getRobotConfig(product, account));
+      if (params.get("cv") === cfg.slice(cfg.lastIndexOf(";ver=") + 5)) return reply("SAME");
+      return reply(`CFG|${cfg}|${sign(`${account}|${nonce}|${cfg}`)}`);
+    } catch (error) {
+      console.error("config check failed", error);
+      return reply("ERROR|server", 500);
+    }
+  }
 
   try {
     const result = await checkLicense({
@@ -67,7 +84,7 @@ export async function GET(request: Request) {
     if (params.get("cfg") === "1" && result.status !== "NOT_FOUND") {
       const cfg = configPayload(await getRobotConfig(product, account));
       body += `
-CFG|${cfg}|${createHmac("sha256", secret).update(`${account}|${nonce}|${cfg}`).digest("hex")}`;
+CFG|${cfg}|${sign(`${account}|${nonce}|${cfg}`)}`;
     }
     return reply(body);
   } catch (error) {

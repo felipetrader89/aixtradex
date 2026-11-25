@@ -6,7 +6,7 @@ import { RobotSettingsForm } from "@/components/portal/RobotSettingsForm";
 import { requireCustomer } from "@/lib/portal";
 import { canConfigure } from "@/lib/robot-access";
 import { PRODUCT } from "@/lib/plans";
-import { GOAL_OPTIONS, LOSS_OPTIONS, MAX_POSITIONS, RISK_PROFILES, ROBOT_SYMBOLS, getRobotConfig } from "@/lib/robot-settings";
+import { ROBOT_SYMBOLS, getRobotAdminSettings, getRobotConfig } from "@/lib/robot-settings";
 
 type Props = { params: Promise<{ locale: string; login: string }> };
 
@@ -16,7 +16,7 @@ export async function generateMetadata({ params }: Props) {
   return { title: t("robot.configure"), robots: { index: false, follow: false } };
 }
 
-// Configuração do robô numa conta MT4 (pares, risco, metas, recuperação, notícias, horário).
+// Configuração do robô numa conta MT4: geral da conta (pares, operações, rebaixamento, metas, horário, dias, notícias) + cada par.
 export default async function RobotSettingsPage({ params }: Props) {
   const { locale, login } = await params;
   setRequestLocale(locale);
@@ -24,7 +24,8 @@ export default async function RobotSettingsPage({ params }: Props) {
   const user = await canConfigure(login);
   if (!user) notFound();
   const t = await getTranslations("Portal.robot");
-  const config = await getRobotConfig(PRODUCT.slug, login);
+  const [config, admin] = await Promise.all([getRobotConfig(PRODUCT.slug, login), getRobotAdminSettings()]);
+  const { updatedAt, ...formValues } = config;
   const date = new Intl.DateTimeFormat(locale, { dateStyle: "short", timeStyle: "short" });
 
   return (
@@ -34,27 +35,12 @@ export default async function RobotSettingsPage({ params }: Props) {
           ← {t("back")}
         </NextLink>
       </PortalHeader>
-      {config.updatedAt && <p className="-mt-3 text-xs text-brand-ink-dim">{t("updated", { date: date.format(config.updatedAt) })}</p>}
+      {updatedAt && <p className="-mt-3 text-xs text-brand-ink-dim">{t("updated", { date: date.format(updatedAt) })}</p>}
       <RobotSettingsForm
         login={login}
-        initial={{
-          symbols: config.symbols,
-          riskProfile: config.riskProfile,
-          riskPct: config.riskPct,
-          dailyGoalPct: config.dailyGoalPct,
-          dailyLossPct: config.dailyLossPct,
-          recovery: config.recovery,
-          recoveryLevels: config.recoveryLevels,
-          newsFilter: config.newsFilter,
-          maxPositions: config.maxPositions,
-          startHour: config.startHour,
-          endHour: config.endHour,
-        }}
+        initial={formValues}
         symbols={[...ROBOT_SYMBOLS]}
-        profiles={RISK_PROFILES}
-        goalOptions={[...GOAL_OPTIONS]}
-        lossOptions={[...LOSS_OPTIONS]}
-        maxPositions={MAX_POSITIONS}
+        ddCap={admin.ddCap}
         allowCustom={user.isAdmin}
       />
     </div>

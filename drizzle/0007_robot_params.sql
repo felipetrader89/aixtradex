@@ -1,0 +1,1 @@
+ALTER TABLE "robot_settings" ADD COLUMN "params" jsonb;

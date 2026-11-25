@@ -1,113 +1,206 @@
 import "server-only";
+import { createHash } from "node:crypto";
 import { and, eq } from "drizzle-orm";
 import { db, schema } from "@/lib/db";
+import { getSetting } from "@/lib/config";
 import type { RobotSettings } from "@/lib/db/schema";
+import {
+  ADX_LEVELS,
+  DEFAULT_PAIR,
+  DD_CAP_DEFAULT,
+  MAX_POSITIONS,
+  NEWS_MINUTES,
+  PCT_OPTIONS,
+  RISK_PROFILES,
+  ROBOT_SYMBOLS,
+  RSI_PERIODS,
+  RSI_TIMEFRAMES,
+  type PairParams,
+  type RiskProfile,
+  type RobotConfig,
+} from "@/lib/robot-options";
 
 // Configuração do robô por conta MT4 (Área do cliente → Contas MT4 → Configurar robô).
-// O robô (v6.7+) recebe junto com a consulta de licença (/api/license/check?...&cfg=1), a cada 5 min.
+// v6.7+: o robô recebe junto com a consulta de licença (a cada 5 min).
+// v6.8+: além disso, confere a cada 30 s se mudou (/api/license/check?cfgonly=1) - o que o cliente salva chega em ~30 s.
+// Duas partes: GERAL da conta (pares, máx. de operações, rebaixamento, metas do dia, horário, dias, notícias)
+// e POR PAR (risco, meta/perda do par, direção, recuperação, estratégia, filtros e saída). Padrões = os do robô.
 
-// Pares mais negociados. Nome base: o robô acha o nome da corretora (sufixo m, c, .pro...).
-export const ROBOT_SYMBOLS = ["XAUUSD", "EURUSD", "GBPUSD", "USDJPY", "AUDUSD", "USDCAD", "USDCHF", "NZDUSD"] as const;
+export type RobotAdminSettings = { ddCap: number; ddDefault: number };
 
-// % do saldo arriscado em cada entrada (até o fechamento na perda). Moderado = o padrão de sempre no ouro (0,01 a cada $250).
-export const RISK_PROFILES = { conservative: 1, moderate: 2, aggressive: 3 } as const;
-export type RiskProfile = keyof typeof RISK_PROFILES | "custom";
+// Teto do rebaixamento que o cliente pode escolher + o padrão de quem ainda não mexeu (definidos no admin).
+export async function getRobotAdminSettings(): Promise<RobotAdminSettings> {
+  const s = await getSetting("robot");
+  const ddCap = Math.min(100, Math.max(1, Number(s?.ddCap ?? DD_CAP_DEFAULT)));
+  const ddDefault = Math.min(ddCap, Math.max(0, Number(s?.ddDefault ?? DD_CAP_DEFAULT)));
+  return { ddCap, ddDefault };
+}
 
-export const GOAL_OPTIONS = [0, 3.5, 5.5, 10.5] as const; // 0 = desligada
-export const LOSS_OPTIONS = [0, 3.5, 5.5, 10.5] as const;
-export const MAX_POSITIONS = 10;
+const pairOf = (p: Partial<PairParams> | undefined, base: PairParams = DEFAULT_PAIR): PairParams => ({ ...base, ...(p ?? {}) });
 
-export type RobotConfig = {
-  symbols: string[];
-  riskProfile: RiskProfile;
-  riskPct: number; // % efetivo (do perfil ou personalizado)
-  dailyGoalPct: number;
-  dailyLossPct: number;
-  recovery: boolean;
-  recoveryLevels: number;
-  newsFilter: boolean;
-  maxPositions: number;
-  startHour: number;
-  endHour: number;
-  updatedAt: Date | null;
-};
-
-export const DEFAULT_CONFIG: RobotConfig = {
-  symbols: ["XAUUSD"],
-  riskProfile: "moderate",
-  riskPct: RISK_PROFILES.moderate,
-  dailyGoalPct: 10.5,
-  dailyLossPct: 5.5,
-  recovery: true,
-  recoveryLevels: 10,
-  newsFilter: true,
-  maxPositions: MAX_POSITIONS,
-  startHour: 0,
-  endHour: 22,
-  updatedAt: null,
-};
-
-function toConfig(row: RobotSettings | undefined): RobotConfig {
-  if (!row) return DEFAULT_CONFIG;
-  const profile = row.riskProfile as RiskProfile;
+function defaultConfig(admin: RobotAdminSettings): RobotConfig {
   return {
-    symbols: row.symbols.filter((s) => (ROBOT_SYMBOLS as readonly string[]).includes(s)),
+    symbols: ["XAUUSD"],
+    maxPositions: MAX_POSITIONS,
+    ddPct: admin.ddDefault,
+    dailyGoalPct: 10.5,
+    dailyLossPct: 5.5,
+    startHour: 0,
+    endHour: 22,
+    days: [0, 1, 2, 3, 4, 5, 6],
+    newsFilter: true,
+    newsMedium: false,
+    newsBefore: 30,
+    newsAfter: 30,
+    newsClose: 3,
+    pairs: Object.fromEntries(ROBOT_SYMBOLS.map((s) => [s, { ...DEFAULT_PAIR }])),
+    updatedAt: null,
+  };
+}
+
+type StoredParams = Omit<RobotConfig, "updatedAt">;
+
+function toConfig(row: RobotSettings | undefined, admin: RobotAdminSettings): RobotConfig {
+  const base = defaultConfig(admin);
+  if (!row) return base;
+  const stored = row.params as Partial<StoredParams> | null;
+  if (stored) {
+    // v6.8+: tudo guardado em params (campos novos que ainda não existiam ficam com o padrão).
+    return {
+      ...base,
+      ...stored,
+      symbols: (stored.symbols ?? base.symbols).filter((s) => (ROBOT_SYMBOLS as readonly string[]).includes(s)),
+      ddPct: Math.min(Number(stored.ddPct ?? base.ddPct), admin.ddCap),
+      pairs: Object.fromEntries(ROBOT_SYMBOLS.map((s) => [s, pairOf(stored.pairs?.[s])])),
+      updatedAt: row.updatedAt,
+    };
+  }
+  // Configuração salva na v6.7 (colunas antigas): risco e recuperação valiam pra todos os pares.
+  const profile = row.riskProfile as RiskProfile;
+  const legacyPair = pairOf({
     riskProfile: profile,
     riskPct: profile === "custom" ? Number(row.riskPct ?? RISK_PROFILES.moderate) : RISK_PROFILES[profile],
-    dailyGoalPct: Number(row.dailyGoalPct),
-    dailyLossPct: Number(row.dailyLossPct),
     recovery: row.recovery,
     recoveryLevels: row.recoveryLevels,
-    newsFilter: row.newsFilter,
+  });
+  return {
+    ...base,
+    symbols: row.symbols.filter((s) => (ROBOT_SYMBOLS as readonly string[]).includes(s)),
     maxPositions: row.maxPositions,
+    dailyGoalPct: Number(row.dailyGoalPct),
+    dailyLossPct: Number(row.dailyLossPct),
     startHour: row.startHour,
     endHour: row.endHour,
+    newsFilter: row.newsFilter,
+    pairs: Object.fromEntries(ROBOT_SYMBOLS.map((s) => [s, { ...legacyPair }])),
     updatedAt: row.updatedAt,
   };
 }
 
 export async function getRobotConfig(product: string, login: string) {
-  const [row] = await db()
-    .select()
-    .from(schema.robotSettings)
-    .where(and(eq(schema.robotSettings.product, product), eq(schema.robotSettings.login, login)));
-  return toConfig(row);
+  const [[row], admin] = await Promise.all([
+    db()
+      .select()
+      .from(schema.robotSettings)
+      .where(and(eq(schema.robotSettings.product, product), eq(schema.robotSettings.login, login))),
+    getRobotAdminSettings(),
+  ]);
+  return toConfig(row, admin);
 }
 
-export type ConfigInput = Omit<RobotConfig, "riskPct" | "updatedAt"> & { riskPct?: number };
-export type ConfigError = "symbols" | "risk" | "goal" | "loss" | "levels" | "positions" | "hours";
+export type ConfigInput = Omit<RobotConfig, "updatedAt">;
+export type ConfigError = "symbols" | "risk" | "goal" | "loss" | "levels" | "positions" | "hours" | "days" | "dd" | "news" | "strategy";
+
+const isInt = (v: unknown, min: number, max: number) => Number.isInteger(v) && (v as number) >= min && (v as number) <= max;
+const inList = (v: unknown, list: readonly number[]) => list.includes(v as number);
+const isBool = (v: unknown) => typeof v === "boolean";
+
+function validatePair(p: PairParams, isAdmin: boolean): ConfigError | null {
+  if (p.riskProfile === "custom") {
+    if (!isAdmin || !(Number(p.riskPct) >= 0.1 && Number(p.riskPct) <= 10)) return "risk";
+  } else if (!(p.riskProfile in RISK_PROFILES)) return "risk";
+  if (!inList(p.goalPct, PCT_OPTIONS)) return "goal";
+  if (!inList(p.lossPct, PCT_OPTIONS)) return "loss";
+  if (!isInt(p.recoveryLevels, 1, 10)) return "levels";
+  if (
+    !isInt(p.direction, 0, 2) ||
+    !isInt(p.rsiZone, 0, 9) ||
+    !inList(p.rsiPeriod, RSI_PERIODS) ||
+    !inList(p.rsiTf, RSI_TIMEFRAMES) ||
+    !inList(p.adxLevel, ADX_LEVELS) ||
+    !isInt(p.zonesMode, 0, 2) ||
+    ![p.recovery, p.recoveryOpposite, p.breakout, p.pending, p.atr, p.adx, p.zones, p.breakEven, p.trailing].every(isBool)
+  )
+    return "strategy";
+  return null;
+}
 
 // Confere tudo que vem do formulário (nunca confiar no navegador). Personalizado só pra admin.
-export function validateConfig(input: ConfigInput, isAdmin: boolean): ConfigError | null {
-  if (!input.symbols.length || input.symbols.some((s) => !(ROBOT_SYMBOLS as readonly string[]).includes(s))) return "symbols";
-  if (input.riskProfile === "custom") {
-    if (!isAdmin || !(Number(input.riskPct) >= 0.1 && Number(input.riskPct) <= 10)) return "risk";
-  } else if (!(input.riskProfile in RISK_PROFILES)) return "risk";
-  if (!(GOAL_OPTIONS as readonly number[]).includes(input.dailyGoalPct)) return "goal";
-  if (!(LOSS_OPTIONS as readonly number[]).includes(input.dailyLossPct)) return "loss";
-  if (!Number.isInteger(input.recoveryLevels) || input.recoveryLevels < 1 || input.recoveryLevels > 10) return "levels";
-  if (!Number.isInteger(input.maxPositions) || input.maxPositions < 1 || input.maxPositions > MAX_POSITIONS) return "positions";
+export function validateConfig(input: ConfigInput, isAdmin: boolean, admin: RobotAdminSettings): ConfigError | null {
+  if (!Array.isArray(input.symbols) || !input.symbols.length || input.symbols.some((s) => !(ROBOT_SYMBOLS as readonly string[]).includes(s)))
+    return "symbols";
+  if (!inList(input.dailyGoalPct, PCT_OPTIONS)) return "goal";
+  if (!inList(input.dailyLossPct, PCT_OPTIONS)) return "loss";
+  if (!isInt(input.maxPositions, 1, MAX_POSITIONS)) return "positions";
+  if (!isInt(input.ddPct, 0, admin.ddCap)) return "dd";
+  if (!isInt(input.startHour, 0, 23) || !isInt(input.endHour, 1, 24) || input.endHour <= input.startHour) return "hours";
+  if (!Array.isArray(input.days) || !input.days.length || input.days.some((d) => !isInt(d, 0, 6))) return "days";
   if (
-    !Number.isInteger(input.startHour) || !Number.isInteger(input.endHour) ||
-    input.startHour < 0 || input.startHour > 23 || input.endHour < 1 || input.endHour > 24 || input.endHour <= input.startHour
+    !isBool(input.newsFilter) ||
+    !isBool(input.newsMedium) ||
+    !inList(input.newsBefore, NEWS_MINUTES) ||
+    !inList(input.newsAfter, NEWS_MINUTES) ||
+    !isInt(input.newsClose, 0, 3)
   )
-    return "hours";
+    return "news";
+  for (const s of ROBOT_SYMBOLS) {
+    const p = input.pairs?.[s];
+    if (!p) return "strategy";
+    const error = validatePair(p, isAdmin);
+    if (error) return error;
+  }
   return null;
 }
 
 export async function saveRobotConfig(product: string, login: string, input: ConfigInput, updatedBy: string) {
+  const symbols = ROBOT_SYMBOLS.filter((s) => input.symbols.includes(s));
+  const pairs = Object.fromEntries(
+    ROBOT_SYMBOLS.map((s) => {
+      const p = input.pairs[s];
+      return [s, { ...p, riskPct: p.riskProfile === "custom" ? Number(p.riskPct) : RISK_PROFILES[p.riskProfile] }];
+    })
+  ) as Record<string, PairParams>;
+  const params: StoredParams = {
+    symbols,
+    maxPositions: input.maxPositions,
+    ddPct: input.ddPct,
+    dailyGoalPct: input.dailyGoalPct,
+    dailyLossPct: input.dailyLossPct,
+    startHour: input.startHour,
+    endHour: input.endHour,
+    days: [...new Set(input.days)].sort(),
+    newsFilter: input.newsFilter,
+    newsMedium: input.newsMedium,
+    newsBefore: input.newsBefore,
+    newsAfter: input.newsAfter,
+    newsClose: input.newsClose,
+    pairs,
+  };
+  const first = pairs[symbols[0]];
+  // Colunas antigas continuam preenchidas (resumo; o robô v6.7 lê só esses campos).
   const values = {
-    symbols: ROBOT_SYMBOLS.filter((s) => input.symbols.includes(s)),
-    riskProfile: input.riskProfile,
-    riskPct: input.riskProfile === "custom" ? Number(input.riskPct).toFixed(2) : null,
+    symbols,
+    riskProfile: first.riskProfile,
+    riskPct: first.riskProfile === "custom" ? first.riskPct.toFixed(2) : null,
     dailyGoalPct: input.dailyGoalPct.toFixed(2),
     dailyLossPct: input.dailyLossPct.toFixed(2),
-    recovery: input.recovery,
-    recoveryLevels: input.recoveryLevels,
+    recovery: first.recovery,
+    recoveryLevels: first.recoveryLevels,
     newsFilter: input.newsFilter,
     maxPositions: input.maxPositions,
     startHour: input.startHour,
     endHour: input.endHour,
+    params,
     updatedBy,
     updatedAt: new Date(),
   };
@@ -117,21 +210,59 @@ export async function saveRobotConfig(product: string, login: string, input: Con
     .onConflictDoUpdate({ target: [schema.robotSettings.product, schema.robotSettings.login], set: values });
 }
 
-// Texto que o robô recebe (sem "|", que separa os campos da resposta). Ex.:
-// sym=XAUUSD,EURUSD;risk=2;goal=10.5;loss=5.5;rec=1;lv=10;news=1;max=10;h1=0;h2=22;ver=1764000000
-export function configPayload(c: RobotConfig) {
-  const n = (v: number) => String(Math.round(v * 100) / 100);
+const n = (v: number) => String(Math.round(v * 100) / 100);
+const b = (v: boolean) => (v ? 1 : 0);
+
+function pairPayload(p: PairParams) {
   return [
+    `r:${n(p.riskPct)}`,
+    `g:${n(p.goalPct)}`,
+    `l:${n(p.lossPct)}`,
+    `d:${p.direction}`,
+    `rc:${b(p.recovery)}`,
+    `lv:${p.recoveryLevels}`,
+    `rd:${b(p.recoveryOpposite)}`,
+    `rz:${p.rsiZone}`,
+    `rp:${p.rsiPeriod}`,
+    `rt:${p.rsiTf}`,
+    `iv:${b(p.breakout)}`,
+    `em:${b(p.pending)}`,
+    `at:${b(p.atr)}`,
+    `ax:${b(p.adx)}`,
+    `al:${p.adxLevel}`,
+    `zn:${b(p.zones)}`,
+    `zm:${p.zonesMode}`,
+    `be:${b(p.breakEven)}`,
+    `tr:${b(p.trailing)}`,
+  ].join(",");
+}
+
+// Texto que o robô recebe (sem "|", que separa os campos da resposta). Ex.:
+// sym=XAUUSD,EURUSD;risk=2;goal=10.5;loss=5.5;rec=1;lv=10;news=1;max=10;h1=0;h2=22;dd=30;days=0123456;nm=0;nb=30;na=30;nc=3;
+// p.XAUUSD=r:2,g:0,...;p.EURUSD=...;ver=3f9a1c2b7d10
+// risk/rec/lv = do 1º par (o robô v6.7 só entende esses); v6.8+ usa os "p.PAR". ver = muda sempre que algo muda.
+export function configPayload(c: RobotConfig) {
+  const first = c.pairs[c.symbols[0]] ?? DEFAULT_PAIR;
+  const body = [
     `sym=${c.symbols.join(",")}`,
-    `risk=${n(c.riskPct)}`,
+    `risk=${n(first.riskPct)}`,
     `goal=${n(c.dailyGoalPct)}`,
     `loss=${n(c.dailyLossPct)}`,
-    `rec=${c.recovery ? 1 : 0}`,
-    `lv=${c.recoveryLevels}`,
-    `news=${c.newsFilter ? 1 : 0}`,
+    `rec=${b(first.recovery)}`,
+    `lv=${first.recoveryLevels}`,
+    `news=${b(c.newsFilter)}`,
     `max=${c.maxPositions}`,
     `h1=${c.startHour}`,
     `h2=${c.endHour}`,
-    `ver=${c.updatedAt ? Math.floor(c.updatedAt.getTime() / 1000) : 0}`,
+    `dd=${n(c.ddPct)}`,
+    `days=${c.days.join("")}`,
+    `nm=${b(c.newsMedium)}`,
+    `nb=${c.newsBefore}`,
+    `na=${c.newsAfter}`,
+    `nc=${c.newsClose}`,
+    ...c.symbols.map((s) => `p.${s}=${pairPayload(c.pairs[s] ?? DEFAULT_PAIR)}`),
   ].join(";");
+  return `${body};ver=${createHash("sha256").update(body).digest("hex").slice(0, 12)}`;
 }
+
+export { ROBOT_SYMBOLS, RISK_PROFILES, PCT_OPTIONS, MAX_POSITIONS };

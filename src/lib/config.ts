@@ -42,6 +42,7 @@ type SettingsMap = {
   smtp: SmtpSettings;
   wallets: WalletSettings;
   admins: AdminSettings;
+  robot: { ddCap: number; ddDefault: number };
 };
 
 // Cache curto em memória (o site roda num processo só): evita ir no banco a cada página.

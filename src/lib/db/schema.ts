@@ -274,6 +274,8 @@ export const robotSettings = pgTable(
     maxPositions: integer("max_positions").notNull().default(10),
     startHour: integer("start_hour").notNull().default(0),
     endHour: integer("end_hour").notNull().default(22),
+    // v6.8+: configuração completa (geral + cada par). Sem isso (salvo na v6.7) vale o que está nas colunas acima.
+    params: jsonb("params"),
     updatedBy: text("updated_by"),
     updatedAt: timestamp("updated_at", { withTimezone: true }).notNull().defaultNow(),
   },
