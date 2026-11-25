@@ -1,12 +1,12 @@
 "use server";
 
 import { revalidatePath } from "next/cache";
-import { redirect } from "next/navigation";
 import { requireAdmin } from "@/lib/auth";
 import { canConfigure } from "@/lib/robot-access";
 import { PRODUCT } from "@/lib/plans";
-import { getRobotAdminSettings, saveRobotConfig, validateConfig, type ConfigError, type ConfigInput } from "@/lib/robot-settings";
-import { logEvent, setSetting } from "@/lib/config";
+import { getRobotPolicy, saveRobotConfig, validateConfig, type ConfigError, type ConfigInput } from "@/lib/robot-settings";
+import { PARAM_KEYS, normalizePolicy, type RobotPolicy } from "@/lib/robot-options";
+import { getSetting, logEvent, setSetting } from "@/lib/config";
 
 export async function saveRobotSettingsAction(
   login: string,
@@ -14,9 +14,9 @@ export async function saveRobotSettingsAction(
 ): Promise<{ ok: true } | { ok: false; error: ConfigError | "denied" }> {
   const user = await canConfigure(login);
   if (!user) return { ok: false, error: "denied" };
-  const error = validateConfig(input, user.isAdmin, await getRobotAdminSettings());
+  const error = validateConfig(input, user.isAdmin);
   if (error) return { ok: false, error };
-  await saveRobotConfig(PRODUCT.slug, login, input, user.email);
+  await saveRobotConfig(PRODUCT.slug, login, input, user.email, user.isAdmin, await getRobotPolicy());
   if (user.isAdmin) {
     const risks = input.symbols.map((s) => `${s} ${input.pairs[s].riskProfile === "custom" ? `${input.pairs[s].riskPct}%` : input.pairs[s].riskProfile}`);
     await logEvent(user.email, "robot.settings", `${login}: ${risks.join(", ")} · DD ${input.ddPct}%`);
@@ -25,18 +25,17 @@ export async function saveRobotSettingsAction(
   return { ok: true };
 }
 
-// Admin → Configurações → Robô: teto do rebaixamento que o cliente pode escolher e o padrão de quem não mexeu.
-export async function saveRobotAdminAction(form: FormData) {
+// Admin → Configurações → Robô: o que o cliente vê, o padrão e as opções liberadas de cada parâmetro.
+export async function saveRobotPolicyAction(input: RobotPolicy): Promise<{ ok: true; policy: RobotPolicy } | { ok: false }> {
   const admin = await requireAdmin();
-  const ddCap = Number(form.get("ddCap"));
-  const ddDefault = Number(form.get("ddDefault"));
-  const back = (msg: string, error = false): never => {
-    revalidatePath("/admin", "layout");
-    redirect(`/admin/settings/robot?${error ? "err" : "msg"}=${encodeURIComponent(msg)}`);
-  };
-  if (!Number.isInteger(ddCap) || ddCap < 1 || ddCap > 100) back("O teto precisa ser um número inteiro de 1 a 100.", true);
-  if (!Number.isInteger(ddDefault) || ddDefault < 0 || ddDefault > ddCap) back("O padrão precisa ficar entre 0 (desligado) e o teto.", true);
-  await setSetting("robot", { ddCap, ddDefault });
-  await logEvent(admin.email, "robot.admin", `Rebaixamento: teto ${ddCap}% · padrão ${ddDefault}%`);
-  back(`Salvo. Clientes escolhem até ${ddCap}%; quem não mexeu fica com ${ddDefault === 0 ? "desligado" : `${ddDefault}%`}.`);
+  if (!input || typeof input !== "object") return { ok: false };
+  const policy = normalizePolicy(input);
+  const old = await getSetting("robot");
+  await setSetting("robot", { policy });
+  const prev = normalizePolicy(old?.policy, old ?? undefined);
+  const changed = PARAM_KEYS.filter((k) => JSON.stringify(prev[k]) !== JSON.stringify(policy[k]));
+  await logEvent(admin.email, "robot.admin", changed.length ? `Permissões do robô: ${changed.join(", ")}` : "Permissões do robô salvas (sem mudança)");
+  revalidatePath("/admin", "layout");
+  revalidatePath("/[locale]/account", "layout");
+  return { ok: true, policy };
 }

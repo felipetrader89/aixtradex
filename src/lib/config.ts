@@ -1,4 +1,5 @@
 import "server-only";
+import type { ParamPolicy } from "@/lib/robot-options";
 import { desc, eq } from "drizzle-orm";
 import { db, schema } from "@/lib/db";
 import { decryptSecret, encryptSecret } from "@/lib/secret-box";
@@ -42,7 +43,8 @@ type SettingsMap = {
   smtp: SmtpSettings;
   wallets: WalletSettings;
   admins: AdminSettings;
-  robot: { ddCap: number; ddDefault: number };
+  // ddCap/ddDefault = primeira versão (só rebaixamento); policy = permissões de todos os parâmetros (v6.9).
+  robot: { ddCap?: number; ddDefault?: number; policy?: Partial<Record<string, Partial<ParamPolicy>>> };
 };
 
 // Cache curto em memória (o site roda num processo só): evita ir no banco a cada página.

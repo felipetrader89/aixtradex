@@ -5,7 +5,6 @@ import { useLocale, useTranslations } from "next-intl";
 import { saveRobotSettingsAction } from "@/app/actions/robot";
 import {
   ADX_LEVELS,
-  DEFAULT_PAIR,
   MAX_POSITIONS,
   NEWS_MINUTES,
   PCT_OPTIONS,
@@ -13,9 +12,15 @@ import {
   RSI_PERIODS,
   RSI_TIMEFRAMES,
   SYMBOL_LABEL,
+  DD_OPTIONS,
+  hasValue,
+  policyMax,
   type PairParams,
+  type ParamKey,
+  type PolicyValue,
   type RiskProfile,
   type RobotConfig,
+  type RobotPolicy,
 } from "@/lib/robot-options";
 
 export type RobotFormValues = Omit<RobotConfig, "updatedAt">;
@@ -25,26 +30,39 @@ const field =
 const card = "panel-card rounded-2xl border border-brand-hairline bg-brand-surface/90 p-5";
 const h2 = "text-xs font-semibold uppercase tracking-wide text-brand-accent";
 
-function Switch({ checked, onChange, label }: { checked: boolean; onChange: (v: boolean) => void; label?: string }) {
+function Switch({ checked, onChange, label, disabled }: { checked: boolean; onChange: (v: boolean) => void; label?: string; disabled?: boolean }) {
   return (
     <button
       type="button"
       role="switch"
       aria-checked={checked}
       aria-label={label}
+      disabled={disabled}
       onClick={() => onChange(!checked)}
-      className={`relative h-6 w-11 shrink-0 rounded-full transition-colors ${checked ? "bg-brand-accent" : "bg-brand-surface-2 ring-1 ring-brand-hairline"}`}
+      className={`relative h-6 w-11 shrink-0 rounded-full transition-colors disabled:cursor-not-allowed disabled:opacity-50 ${checked ? "bg-brand-accent" : "bg-brand-surface-2 ring-1 ring-brand-hairline"}`}
     >
       <span className={`absolute top-0.5 h-5 w-5 rounded-full bg-white shadow transition-all ${checked ? "left-[22px]" : "left-0.5"}`} />
     </button>
   );
 }
 
-function Toggle({ checked, onChange, label, hint }: { checked: boolean; onChange: (v: boolean) => void; label: string; hint?: string }) {
+function Toggle({
+  checked,
+  onChange,
+  label,
+  hint,
+  disabled,
+}: {
+  checked: boolean;
+  onChange: (v: boolean) => void;
+  label: string;
+  hint?: string;
+  disabled?: boolean;
+}) {
   return (
     <div className="flex items-start gap-3">
       <div className="mt-0.5">
-        <Switch checked={checked} onChange={onChange} label={label} />
+        <Switch checked={checked} onChange={onChange} label={label} disabled={disabled} />
       </div>
       <div>
         <span className="block text-sm font-semibold text-brand-ink">{label}</span>
@@ -106,24 +124,36 @@ function Segmented<T extends string | number>({
 export function RobotSettingsForm({
   login,
   initial,
-  symbols,
-  ddCap,
+  symbols: allSymbols,
+  policy,
+  defaultPair,
   allowCustom,
 }: {
   login: string;
   initial: RobotFormValues;
   symbols: string[];
-  ddCap: number;
+  policy: RobotPolicy | null; // null = admin (vê e escolhe tudo)
+  defaultPair: PairParams;
   allowCustom: boolean;
 }) {
   const t = useTranslations("Portal.robot");
   const locale = useLocale();
   const [v, setV] = useState<RobotFormValues>(initial);
   const [saved, setSaved] = useState(JSON.stringify(initial));
-  const [editing, setEditing] = useState<string>(initial.symbols[0] ?? symbols[0]);
+  const [editing, setEditing] = useState<string>(initial.symbols[0] ?? allSymbols[0]);
   const [status, setStatus] = useState<{ ok: boolean; text: string } | null>(null);
   const [pending, start] = useTransition();
   const dirty = JSON.stringify(v) !== saved;
+
+  // Permissões do admin: o que aparece e quais opções o cliente pode escolher.
+  const show = (k: ParamKey) => !policy || policy[k].show;
+  const allowed = <T extends PolicyValue>(k: ParamKey, list: readonly T[]): T[] =>
+    policy ? list.filter((o) => hasValue(policy[k].allow, o)) : [...list];
+  const locked = (k: ParamKey) => !!policy && policy[k].allow.length < 2; // só uma opção liberada: aparece, mas não muda
+  const anyShown = (...keys: ParamKey[]) => keys.some(show);
+  const symbols = show("symbols")
+    ? allSymbols.filter((s) => allowed("symbols", allSymbols).includes(s) || initial.symbols.includes(s))
+    : initial.symbols;
 
   const set = <K extends keyof RobotFormValues>(k: K, value: RobotFormValues[K]) => {
     setV((old) => ({ ...old, [k]: value }));
@@ -138,16 +168,19 @@ export function RobotSettingsForm({
 
   const pct = (n: number) => n.toLocaleString(locale, { maximumFractionDigits: 2 });
   const pctLabel = (o: number) => (o === 0 ? t("off") : `${pct(o)}%`);
-  const profileList: RiskProfile[] = ["conservative", "moderate", "aggressive", ...(allowCustom ? (["custom"] as RiskProfile[]) : [])];
+  const profileList: RiskProfile[] = [
+    ...allowed("riskProfile", ["conservative", "moderate", "aggressive"] as RiskProfile[]),
+    ...(allowCustom ? (["custom"] as RiskProfile[]) : []),
+  ];
   const riskOf = (p: PairParams) => (p.riskProfile === "custom" ? p.riskPct : RISK_PROFILES[p.riskProfile]);
+  const ddCap = policy ? policyMax(policy.ddPct) : 100;
   const ddOptions = useMemo(() => {
-    const list = [0, 5, 10, 15, 20, 25, 30, 40, 50, 75, 100].filter((x) => x <= ddCap);
-    if (!list.includes(ddCap)) list.push(ddCap);
+    const list: number[] = policy ? DD_OPTIONS.filter((o) => hasValue(policy.ddPct.allow, o)) : [...DD_OPTIONS];
     if (!list.includes(v.ddPct)) list.push(v.ddPct);
     return list.sort((a, b) => a - b);
-  }, [ddCap, v.ddPct]);
+  }, [policy, v.ddPct]);
 
-  const p = v.pairs[editing] ?? DEFAULT_PAIR;
+  const p = v.pairs[editing] ?? defaultPair;
   const editingOn = v.symbols.includes(editing);
 
   function save() {
@@ -175,7 +208,7 @@ export function RobotSettingsForm({
           {symbols.map((s) => {
             const on = v.symbols.includes(s);
             const sel = s === editing;
-            const sp = v.pairs[s] ?? DEFAULT_PAIR;
+            const sp = v.pairs[s] ?? defaultPair;
             return (
               <div
                 key={s}
@@ -198,9 +231,11 @@ export function RobotSettingsForm({
                     {on ? t("pairSummary", { risk: pct(riskOf(sp)), goal: sp.goalPct ? `${pct(sp.goalPct)}%` : "-" }) : t("pairOff")}
                   </span>
                 </button>
-                <div className="flex items-center pr-2.5">
-                  <Switch checked={on} onChange={(x) => toggleSymbol(s, x)} label={`${t("tradeThis")} ${SYMBOL_LABEL[s] ?? s}`} />
-                </div>
+                {show("symbols") && (
+                  <div className="flex items-center pr-2.5">
+                    <Switch checked={on} onChange={(x) => toggleSymbol(s, x)} label={`${t("tradeThis")} ${SYMBOL_LABEL[s] ?? s}`} />
+                  </div>
+                )}
               </div>
             );
           })}
@@ -212,9 +247,10 @@ export function RobotSettingsForm({
       <section className={`${card} flex flex-col gap-6 ring-1 ring-brand-accent/30`}>
         <div className="flex flex-wrap items-center justify-between gap-3">
           <h2 className="text-lg font-bold text-brand-ink">{t("editing", { pair: SYMBOL_LABEL[editing] ?? editing })}</h2>
-          <Toggle checked={editingOn} onChange={(x) => toggleSymbol(editing, x)} label={t("tradeThis")} />
+          {show("symbols") && <Toggle checked={editingOn} onChange={(x) => toggleSymbol(editing, x)} label={t("tradeThis")} />}
         </div>
 
+        {show("riskProfile") && (
         <div>
           <h3 className={h2}>{t("risk")}</h3>
           <p className="mt-1 text-xs text-brand-ink-dim">{t("riskHint")}</p>
@@ -253,125 +289,164 @@ export function RobotSettingsForm({
             </label>
           )}
         </div>
+        )}
 
+        {anyShown("goalPct", "lossPct") && (
         <div className="grid gap-5 sm:grid-cols-2">
+          {show("goalPct") && (
           <Field label={t("pairGoal")}>
             <select value={p.goalPct} onChange={(e) => setPair(editing, { goalPct: Number(e.target.value) })} className={field}>
-              {PCT_OPTIONS.map((o) => (
+              {allowed("goalPct", PCT_OPTIONS).map((o) => (
                 <option key={o} value={o}>
                   {pctLabel(o)}
                 </option>
               ))}
             </select>
           </Field>
+          )}
+          {show("lossPct") && (
           <Field label={t("pairLoss")}>
             <select value={p.lossPct} onChange={(e) => setPair(editing, { lossPct: Number(e.target.value) })} className={field}>
-              {PCT_OPTIONS.map((o) => (
+              {allowed("lossPct", PCT_OPTIONS).map((o) => (
                 <option key={o} value={o}>
                   {pctLabel(o)}
                 </option>
               ))}
             </select>
           </Field>
+          )}
           <p className="-mt-2 text-xs text-brand-ink-dim sm:col-span-2">{t("pairGoalHint")}</p>
         </div>
+        )}
 
+        {show("direction") && (
         <Field label={t("direction")} group>
           <Segmented
             value={p.direction}
             onChange={(x) => setPair(editing, { direction: x })}
-            options={[0, 1, 2].map((d) => ({ value: d, label: t(`directions.d${d}`) }))}
+            options={allowed("direction", [0, 1, 2]).map((d) => ({ value: d, label: t(`directions.d${d}`) }))}
           />
         </Field>
+        )}
 
+        {anyShown("recovery", "recoveryLevels", "recoveryOpposite") && (
         <div className="flex flex-col gap-4 rounded-xl bg-brand-surface-2/60 p-4">
-          <Toggle checked={p.recovery} onChange={(x) => setPair(editing, { recovery: x })} label={t("recovery")} hint={t("recoveryHint")} />
-          {p.recovery && (
+          {show("recovery") && (
+            <Toggle
+              checked={p.recovery}
+              onChange={(x) => setPair(editing, { recovery: x })}
+              label={t("recovery")}
+              hint={t("recoveryHint")}
+              disabled={locked("recovery")}
+            />
+          )}
+          {p.recovery && anyShown("recoveryLevels", "recoveryOpposite") && (
             <div className="grid gap-4 sm:grid-cols-2">
+              {show("recoveryLevels") && (
               <Field label={t("levels")}>
                 <select value={p.recoveryLevels} onChange={(e) => setPair(editing, { recoveryLevels: Number(e.target.value) })} className={field}>
-                  {Array.from({ length: 10 }, (_, i) => i + 1).map((n) => (
+                  {allowed("recoveryLevels", Array.from({ length: 10 }, (_, i) => i + 1)).map((n) => (
                     <option key={n} value={n}>
                       {n}
                     </option>
                   ))}
                 </select>
               </Field>
+              )}
+              {show("recoveryOpposite") && (
               <Field label={t("recoveryDir")} group>
                 <Segmented
                   value={p.recoveryOpposite ? 1 : 0}
                   onChange={(x) => setPair(editing, { recoveryOpposite: x === 1 })}
-                  options={[
-                    { value: 0, label: t("recoveryDirs.same") },
-                    { value: 1, label: t("recoveryDirs.opposite") },
-                  ]}
+                  options={allowed("recoveryOpposite", [false, true]).map((o) => ({
+                    value: o ? 1 : 0,
+                    label: t(o ? "recoveryDirs.opposite" : "recoveryDirs.same"),
+                  }))}
                 />
               </Field>
+              )}
             </div>
           )}
         </div>
+        )}
 
+        {anyShown("rsiZone", "rsiPeriod", "rsiTf", "breakout", "pending") && (
         <div>
           <h3 className={h2}>{t("strategy")}</h3>
+          {anyShown("rsiZone", "rsiPeriod", "rsiTf") && (
           <div className="mt-3 grid gap-4 sm:grid-cols-3">
+            {show("rsiZone") && (
             <Field label={t("rsiZone")} hint={t("rsiZoneHint")}>
               <select value={p.rsiZone} onChange={(e) => setPair(editing, { rsiZone: Number(e.target.value) })} className={field}>
-                {Array.from({ length: 10 }, (_, i) => i).map((i) => (
+                {allowed("rsiZone", Array.from({ length: 10 }, (_, i) => i)).map((i) => (
                   <option key={i} value={i}>{`RSI ${50 - 5 * i}-${50 + 5 * i}`}</option>
                 ))}
               </select>
             </Field>
+            )}
+            {show("rsiPeriod") && (
             <Field label={t("rsiPeriod")}>
               <select value={p.rsiPeriod} onChange={(e) => setPair(editing, { rsiPeriod: Number(e.target.value) })} className={field}>
-                {RSI_PERIODS.map((n) => (
+                {allowed("rsiPeriod", RSI_PERIODS).map((n) => (
                   <option key={n} value={n}>
                     {n}
                   </option>
                 ))}
               </select>
             </Field>
+            )}
+            {show("rsiTf") && (
             <Field label={t("rsiTf")}>
               <select value={p.rsiTf} onChange={(e) => setPair(editing, { rsiTf: Number(e.target.value) })} className={field}>
-                {RSI_TIMEFRAMES.map((n) => (
+                {allowed("rsiTf", RSI_TIMEFRAMES).map((n) => (
                   <option key={n} value={n}>{`M${n}`}</option>
                 ))}
               </select>
             </Field>
+            )}
           </div>
+          )}
+          {anyShown("breakout", "pending") && (
           <div className="mt-4 grid gap-4 sm:grid-cols-2">
+            {show("breakout") && (
             <Field label={t("logic")} group>
               <Segmented
                 value={p.breakout ? 1 : 0}
                 onChange={(x) => setPair(editing, { breakout: x === 1 })}
-                options={[
-                  { value: 0, label: t("logics.reversal") },
-                  { value: 1, label: t("logics.breakout") },
-                ]}
+                options={allowed("breakout", [false, true]).map((o) => ({ value: o ? 1 : 0, label: t(o ? "logics.breakout" : "logics.reversal") }))}
               />
             </Field>
+            )}
+            {show("pending") && (
             <Field label={t("entry")} group>
               <Segmented
                 value={p.pending ? 1 : 0}
                 onChange={(x) => setPair(editing, { pending: x === 1 })}
-                options={[
-                  { value: 1, label: t("entries.pending") },
-                  { value: 0, label: t("entries.market") },
-                ]}
+                options={allowed("pending", [true, false]).map((o) => ({ value: o ? 1 : 0, label: t(o ? "entries.pending" : "entries.market") }))}
               />
             </Field>
+            )}
           </div>
+          )}
         </div>
+        )}
 
+        {anyShown("atr", "adx", "adxLevel", "zones", "zonesMode") && (
         <div>
           <h3 className={h2}>{t("filters")}</h3>
           <div className="mt-3 grid gap-5 sm:grid-cols-2">
-            <Toggle checked={p.atr} onChange={(x) => setPair(editing, { atr: x })} label={t("atr")} hint={t("atrHint")} />
+            {show("atr") && (
+              <Toggle checked={p.atr} onChange={(x) => setPair(editing, { atr: x })} label={t("atr")} hint={t("atrHint")} disabled={locked("atr")} />
+            )}
+            {anyShown("adx", "adxLevel") && (
             <div className="flex flex-col gap-3">
-              <Toggle checked={p.adx} onChange={(x) => setPair(editing, { adx: x })} label={t("adx")} hint={t("adxHint")} />
-              {p.adx && (
+              {show("adx") && (
+                <Toggle checked={p.adx} onChange={(x) => setPair(editing, { adx: x })} label={t("adx")} hint={t("adxHint")} disabled={locked("adx")} />
+              )}
+              {p.adx && show("adxLevel") && (
                 <Field label={t("adxLevel")}>
                   <select value={p.adxLevel} onChange={(e) => setPair(editing, { adxLevel: Number(e.target.value) })} className={field}>
-                    {ADX_LEVELS.map((n) => (
+                    {allowed("adxLevel", ADX_LEVELS).map((n) => (
                       <option key={n} value={n}>
                         {n}
                       </option>
@@ -380,28 +455,52 @@ export function RobotSettingsForm({
                 </Field>
               )}
             </div>
+            )}
+            {anyShown("zones", "zonesMode") && (
             <div className="flex flex-col gap-3 sm:col-span-2">
-              <Toggle checked={p.zones} onChange={(x) => setPair(editing, { zones: x })} label={t("zones")} hint={t("zonesHint")} />
-              {p.zones && (
+              {show("zones") && (
+                <Toggle checked={p.zones} onChange={(x) => setPair(editing, { zones: x })} label={t("zones")} hint={t("zonesHint")} disabled={locked("zones")} />
+              )}
+              {p.zones && show("zonesMode") && (
                 <Field label={t("zonesMode")} group>
                   <Segmented
                     value={p.zonesMode}
                     onChange={(x) => setPair(editing, { zonesMode: x })}
-                    options={[2, 1, 0].map((m) => ({ value: m, label: t(`zonesModes.m${m}`) }))}
+                    options={allowed("zonesMode", [2, 1, 0]).map((m) => ({ value: m, label: t(`zonesModes.m${m}`) }))}
                   />
                 </Field>
               )}
             </div>
+            )}
           </div>
         </div>
+        )}
 
+        {anyShown("breakEven", "trailing") && (
         <div>
           <h3 className={h2}>{t("exits")}</h3>
           <div className="mt-3 grid gap-5 sm:grid-cols-2">
-            <Toggle checked={p.breakEven} onChange={(x) => setPair(editing, { breakEven: x })} label={t("breakEven")} hint={t("breakEvenHint")} />
-            <Toggle checked={p.trailing} onChange={(x) => setPair(editing, { trailing: x })} label={t("trailing")} hint={t("trailingHint")} />
+            {show("breakEven") && (
+              <Toggle
+                checked={p.breakEven}
+                onChange={(x) => setPair(editing, { breakEven: x })}
+                label={t("breakEven")}
+                hint={t("breakEvenHint")}
+                disabled={locked("breakEven")}
+              />
+            )}
+            {show("trailing") && (
+              <Toggle
+                checked={p.trailing}
+                onChange={(x) => setPair(editing, { trailing: x })}
+                label={t("trailing")}
+                hint={t("trailingHint")}
+                disabled={locked("trailing")}
+              />
+            )}
           </div>
         </div>
+        )}
 
         <div className="flex flex-wrap gap-2 border-t border-brand-hairline pt-4">
           <button
@@ -413,7 +512,7 @@ export function RobotSettingsForm({
           </button>
           <button
             type="button"
-            onClick={() => setPair(editing, { ...DEFAULT_PAIR })}
+            onClick={() => setPair(editing, { ...defaultPair })}
             className="rounded-full border border-brand-hairline px-4 py-2 text-xs font-semibold text-brand-ink-dim hover:text-brand-ink"
           >
             {t("resetPair")}
@@ -427,16 +526,20 @@ export function RobotSettingsForm({
           <h2 className={h2}>{t("account")}</h2>
           <p className="mt-1 text-xs text-brand-ink-dim">{t("accountHint")}</p>
         </div>
+        {anyShown("maxPositions", "ddPct", "dailyGoalPct", "dailyLossPct") && (
         <div className="grid gap-5 sm:grid-cols-2">
+          {show("maxPositions") && (
           <Field label={t("maxPositions")}>
             <select value={v.maxPositions} onChange={(e) => set("maxPositions", Number(e.target.value))} className={field}>
-              {Array.from({ length: MAX_POSITIONS }, (_, i) => i + 1).map((n) => (
+              {allowed("maxPositions", Array.from({ length: MAX_POSITIONS }, (_, i) => i + 1)).map((n) => (
                 <option key={n} value={n}>
                   {n}
                 </option>
               ))}
             </select>
           </Field>
+          )}
+          {show("ddPct") && (
           <Field label={t("dd")} hint={t("ddHint", { cap: ddCap })}>
             <select value={v.ddPct} onChange={(e) => set("ddPct", Number(e.target.value))} className={field}>
               {ddOptions.map((o) => (
@@ -446,49 +549,69 @@ export function RobotSettingsForm({
               ))}
             </select>
           </Field>
+          )}
+          {show("dailyGoalPct") && (
           <Field label={t("goal")}>
             <select value={v.dailyGoalPct} onChange={(e) => set("dailyGoalPct", Number(e.target.value))} className={field}>
-              {PCT_OPTIONS.map((o) => (
+              {allowed("dailyGoalPct", PCT_OPTIONS).map((o) => (
                 <option key={o} value={o}>
                   {pctLabel(o)}
                 </option>
               ))}
             </select>
           </Field>
+          )}
+          {show("dailyLossPct") && (
           <Field label={t("loss")}>
             <select value={v.dailyLossPct} onChange={(e) => set("dailyLossPct", Number(e.target.value))} className={field}>
-              {PCT_OPTIONS.map((o) => (
+              {allowed("dailyLossPct", PCT_OPTIONS).map((o) => (
                 <option key={o} value={o}>
                   {pctLabel(o)}
                 </option>
               ))}
             </select>
           </Field>
-          <p className="-mt-2 text-xs text-brand-ink-dim sm:col-span-2">{t("goalHint")}</p>
+          )}
+          {anyShown("dailyGoalPct", "dailyLossPct") && <p className="-mt-2 text-xs text-brand-ink-dim sm:col-span-2">{t("goalHint")}</p>}
         </div>
+        )}
 
+        {anyShown("startHour", "endHour", "days") && (
         <div className="grid gap-5 sm:grid-cols-2">
+          {anyShown("startHour", "endHour") && (
           <div className="flex flex-col gap-1.5">
             <span className="text-sm font-semibold text-brand-ink">{t("hours")}</span>
             <div className="flex items-center gap-2 text-sm text-brand-ink-dim">
               {t("from")}
-              <select value={v.startHour} onChange={(e) => set("startHour", Number(e.target.value))} className={field}>
-                {Array.from({ length: 24 }, (_, h) => h).map((h) => (
+              <select
+                value={v.startHour}
+                onChange={(e) => set("startHour", Number(e.target.value))}
+                disabled={!show("startHour")}
+                className={`${field} disabled:opacity-60`}
+              >
+                {(show("startHour") ? allowed("startHour", Array.from({ length: 24 }, (_, h) => h)) : [v.startHour]).map((h) => (
                   <option key={h} value={h}>{`${String(h).padStart(2, "0")}:00`}</option>
                 ))}
               </select>
               {t("to")}
-              <select value={v.endHour} onChange={(e) => set("endHour", Number(e.target.value))} className={field}>
-                {Array.from({ length: 24 }, (_, h) => h + 1).map((h) => (
+              <select
+                value={v.endHour}
+                onChange={(e) => set("endHour", Number(e.target.value))}
+                disabled={!show("endHour")}
+                className={`${field} disabled:opacity-60`}
+              >
+                {(show("endHour") ? allowed("endHour", Array.from({ length: 24 }, (_, h) => h + 1)) : [v.endHour]).map((h) => (
                   <option key={h} value={h}>{`${String(h).padStart(2, "0")}:00`}</option>
                 ))}
               </select>
             </div>
           </div>
+          )}
+          {show("days") && (
           <div className="flex flex-col gap-1.5">
             <span className="text-sm font-semibold text-brand-ink">{t("days")}</span>
             <div className="flex flex-wrap gap-1.5">
-              {[1, 2, 3, 4, 5, 6, 0].map((d) => {
+              {allowed("days", [1, 2, 3, 4, 5, 6, 0]).map((d) => {
                 const on = v.days.includes(d);
                 return (
                   <button
@@ -506,44 +629,84 @@ export function RobotSettingsForm({
               })}
             </div>
           </div>
+          )}
         </div>
+        )}
 
+        {anyShown("newsFilter", "newsMedium", "newsBefore", "newsAfter", "newsClose") && (
         <div className="flex flex-col gap-4 rounded-xl bg-brand-surface-2/60 p-4">
-          <Toggle checked={v.newsFilter} onChange={(x) => set("newsFilter", x)} label={t("news")} hint={t("newsHint")} />
+          {show("newsFilter") && (
+            <Toggle
+              checked={v.newsFilter}
+              onChange={(x) => set("newsFilter", x)}
+              label={t("news")}
+              hint={t("newsHint")}
+              disabled={locked("newsFilter")}
+            />
+          )}
           {v.newsFilter && (
             <>
-              <Toggle checked={v.newsMedium} onChange={(x) => set("newsMedium", x)} label={t("newsMedium")} />
+              {show("newsMedium") && (
+                <Toggle checked={v.newsMedium} onChange={(x) => set("newsMedium", x)} label={t("newsMedium")} disabled={locked("newsMedium")} />
+              )}
               <div className="grid gap-4 sm:grid-cols-3">
+                {show("newsBefore") && (
                 <Field label={t("newsBefore")}>
                   <select value={v.newsBefore} onChange={(e) => set("newsBefore", Number(e.target.value))} className={field}>
-                    {NEWS_MINUTES.map((n) => (
+                    {allowed("newsBefore", NEWS_MINUTES).map((n) => (
                       <option key={n} value={n}>
                         {t("minutes", { n })}
                       </option>
                     ))}
                   </select>
                 </Field>
+                )}
+                {show("newsAfter") && (
                 <Field label={t("newsAfter")}>
                   <select value={v.newsAfter} onChange={(e) => set("newsAfter", Number(e.target.value))} className={field}>
-                    {NEWS_MINUTES.map((n) => (
+                    {allowed("newsAfter", NEWS_MINUTES).map((n) => (
                       <option key={n} value={n}>
                         {t("minutes", { n })}
                       </option>
                     ))}
                   </select>
                 </Field>
+                )}
+                {show("newsClose") && (
                 <Field label={t("newsClose")}>
                   <select value={v.newsClose} onChange={(e) => set("newsClose", Number(e.target.value))} className={field}>
-                    {[3, 1, 2, 0].map((c) => (
+                    {allowed("newsClose", [3, 1, 2, 0]).map((c) => (
                       <option key={c} value={c}>
                         {t(`newsCloses.c${c}`)}
                       </option>
                     ))}
                   </select>
                 </Field>
+                )}
               </div>
             </>
           )}
+        </div>
+        )}
+      </section>
+
+      {/* ===== BACKTEST ===== */}
+      <section className={`${card} flex flex-col gap-3`}>
+        <h2 className={h2}>{t("backtest")}</h2>
+        <p className="text-sm text-brand-ink-dim">{t("backtestHint")}</p>
+        <ul className="list-disc space-y-1.5 pl-5 text-sm text-brand-ink-dim">
+          <li>{t("backtestAuto")}</li>
+          <li>{t("backtestManual")}</li>
+          <li>{t("backtestPair")}</li>
+        </ul>
+        <div className="flex flex-wrap items-center gap-3">
+          <a
+            href={`/api/robot/config/${login}`}
+            className="rounded-full border border-brand-accent/60 px-4 py-2 text-xs font-semibold text-brand-accent hover:bg-brand-accent/10"
+          >
+            {t("backtestDownload")}
+          </a>
+          {dirty && <span className="text-xs text-amber-300">{t("backtestSaveFirst")}</span>}
         </div>
       </section>
 

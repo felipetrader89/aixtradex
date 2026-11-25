@@ -6,7 +6,8 @@ import { RobotSettingsForm } from "@/components/portal/RobotSettingsForm";
 import { requireCustomer } from "@/lib/portal";
 import { canConfigure } from "@/lib/robot-access";
 import { PRODUCT } from "@/lib/plans";
-import { ROBOT_SYMBOLS, getRobotAdminSettings, getRobotConfig } from "@/lib/robot-settings";
+import { ROBOT_SYMBOLS, getRobotConfig, getRobotPolicy } from "@/lib/robot-settings";
+import { enforcePolicy, policyPair } from "@/lib/robot-options";
 
 type Props = { params: Promise<{ locale: string; login: string }> };
 
@@ -24,8 +25,10 @@ export default async function RobotSettingsPage({ params }: Props) {
   const user = await canConfigure(login);
   if (!user) notFound();
   const t = await getTranslations("Portal.robot");
-  const [config, admin] = await Promise.all([getRobotConfig(PRODUCT.slug, login), getRobotAdminSettings()]);
-  const { updatedAt, ...formValues } = config;
+  const [config, policy] = await Promise.all([getRobotConfig(PRODUCT.slug, login), getRobotPolicy()]);
+  const { updatedAt, admin: savedByAdmin, ...values } = config;
+  // Cliente sempre vê só o que o admin liberou (mesmo numa conta que um admin salvou); admin vê tudo.
+  const formValues = user.isAdmin || !savedByAdmin ? values : enforcePolicy(values, policy);
   const date = new Intl.DateTimeFormat(locale, { dateStyle: "short", timeStyle: "short" });
 
   return (
@@ -36,11 +39,13 @@ export default async function RobotSettingsPage({ params }: Props) {
         </NextLink>
       </PortalHeader>
       {updatedAt && <p className="-mt-3 text-xs text-brand-ink-dim">{t("updated", { date: date.format(updatedAt) })}</p>}
+      {user.isAdmin && <p className="-mt-3 text-xs text-amber-300">{t("adminNote")}</p>}
       <RobotSettingsForm
         login={login}
         initial={formValues}
         symbols={[...ROBOT_SYMBOLS]}
-        ddCap={admin.ddCap}
+        policy={user.isAdmin ? null : policy}
+        defaultPair={policyPair(policy)}
         allowCustom={user.isAdmin}
       />
     </div>
