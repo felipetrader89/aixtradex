@@ -20,6 +20,8 @@ export const PLAN_MAX_GOAL = 20;
 export const PLAN_TARGET_RATE = 0.7; // meta sugerida = a maior que bateu em pelo menos 70% dos dias
 export const PLAN_MAX_AUTO_PAIRS = 5;
 export const PLAN_MAX_PAIRS = 12;
+// par com menos dias de histórico M1 no MT4 do cliente não entra na conta (o MT4 só tem histórico dos gráficos que já abriu)
+export const PLAN_MIN_DAYS = 10;
 
 export const roundStep = (v: number) => Math.round(v / PLAN_STEP) * PLAN_STEP;
 
@@ -176,10 +178,11 @@ export type PairAnalysis = {
   trades: number;
   full: boolean; // teve leitura completa
   daily: boolean; // robô v7.4+ (mandou o dia a dia)
+  days: number; // dias com mercado que o MT4 tinha no período
 };
 
 export function analyzePair(symbol: string, status: PairAnalysis["status"], error: string | null, result: ScanResult | null): PairAnalysis {
-  const base: PairAnalysis = { symbol, status, error, cur: null, best: null, bestCfg: null, validated: false, netR: 0, pf: 0, trades: 0, full: false, daily: false };
+  const base: PairAnalysis = { symbol, status, error, cur: null, best: null, bestCfg: null, validated: false, netR: 0, pf: 0, trades: 0, full: false, daily: false, days: 0 };
   if (status !== "done" || !result) return base;
   const best = result.full?.best ?? null;
   const st = best ? fullStats(best.st) : null;
@@ -189,6 +192,7 @@ export function analyzePair(symbol: string, status: PairAnalysis["status"], erro
     ...base,
     full: !!result.full,
     daily: !!d && d.days.length > 0,
+    days: d?.days.length ?? 0,
     cur: series(d?.cur),
     best: series(d?.best),
     bestCfg: best?.cfg ?? null,
@@ -202,7 +206,7 @@ export function analyzePair(symbol: string, status: PairAnalysis["status"], erro
 // Pares que o modo automático usa: melhor configuração confirmada e com média positiva no dia.
 export function autoCandidates(list: PairAnalysis[], riskOf: (symbol: string) => number, weekdays?: number[]): AutoCandidate[] {
   return list
-    .filter((a) => a.best && a.validated && a.bestCfg)
+    .filter((a) => a.best && a.validated && a.bestCfg && a.days >= PLAN_MIN_DAYS)
     .map((a) => ({ ...a.best!, risk: riskOf(a.symbol), w: avgDayPct(a.best!, riskOf(a.symbol), weekdays) }))
     .filter((c) => c.w > 0);
 }

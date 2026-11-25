@@ -1276,9 +1276,11 @@
       "why": {
         "noFull": "sem leitura completa",
         "noDaily": "robô sem o dia a dia",
+        "short": "pouco histórico no seu MT4 ({days} dias)",
         "notValidated": "não confirmou",
         "weak": "média negativa"
       },
+      "historyTip": "Pra incluir esses pares: no MT4 abra o gráfico M1 de cada um e aperte a tecla Home algumas vezes (o MT4 baixa o histórico da corretora), depois refaça a análise. Com o robô ligado o histórico também vai se acumulando.",
       "pairsManual": "Seus pares: escolha a configuração de cada um",
       "mine": "Meus ajustes",
       "ai": "Combinação da IA",

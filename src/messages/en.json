@@ -1276,9 +1276,11 @@
       "why": {
         "noFull": "no full reading",
         "noDaily": "robot without day-by-day",
+        "short": "little history in your MT4 ({days} days)",
         "notValidated": "not confirmed",
         "weak": "negative average"
       },
+      "historyTip": "To include these pairs: in MT4 open the M1 chart of each one and press the Home key a few times (MT4 downloads the broker history), then run the analysis again. With the robot running, history also builds up over time.",
       "pairsManual": "Your pairs: choose the setup for each",
       "mine": "My settings",
       "ai": "AI combination",

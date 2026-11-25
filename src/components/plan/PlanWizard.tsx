@@ -7,6 +7,7 @@ import { activatePlanAction, analyzePlanAction, resetPlanAction, applyPlanDefaul
 import { symbolLabel } from "@/lib/robot-options";
 import {
   PLAN_MAX_PAIRS,
+  PLAN_MIN_DAYS,
   PLAN_PROFILES,
   PLAN_TARGET_RATE,
   autoCandidates,
@@ -522,7 +523,7 @@ function Review({ plan, analyses, pairRisk, profileRisk, days, pairGoalOptions, 
 
   const excluded = analyses.filter((a) => plan.mode === "auto" && !alloc[a.symbol]);
   const reason = (a: PairAnalysis) =>
-    a.status !== "done" ? t(`analyze.status.${a.status}`) : !a.full ? t("review.why.noFull") : !a.daily ? t("review.why.noDaily") : !a.validated ? t("review.why.notValidated") : t("review.why.weak");
+    a.status !== "done" ? t(`analyze.status.${a.status}`) : !a.full ? t("review.why.noFull") : !a.daily ? t("review.why.noDaily") : a.days < PLAN_MIN_DAYS ? t("review.why.short", { days: a.days }) : !a.validated ? t("review.why.notValidated") : t("review.why.weak");
 
   return (
     <section className="flex flex-col gap-4">
@@ -642,6 +643,7 @@ function Review({ plan, analyses, pairRisk, profileRisk, days, pairGoalOptions, 
               {t("review.excluded")}: {excluded.map((a) => `${symbolLabel(a.symbol)} (${reason(a)})`).join(" · ")}
             </p>
           )}
+          {excluded.some((a) => a.daily && a.days < PLAN_MIN_DAYS) && <p className="text-xs text-amber-300">💡 {t("review.historyTip")}</p>}
         </div>
       )}
 
@@ -683,6 +685,7 @@ function Review({ plan, analyses, pairRisk, profileRisk, days, pairGoalOptions, 
                       )}
                     </div>
                   )}
+                  {a && a.daily && a.days < PLAN_MIN_DAYS && <p className="text-[11px] text-amber-300">⚠ {t("review.why.short", { days: a.days })} · {t("review.historyTip")}</p>}
                   {hint != null && hint !== pg[s] && <p className="text-[11px] text-brand-ink-dim">💡 {t("review.pairSuggest", { goal: nf.format(hint) })}</p>}
                 </li>
               );

@@ -1276,9 +1276,11 @@
       "why": {
         "noFull": "sin lectura completa",
         "noDaily": "robot sin el día a día",
+        "short": "poco historial en tu MT4 ({days} días)",
         "notValidated": "no se confirmó",
         "weak": "promedio negativo"
       },
+      "historyTip": "Para incluir estos pares: en MT4 abre el gráfico M1 de cada uno y presiona la tecla Inicio (Home) algunas veces (MT4 descarga el historial del broker), después rehaz el análisis. Con el robot encendido el historial también se va acumulando.",
       "pairsManual": "Tus pares: elige la configuración de cada uno",
       "mine": "Mis ajustes",
       "ai": "Combinación de la IA",
