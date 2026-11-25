@@ -2,6 +2,7 @@ import { desc, eq, inArray, ne } from "drizzle-orm";
 import { db, schema } from "@/lib/db";
 import { isPlaceholderEmail } from "@/lib/auth";
 import { licenseState } from "@/lib/licensing";
+import { planLabelPt } from "@/lib/plans";
 import { approveClaimAction, rejectClaimAction } from "@/app/actions/admin";
 import { Badge, Flash, PageHeader, Panel, adminBtn, adminBtnDanger, fmtDateTime } from "@/components/admin/ui";
 
@@ -100,7 +101,7 @@ export default async function AdminClaims({ searchParams }: Props) {
                       <li key={l.id} className="flex flex-wrap items-center gap-2">
                         <span className="font-mono font-semibold text-brand-accent">{l.key}</span>
                         <Badge tone={licenseState(l) === "active" ? "ok" : "warn"}>
-                          {l.plan === "lifetime" ? "Vitalícia" : "Mensal"}
+                          {planLabelPt(l.plan)}
                         </Badge>
                         <span className="font-mono text-brand-ink">
                           {accounts

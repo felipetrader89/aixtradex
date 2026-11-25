@@ -3,7 +3,7 @@
 import { useState, useTransition } from "react";
 import { useLocale, useTranslations } from "next-intl";
 import { PaymentMethods } from "@/components/payment/PaymentMethods";
-import { renewMyLicenseAction } from "@/app/actions/account";
+import { rechargeMyPassAction, renewMyLicenseAction } from "@/app/actions/account";
 import { siteConfig } from "@/lib/site-config";
 import type { PublicPaymentMethod } from "@/lib/payment-methods";
 
@@ -63,6 +63,35 @@ export function PayOrder({
           <PaymentMethods dmHref={dmHref} methods={methods} exactAmount={exactAmount} />
         </div>
       )}
+    </div>
+  );
+}
+
+// Passe de teste: recarregar +1, +3 ou +7 dias (cria o pedido; o cliente paga em Pedidos).
+export function PassRecharge({ licenseId, options }: { licenseId: string; options: { key: string; label: string }[] }) {
+  const t = useTranslations("Account");
+  const locale = useLocale();
+  const [pending, startTransition] = useTransition();
+  const [done, setDone] = useState(false);
+  if (done) return <p className="text-xs text-brand-accent">{t("passRechargePending")}</p>;
+  return (
+    <div className="flex flex-wrap justify-center gap-2">
+      {options.map((o) => (
+        <button
+          key={o.key}
+          type="button"
+          className={secondaryBtn}
+          disabled={pending}
+          onClick={() =>
+            startTransition(async () => {
+              const result = await rechargeMyPassAction(licenseId, o.key, locale);
+              if (result.ok) setDone(true);
+            })
+          }
+        >
+          {o.label}
+        </button>
+      ))}
     </div>
   );
 }

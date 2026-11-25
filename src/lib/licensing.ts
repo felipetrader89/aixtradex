@@ -1,6 +1,6 @@
 import "server-only";
 import { randomBytes, randomInt, randomUUID } from "node:crypto";
-import { and, eq, inArray, isNotNull, lt, ne, notInArray, sql } from "drizzle-orm";
+import { and, eq, gte, inArray, isNotNull, lt, ne, notInArray, sql } from "drizzle-orm";
 import { db, schema } from "@/lib/db";
 import type { License } from "@/lib/db/schema";
 import { findOrCreateUser } from "@/lib/auth";
@@ -13,7 +13,12 @@ import {
   PLAN_DISCOUNT_USD,
   PLAN_MAX_ACCOUNTS,
   PLAN_PRICE_USD,
+  PASS_CREDIT_DAYS,
+  PASS_CREDIT_MAX_SHARE,
+  PASS_PRICE_USD,
   PRODUCT,
+  passKeyByDays,
+  planLabelPt,
   type PlanType,
 } from "@/lib/plans";
 
@@ -39,8 +44,33 @@ export function isPartnerBroker(slug: string | null | undefined): slug is string
   return Boolean(slug && partnerBrokers.some((b) => b.slug === slug));
 }
 
-export function priceFor(plan: PlanType, broker: string | null | undefined) {
+export function priceFor(plan: PlanType, broker: string | null | undefined, passDays?: number | null) {
+  if (plan === "trial") {
+    const key = passKeyByDays(passDays);
+    return key ? PASS_PRICE_USD[key] : PLAN_PRICE_USD.trial;
+  }
   return PLAN_PRICE_USD[plan] - (isPartnerBroker(broker) ? PLAN_DISCOUNT_USD[plan] : 0);
+}
+
+
+// Crédito de passes de teste: o que o cliente pagou em passes nos últimos 7 dias, menos o crédito que já usou.
+export async function passCredit(userId: string) {
+  const since = new Date(Date.now() - PASS_CREDIT_DAYS * 86_400_000);
+  const [paid] = await db()
+    .select({ v: sql<string>`coalesce(sum(${schema.orders.amountUsd}), 0)` })
+    .from(schema.orders)
+    .where(and(eq(schema.orders.userId, userId), eq(schema.orders.plan, "trial"), eq(schema.orders.status, "paid"), gte(schema.orders.paidAt, since)));
+  const [used] = await db()
+    .select({ v: sql<string>`coalesce(sum(${schema.orders.creditUsd}), 0)` })
+    .from(schema.orders)
+    .where(
+      and(
+        eq(schema.orders.userId, userId),
+        ne(schema.orders.status, "cancelled"),
+        gte(schema.orders.createdAt, new Date(Date.now() - 2 * PASS_CREDIT_DAYS * 86_400_000))
+      )
+    );
+  return Math.max(0, Number(paid?.v ?? 0) - Number(used?.v ?? 0));
 }
 
 export function cleanLogins(logins: string[], max: number) {
@@ -101,10 +131,29 @@ export async function createOrder(input: {
   logins: string[];
   licenseId?: string;
   locale?: string;
+  passDays?: number;
 }) {
   const user = await findOrCreateUser(input.email, { name: input.name, country: input.country, track: true });
-  const broker = isPartnerBroker(input.broker) ? input.broker : null;
-  const price = priceFor(input.plan, broker);
+  const trial = input.plan === "trial";
+  const broker = isPartnerBroker(input.broker) && !trial ? input.broker : null;
+  const passDays = trial ? (passKeyByDays(input.passDays) ? input.passDays! : 1) : null;
+  let price = priceFor(input.plan, broker, passDays);
+  let credit = 0;
+  let licenseId = input.licenseId;
+  if (trial && !licenseId && input.logins.length) {
+    // Recarga: a mesma conta MT4 já tem um passe deste cliente → soma os dias nele.
+    const [own] = await db()
+      .select({ id: schema.licenses.id })
+      .from(schema.licenses)
+      .innerJoin(schema.licenseAccounts, eq(schema.licenseAccounts.licenseId, schema.licenses.id))
+      .where(and(eq(schema.licenses.userId, user.id), eq(schema.licenses.plan, "trial"), eq(schema.licenseAccounts.login, input.logins[0])))
+      .limit(1);
+    if (own) licenseId = own.id;
+  }
+  if (!trial && !licenseId) {
+    credit = Math.min(await passCredit(user.id), Math.floor(price * PASS_CREDIT_MAX_SHARE));
+    price -= credit;
+  }
   // Dois clientes no mesmo segundo podem sortear o mesmo valor: o índice único barra e tentamos de novo.
   for (let attempt = 0; ; attempt++) {
     try {
@@ -120,13 +169,15 @@ export async function createOrder(input: {
           locale: input.locale ?? null,
           broker,
           mt4Logins: input.logins,
-          licenseId: input.licenseId,
+          licenseId,
+          passDays,
+          creditUsd: credit.toFixed(2),
         })
         .returning();
       await recordActivity(
         "order",
         user,
-        `${order.code} · ${input.plan === "lifetime" ? "Vitalícia" : "Mensal"} $${order.amountUsd}${input.licenseId ? " · renovação" : ""}`
+        `${order.code} · ${planLabelPt(input.plan, passDays)} $${order.amountUsd}${licenseId ? (trial ? " · recarga" : " · renovação") : ""}${credit ? ` · crédito de passe $${credit}` : ""}`
       );
       return order;
     } catch (error) {
@@ -170,9 +221,10 @@ function approveOrderTx(orderId: string, payment: { method: string; ref?: string
       const [license] = await tx.select().from(schema.licenses).where(eq(schema.licenses.id, order.licenseId));
       if (license) {
         const base = license.expiresAt && license.expiresAt > new Date() ? license.expiresAt : new Date();
+        const days = order.plan === "trial" ? (order.passDays ?? 1) : MONTHLY_DAYS;
         await tx
           .update(schema.licenses)
-          .set({ expiresAt: new Date(base.getTime() + MONTHLY_DAYS * 86_400_000) })
+          .set({ expiresAt: new Date(base.getTime() + days * 86_400_000) })
           .where(eq(schema.licenses.id, license.id));
         return { ok: true, licenseId: license.id, skippedLogins: [] as string[] } as const;
       }
@@ -180,7 +232,32 @@ function approveOrderTx(orderId: string, payment: { method: string; ref?: string
 
     const max = PLAN_MAX_ACCOUNTS[order.plan];
     const wanted = order.mt4Logins.slice(0, max);
-    const taken = await loginsInUse(wanted);
+    if (order.plan !== "trial" && wanted.length) {
+      // Cliente saindo do passe de teste pro plano: a conta MT4 sai do passe (que termina agora) e entra na licença nova.
+      const trials = await tx
+        .select({ id: schema.licenses.id })
+        .from(schema.licenses)
+        .where(and(eq(schema.licenses.userId, order.userId), eq(schema.licenses.plan, "trial")));
+      if (trials.length) {
+        const ids = trials.map((t) => t.id);
+        const moved = await tx
+          .delete(schema.licenseAccounts)
+          .where(and(inArray(schema.licenseAccounts.licenseId, ids), inArray(schema.licenseAccounts.login, wanted)))
+          .returning({ licenseId: schema.licenseAccounts.licenseId });
+        if (moved.length)
+          await tx
+            .update(schema.licenses)
+            .set({ expiresAt: new Date(), notes: `Virou ${order.plan === "lifetime" ? "Vitalícia" : "Mensal"} (pedido ${order.code})` })
+            .where(inArray(schema.licenses.id, [...new Set(moved.map((m) => m.licenseId))]));
+      }
+    }
+    const takenRows = wanted.length
+      ? await tx
+          .select({ login: schema.licenseAccounts.login })
+          .from(schema.licenseAccounts)
+          .where(and(eq(schema.licenseAccounts.product, PRODUCT.slug), inArray(schema.licenseAccounts.login, wanted)))
+      : [];
+    const taken = takenRows.map((r) => r.login);
     const logins = wanted.filter((l) => !taken.includes(l));
     const licenseId = randomUUID();
     await tx.insert(schema.licenses).values({
@@ -191,7 +268,12 @@ function approveOrderTx(orderId: string, payment: { method: string; ref?: string
       plan: order.plan,
       maxAccounts: max,
       broker: order.broker,
-      expiresAt: order.plan === "monthly" ? new Date(Date.now() + MONTHLY_DAYS * 86_400_000) : null,
+      expiresAt:
+        order.plan === "monthly"
+          ? new Date(Date.now() + MONTHLY_DAYS * 86_400_000)
+          : order.plan === "trial"
+            ? new Date(Date.now() + (order.passDays ?? 1) * 86_400_000)
+            : null,
     });
     if (logins.length) {
       await tx

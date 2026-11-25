@@ -161,9 +161,18 @@ export async function analysesToday(product: string, login: string) {
   return row?.n ?? 0;
 }
 
-export async function clientDailyLimit() {
+// Análises por conta a cada 24 h pro cliente (passe de teste: no máximo 1).
+export async function clientDailyLimit(product?: string, login?: string) {
   const s = await getAiSettings();
-  return s.clientDaily ?? AI_CLIENT_DAILY_DEFAULT;
+  const limit = s.clientDaily ?? AI_CLIENT_DAILY_DEFAULT;
+  if (!product || !login) return limit;
+  const [row] = await db()
+    .select({ plan: schema.licenses.plan })
+    .from(schema.licenseAccounts)
+    .innerJoin(schema.licenses, eq(schema.licenses.id, schema.licenseAccounts.licenseId))
+    .where(and(eq(schema.licenseAccounts.product, product), eq(schema.licenseAccounts.login, login)))
+    .limit(1);
+  return row?.plan === "trial" ? Math.min(limit, 1) : limit;
 }
 
 export async function latestAnalysis(product: string, login: string) {
@@ -207,7 +216,7 @@ export function aiErrorOf(error: unknown): AnalysisError {
 export async function generateAnalysis(opts: { product: string; login: string; locale: string; policy: RobotPolicy | null; requestedBy: string; isAdmin: boolean }) {
   const key = await getAiKey();
   if (!key) return { ok: false as const, error: "nokey" as AnalysisError };
-  const limit = opts.isAdmin ? 20 : await clientDailyLimit();
+  const limit = opts.isAdmin ? 20 : await clientDailyLimit(opts.product, opts.login);
   if ((await analysesToday(opts.product, opts.login)) >= limit) return { ok: false as const, error: "limit" as AnalysisError };
   const input = await buildAnalysisInput(opts.product, opts.login, opts.policy);
   if (!input.hasData) return { ok: false as const, error: "nodata" as AnalysisError };

@@ -99,6 +99,31 @@
         "term": "Term", "termValue": "Short / Medium / Long"
       }
     },
+    "pass": {
+      "tag": "Trial pass",
+      "title": "Test the robot before you subscribe",
+      "description": "Turn the robot on in 1 MT4 account for 1, 3 or 7 days. Want more time? Top up in My Account and the days add up. Same robot, same portal and the same Ai X Intelligence (1 AI analysis per day).",
+      "d1": {
+        "label": "1-day pass",
+        "price": "$10",
+        "period": "",
+        "note": "24 hours · 1 MT4 account"
+      },
+      "d3": {
+        "label": "3-day pass",
+        "price": "$25",
+        "period": "",
+        "note": "$8.33 per day · 1 MT4 account"
+      },
+      "d7": {
+        "label": "7-day pass",
+        "price": "$49",
+        "period": "",
+        "note": "$7 per day · 1 MT4 account"
+      },
+      "cta": "Try it",
+      "creditNote": "Liked it? What you paid in passes over the last 7 days becomes a discount on the Monthly or Lifetime License (up to half the price)."
+    },
     "license": {
       "tag": "Robot license - up to 2 accounts (monthly) or up to 5 accounts (lifetime)",
       "description": "You get the robot file and install it directly on your own MT4 accounts, no account management from me. The monthly license covers up to 2 MT4 accounts and the lifetime license up to 5. You enter each account number at checkout and, if needed, can correct them once in My Account.",
@@ -336,6 +361,9 @@
     "flow": {
       "choosePlan": "Choose your plan",
       "discountApplied": "{broker} partner discount: -{discount}",
+      "passTitle": "Or test it first with a pass",
+      "passCredit": "Credit from your trial passes: -{credit}",
+      "passNote": "Trial pass: 1 MT4 account, starts when the payment is confirmed. For more time, top up in My Account (the days add up).",
       "back": "← Back",
       "steps": {
         "discount": "Discount",
@@ -365,6 +393,7 @@
         "title": "Create your MT4 account with these settings",
         "body": "At your broker, open a MetaTrader 4 account like this:",
         "bodyBroker": "In your {broker} client area, open a MetaTrader 4 account like this:",
+        "bodyPass": "Enter the MT4 account where you will test the robot. It can be real or demo, at any broker, with spread up to 30 pts.",
         "platform": "Platform",
         "platformValue": "MetaTrader 4",
         "leverage": "Leverage",
@@ -406,6 +435,7 @@
         "bodyAuto": "Pay the exact amount below and confirmation is automatic: this page updates as soon as the payment arrives, and you get an email.",
         "accounts": "MT4 accounts: {ids}",
         "order": "Order {code}",
+        "recharge": "This account already has a pass: the new days add to the time left.",
         "accountHint": "As soon as the payment is confirmed, your license shows up in My Account. Sign in with {email}."
       }
     },
@@ -451,6 +481,7 @@
     "empty": "You don't have an active license yet. As soon as the payment is confirmed, it shows up here.",
     "seePlans": "See plans",
     "plan": {
+      "trial": "Trial pass",
       "monthly": "Monthly License",
       "lifetime": "Lifetime License"
     },
@@ -479,6 +510,12 @@
     },
     "renew": "Renew for 30 more days ({price})",
     "renewPending": "Renewal created - pay the order below.",
+    "passRechargeTitle": "Top up the pass (the days add up)",
+    "passRechargeOption": "+{days, plural, one {# day} other {# days}} · {price}",
+    "passRechargePending": "Top-up created - pay the order in Orders.",
+    "passCreditHint": "You have {credit} in pass credit: it becomes a discount if you subscribe to Monthly or Lifetime in the next few days.",
+    "passUpgradeMonthly": "Subscribe to the Monthly License",
+    "passUpgradeLifetime": "Buy the Lifetime License",
     "ordersTitle": "Orders",
     "ordersEmpty": "No orders yet.",
     "orderStatus": {
@@ -565,6 +602,7 @@
       "intro": "Hi! I received the payment for order {code}. Your Ai X PULSE RS license is now active.",
       "plan": "Plan",
       "planMonthly": "Monthly",
+      "planTrial": "Trial pass ({days, plural, one {# day} other {# days}})",
       "planLifetime": "Lifetime",
       "expires": "Valid until",
       "lifetime": "Lifetime (never expires)",

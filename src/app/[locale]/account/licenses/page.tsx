@@ -1,11 +1,11 @@
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import NextLink from "next/link";
 import { LicenseAccountsEditor } from "@/components/account/LicenseAccountsEditor";
-import { RenewButton } from "@/components/account/AccountActions";
+import { PassRecharge, RenewButton } from "@/components/account/AccountActions";
 import { Card, PortalHeader } from "@/components/portal/ui";
-import { licenseState, priceFor, swapsLeft } from "@/lib/licensing";
+import { licenseState, passCredit, priceFor, swapsLeft } from "@/lib/licensing";
 import { loadLicenses, requireCustomer } from "@/lib/portal";
-import { PRODUCT } from "@/lib/plans";
+import { PASS_DAYS, PASS_KEYS, PASS_PRICE_USD, PRODUCT } from "@/lib/plans";
 import { siteConfig } from "@/lib/site-config";
 
 type Props = { params: Promise<{ locale: string }> };
@@ -29,7 +29,7 @@ export default async function LicensesPage({ params }: Props) {
   const t = await getTranslations("Account");
   const tp = await getTranslations("Portal");
   const date = new Intl.DateTimeFormat(locale, { dateStyle: "medium" });
-  const { licenses, accounts } = await loadLicenses(user.id);
+  const [{ licenses, accounts }, credit] = await Promise.all([loadLicenses(user.id), passCredit(user.id)]);
 
   return (
     <div className="flex flex-col gap-5">
@@ -82,6 +82,24 @@ export default async function LicensesPage({ params }: Props) {
                   supportUrl={siteConfig.telegramDmUrl}
                 />
               </div>
+              {license.plan === "trial" && license.status === "active" && (
+                <div className="mt-5 flex flex-col items-center gap-3 border-t border-brand-hairline pt-5 text-center">
+                  <p className="text-sm font-semibold text-brand-ink">{t("passRechargeTitle")}</p>
+                  <PassRecharge
+                    licenseId={license.id}
+                    options={PASS_KEYS.map((k) => ({ key: k, label: t("passRechargeOption", { days: PASS_DAYS[k], price: `$${PASS_PRICE_USD[k]}` }) }))}
+                  />
+                  {credit > 0 && <p className="max-w-md text-xs text-brand-accent">{t("passCreditHint", { credit: `$${credit}` })}</p>}
+                  <div className="flex flex-wrap justify-center gap-3 text-sm font-semibold">
+                    <NextLink href={`/${locale}/payment?plan=licenseMonthly`} className="text-brand-accent hover:underline">
+                      {t("passUpgradeMonthly")} →
+                    </NextLink>
+                    <NextLink href={`/${locale}/payment?plan=licenseLifetime`} className="text-brand-accent hover:underline">
+                      {t("passUpgradeLifetime")} →
+                    </NextLink>
+                  </div>
+                </div>
+              )}
               {license.plan === "monthly" && license.status === "active" && (
                 <div className="mt-5 border-t border-brand-hairline pt-5">
                   <RenewButton licenseId={license.id} price={`$${priceFor("monthly", license.broker)}`} />

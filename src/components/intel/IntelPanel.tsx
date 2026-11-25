@@ -43,7 +43,7 @@ export async function IntelPanel({ login, locale, policy }: { login: string; loc
     latestAnalysis(PRODUCT.slug, login),
     getAiKey(),
     analysesToday(PRODUCT.slug, login),
-    clientDailyLimit(),
+    clientDailyLimit(PRODUCT.slug, login),
   ]);
   const aiLimit = policy ? clientLimit : 20;
   const config = policy && full.admin ? enforcePolicy(full, policy) : full;

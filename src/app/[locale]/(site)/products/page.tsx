@@ -112,6 +112,28 @@ export default async function ProductsPage({ params }: Props) {
           ))}
         </div>
 
+        {/* Passe de teste: testar o robô por 1, 3 ou 7 dias antes de assinar */}
+        <GlowCard className="mb-8">
+          <p className="text-xs font-semibold uppercase tracking-wide text-brand-accent">{t("pass.tag")}</p>
+          <h2 className="mt-2 font-display text-xl font-bold text-chrome">{t("pass.title")}</h2>
+          <p className="mt-2 text-sm text-brand-ink-dim">{t("pass.description")}</p>
+          <div className="mt-5 grid gap-3 sm:grid-cols-3">
+            {(["d1", "d3", "d7"] as const).map((d) => (
+              <Link
+                key={d}
+                href={`/payment?plan=pass${d.slice(1)}`}
+                className="flex flex-col items-center rounded-2xl border border-brand-hairline bg-brand-surface-2 px-4 py-4 text-center transition hover:border-brand-accent"
+              >
+                <span className="text-sm font-semibold text-brand-ink">{t(`pass.${d}.label`)}</span>
+                <span className="mt-1 font-display text-2xl font-extrabold text-chrome">{t(`pass.${d}.price`)}</span>
+                <span className="mt-1 text-[11px] text-brand-ink-dim">{t(`pass.${d}.note`)}</span>
+                <span className="mt-3 text-xs font-semibold text-brand-accent">{t("pass.cta")} →</span>
+              </Link>
+            ))}
+          </div>
+          <p className="mt-4 text-xs text-brand-ink-dim">💡 {t("pass.creditNote")}</p>
+        </GlowCard>
+
         <GlowCard className="mb-6 text-sm">
           <p className="text-brand-ink-dim">{t("license.requirementsNote")}</p>
         </GlowCard>

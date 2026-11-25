@@ -112,8 +112,9 @@ export default async function AdminLicenses({ searchParams }: Props) {
           <select name="plan" className={adminInput} defaultValue="monthly">
             <option value="monthly">Mensal (até 2 contas)</option>
             <option value="lifetime">Vitalícia (até 5 contas)</option>
+            <option value="trial">Passe de teste (1 conta, até 30 dias)</option>
           </select>
-          <input name="days" type="number" min={1} defaultValue={30} placeholder="Dias (mensal)" className={adminInput} />
+          <input name="days" type="number" min={1} defaultValue={30} placeholder="Dias (mensal ou passe)" className={adminInput} />
           <input name="logins" placeholder="Contas MT4 (separadas por vírgula)" className={adminInput} />
           <input name="notes" placeholder="Anotação (opcional)" className={`${adminInput} sm:col-span-2`} />
           <div>

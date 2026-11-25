@@ -71,6 +71,13 @@
       "when": 1795614612052,
       "tag": "0009_broker_symbols_ai",
       "breakpoints": true
+    },
+    {
+      "idx": 10,
+      "version": "7",
+      "when": 1795617908843,
+      "tag": "0010_trial_pass",
+      "breakpoints": true
     }
   ]
 }

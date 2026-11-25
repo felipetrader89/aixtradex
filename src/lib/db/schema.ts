@@ -64,7 +64,11 @@ export const orders = pgTable(
       .notNull()
       .references(() => users.id),
     product: text("product").notNull(),
-    plan: text("plan", { enum: ["monthly", "lifetime"] }).notNull(),
+    plan: text("plan", { enum: ["monthly", "lifetime", "trial"] }).notNull(),
+    // Passe de teste: quantos dias esse pedido libera (1, 3 ou 7).
+    passDays: integer("pass_days"),
+    // Crédito de passes de teste descontado neste pedido (Mensal/Vitalícia).
+    creditUsd: numeric("credit_usd", { precision: 12, scale: 2 }).notNull().default("0"),
     amountUsd: numeric("amount_usd", { precision: 12, scale: 2 }).notNull(),
     // Valor exato a pagar em USDT/USDC: preço + centavos únicos (ex.: 99.37), pra Binance achar o pedido pelo depósito.
     payAmount: numeric("pay_amount", { precision: 12, scale: 2 }),
@@ -97,7 +101,7 @@ export const licenses = pgTable(
       .notNull()
       .references(() => users.id),
     product: text("product").notNull(),
-    plan: text("plan", { enum: ["monthly", "lifetime"] }).notNull(),
+    plan: text("plan", { enum: ["monthly", "lifetime", "trial"] }).notNull(),
     status: text("status", { enum: ["active", "suspended"] }).notNull().default("active"),
     maxAccounts: integer("max_accounts").notNull(),
     // Corretora parceira (IB) — mantém o desconto recorrente nas renovações da mensal.

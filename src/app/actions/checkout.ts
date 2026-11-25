@@ -5,11 +5,11 @@ import { EMAIL_RE } from "@/lib/auth";
 import { isAutoPayActive } from "@/lib/config";
 import { db, schema } from "@/lib/db";
 import { cleanLogins, createOrder } from "@/lib/licensing";
-import { PLAN_MAX_ACCOUNTS, PLAN_TYPE, isPlanKey } from "@/lib/plans";
+import { PASS_DAYS, PLAN_MAX_ACCOUNTS, PLAN_TYPE, isPassKey, isPlanKey } from "@/lib/plans";
 
 // payAmount só vem quando a leitura automática da Binance está ligada; sem ela o checkout segue no fluxo manual (Telegram).
 export type CreateOrderResult =
-  | { ok: true; code: string; amount: string; payAmount: string | null }
+  | { ok: true; code: string; amount: string; payAmount: string | null; credit: string | null; recharge: boolean }
   | { ok: false; error: string };
 
 // Grava o pedido do checkout como "pendente". A licença só nasce quando o pagamento é aprovado.
@@ -40,9 +40,17 @@ export async function createOrderAction(input: {
       broker: input.broker,
       logins: cleaned.logins!,
       locale: input.locale?.slice(0, 5),
+      passDays: isPassKey(input.planKey) ? PASS_DAYS[input.planKey] : undefined,
     });
     const payAmount = (await isAutoPayActive()) && order.payAmount ? Number(order.payAmount).toFixed(2) : null;
-    return { ok: true, code: order.code, amount: order.amountUsd, payAmount };
+    return {
+      ok: true,
+      code: order.code,
+      amount: order.amountUsd,
+      payAmount,
+      credit: Number(order.creditUsd) > 0 ? Number(order.creditUsd).toFixed(2) : null,
+      recharge: plan === "trial" && Boolean(order.licenseId),
+    };
   } catch (error) {
     console.error("createOrderAction", error);
     return { ok: false, error: "server" };

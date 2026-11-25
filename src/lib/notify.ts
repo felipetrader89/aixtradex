@@ -1,4 +1,5 @@
 import "server-only";
+import { planLabelPt } from "@/lib/plans";
 import { eq } from "drizzle-orm";
 import { getTranslations } from "next-intl/server";
 import { routing } from "@/i18n/routing";
@@ -69,7 +70,7 @@ export async function notifyOrderPaid(orderId: string, via: string) {
     const lines = [
       t("intro", { code: order.code }),
       "",
-      `${t("plan")}: ${order.plan === "lifetime" ? t("planLifetime") : t("planMonthly")}`,
+      `${t("plan")}: ${order.plan === "lifetime" ? t("planLifetime") : order.plan === "trial" ? t("planTrial", { days: order.passDays ?? 1 }) : t("planMonthly")}`,
       `${t("expires")}: ${expires}`,
       `${t("accounts")}: ${accounts.map((a) => a.login).join(", ") || "-"}`,
       "",
@@ -97,7 +98,7 @@ export async function notifyOrderPaid(orderId: string, via: string) {
       const adminLines = [
         `Pedido ${order.code} pago via ${via}.`,
         `Cliente: ${user.name ?? "-"} <${user.email}>`,
-        `Plano: ${order.plan === "lifetime" ? "Vitalícia" : "Mensal"}${order.licenseId && order.mt4Logins.length === 0 ? " (renovação)" : ""}`,
+        `Plano: ${planLabelPt(order.plan, order.passDays)}${order.licenseId && order.mt4Logins.length === 0 ? " (renovação)" : ""}${Number(order.creditUsd) > 0 ? ` · crédito de passe $${order.creditUsd}` : ""}`,
         `Valor: ${order.payAmount ?? order.amountUsd} USD`,
         `Licença: ${license?.key ?? "-"} · contas ${accounts.map((a) => a.login).join(", ") || "-"}`,
         "",

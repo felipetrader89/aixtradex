@@ -194,7 +194,8 @@ export async function saveLicenseNotesAction(form: FormData) {
 export async function createManualLicenseAction(form: FormData) {
   const admin = await requireAdmin();
   const email = field(form, "email").toLowerCase();
-  const plan: PlanType = field(form, "plan") === "lifetime" ? "lifetime" : "monthly";
+  const raw = field(form, "plan");
+  const plan: PlanType = raw === "lifetime" ? "lifetime" : raw === "trial" ? "trial" : "monthly";
   const days = Math.min(Math.max(Number(field(form, "days")) || MONTHLY_DAYS, 1), 3650);
   const logins = splitLogins(field(form, "logins"));
   if (!EMAIL_RE.test(email)) back(form, "Email inválido.");
@@ -217,7 +218,7 @@ export async function createManualLicenseAction(form: FormData) {
       product: PRODUCT.slug,
       plan,
       maxAccounts: max,
-      expiresAt: plan === "monthly" ? new Date(Date.now() + days * 86_400_000) : null,
+      expiresAt: plan === "lifetime" ? null : new Date(Date.now() + (plan === "trial" ? Math.min(days, 30) : days) * 86_400_000),
       notes: field(form, "notes") || "Criada manualmente no admin",
     })
     .returning();

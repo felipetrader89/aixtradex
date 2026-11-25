@@ -7,7 +7,7 @@ import { GlowCard } from "@/components/brand/GlowCard";
 import { CopyButton } from "@/components/ui/CopyButton";
 import { Link } from "@/i18n/navigation";
 import { siteConfig, partnerBrokers } from "@/lib/site-config";
-import { PLAN_ACCOUNTS, PLAN_KEYS, PLAN_PATH, type PlanKey } from "@/lib/plans";
+import { PASS_KEYS, PLAN_ACCOUNTS, PLAN_PATH, isPassKey, type PlanKey } from "@/lib/plans";
 import { AccountIdSlots } from "@/components/payment/AccountIdSlots";
 import { InlineField } from "@/components/payment/InlineField";
 import { CountryField } from "@/components/payment/CountryField";
@@ -33,7 +33,7 @@ export function CheckoutFlow({ initialPlan, methods }: { initialPlan?: PlanKey; 
   const tProducts = useTranslations("Products");
 
   const [plan, setPlan] = useState<PlanKey | undefined>(initialPlan);
-  const [step, setStep] = useState<Step>("discount");
+  const [step, setStep] = useState<Step>(isPassKey(initialPlan) ? "account" : "discount");
   const [wantsDiscount, setWantsDiscount] = useState(false);
   const [brokerSlug, setBrokerSlug] = useState<BrokerSlug | undefined>();
   const [accountIds, setAccountIds] = useState<string[]>([]);
@@ -41,7 +41,14 @@ export function CheckoutFlow({ initialPlan, methods }: { initialPlan?: PlanKey; 
   const [customerCountry, setCustomerCountry] = useState("");
   const [customerEmail, setCustomerEmail] = useState("");
   // Pedido gravado no banco; a chave evita criar outro pedido se o cliente só voltou e avançou de novo.
-  const [order, setOrder] = useState<{ key: string; code: string; payAmount: string | null } | null>(null);
+  const [order, setOrder] = useState<{
+    key: string;
+    code: string;
+    payAmount: string | null;
+    amount: string;
+    credit: string | null;
+    recharge: boolean;
+  } | null>(null);
   const [paid, setPaid] = useState(false);
   const locale = useLocale();
   const [saving, startSaving] = useTransition();
@@ -52,14 +59,16 @@ export function CheckoutFlow({ initialPlan, methods }: { initialPlan?: PlanKey; 
     topRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
   }
 
+  // Passe de teste: sem desconto de corretora, 1 conta MT4, vai direto pros dados da conta.
+  const isPass = isPassKey(plan);
   const broker = partnerBrokers.find((b) => b.slug === brokerSlug);
-  const discountApplied = wantsDiscount && Boolean(broker);
+  const discountApplied = !isPass && wantsDiscount && Boolean(broker);
   const planPath = plan ? PLAN_PATH[plan] : undefined;
   const planLabel = planPath ? tProducts(`${planPath}.label`) : "";
   const fullPrice = planPath ? tProducts(`${planPath}.price`) : "";
-  const discount = planPath ? tProducts(`${planPath}.discount`) : "";
-  const discountPrice = planPath ? tProducts(`${planPath}.discountPrice`) : "";
-  const finalPrice = discountApplied ? discountPrice : fullPrice;
+  const discount = planPath && !isPass ? tProducts(`${planPath}.discount`) : "";
+  const discountPrice = planPath && !isPass ? tProducts(`${planPath}.discountPrice`) : "";
+  const listPrice = discountApplied ? discountPrice : fullPrice;
   const period = planPath ? tProducts(`${planPath}.period`) : "";
   const maxAccounts = plan ? PLAN_ACCOUNTS[plan] : 0;
   // Ao trocar de vitalícia pra mensal, só as primeiras contas cabem no plano.
@@ -69,6 +78,10 @@ export function CheckoutFlow({ initialPlan, methods }: { initialPlan?: PlanKey; 
   const orderKey = JSON.stringify([plan, brokerSlug, customerEmail, customerName, customerCountry, savedIds]);
   const orderCode = order?.key === orderKey ? order.code : "";
   const payAmount = order?.key === orderKey ? order.payAmount : null;
+  const credit = order?.key === orderKey ? order.credit : null;
+  const recharge = order?.key === orderKey && order.recharge;
+  // Com crédito de passe de teste, o valor certo é o que o servidor calculou.
+  const finalPrice = credit && order ? `$${Number(order.amount).toLocaleString("en-US", { maximumFractionDigits: 2 })}` : listPrice;
 
   // Pagamento automático (Binance): confere o pedido a cada 8s enquanto o cliente está na tela de pagamento.
   useEffect(() => {
@@ -93,7 +106,11 @@ export function CheckoutFlow({ initialPlan, methods }: { initialPlan?: PlanKey; 
         locale,
       }).catch(() => null);
       // Se o banco falhar, o cliente segue mesmo assim: os dados vão na mensagem do Telegram.
-      setOrder(result?.ok ? { key: orderKey, code: result.code, payAmount: result.payAmount } : null);
+      setOrder(
+        result?.ok
+          ? { key: orderKey, code: result.code, payAmount: result.payAmount, amount: result.amount, credit: result.credit, recharge: result.recharge }
+          : null
+      );
       goTo("payment");
     });
   }
@@ -112,7 +129,22 @@ export function CheckoutFlow({ initialPlan, methods }: { initialPlan?: PlanKey; 
     : t("dmMessage", dmValues);
   const dmHref = `${siteConfig.telegramDmUrl}?text=${encodeURIComponent(dmText)}`;
 
-  const visibleSteps: readonly Step[] = wantsDiscount ? STEPS : STEPS.filter((s) => s !== "broker");
+  const visibleSteps: readonly Step[] = isPass
+    ? STEPS.filter((s) => s === "account" || s === "payment")
+    : wantsDiscount
+      ? STEPS
+      : STEPS.filter((s) => s !== "broker");
+  const choose = (key: PlanKey) => {
+    setPlan(key);
+    if (isPassKey(key)) {
+      setWantsDiscount(false);
+      setStep("account");
+    } else if (isPassKey(plan)) setStep("discount");
+  };
+  const chip = (key: PlanKey) =>
+    plan === key
+      ? "rounded-full bg-brand-accent px-4 py-2 text-xs font-semibold text-brand-bg"
+      : "rounded-full border border-brand-hairline px-4 py-2 text-xs font-semibold text-brand-ink-dim transition-colors hover:border-brand-accent hover:text-brand-accent";
   const currentIndex = visibleSteps.indexOf(step);
 
   return (
@@ -122,19 +154,18 @@ export function CheckoutFlow({ initialPlan, methods }: { initialPlan?: PlanKey; 
         <p className="text-xs font-semibold uppercase tracking-wide text-brand-accent">
           {plan ? t("planLabel") : tFlow("choosePlan")}
         </p>
-        <div className="mt-3 flex justify-center gap-2">
-          {PLAN_KEYS.map((key) => (
-            <button
-              key={key}
-              type="button"
-              onClick={() => setPlan(key)}
-              className={
-                plan === key
-                  ? "rounded-full bg-brand-accent px-4 py-2 text-xs font-semibold text-brand-bg"
-                  : "rounded-full border border-brand-hairline px-4 py-2 text-xs font-semibold text-brand-ink-dim transition-colors hover:border-brand-accent hover:text-brand-accent"
-              }
-            >
+        <div className="mt-3 flex flex-wrap justify-center gap-2">
+          {(["licenseMonthly", "licenseLifetime"] as const).map((key) => (
+            <button key={key} type="button" onClick={() => choose(key)} className={chip(key)}>
               {tProducts(`${PLAN_PATH[key]}.label`)}
+            </button>
+          ))}
+        </div>
+        <p className="mt-4 text-[11px] font-semibold uppercase tracking-wide text-brand-ink-dim">{tFlow("passTitle")}</p>
+        <div className="mt-2 flex flex-wrap justify-center gap-2">
+          {PASS_KEYS.map((key) => (
+            <button key={key} type="button" onClick={() => choose(key)} className={chip(key)}>
+              {tProducts(`${PLAN_PATH[key]}.label`)} · {tProducts(`${PLAN_PATH[key]}.price`)}
             </button>
           ))}
         </div>
@@ -154,6 +185,8 @@ export function CheckoutFlow({ initialPlan, methods }: { initialPlan?: PlanKey; 
                 {tFlow("discountApplied", { discount, broker: broker!.name })}
               </p>
             )}
+            {credit && <p className="mt-1 text-xs font-semibold text-brand-accent">{tFlow("passCredit", { credit: `$${credit}` })}</p>}
+            {isPass && <p className="mx-auto mt-2 max-w-md text-xs text-brand-ink-dim">{tFlow("passNote")}</p>}
           </>
         )}
       </GlowCard>
@@ -302,9 +335,11 @@ export function CheckoutFlow({ initialPlan, methods }: { initialPlan?: PlanKey; 
                 {tFlow("account.title")}
               </h2>
               <p className="mt-2 text-center text-sm text-brand-ink-dim">
-                {discountApplied
-                  ? tFlow("account.bodyBroker", { broker: broker!.name })
-                  : tFlow("account.body")}
+                {isPass
+                  ? tFlow("account.bodyPass")
+                  : discountApplied
+                    ? tFlow("account.bodyBroker", { broker: broker!.name })
+                    : tFlow("account.body")}
               </p>
               <dl className="mx-auto mt-5 grid max-w-md gap-3">
                 {(["platform", "leverage", "deposit", "type"] as const).map((key) => (
@@ -355,14 +390,12 @@ export function CheckoutFlow({ initialPlan, methods }: { initialPlan?: PlanKey; 
               {!accountStepDone && (
                 <p className="mt-3 text-center text-xs text-brand-ink-dim">{tFlow("account.required")}</p>
               )}
-              <div className="mt-6 flex items-center justify-between gap-3">
-                <button
-                  type="button"
-                  className={backBtn}
-                  onClick={() => goTo(wantsDiscount ? "broker" : "discount")}
-                >
-                  {tFlow("back")}
-                </button>
+              <div className={`mt-6 flex items-center gap-3 ${isPass ? "justify-end" : "justify-between"}`}>
+                {!isPass && (
+                  <button type="button" className={backBtn} onClick={() => goTo(wantsDiscount ? "broker" : "discount")}>
+                    {tFlow("back")}
+                  </button>
+                )}
                 <button
                   type="button"
                   className={primaryBtn}
@@ -394,6 +427,7 @@ export function CheckoutFlow({ initialPlan, methods }: { initialPlan?: PlanKey; 
                   {tFlow("payment.title", { price: finalPrice })}
                 </h2>
                 <p className="mt-2 text-sm text-brand-ink-dim">{tFlow(payAmount ? "payment.bodyAuto" : "payment.body")}</p>
+                {recharge && <p className="mt-2 text-xs font-semibold text-brand-accent">{tFlow("payment.recharge")}</p>}
                 <div className="mt-3 flex flex-wrap justify-center gap-2">
                   <p className="rounded-full bg-brand-accent/10 px-3 py-1 text-xs font-semibold text-brand-accent">
                     {customerName} · {customerCountry}

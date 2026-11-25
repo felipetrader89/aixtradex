@@ -99,6 +99,31 @@
         "term": "Plazo", "termValue": "Corto / Medio / Largo"
       }
     },
+    "pass": {
+      "tag": "Pase de prueba",
+      "title": "Prueba el robot antes de suscribirte",
+      "description": "Activa el robot en 1 cuenta MT4 por 1, 3 o 7 días. ¿Quieres más tiempo? Recarga en Mi Cuenta y los días se suman. El mismo robot, el mismo portal y la misma Ai X Intelligence (1 análisis por IA al día).",
+      "d1": {
+        "label": "Pase 1 día",
+        "price": "$10",
+        "period": "",
+        "note": "24 horas · 1 cuenta MT4"
+      },
+      "d3": {
+        "label": "Pase 3 días",
+        "price": "$25",
+        "period": "",
+        "note": "$8,33 por día · 1 cuenta MT4"
+      },
+      "d7": {
+        "label": "Pase 7 días",
+        "price": "$49",
+        "period": "",
+        "note": "$7 por día · 1 cuenta MT4"
+      },
+      "cta": "Probar",
+      "creditNote": "¿Te gustó? Lo que pagaste en pases en los últimos 7 días se convierte en descuento en la Licencia Mensual o Vitalicia (hasta la mitad del precio)."
+    },
     "license": {
       "tag": "Licencia del robot - hasta 2 cuentas (mensual) o hasta 5 cuentas (vitalicia)",
       "description": "Recibes el archivo del robot y lo instalas directo en tus propias cuentas MT4, sin que yo gestione la cuenta. La licencia mensual cubre hasta 2 cuentas MT4 y la vitalicia hasta 5. Indicas el número de cada cuenta en la compra y, si lo necesitas, puedes corregirlas 1 vez en Mi Cuenta.",
@@ -336,6 +361,9 @@
     "flow": {
       "choosePlan": "Elige tu plan",
       "discountApplied": "Descuento de socio {broker}: -{discount}",
+      "passTitle": "O pruébalo antes con un pase",
+      "passCredit": "Crédito de tus pases de prueba: -{credit}",
+      "passNote": "Pase de prueba: 1 cuenta MT4, empieza cuando se confirma el pago. Para más tiempo, recarga en Mi Cuenta (los días se suman).",
       "back": "← Volver",
       "steps": {
         "discount": "Descuento",
@@ -365,6 +393,7 @@
         "title": "Crea tu cuenta MT4 con esta configuración",
         "body": "En tu bróker, abre una cuenta MetaTrader 4 así:",
         "bodyBroker": "En el área de cliente de {broker}, abre una cuenta MetaTrader 4 así:",
+        "bodyPass": "Indica la cuenta MT4 donde vas a probar el robot. Puede ser real o demo, de cualquier bróker, con spread hasta 30 pts.",
         "platform": "Plataforma",
         "platformValue": "MetaTrader 4",
         "leverage": "Apalancamiento",
@@ -406,6 +435,7 @@
         "bodyAuto": "Paga el valor exacto de abajo y la confirmación es automática: esta página avisa en cuanto llegue el pago, y recibes un email.",
         "accounts": "Cuentas MT4: {ids}",
         "order": "Pedido {code}",
+        "recharge": "Esta cuenta ya tiene un pase: los días nuevos se suman al tiempo que queda.",
         "accountHint": "En cuanto se confirme el pago, tu licencia aparece en Mi Cuenta. Entra con el email {email}."
       }
     },
@@ -451,6 +481,7 @@
     "empty": "Todavía no tienes una licencia activa. En cuanto se confirme el pago, aparece aquí.",
     "seePlans": "Ver planes",
     "plan": {
+      "trial": "Pase de prueba",
       "monthly": "Licencia Mensual",
       "lifetime": "Licencia Vitalicia"
     },
@@ -479,6 +510,12 @@
     },
     "renew": "Renovar por 30 días más ({price})",
     "renewPending": "Renovación creada - paga el pedido de abajo.",
+    "passRechargeTitle": "Recargar el pase (los días se suman)",
+    "passRechargeOption": "+{days, plural, one {# día} other {# días}} · {price}",
+    "passRechargePending": "Recarga creada - paga el pedido en Pedidos.",
+    "passCreditHint": "Tienes {credit} de crédito de los pases: se convierte en descuento si te suscribes a la Mensual o la Vitalicia en los próximos días.",
+    "passUpgradeMonthly": "Suscribirme a la Licencia Mensual",
+    "passUpgradeLifetime": "Comprar la Licencia Vitalicia",
     "ordersTitle": "Pedidos",
     "ordersEmpty": "Todavía no hay pedidos.",
     "orderStatus": {
@@ -565,6 +602,7 @@
       "intro": "¡Hola! Recibí el pago del pedido {code}. Tu licencia de Ai X PULSE RS ya está activa.",
       "plan": "Plan",
       "planMonthly": "Mensual",
+      "planTrial": "Pase de prueba ({days, plural, one {# día} other {# días}})",
       "planLifetime": "Vitalicia",
       "expires": "Válida hasta",
       "lifetime": "Vitalicia (no vence)",

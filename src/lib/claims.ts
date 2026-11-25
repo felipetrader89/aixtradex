@@ -1,4 +1,5 @@
 import "server-only";
+import { planLabelPt } from "@/lib/plans";
 import { and, eq, gt, inArray, ne } from "drizzle-orm";
 import { getTranslations } from "next-intl/server";
 import { db, schema } from "@/lib/db";
@@ -56,7 +57,7 @@ export async function createClaim(input: { email: string; login: string; locale:
     `Cliente antigo pedindo acesso ao portal.`,
     `Email: ${input.email}`,
     `Conta MT4 informada: ${input.login}`,
-    `Licença: ${row.license.key} (${row.license.plan === "lifetime" ? "Vitalícia" : "Mensal"}) · cadastro: ${row.user.name ?? "-"}`,
+    `Licença: ${row.license.key} (${planLabelPt(row.license.plan)}) · cadastro: ${row.user.name ?? "-"}`,
     "",
     `Confira se é ele mesmo e aprove em ${SITE_URL}/admin/claims`,
   ]).catch((error) => console.error("claim admin email", error));
