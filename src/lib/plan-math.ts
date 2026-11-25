@@ -17,6 +17,8 @@ export type PlanProfile = keyof typeof PLAN_PROFILES | "custom";
 export const PLAN_PROFILE_KEYS = ["conservative", "moderate", "aggressive", "custom"] as const;
 export const PLAN_STEP = 0.5;
 export const PLAN_MAX_GOAL = 20;
+// meta sugerida nunca passa de 10% (o teto do produto): a simulação em velas é otimista e o site não promete mais que isso
+export const PLAN_SUGGEST_MAX = 10;
 export const PLAN_TARGET_RATE = 0.7; // meta sugerida = a maior que bateu em pelo menos 70% dos dias
 export const PLAN_MAX_AUTO_PAIRS = 5;
 export const PLAN_MAX_PAIRS = 12;
@@ -142,10 +144,10 @@ export function evaluateAuto(cands: AutoCandidate[], goal: number, loss: number,
   return { alloc, ev: evaluatePlan(sims, goal, loss, weekdays) };
 }
 
-// Maior meta geral que bateu em pelo menos 70% dos dias (com a divisão automática).
+// Maior meta geral (até 10%) que bateu em pelo menos 70% dos dias (com a divisão automática).
 export function suggestGoal(cands: AutoCandidate[], loss: number, weekdays?: number[]) {
   let best: { goal: number; rate: number } | null = null;
-  for (let u = 1; u * PLAN_STEP <= PLAN_MAX_GOAL; u++) {
+  for (let u = 1; u * PLAN_STEP <= PLAN_SUGGEST_MAX; u++) {
     const g = u * PLAN_STEP;
     const { ev } = evaluateAuto(cands, g, loss, weekdays);
     if (ev.days && ev.hitDays / ev.days >= PLAN_TARGET_RATE) best = { goal: g, rate: ev.hitDays / ev.days };
@@ -153,10 +155,10 @@ export function suggestGoal(cands: AutoCandidate[], loss: number, weekdays?: num
   return best;
 }
 
-// Maior meta de UM par que bateu em pelo menos 70% dos dias (modo manual: dica ao lado de cada par).
+// Maior meta de UM par (até 10%) que bateu em pelo menos 70% dos dias (modo manual: dica ao lado de cada par).
 export function suggestPairGoal(p: PairSeries, risk: number, weekdays?: number[]) {
   let best: number | null = null;
-  for (let u = 1; u * PLAN_STEP <= PLAN_MAX_GOAL; u++) {
+  for (let u = 1; u * PLAN_STEP <= PLAN_SUGGEST_MAX; u++) {
     const g = u * PLAN_STEP;
     const ev = evaluatePlan([{ ...p, risk, goal: g }], 0, 0, weekdays);
     if (ev.days && ev.pairs[0].hitDays / ev.days >= PLAN_TARGET_RATE) best = g;

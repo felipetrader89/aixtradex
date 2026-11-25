@@ -1276,7 +1276,7 @@
       "why": {
         "noFull": "sin lectura completa",
         "noDaily": "robot sin el día a día",
-        "short": "poco historial en tu MT4 ({days} días)",
+        "short": "poco historial en tu MT4: {days, plural, one {# día} other {# días}}",
         "notValidated": "no se confirmó",
         "weak": "promedio negativo"
       },
