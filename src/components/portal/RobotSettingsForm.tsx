@@ -1,7 +1,7 @@
 "use client";
 
 import { useMemo, useState, useTransition } from "react";
-import { useTranslations } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 import { saveRobotSettingsAction } from "@/app/actions/robot";
 import {
   ADX_LEVELS,
@@ -117,6 +117,7 @@ export function RobotSettingsForm({
   allowCustom: boolean;
 }) {
   const t = useTranslations("Portal.robot");
+  const locale = useLocale();
   const [v, setV] = useState<RobotFormValues>(initial);
   const [saved, setSaved] = useState(JSON.stringify(initial));
   const [editing, setEditing] = useState<string>(initial.symbols[0] ?? symbols[0]);
@@ -135,7 +136,7 @@ export function RobotSettingsForm({
   const toggleSymbol = (s: string, on: boolean) =>
     set("symbols", on ? symbols.filter((x) => x === s || v.symbols.includes(x)) : v.symbols.filter((x) => x !== s));
 
-  const pct = (n: number) => n.toLocaleString(undefined, { maximumFractionDigits: 2 });
+  const pct = (n: number) => n.toLocaleString(locale, { maximumFractionDigits: 2 });
   const pctLabel = (o: number) => (o === 0 ? t("off") : `${pct(o)}%`);
   const profileList: RiskProfile[] = ["conservative", "moderate", "aggressive", ...(allowCustom ? (["custom"] as RiskProfile[]) : [])];
   const riskOf = (p: PairParams) => (p.riskProfile === "custom" ? p.riskPct : RISK_PROFILES[p.riskProfile]);
