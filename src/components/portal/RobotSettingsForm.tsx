@@ -2,7 +2,7 @@
 
 import { useMemo, useState, useTransition } from "react";
 import { useLocale, useTranslations } from "next-intl";
-import { saveRobotSettingsAction } from "@/app/actions/robot";
+import { refreshBrokerSymbolsAction, saveRobotSettingsAction } from "@/app/actions/robot";
 import {
   ADX_LEVELS,
   MAX_POSITIONS,
@@ -11,7 +11,12 @@ import {
   RISK_PROFILES,
   RSI_PERIODS,
   RSI_TIMEFRAMES,
-  SYMBOL_LABEL,
+  ASSET_CATEGORIES,
+  MAX_SYMBOLS,
+  OTHER_ASSETS,
+  isStandardSymbol,
+  symbolLabel,
+  type AssetCategory,
   DD_OPTIONS,
   ADX_PERIODS,
   ATR_BARS,
@@ -34,6 +39,8 @@ import {
 } from "@/lib/robot-options";
 
 export type RobotFormValues = Omit<RobotConfig, "updatedAt">;
+// v7.1: ativos da corretora que o robô listou (k = nome no portal, d = descrição, c = categoria, p = 1 pip em preço).
+export type BrokerCatalog = { company: string | null; updatedAt: string; items: { k: string; d: string; c: AssetCategory; p: number }[] };
 
 const field =
   "w-full rounded-xl border border-brand-hairline bg-brand-surface-2 px-3 py-2 text-sm text-brand-ink focus:border-brand-accent focus:outline-none";
@@ -224,6 +231,129 @@ function TfChips({ value, options, onChange, minOne }: { value: number[]; option
   );
 }
 
+// v7.1: ativos da corretora (o robô manda a lista) separados como na corretora: Forex, Metais, Cripto, Índices...
+function BrokerAssets({
+  login,
+  broker,
+  enabled,
+  onToggle,
+}: {
+  login: string;
+  broker: BrokerCatalog | null;
+  enabled: string[];
+  onToggle: (k: string, on: boolean) => void;
+}) {
+  const t = useTranslations("Portal.robot");
+  const locale = useLocale();
+  const [open, setOpen] = useState(false);
+  const [q, setQ] = useState("");
+  const counts = useMemo(() => {
+    const m = new Map<AssetCategory, number>();
+    for (const i of broker?.items ?? []) m.set(i.c, (m.get(i.c) ?? 0) + 1);
+    return m;
+  }, [broker]);
+  const cats = ASSET_CATEGORIES.filter((c) => counts.get(c));
+  const [cat, setCat] = useState<AssetCategory | "on">(cats[0] ?? "forex");
+  const [refresh, setRefresh] = useState<string | null>(null);
+  const [pending, start] = useTransition();
+  const query = q.trim().toUpperCase();
+  const list = (broker?.items ?? []).filter((i) =>
+    query ? i.k.toUpperCase().includes(query) || i.d.toUpperCase().includes(query) : cat === "on" ? enabled.includes(i.k) : i.c === cat
+  );
+  const LIMIT = 120;
+  const date = new Intl.DateTimeFormat(locale, { dateStyle: "short", timeStyle: "short" });
+
+  return (
+    <div className="mt-4 rounded-xl border border-brand-hairline bg-brand-surface-2/40">
+      <button
+        type="button"
+        onClick={() => setOpen(!open)}
+        aria-expanded={open}
+        className="flex w-full items-center justify-between gap-3 px-4 py-3 text-left"
+      >
+        <span>
+          <span className="block text-sm font-semibold text-brand-ink">{t("brokerTitle")}</span>
+          <span className="block text-xs text-brand-ink-dim">
+            {broker ? t("brokerCount", { n: broker.items.length, broker: broker.company ?? "-" }) : t("brokerNone")}
+          </span>
+        </span>
+        <span className="text-brand-accent" aria-hidden>
+          {open ? "−" : "+"}
+        </span>
+      </button>
+      {open && (
+        <div className="flex flex-col gap-3 border-t border-brand-hairline p-4">
+          {!broker ? (
+            <p className="text-sm text-brand-ink-dim">{t("brokerNoneHint")}</p>
+          ) : (
+            <>
+              <input
+                type="search"
+                value={q}
+                onChange={(e) => setQ(e.target.value)}
+                placeholder={t("brokerSearch")}
+                aria-label={t("brokerSearch")}
+                className={field}
+              />
+              {!query && (
+                <div className="flex flex-wrap gap-1.5">
+                  {[...cats, "on" as const].map((c) => (
+                    <button
+                      key={c}
+                      type="button"
+                      aria-pressed={cat === c}
+                      onClick={() => setCat(c)}
+                      className={`rounded-lg border px-2.5 py-1.5 text-xs font-semibold transition ${
+                        cat === c ? "border-brand-accent bg-brand-accent/15 text-brand-accent" : "border-brand-hairline text-brand-ink-dim hover:text-brand-ink"
+                      }`}
+                    >
+                      {c === "on" ? `${t("brokerOn")} (${enabled.length})` : `${t(`cats.${c}`)} (${counts.get(c)})`}
+                    </button>
+                  ))}
+                </div>
+              )}
+              <ul className="grid max-h-[420px] gap-1.5 overflow-y-auto pr-1 sm:grid-cols-2">
+                {list.slice(0, LIMIT).map((i) => {
+                  const on = enabled.includes(i.k);
+                  return (
+                    <li key={i.k} className={`flex items-center gap-3 rounded-lg border px-3 py-2 ${on ? "border-brand-accent/50 bg-brand-accent/10" : "border-brand-hairline"}`}>
+                      <span className="min-w-0 flex-1">
+                        <span className={`block text-sm font-bold ${on ? "text-brand-accent" : "text-brand-ink"}`}>{symbolLabel(i.k)}</span>
+                        <span className="block truncate text-[11px] text-brand-ink-dim">{i.d || "-"}</span>
+                      </span>
+                      <Switch checked={on} onChange={(x) => onToggle(i.k, x)} label={`${t("tradeThis")} ${i.k}`} />
+                    </li>
+                  );
+                })}
+              </ul>
+              {list.length > LIMIT && <p className="text-xs text-brand-ink-dim">{t("brokerMore", { n: LIMIT, total: list.length })}</p>}
+              {!list.length && <p className="text-xs text-brand-ink-dim">{t("brokerEmpty")}</p>}
+              <div className="flex flex-wrap items-center gap-3 text-xs text-brand-ink-dim">
+                <span>{t("brokerUpdated", { date: date.format(new Date(broker.updatedAt)) })}</span>
+                <button
+                  type="button"
+                  disabled={pending}
+                  onClick={() =>
+                    start(async () => {
+                      const r = await refreshBrokerSymbolsAction(login);
+                      setRefresh(r.ok ? t("brokerRefreshSent") : t("errors.denied"));
+                    })
+                  }
+                  className="font-semibold text-brand-accent hover:underline disabled:opacity-50"
+                >
+                  {t("brokerRefresh")}
+                </button>
+                {refresh && <span role="status">{refresh}</span>}
+              </div>
+              <p className="text-xs text-brand-ink-dim">{t("brokerHint")}</p>
+            </>
+          )}
+        </div>
+      )}
+    </div>
+  );
+}
+
 export function RobotSettingsForm({
   login,
   initial,
@@ -231,9 +361,11 @@ export function RobotSettingsForm({
   policy,
   defaultPair,
   allowCustom,
+  broker,
 }: {
   login: string;
   initial: RobotFormValues;
+  broker: BrokerCatalog | null;
   symbols: string[];
   policy: RobotPolicy | null; // null = admin (vê e escolhe tudo)
   defaultPair: PairParams;
@@ -259,9 +391,16 @@ export function RobotSettingsForm({
     const r = paramDef(k).range!;
     return policy ? { min: Number(policy[k].allow[0]), max: Number(policy[k].allow[1]), auto: r.auto } : { min: r.min, max: r.max, auto: r.auto };
   };
-  const symbols = show("symbols")
-    ? allSymbols.filter((s) => allowed("symbols", allSymbols).includes(s) || initial.symbols.includes(s))
-    : initial.symbols;
+  // os 8 de sempre (os que o admin liberou) + os outros ativos da corretora que a conta ligou
+  const otherOk = show("symbols") && (!policy || hasValue(policy.symbols.allow, OTHER_ASSETS));
+  const symbols = [
+    ...new Set([
+      ...(show("symbols") ? allSymbols.filter((s) => allowed("symbols", allSymbols).includes(s) || initial.symbols.includes(s)) : initial.symbols),
+      ...initial.symbols.filter((s) => !isStandardSymbol(s)),
+      ...v.symbols.filter((s) => !isStandardSymbol(s)),
+    ]),
+  ];
+  const brokerItem = (k: string) => broker?.items.find((i) => i.k === k);
 
   const set = <K extends keyof RobotFormValues>(k: K, value: RobotFormValues[K]) => {
     setV((old) => ({ ...old, [k]: value }));
@@ -271,8 +410,18 @@ export function RobotSettingsForm({
     setV((old) => ({ ...old, pairs: { ...old.pairs, [sym]: { ...old.pairs[sym], ...patch } } }));
     setStatus(null);
   };
-  const toggleSymbol = (s: string, on: boolean) =>
-    set("symbols", on ? symbols.filter((x) => x === s || v.symbols.includes(x)) : v.symbols.filter((x) => x !== s));
+  const toggleSymbol = (s: string, on: boolean) => {
+    if (on && !v.symbols.includes(s) && v.symbols.length >= MAX_SYMBOLS) {
+      setStatus({ ok: false, text: t("maxSymbols", { n: MAX_SYMBOLS }) });
+      return;
+    }
+    setV((old) => {
+      const list = on ? [...new Set([...symbols, s])].filter((x) => x === s || old.symbols.includes(x)) : old.symbols.filter((x) => x !== s);
+      const pairs = old.pairs[s] ? old.pairs : { ...old.pairs, [s]: { ...defaultPair, zoneTfs: [...defaultPair.zoneTfs], zoneLines: [...defaultPair.zoneLines] } };
+      return { ...old, symbols: list, pairs };
+    });
+    setStatus(null);
+  };
 
   const pct = (n: number) => n.toLocaleString(locale, { maximumFractionDigits: 2 });
   const pctLabel = (o: number) => (o === 0 ? t("off") : `${pct(o)}%`);
@@ -303,7 +452,7 @@ export function RobotSettingsForm({
 
   function copyToAll() {
     setV((old) => ({ ...old, pairs: Object.fromEntries(symbols.map((s) => [s, { ...old.pairs[editing] }])) }));
-    setStatus({ ok: true, text: t("copied", { pair: SYMBOL_LABEL[editing] ?? editing }) });
+    setStatus({ ok: true, text: t("copied", { pair: symbolLabel(editing) }) });
   }
 
   return (
@@ -334,14 +483,14 @@ export function RobotSettingsForm({
                   aria-pressed={sel}
                   className="flex min-w-0 flex-1 flex-col items-start px-3 py-2.5 text-left"
                 >
-                  <span className={`text-sm font-bold ${on ? "text-brand-accent" : "text-brand-ink-dim"}`}>{SYMBOL_LABEL[s] ?? s}</span>
+                  <span className={`truncate text-sm font-bold ${on ? "text-brand-accent" : "text-brand-ink-dim"}`}>{symbolLabel(s)}</span>
                   <span className="truncate text-[11px] text-brand-ink-dim">
                     {on ? t("pairSummary", { risk: pct(riskOf(sp)), goal: sp.goalPct ? `${pct(sp.goalPct)}%` : "-" }) : t("pairOff")}
                   </span>
                 </button>
                 {show("symbols") && (
                   <div className="flex items-center pr-2.5">
-                    <Switch checked={on} onChange={(x) => toggleSymbol(s, x)} label={`${t("tradeThis")} ${SYMBOL_LABEL[s] ?? s}`} />
+                    <Switch checked={on} onChange={(x) => toggleSymbol(s, x)} label={`${t("tradeThis")} ${symbolLabel(s)}`} />
                   </div>
                 )}
               </div>
@@ -349,12 +498,30 @@ export function RobotSettingsForm({
           })}
         </div>
         <p className="mt-3 text-xs text-brand-ink-dim">{t("clickPair")}</p>
+        {otherOk && (
+          <BrokerAssets
+            login={login}
+            broker={broker}
+            enabled={v.symbols}
+            onToggle={(k, on) => {
+              toggleSymbol(k, on);
+              if (on) setEditing(k);
+            }}
+          />
+        )}
       </section>
 
       {/* ===== AJUSTES DO PAR ===== */}
       <section className={`${card} flex flex-col gap-6 ring-1 ring-brand-accent/30`}>
         <div className="flex flex-wrap items-center justify-between gap-3">
-          <h2 className="text-lg font-bold text-brand-ink">{t("editing", { pair: SYMBOL_LABEL[editing] ?? editing })}</h2>
+          <div>
+            <h2 className="text-lg font-bold text-brand-ink">{t("editing", { pair: symbolLabel(editing) })}</h2>
+            {!isStandardSymbol(editing) && brokerItem(editing) && (
+              <p className="mt-0.5 text-xs text-brand-ink-dim">
+                {brokerItem(editing)!.d} · {t("pipInfo", { pip: brokerItem(editing)!.p })}
+              </p>
+            )}
+          </div>
           {show("symbols") && <Toggle checked={editingOn} onChange={(x) => toggleSymbol(editing, x)} label={t("tradeThis")} />}
         </div>
 

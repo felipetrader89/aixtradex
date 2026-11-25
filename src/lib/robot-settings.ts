@@ -23,6 +23,9 @@ import {
   ATR_PERIODS,
   FILTER_TFS,
   TIMEFRAMES,
+  MAX_SYMBOLS,
+  SYMBOL_KEY,
+  isStandardSymbol,
   paramDef,
   enforcePolicy,
   normalizePolicy,
@@ -57,6 +60,11 @@ const pairOf = (p: Partial<PairParams> | undefined, base: PairParams): PairParam
 
 type StoredParams = ConfigValues & { admin?: boolean };
 
+// v7.1: pares com ajustes = os 8 de sempre + os ligados + os outros ativos que a conta já configurou (até 60).
+const MAX_PAIR_KEYS = 60;
+const pairKeys = (symbols: string[], stored?: Record<string, unknown>) =>
+  [...new Set([...ROBOT_SYMBOLS, ...symbols, ...Object.keys(stored ?? {})])].filter((k) => SYMBOL_KEY.test(k)).slice(0, MAX_PAIR_KEYS);
+
 // admin = a última vez quem salvou foi um admin (aí os limites do admin não valem pra essa conta).
 function toConfig(row: RobotSettings | undefined, policy: RobotPolicy): RobotConfig & { admin: boolean } {
   const base = policyDefaults(policy);
@@ -69,9 +77,10 @@ function toConfig(row: RobotSettings | undefined, policy: RobotPolicy): RobotCon
     config = {
       ...base,
       ...stored,
-      symbols: (stored.symbols ?? base.symbols).filter((s) => (ROBOT_SYMBOLS as readonly string[]).includes(s)),
-      pairs: Object.fromEntries(ROBOT_SYMBOLS.map((s) => [s, pairOf(stored.pairs?.[s], basePair)])),
+      symbols: (stored.symbols ?? base.symbols).filter((s) => SYMBOL_KEY.test(s)).slice(0, MAX_SYMBOLS),
+      pairs: {},
     };
+    config.pairs = Object.fromEntries(pairKeys(config.symbols, stored.pairs).map((s) => [s, pairOf(stored.pairs?.[s], basePair)]));
   } else {
     // Configuração salva na v6.7 (colunas antigas): risco e recuperação valiam pra todos os pares.
     const profile = row.riskProfile as RiskProfile;
@@ -164,9 +173,17 @@ function validatePair(p: PairParams, isAdmin: boolean): ConfigError | null {
 
 // Confere tudo que vem do formulário (nunca confiar no navegador). Personalizado só pra admin.
 // Os limites do admin (opções ocultas/bloqueadas) não dão erro: no salvar, o que não é permitido volta pro padrão.
-export function validateConfig(input: ConfigInput, isAdmin: boolean): ConfigError | null {
-  if (!Array.isArray(input.symbols) || !input.symbols.length || input.symbols.some((s) => !(ROBOT_SYMBOLS as readonly string[]).includes(s)))
+// allowedKeys = os 8 pares + os ativos que a corretora da conta tem (src/lib/broker-symbols.ts allowedSymbolKeys).
+export function validateConfig(input: ConfigInput, isAdmin: boolean, allowedKeys: Set<string>): ConfigError | null {
+  if (
+    !Array.isArray(input.symbols) ||
+    !input.symbols.length ||
+    input.symbols.length > MAX_SYMBOLS ||
+    new Set(input.symbols).size !== input.symbols.length ||
+    input.symbols.some((s) => typeof s !== "string" || !SYMBOL_KEY.test(s) || !(isStandardSymbol(s) || allowedKeys.has(s)))
+  )
     return "symbols";
+  if (!input.pairs || typeof input.pairs !== "object" || Object.keys(input.pairs).length > MAX_PAIR_KEYS) return "strategy";
   if (!inList(input.dailyGoalPct, PCT_OPTIONS)) return "goal";
   if (!inList(input.dailyLossPct, PCT_OPTIONS)) return "loss";
   if (!isInt(input.maxPositions, 1, MAX_POSITIONS)) return "positions";
@@ -181,9 +198,9 @@ export function validateConfig(input: ConfigInput, isAdmin: boolean): ConfigErro
     !isInt(input.newsClose, 0, 3)
   )
     return "news";
-  for (const s of ROBOT_SYMBOLS) {
-    const p = input.pairs?.[s];
-    if (!p) return "strategy";
+  for (const s of new Set([...ROBOT_SYMBOLS, ...input.symbols])) if (!input.pairs[s]) return "strategy";
+  for (const [s, p] of Object.entries(input.pairs)) {
+    if (!SYMBOL_KEY.test(s) || !p || typeof p !== "object") return "strategy";
     const error = validatePair(p, isAdmin);
     if (error) return error;
   }
@@ -192,9 +209,9 @@ export function validateConfig(input: ConfigInput, isAdmin: boolean): ConfigErro
 
 export async function saveRobotConfig(product: string, login: string, raw: ConfigInput, updatedBy: string, isAdmin: boolean, policy: RobotPolicy) {
   const input = isAdmin ? raw : enforcePolicy(raw, policy);
-  const symbols = ROBOT_SYMBOLS.filter((s) => input.symbols.includes(s));
+  const symbols = [...ROBOT_SYMBOLS.filter((s) => input.symbols.includes(s)), ...input.symbols.filter((s) => !isStandardSymbol(s))];
   const pairs = Object.fromEntries(
-    ROBOT_SYMBOLS.map((s) => {
+    pairKeys(symbols, input.pairs).map((s) => {
       const p = input.pairs[s];
       return [
         s,
@@ -325,7 +342,7 @@ export function configPayload(c: ConfigValues) {
     `nb=${c.newsBefore}`,
     `na=${c.newsAfter}`,
     `nc=${c.newsClose}`,
-    ...ROBOT_SYMBOLS.map((s) => `p.${s}=${pairPayload(c.pairs[s] ?? DEFAULT_PAIR)}`),
+    ...[...new Set([...ROBOT_SYMBOLS, ...c.symbols])].map((s) => `p.${s}=${pairPayload(c.pairs[s] ?? DEFAULT_PAIR)}`),
   ].join(";");
   return `${body};ver=${createHash("sha256").update(body).digest("hex").slice(0, 12)}`;
 }

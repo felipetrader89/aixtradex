@@ -2,7 +2,7 @@
 
 import { useEffect, useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
-import { applySuggestionAction, requestScanAction } from "@/app/actions/intelligence";
+import { applySuggestionAction, generateAnalysisAction, requestScanAction } from "@/app/actions/intelligence";
 import type { Strategy } from "@/lib/intel-stats";
 import type { ScanPeriod } from "@/lib/intelligence";
 
@@ -133,5 +133,41 @@ export function ApplyButton({ login, symbol, patch, labels }: { login: string; s
       </button>
       {state !== "idle" && <span className="text-[11px] text-red-300">{state === "blocked" ? labels.blocked : labels.error}</span>}
     </span>
+  );
+}
+
+export type AnalysisLabels = { generate: string; again: string; working: string; errors: Record<string, string> };
+
+// Gera a análise escrita pela IA (leva de 20 s a 1 min).
+export function AnalysisButton({ login, locale, hasOne, disabled, labels }: { login: string; locale: string; hasOne: boolean; disabled?: boolean; labels: AnalysisLabels }) {
+  const router = useRouter();
+  const [error, setError] = useState<string | null>(null);
+  const [pending, start] = useTransition();
+  return (
+    <div className="flex flex-wrap items-center gap-3">
+      <button
+        type="button"
+        disabled={pending || disabled}
+        onClick={() =>
+          start(async () => {
+            setError(null);
+            const r = await generateAnalysisAction(login, locale);
+            if (r.ok) router.refresh();
+            else setError(labels.errors[r.error] ?? labels.errors.api);
+          })
+        }
+        className={`rounded-full px-5 py-2.5 text-sm font-bold transition disabled:opacity-50 ${
+          hasOne ? "border border-brand-accent/60 text-brand-accent hover:bg-brand-accent/10" : "bg-brand-accent text-brand-bg hover:brightness-110"
+        }`}
+      >
+        {pending ? labels.working : hasOne ? labels.again : labels.generate}
+      </button>
+      {pending && <span className="h-4 w-4 animate-spin rounded-full border-2 border-brand-accent border-t-transparent" aria-hidden />}
+      {error && (
+        <p role="status" className="text-sm text-red-300">
+          {error}
+        </p>
+      )}
+    </div>
   );
 }

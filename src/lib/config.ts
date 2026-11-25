@@ -37,12 +37,15 @@ export type BinanceSettings = {
 export type SmtpSettings = { host?: string; port?: number; user?: string; passBox?: string; from?: string };
 export type WalletSettings = Partial<Record<MethodKey, { value: string; enabled: boolean }>>;
 export type AdminSettings = { emails: string[] };
+// Ai X Intelligence: análise escrita pela IA (Claude). clientDaily = análises por conta a cada 24 h pros clientes (0 = só o admin).
+export type AiSettings = { apiKeyBox?: string; keyHint?: string; clientDaily?: number; savedAt?: string; savedBy?: string; lastTest?: { at: string; ok: boolean; error?: string } };
 
 type SettingsMap = {
   binance_config: BinanceSettings;
   smtp: SmtpSettings;
   wallets: WalletSettings;
   admins: AdminSettings;
+  ai: AiSettings;
   // ddCap/ddDefault = primeira versão (só rebaixamento); policy = permissões de todos os parâmetros (v6.9).
   robot: { ddCap?: number; ddDefault?: number; policy?: Partial<Record<string, Partial<ParamPolicy>>> };
 };
@@ -103,6 +106,22 @@ export async function getBinanceCreds(): Promise<BinanceCreds | null> {
 export async function isAutoPayActive() {
   const [creds, saved] = await Promise.all([getBinanceCreds(), getBinanceSettings()]);
   return Boolean(creds) && saved.autoPay !== false;
+}
+
+//--- IA (Claude) -----------------------------------------------------------------------------------------------------
+export const AI_CLIENT_DAILY_DEFAULT = 3;
+
+export async function getAiSettings(): Promise<AiSettings> {
+  return (await getSetting("ai")) ?? {};
+}
+
+// Chave salva no painel (criptografada) ou, se não tiver, a do .env do servidor.
+export async function getAiKey(): Promise<{ key: string; source: "admin" | "env" } | null> {
+  const saved = await getAiSettings();
+  const key = decryptSecret(saved.apiKeyBox);
+  if (key) return { key, source: "admin" };
+  if (process.env.ANTHROPIC_API_KEY) return { key: process.env.ANTHROPIC_API_KEY, source: "env" };
+  return null;
 }
 
 //--- Email (SMTP) ----------------------------------------------------------------------------------------------------

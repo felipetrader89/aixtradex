@@ -64,6 +64,13 @@
       "when": 1795609029951,
       "tag": "0008_robot_intelligence",
       "breakpoints": true
+    },
+    {
+      "idx": 9,
+      "version": "7",
+      "when": 1795614612052,
+      "tag": "0009_broker_symbols_ai",
+      "breakpoints": true
     }
   ]
 }

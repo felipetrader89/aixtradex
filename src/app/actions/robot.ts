@@ -7,6 +7,7 @@ import { PRODUCT } from "@/lib/plans";
 import { getRobotPolicy, saveRobotConfig, validateConfig, type ConfigError, type ConfigInput } from "@/lib/robot-settings";
 import { PARAM_KEYS, normalizePolicy, type RobotPolicy } from "@/lib/robot-options";
 import { getSetting, logEvent, setSetting } from "@/lib/config";
+import { allowedSymbolKeys, requestBrokerSymbols } from "@/lib/broker-symbols";
 
 export async function saveRobotSettingsAction(
   login: string,
@@ -14,7 +15,7 @@ export async function saveRobotSettingsAction(
 ): Promise<{ ok: true } | { ok: false; error: ConfigError | "denied" }> {
   const user = await canConfigure(login);
   if (!user) return { ok: false, error: "denied" };
-  const error = validateConfig(input, user.isAdmin);
+  const error = validateConfig(input, user.isAdmin, await allowedSymbolKeys(PRODUCT.slug, login));
   if (error) return { ok: false, error };
   await saveRobotConfig(PRODUCT.slug, login, input, user.email, user.isAdmin, await getRobotPolicy());
   if (user.isAdmin) {
@@ -22,6 +23,14 @@ export async function saveRobotSettingsAction(
     await logEvent(user.email, "robot.settings", `${login}: ${risks.join(", ")} · DD ${input.ddPct}%`);
   }
   revalidatePath("/[locale]/account", "layout");
+  return { ok: true };
+}
+
+// v7.1: pede pro robô da conta mandar de novo a lista de ativos da corretora (chega em até ~30 s).
+export async function refreshBrokerSymbolsAction(login: string): Promise<{ ok: boolean }> {
+  const user = await canConfigure(login);
+  if (!user) return { ok: false };
+  await requestBrokerSymbols(PRODUCT.slug, login);
   return { ok: true };
 }
 

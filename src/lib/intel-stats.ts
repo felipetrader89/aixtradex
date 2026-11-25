@@ -5,7 +5,7 @@
 //     de tamanhos diferentes, o resultado é normalizado por 0,01 lote ("por 0,01").
 //  2) ESTUDOS DE VELAS feitos no terminal do cliente (robot_scans): gatilho do RSI (tempo gráfico × período × zona × lógica)
 //     simulado com a saída do par. Resultado em "R" = múltiplos da distância do limite de perda (compara pares e corretoras).
-import { ROBOT_SYMBOLS, type PairParams } from "./robot-options";
+import { ROBOT_SYMBOLS, fitRange, hasValue, paramDef, type PairParams, type ParamKey, type PolicyValue, type RobotPolicy } from "./robot-options";
 
 export type Stats = {
   trades: number;
@@ -119,7 +119,9 @@ const setScore = (s: Stats) => (s.trades ? s.net / s.trades : 0) + Math.min(s.pf
 
 export function learn(trades: TradeLite[], minTrades = 20): PairLearning[] {
   const out: PairLearning[] = [];
-  for (const symbol of ROBOT_SYMBOLS) {
+  // os 8 de sempre primeiro, depois os outros ativos da corretora que aparecerem (v7.1)
+  const symbols = [...new Set([...ROBOT_SYMBOLS, ...trades.map((t) => t.symbol).sort()])];
+  for (const symbol of symbols) {
     const list = trades.filter((t) => t.symbol === symbol).sort(byClose);
     if (!list.length) continue;
     const overall = stats(list.map(per001));
@@ -219,7 +221,7 @@ export function parseScan(body: string): ScanResult | null {
   );
   const cur = (kv.cur ?? "").split(",").map(Number);
   const meta: ScanMeta = {
-    sym: String(kv.sym ?? "").slice(0, 16),
+    sym: String(kv.sym ?? "").slice(0, 24),
     broker: String(kv.broker ?? "").slice(0, 32),
     from: num(kv.from),
     to: num(kv.to),
@@ -305,4 +307,42 @@ export function mergeScans(list: ScanResult[]): ScanResult | null {
   }
   const first = list[0].meta;
   return { meta: { ...first, loss: 1, cur: null }, rows: [...map.values()] };
+}
+
+// ============================================================ PERMISSÕES
+
+// O cliente pode passar o ajuste k de "cur" pra "v"? (oculto = só se não mudar; faixa = dentro do que o admin liberou). policy null = admin.
+export function policyCan(policy: RobotPolicy | null) {
+  return (k: ParamKey, v: unknown, cur: unknown) => {
+    if (!policy) return true;
+    const pol = policy[k];
+    if (!pol.show) return JSON.stringify(v) === JSON.stringify(cur);
+    return paramDef(k).range ? fitRange(k, v, pol) === v : hasValue(pol.allow, v as PolicyValue);
+  };
+}
+
+// Combinação do estudo de velas que o cliente pode aplicar nesse par.
+export const scanRowAllowed = (can: ReturnType<typeof policyCan>, pair: PairParams) => (r: ScanRow) =>
+  can("rsiTf", r.tf, pair.rsiTf) && can("rsiPeriod", r.per, pair.rsiPeriod) && can("rsiZone", r.zone, pair.rsiZone) && can("breakout", r.logic === 1, pair.breakout);
+export const scanRowPatch = (r: ScanRow): Strategy => ({ rsiTf: r.tf, rsiPeriod: r.per, rsiZone: r.zone, breakout: r.logic === 1 });
+
+// ============================================================ SUGESTÃO DA COMUNIDADE
+
+export const MIN_SET_TRADES = 30;
+export const MIN_SET_ACCOUNTS = 3;
+
+// Conjunto de ajustes de outras contas melhor que o do par (amostra mínima, fator de lucro > 1, média maior) e que o cliente pode aplicar.
+export function betterSet(l: PairLearning | undefined, pair: PairParams, can: ReturnType<typeof policyCan>) {
+  if (!l) return null;
+  const mine = fingerprint(pair);
+  const base = l.sets.find((s) => s.key === mine);
+  const baseAvg = base && base.stats.trades ? base.stats.net / base.stats.trades : l.overall.trades ? l.overall.net / l.overall.trades : 0;
+  const set = l.sets.find((s) => {
+    if (s.key === mine || s.stats.trades < MIN_SET_TRADES || s.accounts < MIN_SET_ACCOUNTS || s.stats.pf <= 1) return false;
+    if (s.stats.net / s.stats.trades <= baseAvg) return false;
+    return strategyDiff(pair, s.strategy).every((d) => can(d.key, d.to, d.from));
+  });
+  if (!set) return null;
+  const diff = strategyDiff(pair, set.strategy);
+  return diff.length ? { set, diff } : null;
 }

@@ -6,6 +6,7 @@ import {
   AUTO_PIPS,
   RISK_PROFILES,
   SYMBOL_LABEL,
+  OTHER_ASSETS,
   tfLabel,
   hasValue,
   normalizePolicy,
@@ -28,7 +29,11 @@ const autoHint = (k: keyof typeof AUTO_PIPS, what: string) =>
   `${what} Pips do par. Automático = ${AUTO_PIPS[k]} pips no ouro (1 pip = 0,01); nos outros pares acompanha a volatilidade do ouro.`;
 
 const PARAMS: Record<ParamKey, { label: string; hint?: string; fmt: (v: PolicyValue) => string }> = {
-  symbols: { label: "Pares", hint: "Padrão = pares ligados de quem ainda não mexeu.", fmt: (v) => SYMBOL_LABEL[String(v)] ?? String(v) },
+  symbols: {
+    label: "Pares",
+    hint: "Padrão = pares ligados de quem ainda não mexeu. \"Outros ativos da corretora\" libera índices, cripto, energia etc. que o robô v7.1 lista na corretora de cada conta.",
+    fmt: (v) => (v === OTHER_ASSETS ? "Outros ativos da corretora" : (SYMBOL_LABEL[String(v)] ?? String(v))),
+  },
   maxPositions: { label: "Máximo de operações simultâneas", fmt: String },
   ddPct: { label: "Rebaixamento máximo", hint: "Se as posições abertas perderem essa % do saldo, fecha tudo e pausa até o dia seguinte.", fmt: pct },
   dailyGoalPct: { label: "Meta de lucro do dia (conta)", fmt: pct },
@@ -226,6 +231,7 @@ function ParamRow({ k, pol, onChange }: { k: ParamKey; pol: ParamPolicy; onChang
   const toggleAllow = (o: PolicyValue) => {
     const on = hasValue(pol.allow, o);
     if (on && pol.allow.length === 1) return;
+    if (on && k === "symbols" && !pol.allow.some((x) => x !== o && x !== OTHER_ASSETS)) return; // pelo menos um dos 8 pares
     const allow = on ? pol.allow.filter((x) => x !== o) : options.filter((x) => x === o || hasValue(pol.allow, x));
     let def = pol.def;
     if (d.multi) {
@@ -264,7 +270,7 @@ function ParamRow({ k, pol, onChange }: { k: ParamKey; pol: ParamPolicy; onChang
           {d.multi ? (
             <div className="flex flex-wrap gap-1.5">
               {options
-                .filter((o) => hasValue(pol.allow, o))
+                .filter((o) => hasValue(pol.allow, o) && !(k === "symbols" && o === OTHER_ASSETS))
                 .map((o) => (
                   <Chip key={key(o)} on={hasValue(defList, o)} onClick={() => toggleDefMulti(o)}>
                     {label(o)}

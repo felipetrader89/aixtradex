@@ -6,6 +6,8 @@ import { EMAIL_RE, normalizeEmail, requireAdmin } from "@/lib/auth";
 import { fetchDepositAddress, fetchKeyPermissions } from "@/lib/binance";
 import {
   getAdminEmails,
+  getAiKey,
+  getAiSettings,
   getBinanceCreds,
   getBinanceSettings,
   getSetting,
@@ -18,6 +20,7 @@ import {
   type WalletSettings,
 } from "@/lib/config";
 import { sendEmail, verifySmtp } from "@/lib/email";
+import { aiErrorOf, callClaude } from "@/lib/ai-analysis";
 import { PAYMENT_METHODS, METHOD_LABELS, type MethodKey } from "@/lib/payment-methods";
 import { syncBinance, testBinanceConnection } from "@/lib/payments";
 
@@ -249,4 +252,62 @@ export async function removeAdminAction(form: FormData) {
   await setSetting("admins", { emails: extra.filter((e) => e !== email) });
   await logEvent(admin.email, "admins.remove", email);
   back("admins", `${email} não é mais administrador.`);
+}
+
+//=== IA (Claude) ======================================================================================================
+
+// Chave da API da Anthropic (console.anthropic.com → API Keys). Testa com uma chamada curta antes de salvar; fica criptografada.
+export async function saveAiKeyAction(form: FormData) {
+  const admin = await requireAdmin();
+  const key = field(form, "apiKey");
+  if (!/^sk-ant-[A-Za-z0-9_-]{20,200}$/.test(key)) back("ai", "Chave inválida - cole a chave inteira (começa com sk-ant-).", true);
+  // (o redirect do back() não pode ficar dentro do try: ele funciona lançando um erro)
+  let problem = "";
+  try {
+    const r = await callClaude(key, "Responda só: OK", "Teste de conexão.");
+    if (!r.ok) problem = "A API respondeu, mas sem texto. Tente de novo em alguns minutos.";
+  } catch (error) {
+    problem =
+      aiErrorOf(error) === "auth"
+        ? "A Anthropic recusou essa chave. Confira se copiou inteira e se a conta tem crédito."
+        : `Não deu pra testar agora: ${errorText(error)}`;
+  }
+  if (problem) back("ai", problem, true);
+  const saved = await getAiSettings();
+  await setSetting("ai", { ...saved, apiKeyBox: seal(key), keyHint: key.slice(-4), savedAt: new Date().toISOString(), savedBy: admin.email, lastTest: { at: new Date().toISOString(), ok: true } });
+  await logEvent(admin.email, "ai.key", `Chave da IA salva (…${key.slice(-4)})`);
+  back("ai", "Chave conferida e salva. A análise por IA já está ligada. ✅");
+}
+
+export async function testAiAction() {
+  const admin = await requireAdmin();
+  const creds = await getAiKey();
+  if (!creds) back("ai", "Nenhuma chave configurada ainda.", true);
+  let test: { at: string; ok: boolean; error?: string };
+  try {
+    const r = await callClaude(creds!.key, "Responda só: OK", "Teste de conexão.");
+    test = { at: new Date().toISOString(), ok: r.ok, error: r.ok ? undefined : r.error };
+  } catch (error) {
+    test = { at: new Date().toISOString(), ok: false, error: errorText(error).slice(0, 200) };
+  }
+  await setSetting("ai", { ...(await getAiSettings()), lastTest: test });
+  await logEvent(admin.email, "ai.test", test.ok ? "Conexão OK" : `Falhou: ${test.error}`);
+  back("ai", test.ok ? "Conexão com a IA OK." : `Falhou: ${test.error}`, !test.ok);
+}
+
+export async function saveAiLimitAction(form: FormData) {
+  const admin = await requireAdmin();
+  const n = Number(field(form, "clientDaily"));
+  if (!Number.isInteger(n) || n < 0 || n > 20) back("ai", "Escolha de 0 a 20 análises por dia.", true);
+  await setSetting("ai", { ...(await getAiSettings()), clientDaily: n });
+  await logEvent(admin.email, "ai.limit", `Análises por conta a cada 24 h (clientes): ${n}`);
+  back("ai", n === 0 ? "Clientes não geram análise (só você)." : `Clientes podem gerar até ${n} análise(s) por conta a cada 24 h.`);
+}
+
+export async function removeAiKeyAction() {
+  const admin = await requireAdmin();
+  const saved = await getAiSettings();
+  await setSetting("ai", { clientDaily: saved.clientDaily });
+  await logEvent(admin.email, "ai.remove", "Chave da IA removida");
+  back("ai", "Chave removida. Lembre de apagar a chave também no console da Anthropic, se não for mais usar.");
 }

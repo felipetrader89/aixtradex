@@ -347,6 +347,41 @@ export const robotScans = pgTable(
   (t) => [index("robot_scans_login_idx").on(t.product, t.login, t.createdAt)]
 );
 
+// v7.1: ativos negociáveis da corretora de cada conta (o robô manda a cada 6 h). symbols = BrokerSymbol[] (src/lib/broker-symbols.ts).
+export const brokerSymbols = pgTable(
+  "broker_symbols",
+  {
+    product: text("product").notNull(),
+    login: text("login").notNull(),
+    company: text("company"),
+    server: text("server"),
+    prefix: text("prefix").notNull().default(""),
+    suffix: text("suffix").notNull().default(""),
+    symbols: jsonb("symbols").notNull(),
+    updatedAt: timestamp("updated_at", { withTimezone: true }).notNull().defaultNow(),
+    refreshRequestedAt: timestamp("refresh_requested_at", { withTimezone: true }), // portal pediu a lista de novo (linha "SYMS")
+  },
+  (t) => [primaryKey({ columns: [t.product, t.login] })]
+);
+
+// Análises escritas pela IA (Claude) em cima das estatísticas da Ai X Intelligence de uma conta.
+export const robotAnalyses = pgTable(
+  "robot_analyses",
+  {
+    id: serial("id").primaryKey(),
+    product: text("product").notNull(),
+    login: text("login").notNull(),
+    locale: text("locale").notNull(),
+    text: text("text").notNull(),
+    model: text("model").notNull(),
+    inputTokens: integer("input_tokens"),
+    outputTokens: integer("output_tokens"),
+    requestedBy: text("requested_by"),
+    createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
+  },
+  (t) => [index("robot_analyses_login_idx").on(t.product, t.login, t.createdAt)]
+);
+
 // O que os clientes fazem no portal, pro sininho do admin: cadastro, entrou no portal, pedido, pagamento, pedido de acesso.
 export const activity = pgTable(
   "activity",
@@ -373,3 +408,4 @@ export type AccountStats = typeof accountStats.$inferSelect;
 export type RobotTrade = typeof robotTrades.$inferSelect;
 export type RobotScan = typeof robotScans.$inferSelect;
 export type LicenseClaim = typeof licenseClaims.$inferSelect;
+export type BrokerSymbolsRow = typeof brokerSymbols.$inferSelect;

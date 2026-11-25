@@ -9,6 +9,7 @@ import { canConfigure } from "@/lib/robot-access";
 import { PRODUCT } from "@/lib/plans";
 import { ROBOT_SYMBOLS, getRobotConfig, getRobotPolicy } from "@/lib/robot-settings";
 import { enforcePolicy, policyPair } from "@/lib/robot-options";
+import { getBrokerSymbols } from "@/lib/broker-symbols";
 
 type Props = { params: Promise<{ locale: string; login: string }> };
 
@@ -26,7 +27,7 @@ export default async function RobotSettingsPage({ params }: Props) {
   const user = await canConfigure(login);
   if (!user) notFound();
   const [t, ti] = await Promise.all([getTranslations("Portal.robot"), getTranslations("Portal.intel")]);
-  const [config, policy] = await Promise.all([getRobotConfig(PRODUCT.slug, login), getRobotPolicy()]);
+  const [config, policy, broker] = await Promise.all([getRobotConfig(PRODUCT.slug, login), getRobotPolicy(), getBrokerSymbols(PRODUCT.slug, login)]);
   const { updatedAt, admin: savedByAdmin, ...values } = config;
   // Cliente sempre vê só o que o admin liberou (mesmo numa conta que um admin salvou); admin vê tudo.
   const formValues = user.isAdmin || !savedByAdmin ? values : enforcePolicy(values, policy);
@@ -49,6 +50,15 @@ export default async function RobotSettingsPage({ params }: Props) {
         policy={user.isAdmin ? null : policy}
         defaultPair={policyPair(policy)}
         allowCustom={user.isAdmin}
+        broker={
+          broker
+            ? {
+                company: broker.company,
+                updatedAt: broker.updatedAt.toISOString(),
+                items: broker.symbols.map((b) => ({ k: b.k, d: b.d, c: b.c, p: b.p })),
+              }
+            : null
+        }
       />
     </div>
   );

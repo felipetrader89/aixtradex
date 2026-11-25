@@ -2,6 +2,13 @@
 
 // Pares mais negociados. Nome base: o robô acha o nome da corretora (sufixo m, c, .pro...).
 export const ROBOT_SYMBOLS = ["XAUUSD", "EURUSD", "GBPUSD", "USDJPY", "AUDUSD", "USDCAD", "USDCHF", "NZDUSD"] as const;
+// v7.1: além desses, qualquer ativo que o robô listou na corretora da conta (índices, cripto, energia...), pelo nome sem prefixo/sufixo.
+export const OTHER_ASSETS = "*"; // na permissão "Pares": libera os outros ativos da corretora
+export const MAX_SYMBOLS = 20; // pares ligados ao mesmo tempo (o robô processa até 30, contando os que só têm ordem antiga)
+export const SYMBOL_KEY = /^[A-Za-z0-9._#&+!-]{1,24}$/;
+export const isStandardSymbol = (s: string) => (ROBOT_SYMBOLS as readonly string[]).includes(s);
+export const ASSET_CATEGORIES = ["forex", "metals", "crypto", "indices", "energy", "stocks", "commodities", "other"] as const;
+export type AssetCategory = (typeof ASSET_CATEGORIES)[number];
 
 // % do saldo arriscado em cada entrada (até o fechamento na perda). Moderado = o padrão de sempre no ouro (0,01 a cada $250).
 export const RISK_PROFILES = { conservative: 1, moderate: 2, aggressive: 3 } as const;
@@ -150,6 +157,7 @@ export const SYMBOL_LABEL: Record<string, string> = {
   USDCHF: "USD/CHF",
   NZDUSD: "NZD/USD",
 };
+export const symbolLabel = (s: string) => SYMBOL_LABEL[s] ?? s;
 
 // ======================= PERMISSÕES DO ADMIN (Admin → Configurações → Robô) =======================
 // Pra cada parâmetro o admin escolhe: mostrar ou ocultar pro cliente, o padrão e quais opções o cliente pode escolher
@@ -174,7 +182,7 @@ const pips = (max = 20000): ParamDef => ({ scope: "pair", options: [], range: { 
 
 export const PARAM_DEFS = {
   // conta
-  symbols: { scope: "account", options: ROBOT_SYMBOLS, multi: true },
+  symbols: { scope: "account", options: [...ROBOT_SYMBOLS, OTHER_ASSETS], multi: true },
   maxPositions: { scope: "account", options: range(1, MAX_POSITIONS), ordered: true },
   ddPct: { scope: "account", options: DD_OPTIONS, ordered: true },
   dailyGoalPct: { scope: "account", options: PCT_OPTIONS, ordered: true },
@@ -277,10 +285,11 @@ export function normalizePolicy(stored?: StoredPolicy | null, legacy?: { ddCap?:
     if (k === "ddPct" && !stored?.ddPct && legacy?.ddCap != null) allow = d.options.filter((o) => (o as number) <= legacy.ddCap!);
     if (!allow.length) allow = [...d.options];
     let def: PolicyValue | PolicyValue[] = s.def ?? (k === "ddPct" && legacy?.ddDefault != null ? legacy.ddDefault : builtInDefault(k));
+    if (k === "symbols" && !allow.some((o) => o !== OTHER_ASSETS)) allow = [...d.options];
     if (d.multi) {
-      const list = (Array.isArray(def) ? def : [def]).filter((x) => hasValue(allow, x));
+      const list = (Array.isArray(def) ? def : [def]).filter((x) => hasValue(allow, x) && !(k === "symbols" && x === OTHER_ASSETS));
       def = d.options.filter((o) => hasValue(list, o));
-      if (!def.length && !d.allowEmpty) def = [allow[0]];
+      if (!def.length && !d.allowEmpty) def = [allow.find((o) => o !== OTHER_ASSETS) ?? allow[0]];
     } else if (Array.isArray(def) || !hasValue(allow, def)) {
       const fallback = builtInDefault(k) as PolicyValue;
       def = hasValue(allow, fallback) ? fallback : d.ordered ? allow[allow.length - 1] : allow[0];
@@ -342,6 +351,12 @@ function fit(k: ParamKey, value: unknown, policy: RobotPolicy): unknown {
   if (!pol.show) return Array.isArray(pol.def) ? [...pol.def] : pol.def;
   const d = paramDef(k);
   if (d.range) return fitRange(k, value, pol);
+  if (k === "symbols") {
+    // os 8 pares: cada um liberado ou não; os outros ativos da corretora: liberados juntos (opção "*")
+    const others = hasValue(pol.allow, OTHER_ASSETS);
+    const list = Array.isArray(value) ? (value as string[]).filter((s) => (isStandardSymbol(s) ? hasValue(pol.allow, s) : others)) : [];
+    return list.length ? list : [...(pol.def as PolicyValue[])];
+  }
   if (d.multi) {
     const list = Array.isArray(value) ? value.filter((x) => hasValue(pol.allow, x)) : [];
     return list.length || (d.allowEmpty && Array.isArray(value)) ? list : [...(pol.def as PolicyValue[])];

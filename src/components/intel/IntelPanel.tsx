@@ -4,33 +4,24 @@ import { statsFor } from "@/lib/account-stats";
 import { getRobotConfig } from "@/lib/robot-settings";
 import { communityScans, communityTrades, scansFor, tradesFor, SCAN_PERIODS } from "@/lib/intelligence";
 import {
+  betterSet,
   learn,
   mergeScans,
+  policyCan,
   rankScan,
+  scanRowAllowed,
+  scanRowPatch,
   stats,
-  strategyDiff,
-  fingerprint,
   type RatedRow,
   type ScanResult,
-  type ScanRow,
-  type Strategy,
   type StrategyKey,
 } from "@/lib/intel-stats";
-import {
-  ROBOT_SYMBOLS,
-  SYMBOL_LABEL,
-  enforcePolicy,
-  fitRange,
-  hasValue,
-  paramDef,
-  tfLabel,
-  type PairParams,
-  type ParamKey,
-  type PolicyValue,
-  type RobotPolicy,
-} from "@/lib/robot-options";
+import { ROBOT_SYMBOLS, enforcePolicy, symbolLabel, tfLabel, type RobotPolicy } from "@/lib/robot-options";
+import { getAiKey } from "@/lib/config";
+import { analysesToday, clientDailyLimit, latestAnalysis } from "@/lib/ai-analysis";
 import { EquityChart } from "@/components/intel/EquityChart";
-import { ApplyButton, ScanForm } from "@/components/intel/IntelActions";
+import { AnalysisText } from "@/components/intel/AnalysisText";
+import { AnalysisButton, ApplyButton, ScanForm } from "@/components/intel/IntelActions";
 
 const card = "panel-card rounded-2xl border border-brand-hairline bg-brand-surface/90 p-5";
 const h2 = "text-xs font-semibold uppercase tracking-wide text-brand-accent";
@@ -38,21 +29,23 @@ const th = "py-2 pr-3 text-left text-[11px] font-semibold uppercase tracking-wid
 const td = "py-2 pr-3 align-top";
 const tone = (v: number) => (v > 0 ? "text-brand-accent" : v < 0 ? "text-red-400" : "text-brand-ink-dim");
 
-const MIN_SET_TRADES = 30;
-const MIN_SET_ACCOUNTS = 3;
-
 // Ai X Intelligence de UMA conta: resultados reais, leitura das velas e sugestões (cliente e admin).
 // policy = null → admin (vê e aplica tudo).
 export async function IntelPanel({ login, locale, policy }: { login: string; locale: string; policy: RobotPolicy | null }) {
   const t = await getTranslations({ locale, namespace: "Portal.intel" });
-  const [full, trades, accStats, scans, community, cScans] = await Promise.all([
+  const [full, trades, accStats, scans, community, cScans, analysis, aiKey, usedToday, clientLimit] = await Promise.all([
     getRobotConfig(PRODUCT.slug, login),
     tradesFor(PRODUCT.slug, login),
     statsFor(PRODUCT.slug, [login]),
-    scansFor(PRODUCT.slug, login, 12),
+    scansFor(PRODUCT.slug, login, 30),
     communityTrades(PRODUCT.slug),
     communityScans(PRODUCT.slug),
+    latestAnalysis(PRODUCT.slug, login),
+    getAiKey(),
+    analysesToday(PRODUCT.slug, login),
+    clientDailyLimit(),
   ]);
+  const aiLimit = policy ? clientLimit : 20;
   const config = policy && full.admin ? enforcePolicy(full, policy) : full;
   const currency = accStats.get(login)?.currency ?? "USD";
   const nf = (v: number, d = 2) => v.toLocaleString(locale, { minimumFractionDigits: d, maximumFractionDigits: d });
@@ -63,15 +56,9 @@ export async function IntelPanel({ login, locale, policy }: { login: string; loc
   const dateTime = new Intl.DateTimeFormat(locale, { dateStyle: "short", timeStyle: "short" });
 
   // ---------- o que o cliente pode escolher (admin: tudo)
-  const can = (k: ParamKey, v: unknown, cur: unknown) => {
-    if (!policy) return true;
-    const pol = policy[k];
-    if (!pol.show) return JSON.stringify(v) === JSON.stringify(cur);
-    return paramDef(k).range ? fitRange(k, v, pol) === v : hasValue(pol.allow, v as PolicyValue);
-  };
-  const rowAllowed = (pair: PairParams) => (r: ScanRow) =>
-    can("rsiTf", r.tf, pair.rsiTf) && can("rsiPeriod", r.per, pair.rsiPeriod) && can("rsiZone", r.zone, pair.rsiZone) && can("breakout", r.logic === 1, pair.breakout);
-  const rowPatch = (r: ScanRow): Strategy => ({ rsiTf: r.tf, rsiPeriod: r.per, rsiZone: r.zone, breakout: r.logic === 1 });
+  const can = policyCan(policy);
+  const pairOf = (sym: string) => config.pairs[sym] ?? config.pairs[config.symbols[0]];
+  const rowAllowed = (sym: string) => scanRowAllowed(can, pairOf(sym));
 
   const applyLabels = (pair: string) => ({
     apply: t("apply"),
@@ -114,13 +101,17 @@ export async function IntelPanel({ login, locale, policy }: { login: string; loc
   const overall = stats(tradeVals);
   const curve: { t: number; v: number }[] = [];
   for (const r of trades) curve.push({ t: r.closeAt.getTime(), v: (curve.at(-1)?.v ?? 0) + Number(r.net) });
-  const bySymbol = ROBOT_SYMBOLS.map((s) => ({ s, st: stats(trades.filter((r) => r.symbol === s).map((r) => Number(r.net))) })).filter((x) => x.st.trades);
+  const bySymbol = [...new Set([...ROBOT_SYMBOLS, ...trades.map((r) => r.symbol)])].map((s) => ({ s, st: stats(trades.filter((r) => r.symbol === s).map((r) => Number(r.net))) })).filter((x) => x.st.trades);
 
   // ---------- leituras das velas (a mais recente concluída de cada par)
   const lastDone = new Map<string, { result: ScanResult; finishedAt: Date | null }>();
   for (const s of scans) if (s.status === "done" && s.result && !lastDone.has(s.symbol)) lastDone.set(s.symbol, { result: s.result as ScanResult, finishedAt: s.finishedAt });
   const active = scans.some((s) => s.status === "pending" || s.status === "running");
   const pairsForScan = [...config.symbols, ...ROBOT_SYMBOLS.filter((s) => !config.symbols.includes(s))];
+  const scanChoices = [
+    ...(config.symbols.length > 1 ? [{ value: "*", label: t("allPairs", { n: config.symbols.length }) }] : []),
+    ...pairsForScan.map((s) => ({ value: s, label: symbolLabel(s) })),
+  ];
 
   // ---------- comunidade
   const learning = new Map(learn(community).map((l) => [l.symbol, l]));
@@ -161,7 +152,7 @@ export async function IntelPanel({ login, locale, policy }: { login: string; loc
               <td className={`${td} text-right font-semibold ${tone(r.netR)}`}>{`${r.netR > 0 ? "+" : ""}${nf(r.netR, 1)}`}</td>
               <td className={`${td} text-right`}>{nf(r.ddR, 1)}</td>
               <td className={td}>{r.consistent ? "✓" : "-"}</td>
-              <td className={`${td} text-right`}>{showApply && !cur && <ApplyButton login={login} symbol={sym} patch={rowPatch(r)} labels={applyLabels(SYMBOL_LABEL[sym] ?? sym)} />}</td>
+              <td className={`${td} text-right`}>{showApply && !cur && <ApplyButton login={login} symbol={sym} patch={scanRowPatch(r)} labels={applyLabels(symbolLabel(sym))} />}</td>
             </tr>
           ))}
         </tbody>
@@ -171,6 +162,39 @@ export async function IntelPanel({ login, locale, policy }: { login: string; loc
 
   return (
     <div className="flex flex-col gap-5">
+      {/* ===== ANÁLISE DA IA ===== */}
+      <section className={`${card} flex flex-col gap-4 ring-1 ring-brand-accent/30`}>
+        <div>
+          <h2 className={h2}>{t("aiTitle")}</h2>
+          <p className="mt-1 text-xs text-brand-ink-dim">{t("aiHint")}</p>
+        </div>
+        {analysis ? (
+          <div className="flex flex-col gap-2">
+            <p className="text-[11px] text-brand-ink-dim">{t("aiWhen", { date: dateTime.format(analysis.createdAt) })}</p>
+            <AnalysisText text={analysis.text} />
+          </div>
+        ) : (
+          <p className="text-sm text-brand-ink-dim">{aiKey ? t("aiNone") : t("aiOff")}</p>
+        )}
+        {aiKey && aiLimit > 0 && (
+          <div className="flex flex-col gap-1">
+            <AnalysisButton
+              login={login}
+              locale={locale}
+              hasOne={!!analysis}
+              disabled={usedToday >= aiLimit}
+              labels={{
+                generate: t("aiGenerate"),
+                again: t("aiAgain"),
+                working: t("aiWorking"),
+                errors: Object.fromEntries(["nokey", "nodata", "limit", "auth", "busy", "refused", "api", "denied"].map((k) => [k, t(`aiErrors.${k}`)])),
+              }}
+            />
+            <p className="text-[11px] text-brand-ink-dim">{t("aiLeft", { n: Math.max(0, aiLimit - usedToday), max: aiLimit })}</p>
+          </div>
+        )}
+      </section>
+
       {/* ===== RESULTADOS REAIS ===== */}
       <section className={`${card} flex flex-col gap-4`}>
         <div>
@@ -216,7 +240,7 @@ export async function IntelPanel({ login, locale, policy }: { login: string; loc
                 <tbody className="text-brand-ink">
                   {bySymbol.map(({ s, st }) => (
                     <tr key={s} className="border-t border-brand-hairline">
-                      <td className={td}>{SYMBOL_LABEL[s] ?? s}</td>
+                      <td className={td}>{symbolLabel(s)}</td>
                       <td className={`${td} text-right`}>{st.trades}</td>
                       <td className={`${td} text-right`}>{pct(st.winRate)}</td>
                       <td className={`${td} text-right`}>{pf(st.pf)}</td>
@@ -241,8 +265,8 @@ export async function IntelPanel({ login, locale, policy }: { login: string; loc
         </div>
         <ScanForm
           login={login}
-          symbols={pairsForScan.map((s) => ({ value: s, label: SYMBOL_LABEL[s] ?? s }))}
-          defaultSymbol={pairsForScan[0]}
+          symbols={scanChoices}
+          defaultSymbol={scanChoices[0].value}
           periods={SCAN_PERIODS}
           active={active}
           labels={{
@@ -260,11 +284,11 @@ export async function IntelPanel({ login, locale, policy }: { login: string; loc
           <div>
             <p className="mb-1 text-sm font-semibold text-brand-ink">{t("recent")}</p>
             <ul className="flex flex-col gap-1 text-xs text-brand-ink-dim">
-              {scans.slice(0, 5).map((s) => {
+              {scans.slice(0, 8).map((s) => {
                 const spec = s.spec as { period?: string };
                 return (
                   <li key={s.id} className="flex flex-wrap gap-x-2">
-                    <span className="font-semibold text-brand-ink">{SYMBOL_LABEL[s.symbol] ?? s.symbol}</span>
+                    <span className="font-semibold text-brand-ink">{symbolLabel(s.symbol)}</span>
                     <span>{spec.period ? t(`periods.${spec.period}`) : ""}</span>
                     <span>· {dateTime.format(s.createdAt)}</span>
                     <span className={s.status === "done" ? "text-brand-accent" : s.status === "error" || s.status === "expired" ? "text-red-300" : "text-amber-300"}>
@@ -278,14 +302,13 @@ export async function IntelPanel({ login, locale, policy }: { login: string; loc
           </div>
         )}
         {[...lastDone.entries()].map(([sym, { result }]) => {
-          const pair = config.pairs[sym];
           const m = result.meta;
-          const { current, best } = rankScan(result, rowAllowed(pair));
+          const { current, best } = rankScan(result, rowAllowed(sym));
           const pips = (price: number) => nf(price / (m.pip || 1), 0);
           const pipsList = (txt: string) => (txt === "0" ? t("off") : `${txt.split("/").map((x) => pips(Number(x))).join("/")} pips`);
           return (
             <div key={sym} className="flex flex-col gap-2 border-t border-brand-hairline pt-4">
-              <p className="text-sm font-semibold text-brand-ink">{SYMBOL_LABEL[sym] ?? sym}</p>
+              <p className="text-sm font-semibold text-brand-ink">{symbolLabel(sym)}</p>
               <p className="text-xs text-brand-ink-dim">
                 {t("readInfo", { broker: m.broker, from: dateUtc.format(m.from * 1000), to: dateUtc.format(m.to * 1000), m1: m.m1.toLocaleString(locale) })}
               </p>
@@ -316,24 +339,15 @@ export async function IntelPanel({ login, locale, policy }: { login: string; loc
           <p className="mt-1 text-xs text-brand-ink-dim">{t("communityHint")}</p>
         </div>
         {config.symbols.map((sym) => {
-          const pair = config.pairs[sym];
-          const l = learning.get(sym);
-          const mine = fingerprint(pair);
-          const mineSet = l?.sets.find((s) => s.key === mine);
-          const base = mineSet ?? null;
-          const baseAvg = base && base.stats.trades ? base.stats.net / base.stats.trades : l && l.overall.trades ? l.overall.net / l.overall.trades : 0;
-          const better = l?.sets.find((s) => {
-            if (s.key === mine || s.stats.trades < MIN_SET_TRADES || s.accounts < MIN_SET_ACCOUNTS || s.stats.pf <= 1) return false;
-            if (s.stats.net / s.stats.trades <= baseAvg) return false;
-            return strategyDiff(pair, s.strategy).every((d) => can(d.key, d.to, d.from));
-          });
-          const diff = better ? strategyDiff(pair, better.strategy) : [];
+          const found = betterSet(learning.get(sym), pairOf(sym), can);
+          const better = found?.set;
+          const diff = found?.diff ?? [];
           const sc = scanBySymbol.get(sym) ?? [];
           const merged = sc.length >= 2 ? mergeScans(sc) : null;
-          const top = merged ? rankScan(merged, rowAllowed(pair), 1).best[0] : undefined;
+          const top = merged ? rankScan(merged, rowAllowed(sym), 1).best[0] : undefined;
           return (
             <div key={sym} className="flex flex-col gap-2 border-t border-brand-hairline pt-4 first:border-0 first:pt-0">
-              <p className="text-sm font-semibold text-brand-ink">{SYMBOL_LABEL[sym] ?? sym}</p>
+              <p className="text-sm font-semibold text-brand-ink">{symbolLabel(sym)}</p>
               {!better && !top && <p className="text-sm text-brand-ink-dim">{t("communityNone")}</p>}
               {better && diff.length > 0 && (
                 <div className="flex flex-col gap-2 rounded-xl bg-brand-surface-2/50 p-3">
@@ -360,7 +374,7 @@ export async function IntelPanel({ login, locale, policy }: { login: string; loc
                       login={login}
                       symbol={sym}
                       patch={Object.fromEntries(diff.map((d) => [d.key, d.to]))}
-                      labels={applyLabels(SYMBOL_LABEL[sym] ?? sym)}
+                      labels={applyLabels(symbolLabel(sym))}
                     />
                   </div>
                 </div>

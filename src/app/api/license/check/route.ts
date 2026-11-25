@@ -4,6 +4,7 @@ import { parseReport, saveReport, validReportSignature } from "@/lib/account-sta
 import { MT4_LOGIN, PRODUCT } from "@/lib/plans";
 import { configPayload, getRobotConfig } from "@/lib/robot-settings";
 import { pendingScan, saveTrades, scanReport } from "@/lib/intelligence";
+import { saveBrokerSymbols, symbolsRefreshPending } from "@/lib/broker-symbols";
 
 // Consulta feita pelo robô (MQL4 WebRequest):
 //   GET /api/license/check?account=12345678&product=pulse-rs&nonce=abc123&v=1.00&server=Broker-Live
@@ -32,6 +33,7 @@ function reply(body: string, status = 200) {
 // v7: o robô manda dados maiores por POST no mesmo endereço (é o único aberto em license.aixtradex.com).
 //   ?trades=1  → operações fechadas deste robô (src/lib/intelligence.ts parseTrades) → "OK|<novas>"
 //   ?scan=<id> → "start" ou o resultado do estudo de velas → "OK"
+//   ?symbols=1 → (v7.1) ativos negociáveis da corretora (src/lib/broker-symbols.ts) → "OK|<quantos>"
 // Assinatura: &ts=HMAC(LICENSE_SECRET, "conta|nonce|corpo").
 export async function POST(request: Request) {
   const params = new URL(request.url).searchParams;
@@ -48,6 +50,7 @@ export async function POST(request: Request) {
   if (ts.length !== expected.length || !timingSafeEqual(ts, expected)) return reply("ERROR|bad_signature", 403);
   try {
     if (params.get("trades") === "1") return reply(`OK|${await saveTrades(product, account, body)}`);
+    if (params.get("symbols") === "1") return reply(`OK|${await saveBrokerSymbols(product, account, body)}`);
     const scanId = Number(params.get("scan"));
     if (Number.isInteger(scanId) && scanId > 0) {
       await scanReport(product, account, scanId, body);
@@ -80,6 +83,8 @@ export async function GET(request: Request) {
       let body = params.get("cv") === cfg.slice(cfg.lastIndexOf(";ver=") + 5) ? "SAME" : `CFG|${cfg}|${sign(`${account}|${nonce}|${cfg}`)}`;
       // v7 (&sc=1): estudo de velas pendente pra esta conta → linha a mais "SCAN|id|pedido|assinatura".
       if (params.get("sc") === "1") {
+        // v7.1: o portal pediu a lista de ativos da corretora → linha "SYMS" (robô antigo ignora).
+        if (await symbolsRefreshPending(product, account)) body += "\nSYMS";
         const scan = await pendingScan(product, account);
         if (scan) body += `
 SCAN|${scan.id}|${scan.spec}|${sign(`${account}|${nonce}|${scan.id}|${scan.spec}`)}`;

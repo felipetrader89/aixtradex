@@ -1,7 +1,7 @@
 import "server-only";
 import { and, asc, desc, eq, gte, inArray, lt, or, sql } from "drizzle-orm";
 import { db, schema } from "@/lib/db";
-import { DEFAULT_PAIR, ROBOT_SYMBOLS, RSI_TIMEFRAMES, type PairParams } from "@/lib/robot-options";
+import { DEFAULT_PAIR, ROBOT_SYMBOLS, RSI_TIMEFRAMES, SYMBOL_KEY, type PairParams } from "@/lib/robot-options";
 import { parseScan, type ScanResult, type TradeLite } from "@/lib/intel-stats";
 
 // Ai X Intelligence (robô v7+): operações fechadas que o robô manda, histórico das configurações e estudos de velas.
@@ -47,6 +47,7 @@ type ParsedTrade = {
   swap: number;
   commission: number;
   comment: string;
+  key: string | null; // v7.1: nome do ativo no portal que o robô mandou (sem prefixo/sufixo)
 };
 
 // 1ª linha: gmt=<fuso da corretora em s>;v=<versão>;magic=<n>. Depois uma operação por linha:
@@ -72,6 +73,7 @@ export function parseTrades(body: string) {
       swap: Number(f[9]),
       commission: Number(f[10]),
       comment: (f[11] ?? "").slice(0, 64),
+      key: f[12] && SYMBOL_KEY.test(f[12]) ? f[12] : null,
     };
     const nums = [t.ticket, t.lots, t.open, t.close, t.openPrice, t.closePrice, t.profit, t.swap, t.commission];
     if (!nums.every(Number.isFinite) || !(t.ticket > 0) || (t.side !== 0 && t.side !== 1) || !(t.lots > 0) || t.close < t.open) continue;
@@ -100,7 +102,7 @@ export async function saveTrades(product: string, login: string, body: string) {
     return p ? { ...DEFAULT_PAIR, ...p } : null;
   };
   const rows = trades.map((t) => {
-    const symbol = baseSymbol(t.brokerSymbol);
+    const symbol = t.key ?? baseSymbol(t.brokerSymbol);
     const openAt = new Date((t.open - gmt) * 1000);
     return {
       product,
@@ -177,6 +179,7 @@ export const SCAN_PERIODS = ["1000", "10000", "1m", "2m", "3m", "6m", "1y"] as c
 export type ScanPeriod = (typeof SCAN_PERIODS)[number];
 export const SCAN_RSI_PERIODS = [3, 5, 7, 10, 14];
 const EXPIRE_MS = 30 * 60_000;
+export const SCANS_PER_DAY = 30;
 
 export type ScanSpec = { bars?: number; days?: number; tf: number; tfs: number[]; per: number[]; period: ScanPeriod };
 
@@ -209,7 +212,8 @@ async function expireStale(product: string, login: string) {
     );
 }
 
-export async function requestScan(product: string, login: string, symbol: string, spec: ScanSpec, requestedBy: string) {
+// Um pedido por par (v7.1: "todos os pares ligados" = vários de uma vez; o robô faz um de cada vez, na ordem).
+export async function requestScan(product: string, login: string, items: { symbol: string; spec: ScanSpec }[], requestedBy: string) {
   await expireStale(product, login);
   const active = await db()
     .select({ id: schema.robotScans.id })
@@ -221,9 +225,11 @@ export async function requestScan(product: string, login: string, symbol: string
     .select({ n: sql<number>`count(*)::int` })
     .from(schema.robotScans)
     .where(and(eq(schema.robotScans.product, product), eq(schema.robotScans.login, login), gte(schema.robotScans.createdAt, new Date(Date.now() - 86_400_000))));
-  if ((today[0]?.n ?? 0) >= 20) return { ok: false as const, error: "limit" as const };
-  const [row] = await db().insert(schema.robotScans).values({ product, login, symbol, spec, requestedBy }).returning({ id: schema.robotScans.id });
-  return { ok: true as const, id: row.id };
+  if ((today[0]?.n ?? 0) + items.length > SCANS_PER_DAY) return { ok: false as const, error: "limit" as const };
+  await db()
+    .insert(schema.robotScans)
+    .values(items.map(({ symbol, spec }) => ({ product, login, symbol, spec, requestedBy })));
+  return { ok: true as const };
 }
 
 // Linha que o robô recebe na consulta de 30 s (sem assinatura - quem chama assina).
@@ -246,6 +252,7 @@ export async function scanReport(product: string, login: string, id: number, bod
   }
   if (body.startsWith("error=")) {
     await db().update(schema.robotScans).set({ status: "error", error: body.slice(6, 300), finishedAt: new Date() }).where(where);
+    await restartQueue(product, login);
     return;
   }
   const result = parseScan(body);
@@ -253,6 +260,15 @@ export async function scanReport(product: string, login: string, id: number, bod
     .update(schema.robotScans)
     .set(result ? { status: "done", result, finishedAt: new Date() } : { status: "error", error: "invalid result", finishedAt: new Date() })
     .where(where);
+  await restartQueue(product, login);
+}
+
+// Fila: terminou um, os que estão esperando ganham mais 30 min (o prazo conta a partir do anterior).
+async function restartQueue(product: string, login: string) {
+  await db()
+    .update(schema.robotScans)
+    .set({ createdAt: new Date() })
+    .where(and(eq(schema.robotScans.product, product), eq(schema.robotScans.login, login), eq(schema.robotScans.status, "pending")));
 }
 
 export async function scansFor(product: string, login: string, limit = 10) {
