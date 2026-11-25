@@ -181,9 +181,15 @@ export const SCAN_RSI_PERIODS = [3, 5, 7, 10, 14];
 const EXPIRE_MS = 30 * 60_000;
 export const SCANS_PER_DAY = 30;
 
-export type ScanSpec = { bars?: number; days?: number; tf: number; tfs: number[]; per: number[]; period: ScanPeriod };
+// mode "full" = leitura completa (robô v7.2+); fix = grupos que o cliente não pode mudar (ficam com o valor atual).
+export type ScanSpec = { bars?: number; days?: number; tf: number; tfs: number[]; per: number[]; period: ScanPeriod; mode?: "full"; fix?: string[] };
 
-export function buildSpec(period: ScanPeriod, pair: PairParams): ScanSpec {
+export function buildSpec(period: ScanPeriod, pair: PairParams, full?: { fix: string[] }): ScanSpec {
+  const base = buildBasicSpec(period, pair);
+  return full ? { ...base, mode: "full", fix: full.fix } : base;
+}
+
+function buildBasicSpec(period: ScanPeriod, pair: PairParams): ScanSpec {
   const tfs = [...RSI_TIMEFRAMES] as number[];
   const per = [...new Set([...SCAN_RSI_PERIODS, pair.rsiPeriod])].sort((a, b) => a - b);
   const days = { "1m": 30, "2m": 61, "3m": 92, "6m": 183, "1y": 365 } as Record<string, number>;
@@ -192,7 +198,15 @@ export function buildSpec(period: ScanPeriod, pair: PairParams): ScanSpec {
 }
 
 const specText = (symbol: string, s: ScanSpec) =>
-  [`sym=${symbol}`, `bars=${s.bars ?? 0}`, `days=${s.days ?? 0}`, `tf=${s.tf}`, `tfs=${s.tfs.join(",")}`, `per=${s.per.join(",")}`].join(";");
+  [
+    `sym=${symbol}`,
+    `bars=${s.bars ?? 0}`,
+    `days=${s.days ?? 0}`,
+    `tf=${s.tf}`,
+    `tfs=${s.tfs.join(",")}`,
+    `per=${s.per.join(",")}`,
+    ...(s.mode === "full" ? ["mode=full", `fix=${(s.fix ?? []).join(",")}`] : []),
+  ].join(";");
 
 // Pedidos parados (robô desligado, versão antiga) vencem em 30 min.
 async function expireStale(product: string, login: string) {

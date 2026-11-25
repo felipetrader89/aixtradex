@@ -3,7 +3,6 @@
 import { useEffect, useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
 import { applySuggestionAction, generateAnalysisAction, requestScanAction } from "@/app/actions/intelligence";
-import type { Strategy } from "@/lib/intel-stats";
 import type { ScanPeriod } from "@/lib/intelligence";
 
 const chip = (on: boolean) =>
@@ -20,6 +19,8 @@ export type ScanFormLabels = {
   limit: string;
   error: string;
   periods: Record<string, string>;
+  full: string;
+  fullHint: string;
 };
 
 // Pede a leitura das velas. Enquanto tem leitura ativa, atualiza a página a cada 8 s.
@@ -41,6 +42,7 @@ export function ScanForm({
   const router = useRouter();
   const [symbol, setSymbol] = useState(defaultSymbol);
   const [period, setPeriod] = useState<ScanPeriod>("3m");
+  const [full, setFull] = useState(true);
   const [msg, setMsg] = useState<{ ok: boolean; text: string } | null>(null);
   const [pending, start] = useTransition();
 
@@ -78,13 +80,20 @@ export function ScanForm({
           </div>
         </div>
       </div>
+      <label className="flex items-start gap-3">
+        <input type="checkbox" checked={full} onChange={(e) => setFull(e.target.checked)} className="mt-1 h-4 w-4 accent-[#33d6a0]" />
+        <span>
+          <span className="block text-sm font-semibold text-brand-ink">{labels.full}</span>
+          <span className="block text-xs text-brand-ink-dim">{labels.fullHint}</span>
+        </span>
+      </label>
       <div className="flex flex-wrap items-center gap-3">
         <button
           type="button"
           disabled={pending || active}
           onClick={() =>
             start(async () => {
-              const r = await requestScanAction(login, symbol, period);
+              const r = await requestScanAction(login, symbol, period, full);
               if (r.ok) {
                 setMsg({ ok: true, text: labels.sent });
                 router.refresh();
@@ -107,7 +116,7 @@ export function ScanForm({
 
 export type ApplyLabels = { apply: string; applied: string; blocked: string; error: string; confirm: string };
 
-export function ApplyButton({ login, symbol, patch, labels }: { login: string; symbol: string; patch: Strategy; labels: ApplyLabels }) {
+export function ApplyButton({ login, symbol, patch, labels }: { login: string; symbol: string; patch: Record<string, unknown>; labels: ApplyLabels }) {
   const router = useRouter();
   const [state, setState] = useState<"idle" | "done" | "blocked" | "error">("idle");
   const [pending, start] = useTransition();

@@ -21,6 +21,7 @@ import { getAiKey } from "@/lib/config";
 import { analysesToday, clientDailyLimit, latestAnalysis } from "@/lib/ai-analysis";
 import { EquityChart } from "@/components/intel/EquityChart";
 import { AnalysisText } from "@/components/intel/AnalysisText";
+import { FullStudyCard } from "@/components/intel/FullStudyCard";
 import { AnalysisButton, ApplyButton, ScanForm } from "@/components/intel/IntelActions";
 
 const card = "panel-card rounded-2xl border border-brand-hairline bg-brand-surface/90 p-5";
@@ -278,6 +279,8 @@ export async function IntelPanel({ login, locale, policy }: { login: string; loc
             limit: t("scanLimit"),
             error: t("scanError"),
             periods: Object.fromEntries(SCAN_PERIODS.map((p) => [p, t(`periods.${p}`)])),
+            full: t("fullToggle"),
+            fullHint: t("fullToggleHint"),
           }}
         />
         {scans.length > 0 && (
@@ -315,6 +318,18 @@ export async function IntelPanel({ login, locale, policy }: { login: string; loc
               <p className="text-xs text-brand-ink-dim">
                 {t("exitUsed", { loss: pips(m.loss), profit: m.profit > 0 ? `${pips(m.profit)} pips` : t("off"), be: pipsList(m.be), tr: pipsList(m.tr) })}
               </p>
+              {result.full && (
+                <FullStudyCard
+                  login={login}
+                  locale={locale}
+                  sym={sym}
+                  full={result.full}
+                  pair={pairOf(sym)}
+                  canAll={can}
+                  applyLabels={applyLabels(symbolLabel(sym))}
+                />
+              )}
+              {result.full && <p className="pt-1 text-xs font-semibold text-brand-ink">{t("fullTriggerTitle")}</p>}
               {best.length ? (
                 <ScanTable rows={best} current={current} sym={sym} showApply />
               ) : (

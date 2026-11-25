@@ -8,6 +8,8 @@ import { getRobotConfig } from "@/lib/robot-settings";
 import { communityScans, communityTrades, scansFor, tradesFor } from "@/lib/intelligence";
 import {
   betterSet,
+  fullPatch,
+  fullStats,
   learn,
   mergeScans,
   policyCan,
@@ -104,6 +106,23 @@ export async function buildAnalysisInput(product: string, login: string, policy:
           }
         : null,
       communityCandleReadingBest: top ? { accounts: scansBy.get(sym)!.length, ...comboLine(top) } : null,
+      fullReading: scan?.full?.best
+        ? (() => {
+            const changes = Object.entries(fullPatch(scan.full!.best!.cfg, pair));
+            const r = (st: number[]) => {
+              const f = fullStats(st);
+              return { trades: f.trades, winRatePct: r2(f.winRate * 100), profitFactor: r2(f.pf), resultR: r2(f.netR), maxDrawdownR: r2(f.ddR), last30pctResultR: r2(f.oosNetR), last30pctPF: r2(f.oosPf) };
+            };
+            return {
+              note: "todos os parâmetros otimizados por etapas nos primeiros 70% do período; últimos 30% = conferência",
+              current: scan.full!.cur ? r(scan.full!.cur.st) : null,
+              suggested: r(scan.full!.best!.st),
+              confirmedInLast30pct: fullStats(scan.full!.best!.st).validated,
+              changes: changes.map(([k, v]) => `${k}: ${JSON.stringify(pair[k as keyof typeof pair])} -> ${JSON.stringify(v)}`),
+              clientCanApplyAll: changes.every(([k, v]) => can(k as never, v, pair[k as keyof typeof pair])),
+            };
+          })()
+        : null,
     };
   });
 
@@ -134,6 +153,7 @@ export async function buildAnalysisInput(product: string, login: string, policy:
         "Leitura de velas: só o gatilho do RSI com a saída do par, sem os filtros (ATR, ADX, zonas, notícias). Resultado em R = múltiplos do limite de perda.",
         "Critério das combinações listadas: 20+ operações, fator de lucro acima de 1 e positivas nas duas metades do período.",
         "Cada combinação listada em bestCombosClientCanApply tem um botão Aplicar ao lado, no painel, que troca só o RSI daquele par.",
+        "fullReading tem o botão 'Aplicar tudo neste par', que troca de uma vez todos os ajustes listados em changes.",
       ],
     },
   };
@@ -147,7 +167,7 @@ Use só os dados do JSON. Não invente números nem combinações. Explique de f
 2. Cada par: compare a combinação atual com as melhores da leitura de velas e com a comunidade. Diga qual mudança parece mais sólida e por quê (amostra, fator de lucro, queda máxima em R, consistência nas duas metades). Se a amostra for pequena, diga que é cedo.
 3. Próximos passos práticos, em ordem de prioridade: por exemplo "aplicar a combinação X no EUR/USD pelo botão Aplicar", "pedir uma leitura de 6 meses", "esperar mais operações".
 
-Só recomende mudanças que aparecem em bestCombosClientCanApply, communityBetterSettings ou communityCandleReadingBest (já respeitam o que o cliente pode mudar). Se nada for claramente melhor, diga para manter.
+Só recomende mudanças que aparecem em fullReading (se clientCanApplyAll for true), bestCombosClientCanApply, communityBetterSettings ou communityCandleReadingBest (já respeitam o que o cliente pode mudar). A fullReading é a mais completa: dê prioridade a ela, mas só trate como confiável se confirmedInLast30pct for true; se não for, diga que é melhor pedir uma leitura de período maior antes de aplicar. Se nada for claramente melhor, diga para manter.
 Nunca prometa lucro nem resultado; trate como estatística do passado. Não fale de alavancagem, depósito ou indicação de corretora.
 Formato: títulos curtos começando com "## ", listas com "- ", destaque com **negrito**. Sem tabelas. Até 350 palavras.`;
 

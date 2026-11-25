@@ -7,49 +7,51 @@ import { logEvent } from "@/lib/config";
 import { getRobotConfig, getRobotPolicy, saveRobotConfig, validateConfig } from "@/lib/robot-settings";
 import { buildSpec, requestScan, SCAN_PERIODS, type ScanPeriod } from "@/lib/intelligence";
 import { allowedSymbolKeys } from "@/lib/broker-symbols";
-import { fitRange, hasValue, paramDef, type ConfigValues, type PairParams, type ParamKey, type PolicyValue } from "@/lib/robot-options";
-import { STRATEGY_KEYS, type Strategy } from "@/lib/intel-stats";
+import { type ConfigValues, type PairParams, type ParamKey } from "@/lib/robot-options";
+import { FULL_KEYS, STRATEGY_KEYS, fixedGroups, policyCan } from "@/lib/intel-stats";
 import { generateAnalysis, type AnalysisError } from "@/lib/ai-analysis";
 
 type Fail = { ok: false; error: "denied" | "busy" | "limit" | "invalid" | "blocked" };
 
 // Pede um estudo de velas pro robô da conta (ele busca em até 30 s e roda no terminal do cliente).
 // symbol = "*" → um estudo pra cada par ligado (o robô faz um de cada vez).
-export async function requestScanAction(login: string, symbol: string, period: ScanPeriod): Promise<{ ok: true } | Fail> {
+export async function requestScanAction(login: string, symbol: string, period: ScanPeriod, full = false): Promise<{ ok: true } | Fail> {
   const user = await canConfigure(login);
   if (!user) return { ok: false, error: "denied" };
   if (!(SCAN_PERIODS as readonly string[]).includes(period)) return { ok: false, error: "invalid" };
   const [config, keys] = await Promise.all([getRobotConfig(PRODUCT.slug, login), allowedSymbolKeys(PRODUCT.slug, login)]);
   const symbols = symbol === "*" ? config.symbols : [symbol];
   if (!symbols.length || symbols.some((s) => !keys.has(s))) return { ok: false, error: "invalid" };
-  const items = symbols.map((s) => ({ symbol: s, spec: buildSpec(period, config.pairs[s] ?? config.pairs[config.symbols[0]]) }));
+  const fix = full ? fixedGroups(user.isAdmin ? null : await getRobotPolicy()) : [];
+  const items = symbols.map((s) => ({ symbol: s, spec: buildSpec(period, config.pairs[s] ?? config.pairs[config.symbols[0]], full ? { fix } : undefined) }));
   const r = await requestScan(PRODUCT.slug, login, items, user.email);
   if (!r.ok) return { ok: false, error: r.error };
-  if (user.isAdmin) await logEvent(user.email, "robot.scan", `${login}: estudo ${symbols.join(", ")} (${period})`);
+  if (user.isAdmin) await logEvent(user.email, "robot.scan", `${login}: ${full ? "leitura completa" : "estudo"} ${symbols.join(", ")} (${period})`);
   revalidatePath("/[locale]/account", "layout");
   revalidatePath("/admin", "layout");
   return { ok: true };
 }
 
-// Aplica uma sugestão num par (combinação do estudo ou conjunto da comunidade). Cliente: só o que o admin liberou.
-export async function applySuggestionAction(login: string, symbol: string, patch: Strategy): Promise<{ ok: true } | Fail> {
+// Aplica uma sugestão num par: combinação do estudo, conjunto da comunidade ou a leitura completa (vários ajustes de uma vez).
+export async function applySuggestionAction(login: string, symbol: string, patch: Record<string, unknown>): Promise<{ ok: true } | Fail> {
   const user = await canConfigure(login);
   if (!user) return { ok: false, error: "denied" };
   if (!patch || typeof patch !== "object") return { ok: false, error: "invalid" };
   const keys = await allowedSymbolKeys(PRODUCT.slug, login);
   if (!keys.has(symbol)) return { ok: false, error: "invalid" };
   const changed = Object.keys(patch);
-  if (!changed.length || changed.some((k) => !(STRATEGY_KEYS as readonly string[]).includes(k))) return { ok: false, error: "invalid" };
+  const allowedKeys = new Set<string>([...STRATEGY_KEYS, ...FULL_KEYS]);
+  if (!changed.length || changed.some((k) => !allowedKeys.has(k))) return { ok: false, error: "invalid" };
   const policy = await getRobotPolicy();
+  const full = await getRobotConfig(PRODUCT.slug, login);
   if (!user.isAdmin) {
+    // cliente: só o que o admin liberou (oculto = só se não mudar)
+    const can = policyCan(policy);
+    const cur = full.pairs[symbol] ?? full.pairs[full.symbols[0]];
     for (const k of changed as ParamKey[]) {
-      const pol = policy[k];
-      const v = (patch as Record<string, unknown>)[k];
-      const ok = pol.show && (paramDef(k).range ? fitRange(k, v, pol) === v : hasValue(pol.allow, v as PolicyValue));
-      if (!ok) return { ok: false, error: "blocked" };
+      if (!policy[k].show || !can(k, patch[k], cur[k as keyof typeof cur])) return { ok: false, error: "blocked" };
     }
   }
-  const full = await getRobotConfig(PRODUCT.slug, login);
   const config: ConfigValues = { ...full };
   delete (config as Partial<typeof full>).updatedAt;
   delete (config as Partial<typeof full>).admin;

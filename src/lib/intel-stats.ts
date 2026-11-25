@@ -5,7 +5,7 @@
 //     de tamanhos diferentes, o resultado é normalizado por 0,01 lote ("por 0,01").
 //  2) ESTUDOS DE VELAS feitos no terminal do cliente (robot_scans): gatilho do RSI (tempo gráfico × período × zona × lógica)
 //     simulado com a saída do par. Resultado em "R" = múltiplos da distância do limite de perda (compara pares e corretoras).
-import { ROBOT_SYMBOLS, fitRange, hasValue, paramDef, type PairParams, type ParamKey, type PolicyValue, type RobotPolicy } from "./robot-options";
+import { ROBOT_SYMBOLS, TIMEFRAMES, fitRange, hasValue, paramDef, type PairParams, type ParamKey, type PolicyValue, type RobotPolicy } from "./robot-options";
 
 export type Stats = {
   trades: number;
@@ -206,7 +206,12 @@ export type ScanMeta = {
   cur: { tf: number; per: number; zone: number; logic: number } | null;
   v: string;
 };
-export type ScanResult = { meta: ScanMeta; rows: ScanRow[] };
+// v7.2 leitura completa: configuração (chaves curtas do robô) + estatística em R.
+// st: 0 ops, 1 ganhos, 2 lucro bruto, 3 perda bruta, 4 maior queda, 5 perdas seguidas, 6 ops 70%, 7 resultado 70%, 8 lucro 70%, 9 perda 70%,
+// 10 queda 70%, 11 ops 30%, 12 resultado 30%, 13 lucro 30%, 14 perda 30%
+export type FullRow = { cfg: Record<string, number>; st: number[] };
+export type FullStudy = { meta: Record<string, string>; cur: FullRow | null; best: FullRow | null; ex: FullRow[] };
+export type ScanResult = { meta: ScanMeta; rows: ScanRow[]; full?: FullStudy };
 
 const num = (v: string | undefined) => (v === undefined || v === "" ? 0 : Number(v));
 
@@ -238,13 +243,110 @@ export function parseScan(body: string): ScanResult | null {
   };
   if (!(meta.loss > 0) || !meta.sym) return null;
   const rows: ScanRow[] = [];
+  const full: FullStudy = { meta: {}, cur: null, best: null, ex: [] };
+  let hasFull = false;
   for (const line of lines.slice(1)) {
+    if (line.startsWith("F;")) {
+      const [, label, cfgText, stText] = line.split(";");
+      const pairs = (cfgText ?? "").split(",").map((x) => [x.slice(0, x.indexOf("=")), x.slice(x.indexOf("=") + 1)] as const);
+      if (label === "meta") {
+        full.meta = Object.fromEntries(pairs.filter(([k]) => k).map(([k, v]) => [k, v.slice(0, 80)]));
+        hasFull = true;
+        continue;
+      }
+      const cfg = Object.fromEntries(pairs.filter(([k, v]) => /^[a-z]{1,6}$/.test(k) && Number.isFinite(Number(v))).map(([k, v]) => [k, Number(v)]));
+      const st = (stText ?? "").split(",").map(Number);
+      if (st.length !== 15 || !st.every(Number.isFinite) || !("tf" in cfg)) continue;
+      const row = { cfg, st };
+      if (label === "cur") full.cur = row;
+      else if (label === "best") full.best = row;
+      else if (label === "ex" && full.ex.length < 5) full.ex.push(row);
+      hasFull = true;
+      continue;
+    }
     const f = line.split(",").map(Number);
     if (f.length !== 14 || !f.every(Number.isFinite)) continue;
     const [tf, per, zone, logic, trades, wins, gw, gl, dd, maxcl, ta, na, tb, nb] = f;
     rows.push({ tf, per, zone, logic, trades, wins, gw, gl, dd, maxcl, ta, na, tb, nb });
   }
-  return rows.length ? { meta, rows } : null;
+  if (!rows.length) return null;
+  return hasFull ? { meta, rows, full } : { meta, rows };
+}
+
+export const fullStats = (st: number[]) => {
+  const pf = (w: number, l: number) => (l > 0 ? w / l : w > 0 ? 99 : 0);
+  return {
+    trades: st[0],
+    winRate: st[0] ? st[1] / st[0] : 0,
+    pf: pf(st[2], st[3]),
+    netR: st[2] - st[3],
+    ddR: st[4],
+    maxcl: st[5],
+    isTrades: st[6],
+    isNetR: st[7],
+    oosTrades: st[11],
+    oosNetR: st[12],
+    oosPf: pf(st[13], st[14]),
+    // confirmada = também positiva nos últimos 30% (que não entraram na escolha)
+    validated: st[11] >= 5 && st[12] > 0 && pf(st[13], st[14]) > 1,
+  };
+};
+
+// Configuração da leitura completa → ajustes do par (só o que muda). Distâncias já vêm em pips do par.
+export function fullPatch(cfg: Record<string, number>, pair: PairParams): Partial<PairParams> {
+  const mask = cfg.zu ?? 0;
+  const next: Partial<PairParams> = {
+    rsiTf: cfg.tf,
+    rsiPeriod: cfg.per,
+    rsiZone: cfg.zone,
+    breakout: cfg.logic === 1,
+    lossClose: true,
+    lossPips: cfg.lp,
+    profitClose: cfg.pe === 1,
+    ...(cfg.pe === 1 ? { profitPips: cfg.pp } : {}),
+    breakEven: cfg.be === 1,
+    ...(cfg.be === 1 ? { beTrigger: cfg.bt, beOffset: cfg.bo } : {}),
+    trailing: cfg.tr === 1,
+    ...(cfg.tr === 1 ? { trailStart: cfg.ts, trailDistance: cfg.td, trailStep: cfg.tt } : {}),
+    atr: cfg.at === 1,
+    ...(cfg.at === 1 ? { atrTf: cfg.yt, atrPeriod: cfg.yp, atrBars: cfg.yb, atrMin: cfg.yn, atrMax: cfg.yx } : {}),
+    adx: cfg.ax === 1,
+    ...(cfg.ax === 1 ? { adxTf: cfg.xt, adxPeriod: cfg.xp, adxLevel: cfg.xl, adxRising: cfg.xr === 1 } : {}),
+    zones: cfg.zn === 1,
+    ...(cfg.zn === 1 ? { zonesMode: cfg.zm, zoneTfs: TIMEFRAMES.filter((_, i) => (mask >> i) & 1), zoneCandles: cfg.zc } : {}),
+    direction: cfg.d,
+    goalPct: cfg.g,
+    lossPct: cfg.l,
+  };
+  const out: Partial<PairParams> = {};
+  for (const [k, v] of Object.entries(next) as [keyof PairParams, unknown][]) {
+    if (v === undefined || (typeof v === "number" && !Number.isFinite(v))) continue;
+    if (JSON.stringify(pair[k]) !== JSON.stringify(v)) (out as Record<string, unknown>)[k] = v;
+  }
+  return out;
+}
+
+// Grupos de ajustes da leitura completa: o grupo fica travado (o robô não mexe) se o cliente não pode mudar algum ajuste dele.
+export const FULL_GROUPS: Record<string, ParamKey[]> = {
+  rsi: ["rsiTf", "rsiPeriod", "rsiZone", "breakout"],
+  loss: ["lossClose", "lossPips"],
+  profit: ["profitClose", "profitPips"],
+  be: ["breakEven", "beTrigger", "beOffset"],
+  trail: ["trailing", "trailStart", "trailDistance", "trailStep"],
+  atr: ["atr", "atrTf", "atrPeriod", "atrBars", "atrMin", "atrMax"],
+  adx: ["adx", "adxTf", "adxPeriod", "adxLevel", "adxRising"],
+  zones: ["zones", "zonesMode", "zoneTfs", "zoneCandles"],
+  dir: ["direction"],
+  goal: ["goalPct"],
+  dloss: ["lossPct"],
+};
+export const FULL_KEYS = Object.values(FULL_GROUPS).flat();
+
+export function fixedGroups(policy: RobotPolicy | null) {
+  if (!policy) return [];
+  return Object.entries(FULL_GROUPS)
+    .filter(([, keys]) => keys.some((k) => !policy[k].show || (!paramDef(k).range && policy[k].allow.length < 2)))
+    .map(([g]) => g);
 }
 
 export type RatedRow = ScanRow & {
@@ -317,7 +419,9 @@ export function policyCan(policy: RobotPolicy | null) {
     if (!policy) return true;
     const pol = policy[k];
     if (!pol.show) return JSON.stringify(v) === JSON.stringify(cur);
-    return paramDef(k).range ? fitRange(k, v, pol) === v : hasValue(pol.allow, v as PolicyValue);
+    if (paramDef(k).range) return fitRange(k, v, pol) === v;
+    if (Array.isArray(v)) return v.every((x) => hasValue(pol.allow, x as PolicyValue)) && (v.length > 0 || !!paramDef(k).allowEmpty);
+    return hasValue(pol.allow, v as PolicyValue);
   };
 }
 
