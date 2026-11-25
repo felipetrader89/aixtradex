@@ -51,7 +51,8 @@ export function valuePt(k: string, v: unknown): string {
 
 // Linhas do resumo de um par (admin → conta).
 export function pairSummary(p: PairParams): [string, string][] {
-  const risk = p.riskProfile === "custom" ? `${p.riskPct}% (personalizado)` : `${RISK_PROFILES[p.riskProfile]}% (${p.riskProfile})`;
+  const names = { conservative: "conservador", moderate: "moderado", aggressive: "agressivo" } as const;
+  const risk = p.riskProfile === "custom" ? `${p.riskPct}% (personalizado)` : `${RISK_PROFILES[p.riskProfile]}% (${names[p.riskProfile]})`;
   return [
     ["Risco", risk],
     ["Meta / perda do par", `${p.goalPct || "-"}% / ${p.lossPct || "-"}%`],
