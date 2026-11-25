@@ -632,6 +632,7 @@
   },
   "Portal": {
     "nav": {
+      "start": "Asistente IA",
       "overview": "Resumen",
       "accounts": "Cuentas MT4",
       "licenses": "Licencias",
@@ -690,7 +691,21 @@
       },
       "noLicense": "Todavía no tienes licencia. En cuanto se confirme el pago, aparece aquí.",
       "oldClient": "¿Ya usabas el robot antes del portal?",
-      "oldClientCta": "Solicita tu acceso"
+      "oldClientCta": "Solicita tu acceso",
+      "plan": {
+        "kicker": "Ai X Intelligence",
+        "title": "Empieza a operar con nuestra Inteligencia Artificial en 5 pasos",
+        "text": "Dinos tu meta del día. La IA analiza el terminal de tu broker, muestra la probabilidad real de alcanzar esa meta y deja el robot listo para buscarla.",
+        "steps": {
+          "account": "Cuenta",
+          "mode": "Modo",
+          "goal": "Meta del día",
+          "analyze": "Análisis",
+          "review": "Activar"
+        },
+        "start": "Empezar",
+        "continue": "Continuar"
+      }
     },
     "stats": {
       "state": {
@@ -759,6 +774,7 @@
       "curve": "Resultado acumulado",
       "scan": "Lectura de velas",
       "scanHint": "El robot lee el historial de tu MT4 y prueba el gatillo del RSI en todas las combinaciones (marco temporal, período, zona, reversión o ruptura) con la salida que el par usa hoy. Los filtros (ATR, ADX, zonas, noticias) no entran: es un estudio del gatillo.",
+      "needsV74": "pedido del Asistente: necesita el robot v7.4 o más nuevo",
       "needsV73": "el robot de esta cuenta todavía no hace la lectura completa: actualiza a la v7.3 o más nueva y pide de nuevo",
       "fullToggle": "Lectura completa (todos los parámetros)",
       "fullToggleHint": "Además del RSI, prueba límite de pérdida, objetivo, break-even, stop móvil, filtros ATR/ADX, zonas, dirección y meta/pérdida del día. Tarda unos minutos y necesita el robot v7.3 o más nuevo.",
@@ -1146,6 +1162,165 @@
       "already": "Ya solicitaste acceso con este email. En cuanto lo confirme, recibirás un email.",
       "tooMany": "Demasiadas solicitudes seguidas. Inténtalo de nuevo en 1 hora o escríbeme por Telegram.",
       "server": "Error del servidor. Inténtalo de nuevo en unos instantes."
+    }
+  },
+  "Plan": {
+    "title": "Asistente IA",
+    "intro": "En 5 pasos la IA arma la configuración del robot para tu meta del día, con la probabilidad de alcanzarla calculada en el historial reciente de tu broker.",
+    "noAccount": "Todavía no tienes una cuenta MT4 registrada en una licencia.",
+    "noAccountCta": "Registrar cuenta",
+    "next": "Siguiente",
+    "back": "Volver",
+    "steps": {
+      "account": "Cuenta",
+      "mode": "Modo",
+      "goal": "Meta del día",
+      "params": "Ajustes y análisis",
+      "analyze": "Análisis",
+      "review": "Activar"
+    },
+    "account": {
+      "title": "¿Qué cuenta va a operar?",
+      "running": "Robot encendido y conectado en esta cuenta.",
+      "autotradingOff": "El robot está conectado, pero el AutoTrading está apagado en MT4. El análisis funciona; para operar, enciende el AutoTrading.",
+      "oldRobot": "El robot de esta cuenta es una versión antigua. Descarga la v7.4, cámbiala en MT4 (mismo gráfico, las operaciones abiertas siguen) y verifica de nuevo.",
+      "offline": "El robot no está conectado en esta cuenta. Haz así:",
+      "how1": "Descarga la versión más nueva del robot.",
+      "downloads": "Descargas",
+      "how2": "En MT4: Herramientas → Opciones → Asesores Expertos → permite la dirección https://license.aixtradex.com.",
+      "how3": "Arrastra el robot al gráfico y enciende el AutoTrading.",
+      "guide": "Guía paso a paso",
+      "check": "Ya lo encendí, verificar de nuevo",
+      "version": "Necesita el robot v7.4 o más nuevo (es el que envía el resultado día a día del análisis)."
+    },
+    "mode": {
+      "title": "¿Cómo quieres configurarlo?",
+      "auto": "Automático",
+      "manual": "Manual",
+      "recommended": "Recomendado",
+      "autoText": "La IA analiza el terminal de tu broker, elige los mejores pares y la mejor combinación de cada uno y divide tu meta entre ellos. Cada día hábil rehace el análisis y ajusta sola.",
+      "manualText": "Tú eliges los pares, la meta de cada uno y los ajustes del robot. La IA muestra la probabilidad de alcanzar la meta y, si quieres, cambia la configuración de un par por la suya."
+    },
+    "profiles": {
+      "conservative": "Conservador",
+      "moderate": "Moderado",
+      "aggressive": "Agresivo",
+      "custom": "Personalizado",
+      "hint": "Meta {goal}% · pérdida máx. {loss}% · riesgo {risk}% por entrada",
+      "customHint": "Tú eliges la meta y el límite; el riesgo por entrada queda el de cada par"
+    },
+    "goal": {
+      "title": "¿Cuál es tu meta del día?",
+      "goal": "Meta de ganancia del día (total)",
+      "loss": "Límite de pérdida del día",
+      "explain": "Cuando un par alcanza su meta, el robot para ese par hasta mañana. Cuando alcanza la meta total o el límite de pérdida, para todo hasta mañana.",
+      "pairsTitle": "Pares y la meta de cada uno",
+      "split": "Dividir igual",
+      "addOther": "Otro activo del broker...",
+      "add": "Agregar",
+      "sum": "Suma de los pares: {sum}% de {goal}%",
+      "missing": "faltan {v}%",
+      "over": "pasó {v}%"
+    },
+    "params": {
+      "title": "Ajustes del robot",
+      "keep": "Mantener mis ajustes actuales",
+      "keepText": "El análisis usa la configuración que ya está en cada par.",
+      "default": "Usar el estándar del robot",
+      "defaultText": "Estrategia, filtros y salida de los pares elegidos vuelven al estándar (el riesgo queda como está).",
+      "open": "Abrir la configuración completa"
+    },
+    "analyze": {
+      "title": "Análisis",
+      "text": "El robot va a leer el último mes de velas de cada par en tu broker y probar las combinaciones de entrada, salida, filtros y dirección. La IA se queda con las que también funcionaron en la parte del período que no entró en la elección.",
+      "time": "Tarda de 1 a 3 minutos y corre en tu MT4 sin molestar las operaciones. El robot debe estar encendido.",
+      "start": "Analizar ahora",
+      "sending": "Enviando...",
+      "progress": "{done} de {total} pares leídos",
+      "wait": "Puedes dejar esta página abierta: se actualiza sola. Si la cierras, solo vuelve después.",
+      "status": {
+        "pending": "en cola",
+        "running": "leyendo...",
+        "done": "listo",
+        "error": "error",
+        "expired": "no respondió"
+      }
+    },
+    "review": {
+      "title": "Resultado del análisis",
+      "activeTitle": "Tu plan",
+      "activeAuto": "Activo en modo automático. La IA rehace el análisis cada día hábil, justo después de medianoche (UTC), y ajusta los pares sola.",
+      "activeManual": "Activo en modo manual. El robot está buscando la meta de cada par.",
+      "noneToday": "En el análisis de hoy ningún par pasó la confirmación, así que el robot siguió con la configuración anterior.",
+      "added": "Entraron: {list}.",
+      "removed": "Salieron: {list}.",
+      "needsV74": "El análisis terminó, pero tu robot todavía no envía el resultado día a día. Descarga la v7.4 en Descargas, cámbiala en MT4 y rehaz el análisis.",
+      "noPairs": "Ningún par pasó la confirmación en el último mes (resultado positivo también en la parte del período que quedó fuera de la elección). Intenta de nuevo mañana o usa el modo manual.",
+      "noData": "No hay datos suficientes del análisis para estos pares.",
+      "chanceTitle": "Probabilidad de alcanzar la meta",
+      "chance": "Alcanzó la meta de {goal}% en {hit} de {days} días de mercado del último mes.",
+      "positive": "Días positivos",
+      "lossDays": "Días en el límite de pérdida",
+      "avg": "Promedio del día",
+      "worst": "Peor día",
+      "suggest": "Meta más segura para el último mes: {goal}% (alcanzada en el {rate}% de los días).",
+      "useSuggest": "Usar esta meta",
+      "noSuggest": "Ninguna meta se alcanzó en el 70% de los días del último mes. Considera una meta menor o el perfil conservador.",
+      "disclaimer": "Simulación en las velas de tu broker del último mes (una entrada a la vez en cada dirección, sin la recuperación). Muestra lo que habría pasado; resultados pasados no garantizan resultados futuros.",
+      "pairsAuto": "Pares elegidos por la IA y la meta de cada uno",
+      "autoSplit": "Volver a la división automática",
+      "adjust": "Ajustar por par",
+      "pairHit": "alcanzó en {hit}/{days} días",
+      "goalTotal": "Meta total:",
+      "excluded": "Quedaron fuera",
+      "why": {
+        "noFull": "sin lectura completa",
+        "noDaily": "robot sin el día a día",
+        "notValidated": "no se confirmó",
+        "weak": "promedio negativo"
+      },
+      "pairsManual": "Tus pares: elige la configuración de cada uno",
+      "mine": "Mis ajustes",
+      "ai": "Combinación de la IA",
+      "pairSuggest": "Meta más segura para este par: {goal}%",
+      "manualTotal": "Meta total = suma de los pares: {goal}%",
+      "restart": "Rehacer los pasos",
+      "activating": "Activando...",
+      "update": "Guardar cambios",
+      "activate": "Activar el robot con este plan"
+    },
+    "errors": {
+      "generic": "No funcionó. Intenta de nuevo.",
+      "denied": "Esta cuenta no es tuya.",
+      "invalid": "Revisa tus elecciones (la suma de los pares debe dar la meta total).",
+      "blocked": "Este valor no está permitido para tu cuenta.",
+      "busy": "Ya hay una lectura en curso en esta cuenta. Espera que termine e intenta de nuevo.",
+      "limit": "Límite de lecturas de hoy alcanzado. Intenta mañana.",
+      "state": "Haz el análisis antes de activar.",
+      "noPairs": "Elige al menos un par.",
+      "config": "La configuración no pasó la verificación. Habla con soporte."
+    },
+    "today": {
+      "title": "Hoy",
+      "open": "Ver plan",
+      "noData": "Esperando que el robot envíe los datos de la cuenta.",
+      "goalLoss": "meta {goal}% · límite -{loss}%",
+      "status": {
+        "trading": "Buscando la meta del día",
+        "done": "Meta del día alcanzada. Robot en pausa hasta mañana.",
+        "stopped": "Límite de pérdida alcanzado. Robot detenido hasta mañana."
+      },
+      "pair": {
+        "hit": "Meta del par alcanzada: en pausa hasta mañana",
+        "trading": "Operando",
+        "stopped": "Detenido (límite de la cuenta)",
+        "done": "En pausa (meta total alcanzada)"
+      },
+      "mode": {
+        "auto": "Automático",
+        "manual": "Manual"
+      },
+      "note": "Resultado de hoy de la cuenta (incluye operaciones abiertas). Por par, solo las operaciones cerradas."
     }
   }
 }

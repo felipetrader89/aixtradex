@@ -3,8 +3,9 @@ import { checkLicense } from "@/lib/licensing";
 import { parseReport, saveReport, validReportSignature } from "@/lib/account-stats";
 import { MT4_LOGIN, PRODUCT } from "@/lib/plans";
 import { configPayload, getRobotConfig } from "@/lib/robot-settings";
-import { pendingScan, saveTrades, scanReport } from "@/lib/intelligence";
+import { noteRobotLevel, pendingScan, saveTrades, scanReport } from "@/lib/intelligence";
 import { saveBrokerSymbols, symbolsRefreshPending } from "@/lib/broker-symbols";
+import { maybeAutoRun, planScanFinished } from "@/lib/plan";
 
 // Consulta feita pelo robô (MQL4 WebRequest):
 //   GET /api/license/check?account=12345678&product=pulse-rs&nonce=abc123&v=1.00&server=Broker-Live
@@ -54,6 +55,8 @@ export async function POST(request: Request) {
     const scanId = Number(params.get("scan"));
     if (Number.isInteger(scanId) && scanId > 0) {
       await scanReport(product, account, scanId, body);
+      // Assistente: era a última leitura do plano? → resultado pronto / reaplica o automático
+      if (body.trim() !== "start") await planScanFinished(product, account).catch((error) => console.error("plan finish failed", account, error));
       return reply("OK");
     }
     return reply("ERROR|bad_request", 400);
@@ -85,7 +88,12 @@ export async function GET(request: Request) {
       if (params.get("sc") === "1") {
         // v7.1: o portal pediu a lista de ativos da corretora → linha "SYMS" (robô antigo ignora).
         if (await symbolsRefreshPending(product, account)) body += "\nSYMS";
-        const scan = await pendingScan(product, account, params.get("fs") === "2");
+        // fs: 2 = v7.3 (leitura completa), 3 = v7.4+ (+ resultado dia a dia pro Assistente)
+        const level = Math.min(9, Math.max(0, Number.parseInt(params.get("fs") ?? "0", 10) || 0));
+        noteRobotLevel(product, account, level);
+        // Assistente no modo automático: pede a leitura do dia
+        if (level >= 3) await maybeAutoRun(product, account).catch((error) => console.error("plan auto run failed", account, error));
+        const scan = await pendingScan(product, account, level);
         if (scan) body += `
 SCAN|${scan.id}|${scan.spec}|${sign(`${account}|${nonce}|${scan.id}|${scan.spec}`)}`;
       }

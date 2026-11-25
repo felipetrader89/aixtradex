@@ -78,6 +78,13 @@
       "when": 1795617908843,
       "tag": "0010_trial_pass",
       "breakpoints": true
+    },
+    {
+      "idx": 11,
+      "version": "7",
+      "when": 1795630558592,
+      "tag": "0011_robot_plans",
+      "breakpoints": true
     }
   ]
 }

@@ -85,6 +85,11 @@ export function parseTrades(body: string) {
 export async function saveTrades(product: string, login: string, body: string) {
   if (!(await registered(product, login))) return 0;
   const { gmt, version, trades } = parseTrades(body);
+  // fuso da corretora (o painel "Hoje" do Assistente usa pra saber quando o dia da conta começa)
+  await db()
+    .update(schema.accountStats)
+    .set({ brokerGmt: gmt })
+    .where(and(eq(schema.accountStats.product, product), eq(schema.accountStats.login, login)));
   if (!trades.length) return 0;
   const history = await db()
     .select({ params: schema.robotConfigHistory.params, createdAt: schema.robotConfigHistory.createdAt })
@@ -182,11 +187,23 @@ const EXPIRE_MS = 30 * 60_000;
 export const SCANS_PER_DAY = 30;
 
 // mode "full" = leitura completa (robô v7.2+); fix = grupos que o cliente não pode mudar (ficam com o valor atual).
-export type ScanSpec = { bars?: number; days?: number; tf: number; tfs: number[]; per: number[]; period: ScanPeriod; mode?: "full"; fix?: string[] };
+// daily = pedido do Assistente: precisa do resultado dia a dia (robô v7.4+, que manda fs=3).
+export type ScanSpec = { bars?: number; days?: number; tf: number; tfs: number[]; per: number[]; period: ScanPeriod; mode?: "full"; fix?: string[]; daily?: boolean };
 
-export function buildSpec(period: ScanPeriod, pair: PairParams, full?: { fix: string[] }): ScanSpec {
+export function buildSpec(period: ScanPeriod, pair: PairParams, full?: { fix: string[]; daily?: boolean }): ScanSpec {
   const base = buildBasicSpec(period, pair);
-  return full ? { ...base, mode: "full", fix: full.fix } : base;
+  return full ? { ...base, mode: "full", fix: full.fix, ...(full.daily ? { daily: true } : {}) } : base;
+}
+
+// Nível do robô de cada conta visto na consulta de 30 s: 0 = antigo, 2 = v7.3 (leitura completa), 3 = v7.4+ (+ dia a dia).
+// Só em memória (o portal roda num processo só); some 5 min depois do robô parar de consultar.
+const LEVELS = ((globalThis as { __aixRobotLevels?: Map<string, { level: number; at: number }> }).__aixRobotLevels ??= new Map());
+export function noteRobotLevel(product: string, login: string, level: number) {
+  LEVELS.set(`${product}|${login}`, { level, at: Date.now() });
+}
+export function robotLevel(product: string, login: string): number | null {
+  const v = LEVELS.get(`${product}|${login}`);
+  return v && Date.now() - v.at < 5 * 60_000 ? v.level : null;
 }
 
 function buildBasicSpec(period: ScanPeriod, pair: PairParams): ScanSpec {
@@ -209,9 +226,21 @@ const specText = (symbol: string, s: ScanSpec) =>
   ].join(";");
 
 // Pedidos parados (robô desligado, versão antiga) vencem em 30 min.
-// Leitura completa que nenhum robô v7.3+ pegou: vence com o aviso de atualizar o robô.
+// Leitura completa que nenhum robô v7.3+ pegou: vence com o aviso de atualizar o robô (do Assistente: v7.4+).
 async function expireStale(product: string, login: string) {
   const limit = new Date(Date.now() - EXPIRE_MS);
+  await db()
+    .update(schema.robotScans)
+    .set({ status: "expired", finishedAt: new Date(), error: "needs v7.4" })
+    .where(
+      and(
+        eq(schema.robotScans.product, product),
+        eq(schema.robotScans.login, login),
+        eq(schema.robotScans.status, "pending"),
+        lt(schema.robotScans.createdAt, limit),
+        sql`${schema.robotScans.spec}->>'daily' = 'true'`
+      )
+    );
   await db()
     .update(schema.robotScans)
     .set({ status: "expired", finishedAt: new Date(), error: "needs v7.3" })
@@ -253,15 +282,17 @@ export async function requestScan(product: string, login: string, items: { symbo
     .from(schema.robotScans)
     .where(and(eq(schema.robotScans.product, product), eq(schema.robotScans.login, login), gte(schema.robotScans.createdAt, new Date(Date.now() - 86_400_000))));
   if ((today[0]?.n ?? 0) + items.length > SCANS_PER_DAY) return { ok: false as const, error: "limit" as const };
-  await db()
+  const rows = await db()
     .insert(schema.robotScans)
-    .values(items.map(({ symbol, spec }) => ({ product, login, symbol, spec, requestedBy })));
-  return { ok: true as const };
+    .values(items.map(({ symbol, spec }) => ({ product, login, symbol, spec, requestedBy })))
+    .returning({ id: schema.robotScans.id });
+  return { ok: true as const, ids: rows.map((r) => r.id) };
 }
 
 // Linha que o robô recebe na consulta de 30 s (sem assinatura - quem chama assina).
-// canFull = o robô mandou fs=2 (v7.3+). Robô antigo só recebe leitura normal (a v7.2 travava na completa).
-export async function pendingScan(product: string, login: string, canFull = false) {
+// level = fs que o robô mandou: 2 (v7.3) recebe leitura completa; 3 (v7.4+) também as do Assistente (dia a dia).
+// Robô antigo só recebe leitura normal (a v7.2 travava na completa).
+export async function pendingScan(product: string, login: string, level = 0) {
   await expireStale(product, login);
   const [row] = await db()
     .select()
@@ -271,7 +302,8 @@ export async function pendingScan(product: string, login: string, canFull = fals
         eq(schema.robotScans.product, product),
         eq(schema.robotScans.login, login),
         eq(schema.robotScans.status, "pending"),
-        canFull ? undefined : sql`coalesce(${schema.robotScans.spec}->>'mode', '') <> 'full'`
+        level >= 2 ? undefined : sql`coalesce(${schema.robotScans.spec}->>'mode', '') <> 'full'`,
+        level >= 3 ? undefined : sql`coalesce(${schema.robotScans.spec}->>'daily', '') <> 'true'`
       )
     )
     .orderBy(asc(schema.robotScans.createdAt))

@@ -14,7 +14,11 @@ export type AssetCategory = (typeof ASSET_CATEGORIES)[number];
 export const RISK_PROFILES = { conservative: 1, moderate: 2, aggressive: 3 } as const;
 export type RiskProfile = keyof typeof RISK_PROFILES | "custom";
 
-export const PCT_OPTIONS = [0, 1.5, 2.5, 3.5, 5.5, 10.5, 15, 20] as const; // metas e limites de perda (0 = desligado)
+// Metas e limites de perda do dia (0 = desligado). 2026-11-25: de 0,5 em 0,5 até 10 (o Assistente divide a meta entre os pares).
+export const PCT_OPTIONS = [0, 0.5, 1, 1.5, 2, 2.5, 3, 3.5, 4, 4.5, 5, 5.5, 6, 6.5, 7, 7.5, 8, 8.5, 9, 9.5, 10, 10.5, 11, 12, 13, 14, 15, 20] as const;
+// Opções antigas: permissão salva só com elas vira "até o maior valor liberado" (senão os valores novos ficariam bloqueados).
+const PCT_OLD = [0, 1.5, 2.5, 3.5, 5.5, 10.5, 15, 20];
+const PCT_KEYS = ["goalPct", "lossPct", "dailyGoalPct", "dailyLossPct"];
 export const MAX_POSITIONS = 10;
 export const DD_CAP_DEFAULT = 30; // teto do rebaixamento que o cliente escolhe (o admin pode mudar)
 export const RSI_PERIODS = [2, 3, 4, 5, 6, 7, 8, 9, 10, 12, 14, 21] as const; // v7: mais períodos (v6.9 só entende 5-14)
@@ -282,6 +286,11 @@ export function normalizePolicy(stored?: StoredPolicy | null, legacy?: { ddCap?:
       continue;
     }
     let allow = Array.isArray(s.allow) ? d.options.filter((o) => hasValue(s.allow!, o)) : [...d.options];
+    if (PCT_KEYS.includes(k) && Array.isArray(s.allow) && s.allow.length && s.allow.every((x) => hasValue(PCT_OLD, x))) {
+      const max = Math.max(...s.allow.map(Number));
+      const zero = hasValue(s.allow, 0);
+      allow = d.options.filter((o) => (o as number) <= max && ((o as number) > 0 || zero));
+    }
     if (k === "ddPct" && !stored?.ddPct && legacy?.ddCap != null) allow = d.options.filter((o) => (o as number) <= legacy.ddCap!);
     if (!allow.length) allow = [...d.options];
     let def: PolicyValue | PolicyValue[] = s.def ?? (k === "ddPct" && legacy?.ddDefault != null ? legacy.ddDefault : builtInDefault(k));

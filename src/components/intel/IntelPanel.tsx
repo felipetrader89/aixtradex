@@ -296,7 +296,7 @@ export async function IntelPanel({ login, locale, policy }: { login: string; loc
                     <span>· {dateTime.format(s.createdAt)}</span>
                     <span className={s.status === "done" ? "text-brand-accent" : s.status === "error" || s.status === "expired" ? "text-red-300" : "text-amber-300"}>
                       · {t(`status.${s.status}`)}
-                      {s.error ? ` (${s.error === "needs v7.3" ? t("needsV73") : s.error})` : ""}
+                      {s.error ? ` (${s.error === "needs v7.3" ? t("needsV73") : s.error === "needs v7.4" ? t("needsV74") : s.error})` : ""}
                     </span>
                   </li>
                 );

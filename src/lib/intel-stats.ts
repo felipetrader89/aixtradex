@@ -211,7 +211,10 @@ export type ScanMeta = {
 // 10 queda 70%, 11 ops 30%, 12 resultado 30%, 13 lucro 30%, 14 perda 30%
 export type FullRow = { cfg: Record<string, number>; st: number[] };
 export type FullStudy = { meta: Record<string, string>; cur: FullRow | null; best: FullRow | null; ex: FullRow[] };
-export type ScanResult = { meta: ScanMeta; rows: ScanRow[]; full?: FullStudy };
+// v7.4: resultado dia a dia da leitura completa (configuração atual e a melhor, sem meta/limite do dia).
+// days = dias com mercado no período (unix da meia-noite, hora da corretora); cur/best: dia → R de cada operação, na ordem de fechamento.
+export type DailyData = { days: number[]; cur?: Record<string, number[]>; best?: Record<string, number[]> };
+export type ScanResult = { meta: ScanMeta; rows: ScanRow[]; full?: FullStudy; daily?: DailyData };
 
 const num = (v: string | undefined) => (v === undefined || v === "" ? 0 : Number(v));
 
@@ -245,7 +248,21 @@ export function parseScan(body: string): ScanResult | null {
   const rows: ScanRow[] = [];
   const full: FullStudy = { meta: {}, cur: null, best: null, ex: [] };
   let hasFull = false;
+  const daily: DailyData = { days: [] };
+  let hasDaily = false;
   for (const line of lines.slice(1)) {
+    if (line.startsWith("D;")) {
+      const [, label, a, b] = line.split(";");
+      if (label === "days") {
+        daily.days = (a ?? "").split(",").map(Number).filter((x) => Number.isInteger(x) && x > 0).slice(0, 800);
+        hasDaily = true;
+      } else if ((label === "cur" || label === "best") && /^\d{1,12}$/.test(a ?? "")) {
+        const map = (daily[label] ??= {});
+        if (Object.keys(map).length < 800) map[a] = (b ?? "").split(",").filter(Boolean).map(Number).filter(Number.isFinite).slice(0, 2000);
+        hasDaily = true;
+      }
+      continue;
+    }
     if (line.startsWith("F;")) {
       const [, label, cfgText, stText] = line.split(";");
       const pairs = (cfgText ?? "").split(",").map((x) => [x.slice(0, x.indexOf("=")), x.slice(x.indexOf("=") + 1)] as const);
@@ -270,7 +287,7 @@ export function parseScan(body: string): ScanResult | null {
     rows.push({ tf, per, zone, logic, trades, wins, gw, gl, dd, maxcl, ta, na, tb, nb });
   }
   if (!rows.length) return null;
-  return hasFull ? { meta, rows, full } : { meta, rows };
+  return { meta, rows, ...(hasFull ? { full } : {}), ...(hasDaily ? { daily } : {}) };
 }
 
 export const fullStats = (st: number[]) => {

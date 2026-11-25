@@ -234,6 +234,8 @@ export const accountStats = pgTable(
     licenseStatus: text("license_status"),
     eaVersion: text("ea_version"),
     reportedAt: timestamp("reported_at", { withTimezone: true }).notNull(),
+    // fuso da corretora em segundos (vem com as operações, robô v7+) - o painel "Hoje" usa pra saber quando o dia começa
+    brokerGmt: integer("broker_gmt"),
   },
   (t) => [uniqueIndex("account_stats_product_login_uq").on(t.product, t.login)]
 );
@@ -384,6 +386,33 @@ export const robotAnalyses = pgTable(
     createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
   },
   (t) => [index("robot_analyses_login_idx").on(t.product, t.login, t.createdAt)]
+);
+
+// Assistente (Comece em 5 passos): o que o cliente escolheu pra conta e em que pé está.
+// status: draft (preenchendo) → analyzing (robô lendo os pares) → ready (resultado pronto) → active (robô buscando a meta).
+// Modo automático: todo dia útil, logo depois da meia-noite (UTC), o portal pede a leitura de novo e reaplica (pendingApply).
+export const robotPlans = pgTable(
+  "robot_plans",
+  {
+    product: text("product").notNull(),
+    login: text("login").notNull(),
+    mode: text("mode", { enum: ["auto", "manual"] }).notNull(),
+    profile: text("profile").notNull().default("moderate"),
+    goalPct: numeric("goal_pct", { precision: 5, scale: 2 }).notNull(),
+    lossPct: numeric("loss_pct", { precision: 5, scale: 2 }).notNull(),
+    pairGoals: jsonb("pair_goals").notNull().default({}), // { XAUUSD: 3, EURUSD: 1, ... }
+    useAi: jsonb("use_ai").notNull().default([]), // manual: pares em que o cliente escolheu a combinação da IA
+    status: text("status", { enum: ["draft", "analyzing", "ready", "active"] }).notNull().default("draft"),
+    scanIds: jsonb("scan_ids").notNull().default([]),
+    pendingApply: boolean("pending_apply").notNull().default(false),
+    lastRunAt: timestamp("last_run_at", { withTimezone: true }),
+    lastTryAt: timestamp("last_try_at", { withTimezone: true }),
+    summary: jsonb("summary"), // última aplicação: { at, pairs: [{symbol, goal}], added, removed, note }
+    activatedAt: timestamp("activated_at", { withTimezone: true }),
+    createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
+    updatedAt: timestamp("updated_at", { withTimezone: true }).notNull().defaultNow(),
+  },
+  (t) => [primaryKey({ columns: [t.product, t.login] })]
 );
 
 // O que os clientes fazem no portal, pro sininho do admin: cadastro, entrou no portal, pedido, pagamento, pedido de acesso.

@@ -30,6 +30,7 @@ export default async function AccountLayout({ children, params }: { children: Re
   const base = `/${locale}/account`;
   const nav: PanelNavItem[] = [
     { href: base, label: t("nav.overview"), icon: "dashboard", exact: true },
+    { href: `${base}/start`, label: t("nav.start"), icon: "intel" },
     { href: `${base}/accounts`, label: t("nav.accounts"), icon: "accounts" },
     { href: `${base}/licenses`, label: t("nav.licenses"), icon: "licenses" },
     { href: `${base}/orders`, label: t("nav.orders"), icon: "orders", count: pending.n },

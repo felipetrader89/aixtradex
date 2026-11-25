@@ -15,7 +15,7 @@ export const STATS_STALE_MS = 15 * 60 * 1000;
 const NUM = /^-?\d{1,15}(\.\d{1,2})?$/;
 const INT = /^\d{1,9}$/;
 
-type ParsedReport = Omit<AccountStats, "id" | "product" | "login" | "server" | "licenseStatus" | "eaVersion" | "reportedAt">;
+type ParsedReport = Omit<AccountStats, "id" | "product" | "login" | "server" | "licenseStatus" | "eaVersion" | "reportedAt" | "brokerGmt">;
 
 export function parseReport(d: string): ParsedReport | null {
   const p = d.split("|");

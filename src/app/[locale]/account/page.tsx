@@ -4,6 +4,8 @@ import { getTranslations, setRequestLocale } from "next-intl/server";
 import { DAY_MS, loadAccountsWithStats, loadOrders, requireCustomer } from "@/lib/portal";
 import { PRODUCT } from "@/lib/plans";
 import { Card, CardTitle, PortalHeader, StateBadge, resultTone } from "@/components/portal/ui";
+import { plansFor, todayFor } from "@/lib/plan";
+import { TodayCard } from "@/components/plan/TodayCard";
 
 type Props = { params: Promise<{ locale: string }> };
 
@@ -36,6 +38,22 @@ export default async function AccountOverview({ params }: Props) {
     .filter((d): d is Date => Boolean(d))
     .sort((a, b) => a.getTime() - b.getTime())[0];
   const running = rows.filter((r) => r.state === "running").length;
+  // Assistente: contas com plano ativo mostram o painel "Hoje"; as outras, o convite pra começar
+  const plans = await plansFor(
+    PRODUCT.slug,
+    rows.map((r) => r.account.login)
+  );
+  const planned = await Promise.all(
+    rows
+      .filter((r) => plans.get(r.account.login)?.status === "active")
+      .map(async (r) => {
+        const plan = plans.get(r.account.login)!;
+        return { r, plan, today: await todayFor(PRODUCT.slug, r.account.login, plan, r.stats) };
+      })
+  );
+  const unplanned = rows.filter((r) => plans.get(r.account.login)?.status !== "active");
+  const inProgress = unplanned.find((r) => plans.has(r.account.login));
+  const startLogin = (inProgress ?? unplanned[0])?.account.login;
   const pending = orders.filter((o) => o.status === "pending");
 
   // Alertas: o que o cliente precisa fazer agora.
@@ -97,6 +115,46 @@ export default async function AccountOverview({ params }: Props) {
             </li>
           ))}
         </ul>
+      )}
+
+      {startLogin && (
+        <Card className="border-brand-accent/40">
+          <div className="flex flex-wrap items-center justify-between gap-4">
+            <div className="max-w-2xl">
+              <p className="text-xs font-semibold uppercase tracking-wide text-brand-accent">{t("overview.plan.kicker")}</p>
+              <h2 className="mt-1 font-display text-xl font-extrabold text-chrome">{t("overview.plan.title")}</h2>
+              <p className="mt-1 text-sm text-brand-ink-dim">{t("overview.plan.text")}</p>
+              <ol className="mt-3 flex flex-wrap gap-x-4 gap-y-1 text-xs text-brand-ink">
+                {(["account", "mode", "goal", "analyze", "review"] as const).map((k, i) => (
+                  <li key={k}>
+                    <span className="font-mono text-brand-accent">{i + 1}.</span> {t(`overview.plan.steps.${k}`)}
+                  </li>
+                ))}
+              </ol>
+            </div>
+            <NextLink
+              href={`${base}/start?login=${startLogin}`}
+              className="rounded-xl bg-brand-accent px-5 py-3 text-sm font-bold text-brand-bg transition hover:brightness-110"
+            >
+              {inProgress ? t("overview.plan.continue") : t("overview.plan.start")} →
+            </NextLink>
+          </div>
+        </Card>
+      )}
+
+      {planned.length > 0 && (
+        <div className="grid gap-4 lg:grid-cols-2">
+          {planned.map(({ r, plan, today }) => (
+            <TodayCard
+              key={r.account.login}
+              login={r.account.login}
+              company={r.stats?.company ?? null}
+              mode={plan.mode}
+              today={today}
+              href={`${base}/start?login=${r.account.login}`}
+            />
+          ))}
+        </div>
       )}
 
       {licenses.length === 0 ? (

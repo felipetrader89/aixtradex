@@ -632,6 +632,7 @@
   },
   "Portal": {
     "nav": {
+      "start": "AI Assistant",
       "overview": "Overview",
       "accounts": "MT4 Accounts",
       "licenses": "Licenses",
@@ -690,7 +691,21 @@
       },
       "noLicense": "You don't have a license yet. As soon as the payment is confirmed, it shows up here.",
       "oldClient": "Already used the robot before the portal?",
-      "oldClientCta": "Request access"
+      "oldClientCta": "Request access",
+      "plan": {
+        "kicker": "Ai X Intelligence",
+        "title": "Start trading with our Artificial Intelligence in 5 steps",
+        "text": "Tell us your daily goal. The AI analyzes your broker terminal, shows the real chance of hitting that goal and gets the robot ready to go after it.",
+        "steps": {
+          "account": "Account",
+          "mode": "Mode",
+          "goal": "Daily goal",
+          "analyze": "Analysis",
+          "review": "Activate"
+        },
+        "start": "Start",
+        "continue": "Continue"
+      }
     },
     "stats": {
       "state": {
@@ -759,6 +774,7 @@
       "curve": "Cumulative result",
       "scan": "Candle study",
       "scanHint": "The robot reads the history in your MT4 and tests the RSI trigger in every combination (timeframe, period, zone, reversal or breakout) with the exit the pair uses today. Filters (ATR, ADX, zones, news) are not included: it studies the trigger.",
+      "needsV74": "Assistant request: needs robot v7.4 or newer",
       "needsV73": "this account's robot can't do the full reading yet: update to v7.3 or newer and request again",
       "fullToggle": "Full reading (all parameters)",
       "fullToggleHint": "Besides RSI, it tests loss limit, target, break-even, trailing stop, ATR/ADX filters, zones, direction and daily goal/loss. Takes a few minutes and needs robot v7.3 or newer.",
@@ -1146,6 +1162,165 @@
       "already": "You've already requested access with this email. As soon as I confirm, you'll get an email.",
       "tooMany": "Too many requests in a row. Try again in 1 hour or message me on Telegram.",
       "server": "Server error. Please try again in a moment."
+    }
+  },
+  "Plan": {
+    "title": "AI Assistant",
+    "intro": "In 5 steps the AI builds the robot setup for your daily goal, with the chance of hitting it calculated on your broker's recent history.",
+    "noAccount": "You don't have an MT4 account registered on a license yet.",
+    "noAccountCta": "Register an account",
+    "next": "Next",
+    "back": "Back",
+    "steps": {
+      "account": "Account",
+      "mode": "Mode",
+      "goal": "Daily goal",
+      "params": "Settings and analysis",
+      "analyze": "Analysis",
+      "review": "Activate"
+    },
+    "account": {
+      "title": "Which account will trade?",
+      "running": "Robot running and connected on this account.",
+      "autotradingOff": "The robot is connected, but AutoTrading is off in MT4. The analysis works; to trade, turn AutoTrading on.",
+      "oldRobot": "The robot on this account is an older version. Download v7.4, replace it in MT4 (same chart, open trades carry on) and check again.",
+      "offline": "The robot is not connected on this account. Do this:",
+      "how1": "Download the latest robot version.",
+      "downloads": "Downloads",
+      "how2": "In MT4: Tools → Options → Expert Advisors → allow the address https://license.aixtradex.com.",
+      "how3": "Drag the robot onto the chart and turn AutoTrading on.",
+      "guide": "Step-by-step guide",
+      "check": "Done, check again",
+      "version": "Requires robot v7.4 or newer (it sends the day-by-day result of the analysis)."
+    },
+    "mode": {
+      "title": "How do you want to set it up?",
+      "auto": "Automatic",
+      "manual": "Manual",
+      "recommended": "Recommended",
+      "autoText": "The AI analyzes your broker terminal, picks the best pairs and the best combination for each one and splits your goal between them. Every weekday it runs the analysis again and adjusts by itself.",
+      "manualText": "You choose the pairs, the goal for each one and the robot settings. The AI shows the chance of hitting the goal and, if you want, swaps a pair's setup for its own."
+    },
+    "profiles": {
+      "conservative": "Conservative",
+      "moderate": "Moderate",
+      "aggressive": "Aggressive",
+      "custom": "Custom",
+      "hint": "Goal {goal}% · max loss {loss}% · risk {risk}% per entry",
+      "customHint": "You choose the goal and the limit; risk per entry stays as set on each pair"
+    },
+    "goal": {
+      "title": "What is your daily goal?",
+      "goal": "Daily profit goal (total)",
+      "loss": "Daily loss limit",
+      "explain": "When a pair hits its goal, the robot stops that pair until tomorrow. When the total goal or the loss limit is reached, it stops everything until tomorrow.",
+      "pairsTitle": "Pairs and the goal for each",
+      "split": "Split evenly",
+      "addOther": "Another broker asset...",
+      "add": "Add",
+      "sum": "Pairs total: {sum}% of {goal}%",
+      "missing": "{v}% missing",
+      "over": "{v}% over"
+    },
+    "params": {
+      "title": "Robot settings",
+      "keep": "Keep my current settings",
+      "keepText": "The analysis uses the setup already on each pair.",
+      "default": "Use the robot default",
+      "defaultText": "Strategy, filters and exits of the chosen pairs go back to default (risk stays as is).",
+      "open": "Open the full settings"
+    },
+    "analyze": {
+      "title": "Analysis",
+      "text": "The robot will read the last month of candles of each pair at your broker and test entry, exit, filter and direction combinations. The AI keeps the ones that also worked in the part of the period that was left out of the choice.",
+      "time": "Takes 1 to 3 minutes and runs in your MT4 without disturbing trading. The robot must be running.",
+      "start": "Analyze now",
+      "sending": "Sending...",
+      "progress": "{done} of {total} pairs read",
+      "wait": "You can keep this page open: it refreshes by itself. If you close it, just come back later.",
+      "status": {
+        "pending": "queued",
+        "running": "reading...",
+        "done": "ready",
+        "error": "error",
+        "expired": "no answer"
+      }
+    },
+    "review": {
+      "title": "Analysis result",
+      "activeTitle": "Your plan",
+      "activeAuto": "Active in automatic mode. The AI runs the analysis again every weekday, right after midnight (UTC), and adjusts the pairs by itself.",
+      "activeManual": "Active in manual mode. The robot is going after each pair's goal.",
+      "noneToday": "In today's analysis no pair passed the confirmation, so the robot kept the previous setup.",
+      "added": "Added: {list}.",
+      "removed": "Removed: {list}.",
+      "needsV74": "The analysis finished, but your robot doesn't send the day-by-day result yet. Download v7.4 in Downloads, replace it in MT4 and run the analysis again.",
+      "noPairs": "No pair passed the confirmation in the last month (positive result also in the part of the period left out of the choice). Try again tomorrow or use manual mode.",
+      "noData": "Not enough analysis data for these pairs.",
+      "chanceTitle": "Chance of hitting the goal",
+      "chance": "Hit the {goal}% goal on {hit} of {days} market days in the last month.",
+      "positive": "Positive days",
+      "lossDays": "Days at the loss limit",
+      "avg": "Daily average",
+      "worst": "Worst day",
+      "suggest": "Safer goal for the last month: {goal}% (hit on {rate}% of days).",
+      "useSuggest": "Use this goal",
+      "noSuggest": "No goal was hit on 70% of days in the last month. Consider a lower goal or the conservative profile.",
+      "disclaimer": "Simulation on your broker's candles in the last month (one entry at a time in each direction, without recovery). It shows what would have happened; past results do not guarantee future results.",
+      "pairsAuto": "Pairs chosen by the AI and the goal for each",
+      "autoSplit": "Back to automatic split",
+      "adjust": "Adjust per pair",
+      "pairHit": "hit on {hit}/{days} days",
+      "goalTotal": "Total goal:",
+      "excluded": "Left out",
+      "why": {
+        "noFull": "no full reading",
+        "noDaily": "robot without day-by-day",
+        "notValidated": "not confirmed",
+        "weak": "negative average"
+      },
+      "pairsManual": "Your pairs: choose the setup for each",
+      "mine": "My settings",
+      "ai": "AI combination",
+      "pairSuggest": "Safer goal for this pair: {goal}%",
+      "manualTotal": "Total goal = sum of pairs: {goal}%",
+      "restart": "Redo the steps",
+      "activating": "Activating...",
+      "update": "Save changes",
+      "activate": "Activate the robot with this plan"
+    },
+    "errors": {
+      "generic": "It didn't work. Try again.",
+      "denied": "This account is not yours.",
+      "invalid": "Check your choices (the pairs must add up to the total goal).",
+      "blocked": "This value is not allowed for your account.",
+      "busy": "There is already a reading running on this account. Wait for it to finish and try again.",
+      "limit": "Today's reading limit reached. Try tomorrow.",
+      "state": "Run the analysis before activating.",
+      "noPairs": "Choose at least one pair.",
+      "config": "The setup didn't pass the check. Contact support."
+    },
+    "today": {
+      "title": "Today",
+      "open": "See plan",
+      "noData": "Waiting for the robot to send the account data.",
+      "goalLoss": "goal {goal}% · limit -{loss}%",
+      "status": {
+        "trading": "Going after the daily goal",
+        "done": "Daily goal reached. Robot paused until tomorrow.",
+        "stopped": "Loss limit reached. Robot stopped until tomorrow."
+      },
+      "pair": {
+        "hit": "Pair goal reached: paused until tomorrow",
+        "trading": "Trading",
+        "stopped": "Stopped (account limit)",
+        "done": "Paused (total goal reached)"
+      },
+      "mode": {
+        "auto": "Automatic",
+        "manual": "Manual"
+      },
+      "note": "Account result today (includes open trades). Per pair, closed trades only."
     }
   }
 }
