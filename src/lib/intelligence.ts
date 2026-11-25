@@ -209,8 +209,21 @@ const specText = (symbol: string, s: ScanSpec) =>
   ].join(";");
 
 // Pedidos parados (robô desligado, versão antiga) vencem em 30 min.
+// Leitura completa que nenhum robô v7.3+ pegou: vence com o aviso de atualizar o robô.
 async function expireStale(product: string, login: string) {
   const limit = new Date(Date.now() - EXPIRE_MS);
+  await db()
+    .update(schema.robotScans)
+    .set({ status: "expired", finishedAt: new Date(), error: "needs v7.3" })
+    .where(
+      and(
+        eq(schema.robotScans.product, product),
+        eq(schema.robotScans.login, login),
+        eq(schema.robotScans.status, "pending"),
+        lt(schema.robotScans.createdAt, limit),
+        sql`${schema.robotScans.spec}->>'mode' = 'full'`
+      )
+    );
   await db()
     .update(schema.robotScans)
     .set({ status: "expired", finishedAt: new Date() })
@@ -247,12 +260,20 @@ export async function requestScan(product: string, login: string, items: { symbo
 }
 
 // Linha que o robô recebe na consulta de 30 s (sem assinatura - quem chama assina).
-export async function pendingScan(product: string, login: string) {
+// canFull = o robô mandou fs=2 (v7.3+). Robô antigo só recebe leitura normal (a v7.2 travava na completa).
+export async function pendingScan(product: string, login: string, canFull = false) {
   await expireStale(product, login);
   const [row] = await db()
     .select()
     .from(schema.robotScans)
-    .where(and(eq(schema.robotScans.product, product), eq(schema.robotScans.login, login), eq(schema.robotScans.status, "pending")))
+    .where(
+      and(
+        eq(schema.robotScans.product, product),
+        eq(schema.robotScans.login, login),
+        eq(schema.robotScans.status, "pending"),
+        canFull ? undefined : sql`coalesce(${schema.robotScans.spec}->>'mode', '') <> 'full'`
+      )
+    )
     .orderBy(asc(schema.robotScans.createdAt))
     .limit(1);
   return row ? { id: String(row.id), spec: specText(row.symbol, row.spec as ScanSpec) } : null;

@@ -85,7 +85,7 @@ export async function GET(request: Request) {
       if (params.get("sc") === "1") {
         // v7.1: o portal pediu a lista de ativos da corretora → linha "SYMS" (robô antigo ignora).
         if (await symbolsRefreshPending(product, account)) body += "\nSYMS";
-        const scan = await pendingScan(product, account);
+        const scan = await pendingScan(product, account, params.get("fs") === "2");
         if (scan) body += `
 SCAN|${scan.id}|${scan.spec}|${sign(`${account}|${nonce}|${scan.id}|${scan.spec}`)}`;
       }
