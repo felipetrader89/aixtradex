@@ -3,6 +3,7 @@ import { checkLicense } from "@/lib/licensing";
 import { parseReport, saveReport, validReportSignature } from "@/lib/account-stats";
 import { MT4_LOGIN, PRODUCT } from "@/lib/plans";
 import { configPayload, getRobotConfig } from "@/lib/robot-settings";
+import { pendingScan, saveTrades, scanReport } from "@/lib/intelligence";
 
 // Consulta feita pelo robô (MQL4 WebRequest):
 //   GET /api/license/check?account=12345678&product=pulse-rs&nonce=abc123&v=1.00&server=Broker-Live
@@ -28,6 +29,37 @@ function reply(body: string, status = 200) {
   });
 }
 
+// v7: o robô manda dados maiores por POST no mesmo endereço (é o único aberto em license.aixtradex.com).
+//   ?trades=1  → operações fechadas deste robô (src/lib/intelligence.ts parseTrades) → "OK|<novas>"
+//   ?scan=<id> → "start" ou o resultado do estudo de velas → "OK"
+// Assinatura: &ts=HMAC(LICENSE_SECRET, "conta|nonce|corpo").
+export async function POST(request: Request) {
+  const params = new URL(request.url).searchParams;
+  const account = params.get("account")?.trim() ?? "";
+  const product = params.get("product")?.trim() || PRODUCT.slug;
+  const nonce = params.get("nonce")?.trim() ?? "";
+  const secret = process.env.LICENSE_SECRET;
+  if (!MT4_LOGIN.test(account) || !NONCE.test(nonce)) return reply("ERROR|bad_request", 400);
+  if (!secret) return reply("ERROR|not_configured", 500);
+  const body = await request.text();
+  if (body.length > 300_000) return reply("ERROR|too_large", 413);
+  const ts = Buffer.from(params.get("ts") ?? "");
+  const expected = Buffer.from(createHmac("sha256", secret).update(`${account}|${nonce}|${body}`).digest("hex"));
+  if (ts.length !== expected.length || !timingSafeEqual(ts, expected)) return reply("ERROR|bad_signature", 403);
+  try {
+    if (params.get("trades") === "1") return reply(`OK|${await saveTrades(product, account, body)}`);
+    const scanId = Number(params.get("scan"));
+    if (Number.isInteger(scanId) && scanId > 0) {
+      await scanReport(product, account, scanId, body);
+      return reply("OK");
+    }
+    return reply("ERROR|bad_request", 400);
+  } catch (error) {
+    console.error("robot post failed", account, error);
+    return reply("ERROR|server", 500);
+  }
+}
+
 export async function GET(request: Request) {
   const params = new URL(request.url).searchParams;
   const account = params.get("account")?.trim() ?? "";
@@ -45,8 +77,14 @@ export async function GET(request: Request) {
     if (cs.length !== expected.length || !timingSafeEqual(cs, expected)) return reply("ERROR|bad_signature", 403);
     try {
       const cfg = configPayload(await getRobotConfig(product, account));
-      if (params.get("cv") === cfg.slice(cfg.lastIndexOf(";ver=") + 5)) return reply("SAME");
-      return reply(`CFG|${cfg}|${sign(`${account}|${nonce}|${cfg}`)}`);
+      let body = params.get("cv") === cfg.slice(cfg.lastIndexOf(";ver=") + 5) ? "SAME" : `CFG|${cfg}|${sign(`${account}|${nonce}|${cfg}`)}`;
+      // v7 (&sc=1): estudo de velas pendente pra esta conta → linha a mais "SCAN|id|pedido|assinatura".
+      if (params.get("sc") === "1") {
+        const scan = await pendingScan(product, account);
+        if (scan) body += `
+SCAN|${scan.id}|${scan.spec}|${sign(`${account}|${nonce}|${scan.id}|${scan.spec}`)}`;
+      }
+      return reply(body);
     } catch (error) {
       console.error("config check failed", error);
       return reply("ERROR|server", 500);

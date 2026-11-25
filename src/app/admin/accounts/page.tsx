@@ -125,7 +125,9 @@ export default async function AdminAccounts({ searchParams }: Props) {
               {list.map(({ account, license, user, stats: s, state }) => (
                 <tr key={account.id} className="border-t border-brand-hairline align-top">
                   <td className="py-2 pr-3">
-                    <p className="font-mono font-semibold">{account.login}</p>
+                    <Link href={`/admin/accounts/${account.login}`} className="font-mono font-semibold text-brand-accent hover:underline">
+                      {account.login}
+                    </Link>
                     <p className="font-mono text-[10px] text-brand-ink-dim">{license.key}</p>
                   </td>
                   <td className="py-2 pr-3">

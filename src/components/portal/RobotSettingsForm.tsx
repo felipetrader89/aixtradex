@@ -13,6 +13,16 @@ import {
   RSI_TIMEFRAMES,
   SYMBOL_LABEL,
   DD_OPTIONS,
+  ADX_PERIODS,
+  ATR_BARS,
+  ATR_MAX_RATIOS,
+  ATR_MIN_RATIOS,
+  ATR_PERIODS,
+  AUTO_PIPS,
+  FILTER_TFS,
+  TIMEFRAMES,
+  paramDef,
+  tfLabel,
   hasValue,
   policyMax,
   type PairParams,
@@ -121,6 +131,99 @@ function Segmented<T extends string | number>({
   );
 }
 
+// v7: valor em pips (ou velas). Vazio/"Automático" = 0 quando o parâmetro aceita automático.
+function NumberField({
+  value,
+  onChange,
+  min,
+  max,
+  auto,
+  autoLabel,
+  unit,
+  label,
+}: {
+  value: number;
+  onChange: (v: number) => void;
+  min: number;
+  max: number;
+  auto?: boolean;
+  autoLabel: string;
+  unit: string;
+  label: string;
+}) {
+  const [text, setText] = useState(value === 0 && auto ? "" : String(value));
+  const isAuto = !!auto && value === 0;
+  return (
+    <div className="flex items-center gap-2">
+      {auto && (
+        <button
+          type="button"
+          aria-pressed={isAuto}
+          onClick={() => {
+            if (isAuto) {
+              const v = Math.min(max, Math.max(min, Number(text) || min));
+              setText(String(v));
+              onChange(v);
+            } else {
+              setText("");
+              onChange(0);
+            }
+          }}
+          className={`shrink-0 rounded-xl border px-3 py-2 text-xs font-semibold transition ${
+            isAuto ? "border-brand-accent bg-brand-accent/15 text-brand-accent" : "border-brand-hairline bg-brand-surface-2 text-brand-ink-dim hover:text-brand-ink"
+          }`}
+        >
+          {autoLabel}
+        </button>
+      )}
+      {!isAuto && (
+        <input
+          type="number"
+          inputMode="numeric"
+          aria-label={label}
+          min={min}
+          max={max}
+          value={text}
+          onChange={(e) => {
+            setText(e.target.value);
+            const v = Number(e.target.value);
+            if (e.target.value !== "" && Number.isFinite(v)) onChange(Math.min(max, Math.max(min, Math.round(v))));
+          }}
+          onBlur={() => setText(String(value))}
+          className={`${field} w-28`}
+        />
+      )}
+      <span className="text-xs text-brand-ink-dim">{unit}</span>
+    </div>
+  );
+}
+
+function TfChips({ value, options, onChange, minOne }: { value: number[]; options: number[]; onChange: (v: number[]) => void; minOne?: boolean }) {
+  return (
+    <div className="flex flex-wrap gap-1.5">
+      {options.map((tf) => {
+        const on = value.includes(tf);
+        return (
+          <button
+            key={tf}
+            type="button"
+            aria-pressed={on}
+            onClick={() => {
+              if (on && minOne && value.length === 1) return;
+              onChange(on ? value.filter((x) => x !== tf) : options.filter((x) => x === tf || value.includes(x)));
+            }}
+            className={`min-w-12 rounded-lg border px-2 py-1.5 text-xs font-semibold transition ${
+              on ? "border-brand-accent bg-brand-accent/15 text-brand-accent" : "border-brand-hairline bg-brand-surface-2 text-brand-ink-dim"
+            }`}
+          >
+            {tfLabel(tf)}
+          </button>
+        );
+      })}
+    </div>
+  );
+}
+
 export function RobotSettingsForm({
   login,
   initial,
@@ -151,6 +254,11 @@ export function RobotSettingsForm({
     policy ? list.filter((o) => hasValue(policy[k].allow, o)) : [...list];
   const locked = (k: ParamKey) => !!policy && policy[k].allow.length < 2; // só uma opção liberada: aparece, mas não muda
   const anyShown = (...keys: ParamKey[]) => keys.some(show);
+  // Faixa que o admin liberou (pips, velas).
+  const lim = (k: ParamKey) => {
+    const r = paramDef(k).range!;
+    return policy ? { min: Number(policy[k].allow[0]), max: Number(policy[k].allow[1]), auto: r.auto } : { min: r.min, max: r.max, auto: r.auto };
+  };
   const symbols = show("symbols")
     ? allSymbols.filter((s) => allowed("symbols", allSymbols).includes(s) || initial.symbols.includes(s))
     : initial.symbols;
@@ -431,44 +539,106 @@ export function RobotSettingsForm({
         </div>
         )}
 
-        {anyShown("atr", "adx", "adxLevel", "zones", "zonesMode") && (
+        {anyShown("atr", "atrTf", "atrPeriod", "atrBars", "atrMin", "atrMax", "adx", "adxTf", "adxPeriod", "adxLevel", "adxRising") && (
         <div>
           <h3 className={h2}>{t("filters")}</h3>
           <div className="mt-3 grid gap-5 sm:grid-cols-2">
-            {show("atr") && (
-              <Toggle checked={p.atr} onChange={(x) => setPair(editing, { atr: x })} label={t("atr")} hint={t("atrHint")} disabled={locked("atr")} />
-            )}
-            {anyShown("adx", "adxLevel") && (
-            <div className="flex flex-col gap-3">
-              {show("adx") && (
-                <Toggle checked={p.adx} onChange={(x) => setPair(editing, { adx: x })} label={t("adx")} hint={t("adxHint")} disabled={locked("adx")} />
+            {anyShown("atr", "atrTf", "atrPeriod", "atrBars", "atrMin", "atrMax") && (
+            <div className="flex flex-col gap-3 rounded-xl bg-brand-surface-2/40 p-4">
+              {show("atr") && (
+                <Toggle checked={p.atr} onChange={(x) => setPair(editing, { atr: x })} label={t("atr")} hint={t("atrHint")} disabled={locked("atr")} />
               )}
-              {p.adx && show("adxLevel") && (
-                <Field label={t("adxLevel")}>
-                  <select value={p.adxLevel} onChange={(e) => setPair(editing, { adxLevel: Number(e.target.value) })} className={field}>
-                    {allowed("adxLevel", ADX_LEVELS).map((n) => (
-                      <option key={n} value={n}>
-                        {n}
-                      </option>
-                    ))}
-                  </select>
-                </Field>
+              {p.atr && (
+                <div className="grid grid-cols-2 gap-3">
+                  {show("atrTf") && (
+                    <Field label={t("atrTf")}>
+                      <select value={p.atrTf} onChange={(e) => setPair(editing, { atrTf: Number(e.target.value) })} className={field}>
+                        {allowed("atrTf", FILTER_TFS).map((n) => (
+                          <option key={n} value={n}>{tfLabel(n)}</option>
+                        ))}
+                      </select>
+                    </Field>
+                  )}
+                  {show("atrPeriod") && (
+                    <Field label={t("atrPeriod")}>
+                      <select value={p.atrPeriod} onChange={(e) => setPair(editing, { atrPeriod: Number(e.target.value) })} className={field}>
+                        {allowed("atrPeriod", ATR_PERIODS).map((n) => (
+                          <option key={n} value={n}>{n}</option>
+                        ))}
+                      </select>
+                    </Field>
+                  )}
+                  {show("atrBars") && (
+                    <Field label={t("atrBars")}>
+                      <select value={p.atrBars} onChange={(e) => setPair(editing, { atrBars: Number(e.target.value) })} className={field}>
+                        {allowed("atrBars", ATR_BARS).map((n) => (
+                          <option key={n} value={n}>{t("candles", { n })}</option>
+                        ))}
+                      </select>
+                    </Field>
+                  )}
+                  {show("atrMin") && (
+                    <Field label={t("atrMin")}>
+                      <select value={p.atrMin} onChange={(e) => setPair(editing, { atrMin: Number(e.target.value) })} className={field}>
+                        {allowed("atrMin", ATR_MIN_RATIOS).filter((n) => n < p.atrMax).map((n) => (
+                          <option key={n} value={n}>{`${pct(n)}x`}</option>
+                        ))}
+                      </select>
+                    </Field>
+                  )}
+                  {show("atrMax") && (
+                    <Field label={t("atrMax")}>
+                      <select value={p.atrMax} onChange={(e) => setPair(editing, { atrMax: Number(e.target.value) })} className={field}>
+                        {allowed("atrMax", ATR_MAX_RATIOS).filter((n) => n > p.atrMin).map((n) => (
+                          <option key={n} value={n}>{`${pct(n)}x`}</option>
+                        ))}
+                      </select>
+                    </Field>
+                  )}
+                </div>
               )}
             </div>
             )}
-            {anyShown("zones", "zonesMode") && (
-            <div className="flex flex-col gap-3 sm:col-span-2">
-              {show("zones") && (
-                <Toggle checked={p.zones} onChange={(x) => setPair(editing, { zones: x })} label={t("zones")} hint={t("zonesHint")} disabled={locked("zones")} />
+            {anyShown("adx", "adxTf", "adxPeriod", "adxLevel", "adxRising") && (
+            <div className="flex flex-col gap-3 rounded-xl bg-brand-surface-2/40 p-4">
+              {show("adx") && (
+                <Toggle checked={p.adx} onChange={(x) => setPair(editing, { adx: x })} label={t("adx")} hint={t("adxHint")} disabled={locked("adx")} />
               )}
-              {p.zones && show("zonesMode") && (
-                <Field label={t("zonesMode")} group>
-                  <Segmented
-                    value={p.zonesMode}
-                    onChange={(x) => setPair(editing, { zonesMode: x })}
-                    options={allowed("zonesMode", [2, 1, 0]).map((m) => ({ value: m, label: t(`zonesModes.m${m}`) }))}
-                  />
-                </Field>
+              {p.adx && (
+                <>
+                  <div className="grid grid-cols-2 gap-3">
+                    {show("adxTf") && (
+                      <Field label={t("adxTf")}>
+                        <select value={p.adxTf} onChange={(e) => setPair(editing, { adxTf: Number(e.target.value) })} className={field}>
+                          {allowed("adxTf", FILTER_TFS).map((n) => (
+                            <option key={n} value={n}>{tfLabel(n)}</option>
+                          ))}
+                        </select>
+                      </Field>
+                    )}
+                    {show("adxPeriod") && (
+                      <Field label={t("adxPeriod")}>
+                        <select value={p.adxPeriod} onChange={(e) => setPair(editing, { adxPeriod: Number(e.target.value) })} className={field}>
+                          {allowed("adxPeriod", ADX_PERIODS).map((n) => (
+                            <option key={n} value={n}>{n}</option>
+                          ))}
+                        </select>
+                      </Field>
+                    )}
+                    {show("adxLevel") && (
+                      <Field label={t("adxLevel")}>
+                        <select value={p.adxLevel} onChange={(e) => setPair(editing, { adxLevel: Number(e.target.value) })} className={field}>
+                          {allowed("adxLevel", ADX_LEVELS).map((n) => (
+                            <option key={n} value={n}>{n}</option>
+                          ))}
+                        </select>
+                      </Field>
+                    )}
+                  </div>
+                  {show("adxRising") && (
+                    <Toggle checked={p.adxRising} onChange={(x) => setPair(editing, { adxRising: x })} label={t("adxRising")} disabled={locked("adxRising")} />
+                  )}
+                </>
               )}
             </div>
             )}
@@ -476,27 +646,147 @@ export function RobotSettingsForm({
         </div>
         )}
 
-        {anyShown("breakEven", "trailing") && (
+        {anyShown("zones", "zonesMode", "zoneTfs", "zoneLines", "zoneCandles", "zoneTolerance") && (
+        <div>
+          <h3 className={h2}>{t("zonesTitle")}</h3>
+          <div className="mt-3 flex flex-col gap-4">
+            {show("zones") && (
+              <Toggle checked={p.zones} onChange={(x) => setPair(editing, { zones: x })} label={t("zones")} hint={t("zonesHint")} disabled={locked("zones")} />
+            )}
+            {p.zones && (
+              <>
+                {show("zonesMode") && (
+                  <Field label={t("zonesMode")} group>
+                    <Segmented
+                      value={p.zonesMode}
+                      onChange={(x) => setPair(editing, { zonesMode: x })}
+                      options={allowed("zonesMode", [2, 1, 0]).map((m) => ({ value: m, label: t(`zonesModes.m${m}`) }))}
+                    />
+                  </Field>
+                )}
+                {show("zoneTfs") && (
+                  <Field label={t("zoneTfs")} group>
+                    <TfChips value={p.zoneTfs} options={allowed("zoneTfs", TIMEFRAMES)} minOne onChange={(x) => setPair(editing, { zoneTfs: x })} />
+                  </Field>
+                )}
+                {show("zoneLines") && (
+                  <Field label={t("zoneLines")} hint={t("zoneLinesHint")} group>
+                    <TfChips
+                      value={p.zoneLines.filter((x) => p.zoneTfs.includes(x))}
+                      options={allowed("zoneLines", TIMEFRAMES).filter((x) => p.zoneTfs.includes(x))}
+                      onChange={(x) => setPair(editing, { zoneLines: x })}
+                    />
+                  </Field>
+                )}
+                <div className="grid gap-4 sm:grid-cols-2">
+                  {show("zoneCandles") && (
+                    <Field label={t("zoneCandles")} hint={t("zoneCandlesHint", { min: lim("zoneCandles").min, max: lim("zoneCandles").max })} group>
+                      <NumberField
+                        key={`zc-${editing}`}
+                        value={p.zoneCandles}
+                        onChange={(x) => setPair(editing, { zoneCandles: x })}
+                        {...lim("zoneCandles")}
+                        autoLabel={t("auto")}
+                        unit={t("candlesUnit")}
+                        label={t("zoneCandles")}
+                      />
+                    </Field>
+                  )}
+                  {show("zoneTolerance") && (
+                    <Field label={t("zoneTolerance")} hint={t("pipsHint", { ...lim("zoneTolerance"), auto: AUTO_PIPS.zoneTolerance })} group>
+                      <NumberField
+                        key={`zt-${editing}`}
+                        value={p.zoneTolerance}
+                        onChange={(x) => setPair(editing, { zoneTolerance: x })}
+                        {...lim("zoneTolerance")}
+                        autoLabel={t("auto")}
+                        unit="pips"
+                        label={t("zoneTolerance")}
+                      />
+                    </Field>
+                  )}
+                </div>
+              </>
+            )}
+          </div>
+        </div>
+        )}
+
+        {anyShown("profitClose", "profitPips", "lossClose", "lossPips", "breakEven", "beTrigger", "beOffset", "trailing", "trailStart", "trailDistance", "trailStep") && (
         <div>
           <h3 className={h2}>{t("exits")}</h3>
+          <p className="mt-1 text-xs text-brand-ink-dim">{t("exitsHint")}</p>
           <div className="mt-3 grid gap-5 sm:grid-cols-2">
-            {show("breakEven") && (
-              <Toggle
-                checked={p.breakEven}
-                onChange={(x) => setPair(editing, { breakEven: x })}
-                label={t("breakEven")}
-                hint={t("breakEvenHint")}
-                disabled={locked("breakEven")}
-              />
+            {anyShown("profitClose", "profitPips") && (
+            <div className="flex flex-col gap-3 rounded-xl bg-brand-surface-2/40 p-4">
+              {show("profitClose") && (
+                <Toggle checked={p.profitClose} onChange={(x) => setPair(editing, { profitClose: x })} label={t("profitClose")} disabled={locked("profitClose")} />
+              )}
+              {p.profitClose && show("profitPips") && (
+                <Field label={t("profitPips")} hint={t("pipsHint", { ...lim("profitPips"), auto: AUTO_PIPS.profitPips })} group>
+                  <NumberField key={`pp-${editing}`} value={p.profitPips} onChange={(x) => setPair(editing, { profitPips: x })} {...lim("profitPips")} autoLabel={t("auto")} unit="pips" label={t("profitPips")} />
+                </Field>
+              )}
+            </div>
             )}
-            {show("trailing") && (
-              <Toggle
-                checked={p.trailing}
-                onChange={(x) => setPair(editing, { trailing: x })}
-                label={t("trailing")}
-                hint={t("trailingHint")}
-                disabled={locked("trailing")}
-              />
+            {anyShown("lossClose", "lossPips") && (
+            <div className="flex flex-col gap-3 rounded-xl bg-brand-surface-2/40 p-4">
+              {show("lossClose") && (
+                <Toggle checked={p.lossClose} onChange={(x) => setPair(editing, { lossClose: x })} label={t("lossClose")} hint={t("lossCloseHint")} disabled={locked("lossClose")} />
+              )}
+              {show("lossPips") && (
+                <Field label={t("lossPips")} hint={t("lossPipsHint", { ...lim("lossPips"), auto: AUTO_PIPS.lossPips })} group>
+                  <NumberField key={`lp-${editing}`} value={p.lossPips} onChange={(x) => setPair(editing, { lossPips: x })} {...lim("lossPips")} autoLabel={t("auto")} unit="pips" label={t("lossPips")} />
+                </Field>
+              )}
+            </div>
+            )}
+            {anyShown("breakEven", "beTrigger", "beOffset") && (
+            <div className="flex flex-col gap-3 rounded-xl bg-brand-surface-2/40 p-4">
+              {show("breakEven") && (
+                <Toggle checked={p.breakEven} onChange={(x) => setPair(editing, { breakEven: x })} label={t("breakEven")} hint={t("breakEvenHint")} disabled={locked("breakEven")} />
+              )}
+              {p.breakEven && (
+                <>
+                  {show("beTrigger") && (
+                    <Field label={t("beTrigger")} hint={t("pipsHint", { ...lim("beTrigger"), auto: AUTO_PIPS.beTrigger })} group>
+                      <NumberField key={`bt-${editing}`} value={p.beTrigger} onChange={(x) => setPair(editing, { beTrigger: x })} {...lim("beTrigger")} autoLabel={t("auto")} unit="pips" label={t("beTrigger")} />
+                    </Field>
+                  )}
+                  {show("beOffset") && (
+                    <Field label={t("beOffset")} hint={t("pipsHint", { ...lim("beOffset"), auto: AUTO_PIPS.beOffset })} group>
+                      <NumberField key={`bo-${editing}`} value={p.beOffset} onChange={(x) => setPair(editing, { beOffset: x })} {...lim("beOffset")} autoLabel={t("auto")} unit="pips" label={t("beOffset")} />
+                    </Field>
+                  )}
+                </>
+              )}
+            </div>
+            )}
+            {anyShown("trailing", "trailStart", "trailDistance", "trailStep") && (
+            <div className="flex flex-col gap-3 rounded-xl bg-brand-surface-2/40 p-4">
+              {show("trailing") && (
+                <Toggle checked={p.trailing} onChange={(x) => setPair(editing, { trailing: x })} label={t("trailing")} hint={t("trailingHint")} disabled={locked("trailing")} />
+              )}
+              {p.trailing && (
+                <>
+                  {show("trailStart") && (
+                    <Field label={t("trailStart")} hint={t("pipsHint", { ...lim("trailStart"), auto: AUTO_PIPS.trailStart })} group>
+                      <NumberField key={`ts-${editing}`} value={p.trailStart} onChange={(x) => setPair(editing, { trailStart: x })} {...lim("trailStart")} autoLabel={t("auto")} unit="pips" label={t("trailStart")} />
+                    </Field>
+                  )}
+                  {show("trailDistance") && (
+                    <Field label={t("trailDistance")} hint={t("pipsHint", { ...lim("trailDistance"), auto: AUTO_PIPS.trailDistance })} group>
+                      <NumberField key={`td-${editing}`} value={p.trailDistance} onChange={(x) => setPair(editing, { trailDistance: x })} {...lim("trailDistance")} autoLabel={t("auto")} unit="pips" label={t("trailDistance")} />
+                    </Field>
+                  )}
+                  {show("trailStep") && (
+                    <Field label={t("trailStep")} hint={t("pipsHint", { ...lim("trailStep"), auto: AUTO_PIPS.trailStep })} group>
+                      <NumberField key={`tt-${editing}`} value={p.trailStep} onChange={(x) => setPair(editing, { trailStep: x })} {...lim("trailStep")} autoLabel={t("auto")} unit="pips" label={t("trailStep")} />
+                    </Field>
+                  )}
+                </>
+              )}
+            </div>
             )}
           </div>
         </div>

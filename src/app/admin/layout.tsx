@@ -38,6 +38,7 @@ export default async function AdminLayout({ children }: { children: React.ReactN
     { href: "/admin/binance", label: "Recebimentos", icon: "receipts", count: unmatched.n },
     { href: "/admin/licenses", label: "Licenças", icon: "licenses" },
     { href: "/admin/accounts", label: "Contas MT4", icon: "accounts" },
+    { href: "/admin/intelligence", label: "Ai X Intelligence", icon: "intel" },
     { href: "/admin/customers", label: "Clientes", icon: "customers" },
     { href: "/admin/claims", label: "Pedidos de acesso", icon: "claims", count: claims.n },
     { href: "/admin/files", label: "Arquivos do robô", icon: "files" },

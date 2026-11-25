@@ -3,6 +3,7 @@ import { createHash } from "node:crypto";
 import { and, eq } from "drizzle-orm";
 import { db, schema } from "@/lib/db";
 import { getSetting } from "@/lib/config";
+import { recordConfigHistory } from "@/lib/intelligence";
 import type { RobotSettings } from "@/lib/db/schema";
 import {
   ADX_LEVELS,
@@ -15,6 +16,14 @@ import {
   ROBOT_SYMBOLS,
   RSI_PERIODS,
   RSI_TIMEFRAMES,
+  ADX_PERIODS,
+  ATR_BARS,
+  ATR_MAX_RATIOS,
+  ATR_MIN_RATIOS,
+  ATR_PERIODS,
+  FILTER_TFS,
+  TIMEFRAMES,
+  paramDef,
   enforcePolicy,
   normalizePolicy,
   policyDefaults,
@@ -38,7 +47,13 @@ export async function getRobotPolicy(): Promise<RobotPolicy> {
   return normalizePolicy(s?.policy, s ?? undefined);
 }
 
-const pairOf = (p: Partial<PairParams> | undefined, base: PairParams): PairParams => ({ ...base, ...(p ?? {}) });
+// Campos novos (v7) que uma configuração antiga não tem ficam com o padrão.
+const pairOf = (p: Partial<PairParams> | undefined, base: PairParams): PairParams => {
+  const out = { ...base, ...(p ?? {}) };
+  out.zoneTfs = [...(out.zoneTfs ?? base.zoneTfs)];
+  out.zoneLines = [...(out.zoneLines ?? base.zoneLines)];
+  return out;
+};
 
 type StoredParams = ConfigValues & { admin?: boolean };
 
@@ -122,6 +137,28 @@ function validatePair(p: PairParams, isAdmin: boolean): ConfigError | null {
     ![p.recovery, p.recoveryOpposite, p.breakout, p.pending, p.atr, p.adx, p.zones, p.breakEven, p.trailing].every(isBool)
   )
     return "strategy";
+  // v7
+  const range = (k: "beTrigger" | "beOffset" | "trailStart" | "trailDistance" | "trailStep" | "profitPips" | "lossPips" | "zoneCandles" | "zoneTolerance") => {
+    const r = paramDef(k).range!;
+    return (r.auto && p[k] === 0) || isInt(p[k], r.min, r.max);
+  };
+  const tfList = (list: unknown, allowEmpty: boolean) =>
+    Array.isArray(list) && (allowEmpty || list.length > 0) && list.every((x) => inList(x, TIMEFRAMES));
+  if (
+    !(["beTrigger", "beOffset", "trailStart", "trailDistance", "trailStep", "profitPips", "lossPips", "zoneCandles", "zoneTolerance"] as const).every(range) ||
+    ![p.profitClose, p.lossClose, p.adxRising].every(isBool) ||
+    !tfList(p.zoneTfs, false) ||
+    !tfList(p.zoneLines, true) ||
+    !inList(p.adxTf, FILTER_TFS) ||
+    !inList(p.adxPeriod, ADX_PERIODS) ||
+    !inList(p.atrTf, FILTER_TFS) ||
+    !inList(p.atrPeriod, ATR_PERIODS) ||
+    !inList(p.atrBars, ATR_BARS) ||
+    !inList(p.atrMin, ATR_MIN_RATIOS) ||
+    !inList(p.atrMax, ATR_MAX_RATIOS) ||
+    p.atrMin >= p.atrMax
+  )
+    return "strategy";
   return null;
 }
 
@@ -159,7 +196,15 @@ export async function saveRobotConfig(product: string, login: string, raw: Confi
   const pairs = Object.fromEntries(
     ROBOT_SYMBOLS.map((s) => {
       const p = input.pairs[s];
-      return [s, { ...p, riskPct: p.riskProfile === "custom" ? Number(p.riskPct) : RISK_PROFILES[p.riskProfile] }];
+      return [
+        s,
+        {
+          ...p,
+          riskPct: p.riskProfile === "custom" ? Number(p.riskPct) : RISK_PROFILES[p.riskProfile],
+          zoneTfs: TIMEFRAMES.filter((t) => p.zoneTfs.includes(t)),
+          zoneLines: TIMEFRAMES.filter((t) => p.zoneLines.includes(t)),
+        },
+      ];
     })
   ) as Record<string, PairParams>;
   const params: StoredParams = {
@@ -201,6 +246,8 @@ export async function saveRobotConfig(product: string, login: string, raw: Confi
     .insert(schema.robotSettings)
     .values({ product, login, ...values })
     .onConflictDoUpdate({ target: [schema.robotSettings.product, schema.robotSettings.login], set: values });
+  // v7: cada configuração salva fica no histórico (a Ai X Intelligence liga cada operação aos ajustes que ela usou).
+  await recordConfigHistory(product, login, params);
 }
 
 const n = (v: number) => String(Math.round(v * 100) / 100);
@@ -227,8 +274,32 @@ function pairPayload(p: PairParams) {
     `zm:${p.zonesMode}`,
     `be:${b(p.breakEven)}`,
     `tr:${b(p.trailing)}`,
+    // v7 (o v6.9 ignora chaves que não conhece). Pips do par, 0 = automático. Zonas: bits na ordem M1,M5,M15,M30,H1,H4,D1,W1,MN.
+    `bt:${p.beTrigger}`,
+    `bo:${p.beOffset}`,
+    `ts:${p.trailStart}`,
+    `td:${p.trailDistance}`,
+    `tt:${p.trailStep}`,
+    `pe:${b(p.profitClose)}`,
+    `pp:${p.profitPips}`,
+    `le:${b(p.lossClose)}`,
+    `lp:${p.lossPips}`,
+    `zu:${tfMask(p.zoneTfs)}`,
+    `zs:${tfMask(p.zoneLines)}`,
+    `zc:${p.zoneCandles}`,
+    `zt:${p.zoneTolerance}`,
+    `xt:${p.adxTf}`,
+    `xp:${p.adxPeriod}`,
+    `xr:${b(p.adxRising)}`,
+    `yt:${p.atrTf}`,
+    `yp:${p.atrPeriod}`,
+    `yb:${p.atrBars}`,
+    `yn:${n(p.atrMin)}`,
+    `yx:${n(p.atrMax)}`,
   ].join(",");
 }
+
+const tfMask = (list: number[]) => TIMEFRAMES.reduce((m, t, i) => (list.includes(t) ? m | (1 << i) : m), 0);
 
 // Texto que o robô recebe (sem "|", que separa os campos da resposta). Ex.:
 // sym=XAUUSD,EURUSD;risk=2;goal=10.5;loss=5.5;rec=1;lv=10;news=1;max=10;h1=0;h2=22;dd=30;days=0123456;nm=0;nb=30;na=30;nc=3;

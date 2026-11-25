@@ -1,4 +1,5 @@
 import {
+  bigint,
   boolean,
   index,
   integer,
@@ -282,6 +283,70 @@ export const robotSettings = pgTable(
   (t) => [uniqueIndex("robot_settings_product_login_idx").on(t.product, t.login)]
 );
 
+// v7 (Ai X Intelligence): toda configuração salva fica guardada, pra saber com quais parâmetros cada operação abriu.
+export const robotConfigHistory = pgTable(
+  "robot_config_history",
+  {
+    id: serial("id").primaryKey(),
+    product: text("product").notNull(),
+    login: text("login").notNull(),
+    params: jsonb("params").notNull(),
+    createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
+  },
+  (t) => [index("robot_config_history_login_idx").on(t.product, t.login, t.createdAt)]
+);
+
+// v7: operações fechadas que o robô manda (só as dele, pelo Magic) + os ajustes do par quando a operação abriu.
+export const robotTrades = pgTable(
+  "robot_trades",
+  {
+    id: serial("id").primaryKey(),
+    product: text("product").notNull(),
+    login: text("login").notNull(),
+    ticket: bigint("ticket", { mode: "number" }).notNull(),
+    symbol: text("symbol").notNull(), // nome base (XAUUSD, EURUSD...)
+    brokerSymbol: text("broker_symbol").notNull(),
+    side: integer("side").notNull(), // 0 = compra, 1 = venda
+    lots: numeric("lots", { precision: 12, scale: 2 }).notNull(),
+    openAt: timestamp("open_at", { withTimezone: true }).notNull(),
+    closeAt: timestamp("close_at", { withTimezone: true }).notNull(),
+    openPrice: numeric("open_price", { precision: 18, scale: 6 }).notNull(),
+    closePrice: numeric("close_price", { precision: 18, scale: 6 }).notNull(),
+    profit: numeric("profit", { precision: 18, scale: 2 }).notNull(),
+    swap: numeric("swap", { precision: 18, scale: 2 }).notNull(),
+    commission: numeric("commission", { precision: 18, scale: 2 }).notNull(),
+    net: numeric("net", { precision: 18, scale: 2 }).notNull(),
+    comment: text("comment"),
+    eaVersion: text("ea_version"),
+    params: jsonb("params"), // PairParams do par quando abriu (null = desconhecido)
+    createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
+  },
+  (t) => [
+    uniqueIndex("robot_trades_ticket_uq").on(t.product, t.login, t.ticket),
+    index("robot_trades_symbol_idx").on(t.product, t.symbol, t.closeAt),
+  ]
+);
+
+// v7: estudo de velas pedido no portal e feito no terminal do cliente (o robô busca na consulta de 30 s).
+export const robotScans = pgTable(
+  "robot_scans",
+  {
+    id: serial("id").primaryKey(),
+    product: text("product").notNull(),
+    login: text("login").notNull(),
+    symbol: text("symbol").notNull(),
+    spec: jsonb("spec").notNull(), // { bars?, days?, tf, tfs[], per[] }
+    status: text("status", { enum: ["pending", "running", "done", "error", "expired"] }).notNull().default("pending"),
+    requestedBy: text("requested_by"),
+    error: text("error"),
+    result: jsonb("result"),
+    createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
+    startedAt: timestamp("started_at", { withTimezone: true }),
+    finishedAt: timestamp("finished_at", { withTimezone: true }),
+  },
+  (t) => [index("robot_scans_login_idx").on(t.product, t.login, t.createdAt)]
+);
+
 // O que os clientes fazem no portal, pro sininho do admin: cadastro, entrou no portal, pedido, pagamento, pedido de acesso.
 export const activity = pgTable(
   "activity",
@@ -305,4 +370,6 @@ export type LicenseAccount = typeof licenseAccounts.$inferSelect;
 export type ProductVersion = typeof productVersions.$inferSelect;
 export type CryptoDeposit = typeof cryptoDeposits.$inferSelect;
 export type AccountStats = typeof accountStats.$inferSelect;
+export type RobotTrade = typeof robotTrades.$inferSelect;
+export type RobotScan = typeof robotScans.$inferSelect;
 export type LicenseClaim = typeof licenseClaims.$inferSelect;

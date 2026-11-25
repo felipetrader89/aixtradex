@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import { PortalHeader } from "@/components/portal/ui";
 import { RobotSettingsForm } from "@/components/portal/RobotSettingsForm";
+import { RobotTabs } from "@/components/intel/RobotTabs";
 import { requireCustomer } from "@/lib/portal";
 import { canConfigure } from "@/lib/robot-access";
 import { PRODUCT } from "@/lib/plans";
@@ -24,7 +25,7 @@ export default async function RobotSettingsPage({ params }: Props) {
   await requireCustomer(locale);
   const user = await canConfigure(login);
   if (!user) notFound();
-  const t = await getTranslations("Portal.robot");
+  const [t, ti] = await Promise.all([getTranslations("Portal.robot"), getTranslations("Portal.intel")]);
   const [config, policy] = await Promise.all([getRobotConfig(PRODUCT.slug, login), getRobotPolicy()]);
   const { updatedAt, admin: savedByAdmin, ...values } = config;
   // Cliente sempre vê só o que o admin liberou (mesmo numa conta que um admin salvou); admin vê tudo.
@@ -38,8 +39,9 @@ export default async function RobotSettingsPage({ params }: Props) {
           ← {t("back")}
         </NextLink>
       </PortalHeader>
-      {updatedAt && <p className="-mt-3 text-xs text-brand-ink-dim">{t("updated", { date: date.format(updatedAt) })}</p>}
-      {user.isAdmin && <p className="-mt-3 text-xs text-amber-300">{t("adminNote")}</p>}
+      <RobotTabs base={`/${locale}/account/accounts/${login}`} active="config" labels={{ config: ti("tabConfig"), intel: ti("tabIntel") }} />
+      {updatedAt && <p className="-mt-2 text-xs text-brand-ink-dim">{t("updated", { date: date.format(updatedAt) })}</p>}
+      {user.isAdmin && <p className="-mt-2 text-xs text-amber-300">{t("adminNote")}</p>}
       <RobotSettingsForm
         login={login}
         initial={formValues}
