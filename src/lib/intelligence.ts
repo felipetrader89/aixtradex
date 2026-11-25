@@ -198,8 +198,13 @@ export function buildSpec(period: ScanPeriod, pair: PairParams, full?: { fix: st
 // Nível do robô de cada conta visto na consulta de 30 s: 0 = antigo, 2 = v7.3 (leitura completa), 3 = v7.4+ (+ dia a dia).
 // Só em memória (o portal roda num processo só); some 5 min depois do robô parar de consultar.
 const LEVELS = ((globalThis as { __aixRobotLevels?: Map<string, { level: number; at: number }> }).__aixRobotLevels ??= new Map());
+// Dois terminais na mesma conta (versões diferentes): vale o mais novo visto nos últimos 2 min.
 export function noteRobotLevel(product: string, login: string, level: number) {
-  LEVELS.set(`${product}|${login}`, { level, at: Date.now() });
+  const k = `${product}|${login}`;
+  const prev = LEVELS.get(k);
+  const now = Date.now();
+  if (prev && prev.level > level && now - prev.at < 2 * 60_000) return;
+  LEVELS.set(k, { level, at: now });
 }
 export function robotLevel(product: string, login: string): number | null {
   const v = LEVELS.get(`${product}|${login}`);
