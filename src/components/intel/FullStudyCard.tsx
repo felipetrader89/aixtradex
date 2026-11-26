@@ -141,7 +141,7 @@ export async function FullStudyCard({
                 </tr>
               </thead>
               <tbody className="text-brand-ink">
-                {full.mx.map((row, i) => {
+                {full.mx.filter((row, i, all) => all.findIndex((x) => x.cfg.ms === row.cfg.ms && (row.cfg.ms === 0 || x.cfg.rr === row.cfg.rr)) === i).map((row, i) => {
                   const s = fullStats(row.st);
                   const ms = Number(row.cfg.ms ?? 0);
                   return (
