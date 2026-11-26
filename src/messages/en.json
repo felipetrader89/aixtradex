@@ -944,7 +944,10 @@
         "1": "Balanced",
         "2": "Strict",
         "3": "Very strict"
-      }
+      },
+      "mxTitle": "Analysis Desk: comparison",
+      "mxHint": "The same trigger and exit, with the Desk off and at each strictness. The last column is the result on the test days (in parentheses, how many trades).",
+      "mxVariant": "Desk"
     },
     "robot": {
       "configure": "Configure robot",

@@ -210,7 +210,8 @@ export type ScanMeta = {
 // st: 0 ops, 1 ganhos, 2 lucro bruto, 3 perda bruta, 4 maior queda, 5 perdas seguidas, 6 ops 70%, 7 resultado 70%, 8 lucro 70%, 9 perda 70%,
 // 10 queda 70%, 11 ops 30%, 12 resultado 30%, 13 lucro 30%, 14 perda 30%
 export type FullRow = { cfg: Record<string, number>; st: number[] };
-export type FullStudy = { meta: Record<string, string>; cur: FullRow | null; best: FullRow | null; ex: FullRow[] };
+// mx (v7.5) = cada variação da Mesa de Análise testada na mesma base (desligada, equilibrado, rigoroso...), pra comparar.
+export type FullStudy = { meta: Record<string, string>; cur: FullRow | null; best: FullRow | null; ex: FullRow[]; mx?: FullRow[] };
 // v7.4: resultado dia a dia da leitura completa (configuração atual e a melhor, sem meta/limite do dia).
 // days = dias com mercado no período (unix da meia-noite, hora da corretora); cur/best: dia → R de cada operação, na ordem de fechamento.
 export type DailyData = { days: number[]; cur?: Record<string, number[]>; best?: Record<string, number[]> };
@@ -278,6 +279,7 @@ export function parseScan(body: string): ScanResult | null {
       if (label === "cur") full.cur = row;
       else if (label === "best") full.best = row;
       else if (label === "ex" && full.ex.length < 5) full.ex.push(row);
+      else if (label === "mx" && (full.mx ??= []).length < 12) full.mx.push(row);
       hasFull = true;
       continue;
     }

@@ -124,6 +124,45 @@ export async function FullStudyCard({
           </tbody>
         </table>
       </div>
+      {full.mx && full.mx.length > 1 && (
+        <div>
+          <p className="text-sm font-semibold text-brand-ink">{t("mxTitle")}</p>
+          <p className="text-xs text-brand-ink-dim">{t("mxHint")}</p>
+          <div className="mt-2 overflow-x-auto">
+            <table className="w-full min-w-[480px] text-sm">
+              <thead>
+                <tr>
+                  <th className={th}>{t("mxVariant")}</th>
+                  <th className={`${th} text-right`}>{t("trades")}</th>
+                  <th className={`${th} text-right`}>{t("winRate")}</th>
+                  <th className={`${th} text-right`}>{t("pf")}</th>
+                  <th className={`${th} text-right`}>{t("resultR")}</th>
+                  <th className={`${th} text-right`}>{t("fullOos")}</th>
+                </tr>
+              </thead>
+              <tbody className="text-brand-ink">
+                {full.mx.map((row, i) => {
+                  const s = fullStats(row.st);
+                  const ms = Number(row.cfg.ms ?? 0);
+                  return (
+                    <tr key={i} className="border-t border-brand-hairline">
+                      <td className={td}>
+                        {t.has(`mesaLevels.${ms}`) ? t(`mesaLevels.${ms}`) : ms}
+                        {ms > 0 && row.cfg.rr !== undefined ? <span className="text-xs text-brand-ink-dim"> · RR {nf(Number(row.cfg.rr), 1)}x</span> : null}
+                      </td>
+                      <td className={`${td} text-right font-mono`}>{s.trades}</td>
+                      <td className={`${td} text-right font-mono`}>{`${nf(s.winRate * 100, 0)}%`}</td>
+                      <td className={`${td} text-right font-mono`}>{pf(s.pf)}</td>
+                      <td className={`${td} text-right font-mono ${tone(s.netR)}`}>{nf(s.netR, 1)}</td>
+                      <td className={`${td} text-right font-mono ${tone(s.oosNetR)}`}>{`${nf(s.oosNetR, 1)} (${s.oosTrades})`}</td>
+                    </tr>
+                  );
+                })}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      )}
       {changes.length ? (
         <>
           <p className="text-sm font-semibold text-brand-ink">{t("fullChanges", { n: changes.length })}</p>

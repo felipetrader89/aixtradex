@@ -944,7 +944,10 @@
         "1": "Equilibrado",
         "2": "Riguroso",
         "3": "Muy riguroso"
-      }
+      },
+      "mxTitle": "Mesa de Análisis: comparación",
+      "mxHint": "El mismo gatillo y la misma salida, con la Mesa desactivada y en cada rigor. La última columna es el resultado en los días de prueba (entre paréntesis, cuántas operaciones).",
+      "mxVariant": "Mesa"
     },
     "robot": {
       "configure": "Configurar robot",
