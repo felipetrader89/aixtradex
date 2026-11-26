@@ -312,9 +312,10 @@ export async function activatePlan(product: string, login: string, plan: Plan, c
 export type TodayPair = { symbol: string; goal: number; pct: number; status: "hit" | "trading" | "stopped" | "done" };
 export type Today = { goal: number; loss: number; pct: number; status: "trading" | "done" | "stopped"; pairs: TodayPair[]; base: number };
 
-export async function todayFor(product: string, login: string, plan: Plan, stats: { balanceDayStart: string; resultToday: string; brokerGmt: number | null } | undefined): Promise<Today | null> {
+export async function todayFor(product: string, login: string, plan: Plan, stats: { balance: string; resultToday: string; brokerGmt: number | null } | undefined): Promise<Today | null> {
   if (!stats) return null;
-  const base = Number(stats.balanceDayStart);
+  // base = saldo de agora menos o resultado fechado de hoje: depósito/saque no meio do dia não distorce o % (o "saldo do início do dia" do relatório inclui o depósito)
+  const base = Number(stats.balance) - Number(stats.resultToday);
   if (!(base > 0)) return null;
   const gmt = stats.brokerGmt ?? 0;
   const nowB = Math.floor(Date.now() / 1000) + gmt;

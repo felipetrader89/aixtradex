@@ -59,7 +59,7 @@ export default async function StartPage({ params, searchParams }: Props) {
     user.isAdmin ? Promise.resolve(null) : getRobotPolicy(),
   ]);
 
-  const allowed = (k: "dailyGoalPct" | "dailyLossPct" | "goalPct") => (PCT_OPTIONS as readonly number[]).filter((v) => v > 0 && (!policy || hasValue(policy[k].allow, v)));
+  const allowed = (k: "dailyGoalPct" | "dailyLossPct" | "goalPct") => (PCT_OPTIONS as readonly number[]).filter((v) => (v > 0 || k === "dailyLossPct") && (!policy || hasValue(policy[k].allow, v))); // perda: 0 = Desativado
   const have = broker ? new Set(broker.symbols.map((s) => s.k)) : null;
   const canSym = (s: string) => !policy || (isStandardSymbol(s) ? hasValue(policy.symbols.allow, s) : hasValue(policy.symbols.allow, "*"));
   const symbols = [
@@ -108,6 +108,7 @@ export default async function StartPage({ params, searchParams }: Props) {
             downloads: `${base}/downloads`,
             guide: `${base}/guide`,
             start: `${base}/start`,
+            home: base,
           }}
         />
       </Card>

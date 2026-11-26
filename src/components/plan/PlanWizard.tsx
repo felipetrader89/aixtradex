@@ -46,7 +46,7 @@ type Props = {
   pairRisk: Record<string, number>;
   profileRisk: Record<string, number>;
   days: number[];
-  links: { config: string; downloads: string; guide: string; start: string };
+  links: { config: string; downloads: string; guide: string; start: string; home: string };
 };
 
 const chip = (on: boolean) =>
@@ -258,7 +258,7 @@ export function PlanWizard(props: Props) {
               <select className={select} value={loss} onChange={(e) => setLoss(Number(e.target.value))}>
                 {props.lossOptions.map((v) => (
                   <option key={v} value={v}>
-                    -{v}%
+                    {v === 0 ? t("goal.lossOff") : `-${v}%`}
                   </option>
                 ))}
               </select>
@@ -461,7 +461,7 @@ function Progress({ analyses }: { analyses: PairAnalysis[] }) {
   );
 }
 
-function Review({ plan, analyses, pairRisk, profileRisk, days, pairGoalOptions, goalOptions, login, restart, busy }: Props & { plan: WizardPlan; restart: () => void; busy: boolean }) {
+function Review({ plan, analyses, pairRisk, profileRisk, days, pairGoalOptions, goalOptions, login, links, restart, busy }: Props & { plan: WizardPlan; restart: () => void; busy: boolean }) {
   const t = useTranslations("Plan");
   const locale = useLocale();
   const router = useRouter();
@@ -471,6 +471,8 @@ function Review({ plan, analyses, pairRisk, profileRisk, days, pairGoalOptions, 
   const [custom, setCustom] = useState<Record<string, number> | null>(plan.mode === "auto" && plan.status === "active" ? plan.pairGoals : null);
   const [pg, setPg] = useState<Record<string, number>>(plan.pairGoals);
   const [useAi, setUseAi] = useState<string[]>(plan.useAi);
+  // plano ativo abre só pra conferir (fim do passo a passo); "Alterar metas" libera a edição
+  const [editing, setEditing] = useState(plan.status !== "active");
   const loss = plan.lossPct;
   const riskOf = (s: string) => profileRisk[plan.profile] ?? pairRisk[s] ?? 2;
   const nf = new Intl.NumberFormat(locale, { maximumFractionDigits: 1 });
@@ -517,6 +519,8 @@ function Review({ plan, analyses, pairRisk, profileRisk, days, pairGoalOptions, 
         setError(t.has(`errors.${r.error}`) ? t(`errors.${r.error}`) : t("errors.generic"));
         return;
       }
+      setEditing(false);
+      window.scrollTo({ top: 0, behavior: "smooth" });
       router.refresh();
     });
   }
@@ -532,7 +536,9 @@ function Review({ plan, analyses, pairRisk, profileRisk, days, pairGoalOptions, 
 
       {plan.status === "active" && (
         <div className="rounded-2xl border border-brand-accent/40 bg-brand-accent/10 p-4 text-sm text-brand-ink">
-          <p className="font-semibold text-brand-accent">✓ {t(plan.mode === "auto" ? "review.activeAuto" : "review.activeManual")}</p>
+          <p className="font-display text-lg font-extrabold text-brand-accent">✓ {t("review.doneTitle")}</p>
+          <p className="mt-1">{t(plan.mode === "auto" ? "review.activeAuto" : "review.activeManual")}</p>
+          <p className="mt-1 text-brand-ink-dim">{t("review.doneNext")}</p>
           {plan.summary?.note === "none" && <p className="mt-1 text-amber-300">{t("review.noneToday")}</p>}
           {plan.summary && (plan.summary.added.length > 0 || plan.summary.removed.length > 0) && (
             <p className="mt-1 text-xs text-brand-ink-dim">
@@ -560,7 +566,7 @@ function Review({ plan, analyses, pairRisk, profileRisk, days, pairGoalOptions, 
             <Metric label={t("review.avg")} value={pctTxt(ev.avgPct, true)} />
             <Metric label={t("review.worst")} value={pctTxt(ev.worstPct, true)} />
           </div>
-          {plan.mode === "auto" && sug && Math.abs(sug.goal - goalNow) > 1e-6 && (
+          {editing && plan.mode === "auto" && sug && Math.abs(sug.goal - goalNow) > 1e-6 && (
             <p className="text-sm text-brand-ink">
               💡 {t("review.suggest", { goal: nf.format(sug.goal), rate: Math.round(sug.rate * 100) })}{" "}
               <button
@@ -584,7 +590,7 @@ function Review({ plan, analyses, pairRisk, profileRisk, days, pairGoalOptions, 
         <div className={`${box} flex flex-col gap-2`}>
           <div className="flex flex-wrap items-center justify-between gap-2">
             <p className="text-sm font-semibold text-brand-ink">{t("review.pairsAuto")}</p>
-            {custom ? (
+            {!editing ? null : custom ? (
               <button type="button" className="text-xs font-semibold text-brand-accent hover:underline" onClick={() => setCustom(null)}>
                 {t("review.autoSplit")}
               </button>
@@ -599,7 +605,7 @@ function Review({ plan, analyses, pairRisk, profileRisk, days, pairGoalOptions, 
               <li key={p.symbol} className="flex flex-wrap items-center justify-between gap-2 rounded-lg bg-brand-surface/60 px-3 py-2 text-sm">
                 <span className="font-semibold text-brand-ink">{symbolLabel(p.symbol)}</span>
                 <span className="text-xs text-brand-ink-dim">{t("review.pairHit", { hit: p.hitDays, days: p.days })}</span>
-                {custom ? (
+                {custom && editing ? (
                   <span className="flex items-center gap-1.5">
                     <select className={select} value={custom[p.symbol]} onChange={(e) => setCustom({ ...custom, [p.symbol]: Number(e.target.value) })}>
                       {pairGoalOptions.map((v) => (
@@ -626,7 +632,7 @@ function Review({ plan, analyses, pairRisk, profileRisk, days, pairGoalOptions, 
               </li>
             ))}
           </ul>
-          {!custom && (
+          {!custom && editing && (
             <label className="mt-1 flex items-center gap-2 text-sm text-brand-ink">
               {t("review.goalTotal")}
               <select className={select} value={goal} onChange={(e) => setGoal(Number(e.target.value))}>
@@ -650,6 +656,7 @@ function Review({ plan, analyses, pairRisk, profileRisk, days, pairGoalOptions, 
       {hasDaily && plan.mode === "manual" && (
         <div className={`${box} flex flex-col gap-2`}>
           <p className="text-sm font-semibold text-brand-ink">{t("review.pairsManual")}</p>
+          <fieldset disabled={!editing} className="contents">
           <ul className="flex flex-col gap-2">
             {Object.keys(pg).map((s) => {
               const a = analyses.find((x) => x.symbol === s);
@@ -691,6 +698,7 @@ function Review({ plan, analyses, pairRisk, profileRisk, days, pairGoalOptions, 
               );
             })}
           </ul>
+          </fieldset>
           <p className="text-xs text-brand-ink-dim">{t("review.manualTotal", { goal: nf.format(goalNow) })}</p>
         </div>
       )}
@@ -699,9 +707,37 @@ function Review({ plan, analyses, pairRisk, profileRisk, days, pairGoalOptions, 
         <button type="button" className={btnGhost} onClick={restart} disabled={busy || pending}>
           ↺ {t("review.restart")}
         </button>
-        <button type="button" className={btn} onClick={activate} disabled={pending || !hasDaily || !Object.keys(alloc).length || (!!ev && !ev.days)}>
-          {pending ? t("review.activating") : plan.status === "active" ? t("review.update") : t("review.activate")}
-        </button>
+        {editing ? (
+          <div className="flex flex-wrap gap-2">
+            {plan.status === "active" && (
+              <button
+                type="button"
+                className={btnGhost}
+                onClick={() => {
+                  setEditing(false);
+                  setCustom(plan.mode === "auto" ? plan.pairGoals : null);
+                  setPg(plan.pairGoals);
+                  setUseAi(plan.useAi);
+                  setGoal(plan.goalPct);
+                }}
+              >
+                {t("review.cancel")}
+              </button>
+            )}
+            <button type="button" className={btn} onClick={activate} disabled={pending || !hasDaily || !Object.keys(alloc).length || (!!ev && !ev.days)}>
+              {pending ? t("review.activating") : plan.status === "active" ? t("review.update") : t("review.activate")}
+            </button>
+          </div>
+        ) : (
+          <div className="flex flex-wrap gap-2">
+            <button type="button" className={btnGhost} onClick={() => setEditing(true)}>
+              ✎ {t("review.edit")}
+            </button>
+            <a href={links.home} className={btn}>
+              {t("review.finish")} →
+            </a>
+          </div>
+        )}
       </div>
     </section>
   );

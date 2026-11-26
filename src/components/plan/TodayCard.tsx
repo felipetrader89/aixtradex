@@ -35,7 +35,7 @@ export function TodayCard({ login, company, mode, today, href }: { login: string
           <div className="mt-4">
             <div className="flex flex-wrap items-end justify-between gap-2">
               <p className={`font-display text-3xl font-extrabold ${today.pct > 0 ? "text-brand-accent" : today.pct < 0 ? "text-red-300" : "text-brand-ink"}`}>{pct(today.pct)}</p>
-              <p className="pb-1 text-xs text-brand-ink-dim">{t("goalLoss", { goal: nf.format(today.goal), loss: nf.format(today.loss) })}</p>
+              <p className="pb-1 text-xs text-brand-ink-dim">{today.loss > 0 ? t("goalLoss", { goal: nf.format(today.goal), loss: nf.format(today.loss) }) : t("goalNoLoss", { goal: nf.format(today.goal) })}</p>
             </div>
             <div className="mt-2 h-2.5 overflow-hidden rounded-full bg-brand-hairline">
               <div className={`h-full ${bar(today.pct, today.goal, today.loss).cls}`} style={{ width: bar(today.pct, today.goal, today.loss).width }} />

@@ -25,7 +25,7 @@ export async function analyzePlanAction(login: string, draft: PlanDraft): Promis
   const user = await canConfigure(login);
   if (!user) return { ok: false, error: "denied" };
   if (!draft || (draft.mode !== "auto" && draft.mode !== "manual") || !isProfile(draft.profile)) return { ok: false, error: "invalid" };
-  if (!isPct(draft.goalPct) || !isPct(draft.lossPct) || !(draft.goalPct > 0) || !(draft.lossPct > 0)) return { ok: false, error: "invalid" };
+  if (!isPct(draft.goalPct) || !isPct(draft.lossPct) || !(draft.goalPct > 0) || !(draft.lossPct >= 0)) return { ok: false, error: "invalid" };
   const pairGoals: Record<string, number> = {};
   if (draft.mode === "manual") {
     const keys = await allowedSymbolKeys(PRODUCT.slug, login);
