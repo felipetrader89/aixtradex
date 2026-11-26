@@ -2,7 +2,7 @@ import "server-only";
 import { and, eq, gte, inArray, sql } from "drizzle-orm";
 import { db, schema } from "@/lib/db";
 import { getRobotConfig, getRobotPolicy, saveRobotConfig, validateConfig } from "@/lib/robot-settings";
-import { buildSpec, requestScan } from "@/lib/intelligence";
+import { buildSpec, requestScan, robotLevel } from "@/lib/intelligence";
 import { allowedSymbolKeys, getBrokerSymbols } from "@/lib/broker-symbols";
 import { FULL_KEYS, fixedGroups, fullPatch, policyCan, type ScanResult } from "@/lib/intel-stats";
 import {
@@ -103,7 +103,8 @@ export async function autoSymbols(product: string, login: string, config: Config
 // Pede a leitura completa de 1 mês dos pares (o robô faz um de cada vez). Meta/perda do dia ficam de fora (o Assistente decide).
 async function startRun(product: string, login: string, symbols: string[], config: ConfigValues, policy: RobotPolicy | null, by: string, noLimit = false) {
   const fix = [...new Set([...fixedGroups(policy), "goal", "dloss"])];
-  const items = symbols.map((s) => ({ symbol: s, spec: buildSpec(PERIOD, config.pairs[s] ?? config.pairs[config.symbols[0]] ?? DEFAULT_PAIR, { fix, daily: true }) }));
+  const mesa = (robotLevel(product, login) ?? 0) >= 4;   // v7.5 ligado: a leitura testa a Mesa e só ele faz
+  const items = symbols.map((s) => ({ symbol: s, spec: buildSpec(PERIOD, config.pairs[s] ?? config.pairs[config.symbols[0]] ?? DEFAULT_PAIR, { fix, daily: true, mesa }) }));
   return requestScan(product, login, items, by, noLimit);
 }
 

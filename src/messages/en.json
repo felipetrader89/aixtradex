@@ -775,6 +775,7 @@
       "scan": "Candle study",
       "scanHint": "The robot reads the history in your MT4 and tests the RSI trigger in every combination (timeframe, period, zone, reversal or breakout) with the exit the pair uses today. Filters (ATR, ADX, zones, news) are not included: it studies the trigger.",
       "needsV74": "Assistant request: needs robot v7.4 or newer",
+      "needsV75": "no v7.5 robot picked up the reading - check that the robot is running",
       "needsV73": "this account's robot can't do the full reading yet: update to v7.3 or newer and request again",
       "fullToggle": "Full reading (all parameters)",
       "fullToggleHint": "Besides RSI, it tests loss limit, target, break-even, trailing stop, ATR/ADX filters, zones, direction and daily goal/loss. Takes a few minutes and needs robot v7.3 or newer.",
@@ -924,7 +925,9 @@
         "breakEven": "Break-even",
         "trailing": "Trailing stop",
         "lossPips": "Loss limit",
-        "profitPips": "Profit target"
+        "profitPips": "Profit target",
+        "mesa": "Analysis Desk: strictness",
+        "minRR": "Desk: minimum risk/reward"
       },
       "auto": "automatic",
       "entries": {
@@ -935,6 +938,12 @@
         "m0": "only with ADX",
         "m1": "never against the zone",
         "m2": "only at the zones"
+      },
+      "mesaLevels": {
+        "0": "Off",
+        "1": "Balanced",
+        "2": "Strict",
+        "3": "Very strict"
       }
     },
     "robot": {
@@ -1129,6 +1138,24 @@
         "news": "Invalid news settings.",
         "strategy": "Some pair setting is invalid.",
         "denied": "This account is not on your licenses."
+      },
+      "mesa": {
+        "title": "Analysis Desk",
+        "intro": "The RSI only signals that price reached an extreme. Before entering, the robot checks what an experienced trader checks: H4 and H1 trend, support and resistance, confirmation candle, divergence, MACD, session, room to the next zone and the senior trader's (AI) daily bias. Requires robot v7.5.",
+        "rigor": "Strictness",
+        "rigorHint0": "Off: the robot enters on the RSI and filters only (as up to v7.4).",
+        "rigorHint1": "Enters with a score of 3 or more (out of 13). More trades.",
+        "rigorHint2": "Enters with a score of 5 or more and enough room to the next zone.",
+        "rigorHint3": "Enters with a score of 7 or more: few entries, only the most complete ones.",
+        "levels": {
+          "0": "Off",
+          "1": "Balanced",
+          "2": "Strict",
+          "3": "Very strict"
+        },
+        "minRR": "Minimum risk/reward",
+        "minRRHint": "Room to the next opposing zone, in multiples of the stop. E.g. 1.5x = only enters with at least 1.5 times the risk of free path.",
+        "noMin": "No minimum"
       }
     },
     "downloads": {
@@ -1136,6 +1163,61 @@
       "intro": "Always download the version marked as Current. The main button already gives you the robot in your language: panel, settings and alerts.",
       "otherLangs": "Also in:",
       "next": "Downloaded it? Now follow the"
+    },
+    "mesa": {
+      "biasTitle": "Senior trader view (AI)",
+      "biasIntro": "The AI, acting as a trader with decades of market experience, reads the D1, H4 and H1 charts of each pair and decides the bias for the next hours. The robot uses it in the Analysis Desk: against the bias it does not enter on that side.",
+      "biasNone": "No view for your pairs yet. It arrives when robot v7.5 sends the market summary (every H4 candle).",
+      "biasDisclaimer": "Technical chart reading, not investment advice. Markets move fast; the view is refreshed during the day.",
+      "bias": {
+        "buy": "Buy",
+        "sell": "Sell",
+        "both": "Both sides",
+        "none": "Stay out"
+      },
+      "regime": {
+        "trend_up": "Uptrend",
+        "trend_down": "Downtrend",
+        "range": "Range",
+        "volatile": "Volatile"
+      },
+      "supports": "Supports",
+      "resistances": "Resistances",
+      "invalidation": "Invalid at",
+      "readAt": "Read at {at}",
+      "statsTitle": "Analysis Desk: what worked on this account",
+      "statsIntro": "Each trade by robot v7.5 stores the Desk score and the confluences it had at entry. Here you can see which confluences came with the best results.",
+      "statsNone": "No trades with the Desk score yet (robot v7.5).",
+      "bands": {
+        "low": "Score below 3",
+        "mid": "Score 3 to 4",
+        "high": "Score 5 to 6",
+        "top": "Score 7 or more"
+      },
+      "col": {
+        "confluence": "Confluence at entry",
+        "trades": "Trades",
+        "winRate": "Win rate",
+        "net": "Result"
+      },
+      "statsNote": "{n} trades with a score · overall win rate {rate}.",
+      "bits": {
+        "trendH4": "H4 trend in favor",
+        "trendH1": "H1 trend in favor",
+        "structure": "H1 structure in favor (highs and lows)",
+        "zone": "At support / resistance",
+        "candle": "Confirmation candle (M15)",
+        "divergence": "RSI divergence (M15)",
+        "macd": "MACD in favor (M15)",
+        "session": "Good session",
+        "room": "Room to the next zone",
+        "aiBias": "Senior trader bias in favor",
+        "counterTrend": "Against the H4 and H1 trend",
+        "intoZone": "Right under an opposing zone",
+        "squeeze": "Tight range",
+        "oppositeCandle": "Opposite candle",
+        "lowRoom": "Little room to the zone"
+      }
     }
   },
   "Claim": {
@@ -1267,7 +1349,7 @@
       "suggest": "Safer goal for the last month: {goal}% (hit on {rate}% of days).",
       "useSuggest": "Use this goal",
       "noSuggest": "No goal was hit on 70% of days in the last month. Consider a lower goal or the conservative profile.",
-      "disclaimer": "Simulation on your broker's candles in the last month (one entry at a time in each direction, without recovery). It shows what would have happened; past results do not guarantee future results.",
+      "disclaimer": "Simulation on your broker's candles with real costs (spread and commission), the worst case inside each candle and the recovery. It shows what would have happened; past results do not guarantee future results.",
       "pairsAuto": "Pairs chosen by the AI and the goal for each",
       "autoSplit": "Back to automatic split",
       "adjust": "Adjust per pair",
@@ -1295,7 +1377,17 @@
       "restart": "Redo the steps",
       "activating": "Activating...",
       "update": "Save changes",
-      "activate": "Activate the robot with this plan"
+      "activate": "Activate the robot with this plan",
+      "chanceTest": "Hit the {goal}% goal on {hit} of {days} test days (days the AI did not use to pick the combination).",
+      "chanceRef": "Over the whole month (includes the days used for picking, more optimistic): {hit} of {days} days.",
+      "chanceFew": "Few test days so far: the number uses the whole month, which is more optimistic.",
+      "mesaLevel": "Analysis Desk: {level}",
+      "mesaLevels": {
+        "0": "off",
+        "1": "balanced",
+        "2": "strict",
+        "3": "very strict"
+      }
     },
     "errors": {
       "generic": "It didn't work. Try again.",
@@ -1329,7 +1421,13 @@
         "auto": "Automatic",
         "manual": "Manual"
       },
-      "note": "Account result today (includes open trades). Per pair, closed trades only."
+      "note": "Account result today (includes open trades). Per pair, closed trades only.",
+      "bias": {
+        "buy": "Senior trader: buy",
+        "sell": "Senior trader: sell",
+        "both": "Senior trader: both sides",
+        "none": "Senior trader: stay out"
+      }
     }
   }
 }

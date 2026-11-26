@@ -325,6 +325,7 @@ export const robotTrades = pgTable(
     comment: text("comment"),
     eaVersion: text("ea_version"),
     params: jsonb("params"), // PairParams do par quando abriu (null = desconhecido)
+    mesa: bigint("mesa", { mode: "number" }), // v7.5: nota + confluências da Mesa de Análise na entrada (máscara + (nota+32)×2^24)
     createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
   },
   (t) => [
@@ -413,6 +414,27 @@ export const robotPlans = pgTable(
     updatedAt: timestamp("updated_at", { withTimezone: true }).notNull().defaultNow(),
   },
   (t) => [primaryKey({ columns: [t.product, t.login] })]
+);
+
+// v7.5: viés do dia de cada ativo, lido pela IA no papel de trader sênior a partir do resumo de mercado que os robôs mandam
+// (velas D1/H4/H1 + médias, RSI, ADX, ATR, máx/mín do dia e da semana). Vale pra todas as contas; renova a cada vela de H4.
+// bias: buy | sell | both | none. O robô recebe como "ai" (1 compra, 2 venda, 3 os dois, 4 não operar) e usa na Mesa de Análise.
+export const marketBias = pgTable(
+  "market_bias",
+  {
+    id: serial("id").primaryKey(),
+    symbol: text("symbol").notNull(),
+    bias: text("bias", { enum: ["buy", "sell", "both", "none"] }).notNull(),
+    confidence: integer("confidence").notNull(),
+    analysis: jsonb("analysis").notNull(), // { pt, en, es, supports[], resistances[], invalidation, regime }
+    snapshot: text("snapshot"),
+    sourceLogin: text("source_login"),
+    model: text("model"),
+    inputTokens: integer("input_tokens"),
+    outputTokens: integer("output_tokens"),
+    createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
+  },
+  (t) => [index("market_bias_symbol_idx").on(t.symbol, t.createdAt)]
 );
 
 // O que os clientes fazem no portal, pro sininho do admin: cadastro, entrou no portal, pedido, pagamento, pedido de acesso.

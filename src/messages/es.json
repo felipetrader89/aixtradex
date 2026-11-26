@@ -775,6 +775,7 @@
       "scan": "Lectura de velas",
       "scanHint": "El robot lee el historial de tu MT4 y prueba el gatillo del RSI en todas las combinaciones (marco temporal, período, zona, reversión o ruptura) con la salida que el par usa hoy. Los filtros (ATR, ADX, zonas, noticias) no entran: es un estudio del gatillo.",
       "needsV74": "pedido del Asistente: necesita el robot v7.4 o más nuevo",
+      "needsV75": "ningún robot v7.5 tomó la lectura - revisa que el robot esté encendido",
       "needsV73": "el robot de esta cuenta todavía no hace la lectura completa: actualiza a la v7.3 o más nueva y pide de nuevo",
       "fullToggle": "Lectura completa (todos los parámetros)",
       "fullToggleHint": "Además del RSI, prueba límite de pérdida, objetivo, break-even, stop móvil, filtros ATR/ADX, zonas, dirección y meta/pérdida del día. Tarda unos minutos y necesita el robot v7.3 o más nuevo.",
@@ -924,7 +925,9 @@
         "breakEven": "Break-even",
         "trailing": "Stop móvil",
         "lossPips": "Límite de pérdida",
-        "profitPips": "Objetivo de ganancia"
+        "profitPips": "Objetivo de ganancia",
+        "mesa": "Mesa de Análisis: rigor",
+        "minRR": "Mesa: riesgo/beneficio mínimo"
       },
       "auto": "automático",
       "entries": {
@@ -935,6 +938,12 @@
         "m0": "solo con el ADX",
         "m1": "no opera contra la zona",
         "m2": "solo opera en las zonas"
+      },
+      "mesaLevels": {
+        "0": "Desactivada",
+        "1": "Equilibrado",
+        "2": "Riguroso",
+        "3": "Muy riguroso"
       }
     },
     "robot": {
@@ -1129,6 +1138,24 @@
         "news": "Configuración de noticias inválida.",
         "strategy": "Algún ajuste de par es inválido.",
         "denied": "Esta cuenta no está en sus licencias."
+      },
+      "mesa": {
+        "title": "Mesa de Análisis",
+        "intro": "El RSI solo avisa que el precio llegó a un extremo. Antes de entrar, el robot revisa lo que revisa un trader experimentado: tendencia en H4 y H1, soporte y resistencia, vela de confirmación, divergencia, MACD, horario, espacio hasta la próxima zona y el sesgo del día del trader sénior (IA). Requiere el robot v7.5.",
+        "rigor": "Rigor",
+        "rigorHint0": "Desactivada: el robot entra solo por el RSI y los filtros (como hasta la v7.4).",
+        "rigorHint1": "Entra con nota 3 o más (de 13). Más operaciones.",
+        "rigorHint2": "Entra con nota 5 o más y espacio suficiente hasta la próxima zona.",
+        "rigorHint3": "Entra con nota 7 o más: pocas entradas, solo las más completas.",
+        "levels": {
+          "0": "Desactivada",
+          "1": "Equilibrado",
+          "2": "Riguroso",
+          "3": "Muy riguroso"
+        },
+        "minRR": "Riesgo/beneficio mínimo",
+        "minRRHint": "Espacio hasta la próxima zona contraria, en veces el stop. Ej.: 1,5x = solo entra si hay al menos 1,5 veces el riesgo de camino libre.",
+        "noMin": "Sin mínimo"
       }
     },
     "downloads": {
@@ -1136,6 +1163,61 @@
       "intro": "Descarga siempre la versión marcada como Actual. El botón principal ya trae el robot en tu idioma: panel, parámetros y avisos.",
       "otherLangs": "También en:",
       "next": "¿Ya la descargaste? Ahora sigue la"
+    },
+    "mesa": {
+      "biasTitle": "Opinión del trader sénior (IA)",
+      "biasIntro": "La IA, en el papel de un trader con décadas de mercado, lee los gráficos D1, H4 y H1 de cada par y decide el sesgo de las próximas horas. El robot lo usa en la Mesa de Análisis: contra el sesgo no entra en ese lado.",
+      "biasNone": "Aún sin opinión para tus pares. Llega cuando el robot v7.5 envía el resumen del mercado (cada vela de H4).",
+      "biasDisclaimer": "Lectura técnica de los gráficos, no es recomendación de inversión. El mercado cambia rápido; la opinión se renueva durante el día.",
+      "bias": {
+        "buy": "Compra",
+        "sell": "Venta",
+        "both": "Ambos lados",
+        "none": "No operar"
+      },
+      "regime": {
+        "trend_up": "Tendencia alcista",
+        "trend_down": "Tendencia bajista",
+        "range": "Lateral",
+        "volatile": "Volátil"
+      },
+      "supports": "Soportes",
+      "resistances": "Resistencias",
+      "invalidation": "Se invalida en",
+      "readAt": "Leído el {at}",
+      "statsTitle": "Mesa de Análisis: qué funcionó en esta cuenta",
+      "statsIntro": "Cada operación del robot v7.5 guarda la nota de la Mesa y las confluencias que tenía al entrar. Aquí se ve qué confluencias acompañaron los mejores resultados.",
+      "statsNone": "Aún sin operaciones con la nota de la Mesa (robot v7.5).",
+      "bands": {
+        "low": "Nota menor que 3",
+        "mid": "Nota 3 a 4",
+        "high": "Nota 5 a 6",
+        "top": "Nota 7 o más"
+      },
+      "col": {
+        "confluence": "Confluencia al entrar",
+        "trades": "Operaciones",
+        "winRate": "Acierto",
+        "net": "Resultado"
+      },
+      "statsNote": "{n} operaciones con nota · acierto general {rate}.",
+      "bits": {
+        "trendH4": "Tendencia H4 a favor",
+        "trendH1": "Tendencia H1 a favor",
+        "structure": "Estructura H1 a favor (máximos y mínimos)",
+        "zone": "En soporte / resistencia",
+        "candle": "Vela de confirmación (M15)",
+        "divergence": "Divergencia del RSI (M15)",
+        "macd": "MACD a favor (M15)",
+        "session": "Buen horario",
+        "room": "Espacio hasta la próxima zona",
+        "aiBias": "Sesgo del trader sénior a favor",
+        "counterTrend": "Contra la tendencia H4 y H1",
+        "intoZone": "Pegado a una zona contraria",
+        "squeeze": "Lateral comprimido",
+        "oppositeCandle": "Vela contraria",
+        "lowRoom": "Poco espacio hasta la zona"
+      }
     }
   },
   "Claim": {
@@ -1267,7 +1349,7 @@
       "suggest": "Meta más segura para el último mes: {goal}% (alcanzada en el {rate}% de los días).",
       "useSuggest": "Usar esta meta",
       "noSuggest": "Ninguna meta se alcanzó en el 70% de los días del último mes. Considera una meta menor o el perfil conservador.",
-      "disclaimer": "Simulación en las velas de tu broker del último mes (una entrada a la vez en cada dirección, sin la recuperación). Muestra lo que habría pasado; resultados pasados no garantizan resultados futuros.",
+      "disclaimer": "Simulación en las velas de tu bróker con costo real (spread y comisión), en el peor caso dentro de cada vela y con la recuperación. Muestra lo que habría pasado; resultados pasados no garantizan resultados futuros.",
       "pairsAuto": "Pares elegidos por la IA y la meta de cada uno",
       "autoSplit": "Volver a la división automática",
       "adjust": "Ajustar por par",
@@ -1295,7 +1377,17 @@
       "restart": "Rehacer los pasos",
       "activating": "Activando...",
       "update": "Guardar cambios",
-      "activate": "Activar el robot con este plan"
+      "activate": "Activar el robot con este plan",
+      "chanceTest": "Alcanzó la meta de {goal}% en {hit} de {days} días de prueba (días que la IA no usó para elegir la combinación).",
+      "chanceRef": "En el mes entero (incluye los días usados en la elección, más optimista): {hit} de {days} días.",
+      "chanceFew": "Aún hay pocos días de prueba: el número usa el mes entero, que es más optimista.",
+      "mesaLevel": "Mesa de Análisis: {level}",
+      "mesaLevels": {
+        "0": "desactivada",
+        "1": "equilibrado",
+        "2": "riguroso",
+        "3": "muy riguroso"
+      }
     },
     "errors": {
       "generic": "No funcionó. Intenta de nuevo.",
@@ -1329,7 +1421,13 @@
         "auto": "Automático",
         "manual": "Manual"
       },
-      "note": "Resultado de hoy de la cuenta (incluye operaciones abiertas). Por par, solo las operaciones cerradas."
+      "note": "Resultado de hoy de la cuenta (incluye operaciones abiertas). Por par, solo las operaciones cerradas.",
+      "bias": {
+        "buy": "Trader sénior: compra",
+        "sell": "Trader sénior: venta",
+        "both": "Trader sénior: ambos lados",
+        "none": "Trader sénior: no operar"
+      }
     }
   }
 }

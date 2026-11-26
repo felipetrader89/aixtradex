@@ -59,6 +59,7 @@ export function pairSummary(p: PairParams): [string, string][] {
     ["Direção", ["compra e venda", "só compra", "só venda"][p.direction]],
     ["Recuperação", p.recovery ? `até ${p.recoveryLevels} níveis${p.recoveryOpposite ? ", inverte" : ""}` : "desligada"],
     ["RSI", `${valuePt("rsiZone", p.rsiZone)} · período ${p.rsiPeriod} · ${tfLabel(p.rsiTf)} · ${valuePt("breakout", p.breakout)} · ${valuePt("pending", p.pending)}`],
+    ["Mesa de Análise", p.mesa ? `${["desligada", "equilibrado", "rigoroso", "muito rigoroso"][p.mesa] ?? p.mesa} · risco/retorno mínimo ${p.minRR ? `${p.minRR}x` : "-"}` : "desligada (só RSI e filtros)"],
     ["ATR", p.atr ? `${tfLabel(p.atrTf)} · período ${p.atrPeriod} · média ${p.atrBars} · ${p.atrMin}x a ${p.atrMax}x` : "desligado"],
     ["ADX", p.adx ? `${tfLabel(p.adxTf)} · período ${p.adxPeriod} · nível ${p.adxLevel}${p.adxRising ? " · subindo" : ""}` : "desligado"],
     [

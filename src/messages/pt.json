@@ -775,6 +775,7 @@
       "scan": "Leitura das velas",
       "scanHint": "O robô lê o histórico do seu MT4 e testa o gatilho do RSI em todas as combinações (tempo gráfico, período, zona, reversão ou rompimento) com a saída que o par usa hoje. Os filtros (ATR, ADX, zonas, notícias) não entram: é um estudo do gatilho.",
       "needsV74": "pedido do Assistente: precisa do robô v7.4 ou mais novo",
+      "needsV75": "nenhum robô v7.5 pegou a leitura - confira se o robô está ligado",
       "needsV73": "o robô desta conta ainda não faz a leitura completa: atualize pra v7.3 ou mais nova e peça de novo",
       "fullToggle": "Leitura completa (todos os parâmetros)",
       "fullToggleHint": "Além do RSI, testa limite de perda, alvo, break-even, stop móvel, filtros ATR/ADX, zonas, direção e meta/perda do dia. Leva alguns minutos e precisa do robô v7.3 ou mais novo.",
@@ -924,7 +925,9 @@
         "breakEven": "Break-even",
         "trailing": "Stop móvel",
         "lossPips": "Limite de perda",
-        "profitPips": "Alvo de lucro"
+        "profitPips": "Alvo de lucro",
+        "mesa": "Mesa de Análise: rigor",
+        "minRR": "Mesa: risco/retorno mínimo"
       },
       "auto": "automático",
       "entries": {
@@ -935,6 +938,12 @@
         "m0": "só com o ADX",
         "m1": "não opera contra a zona",
         "m2": "só opera nas zonas"
+      },
+      "mesaLevels": {
+        "0": "Desligada",
+        "1": "Equilibrado",
+        "2": "Rigoroso",
+        "3": "Muito rigoroso"
       }
     },
     "robot": {
@@ -1129,6 +1138,24 @@
         "news": "Configuração de notícias inválida.",
         "strategy": "Algum ajuste de par está inválido.",
         "denied": "Essa conta não está nas suas licenças."
+      },
+      "mesa": {
+        "title": "Mesa de Análise",
+        "intro": "O RSI só avisa que o preço chegou num extremo. Antes de entrar, o robô confere o que um trader experiente confere: tendência no H4 e no H1, suporte e resistência, vela de confirmação, divergência, MACD, horário, espaço até a próxima zona e o viés do dia do trader sênior (IA). Precisa do robô v7.5.",
+        "rigor": "Rigor",
+        "rigorHint0": "Desligada: o robô entra só pelo RSI e pelos filtros (como até a v7.4).",
+        "rigorHint1": "Entra com nota 3 ou mais (de 13). Mais operações.",
+        "rigorHint2": "Entra com nota 5 ou mais e espaço suficiente até a próxima zona.",
+        "rigorHint3": "Entra com nota 7 ou mais: poucas entradas, só as mais completas.",
+        "levels": {
+          "0": "Desligada",
+          "1": "Equilibrado",
+          "2": "Rigoroso",
+          "3": "Muito rigoroso"
+        },
+        "minRR": "Risco/retorno mínimo",
+        "minRRHint": "Espaço até a próxima zona contrária, em vezes o stop. Ex.: 1,5x = só entra se tiver pelo menos 1,5 vez o risco de caminho livre.",
+        "noMin": "Sem mínimo"
       }
     },
     "downloads": {
@@ -1136,6 +1163,61 @@
       "intro": "Baixe sempre a versão marcada como Atual. O botão principal já traz o robô no seu idioma: painel, parâmetros e avisos.",
       "otherLangs": "Também em:",
       "next": "Baixou? Agora siga o"
+    },
+    "mesa": {
+      "biasTitle": "Parecer do trader sênior (IA)",
+      "biasIntro": "A IA, no papel de um trader com décadas de mercado, lê os gráficos D1, H4 e H1 de cada par e decide o viés das próximas horas. O robô usa isso na Mesa de Análise: contra o viés ele não entra naquele lado.",
+      "biasNone": "Ainda sem parecer pros seus pares. Chega quando o robô v7.5 mandar o resumo do mercado (a cada vela de H4).",
+      "biasDisclaimer": "Leitura técnica dos gráficos, não é recomendação de investimento. Mercado muda rápido; o parecer é renovado ao longo do dia.",
+      "bias": {
+        "buy": "Compra",
+        "sell": "Venda",
+        "both": "Os dois lados",
+        "none": "Não operar"
+      },
+      "regime": {
+        "trend_up": "Tendência de alta",
+        "trend_down": "Tendência de baixa",
+        "range": "Lateral",
+        "volatile": "Volátil"
+      },
+      "supports": "Suportes",
+      "resistances": "Resistências",
+      "invalidation": "Invalida em",
+      "readAt": "Lido em {at}",
+      "statsTitle": "Mesa de Análise: o que funcionou nesta conta",
+      "statsIntro": "Cada operação do robô v7.5 guarda a nota da Mesa e as confluências que tinha na entrada. Aqui dá pra ver quais confluências acompanharam os melhores resultados.",
+      "statsNone": "Ainda sem operações com a nota da Mesa (robô v7.5).",
+      "bands": {
+        "low": "Nota abaixo de 3",
+        "mid": "Nota 3 a 4",
+        "high": "Nota 5 a 6",
+        "top": "Nota 7 ou mais"
+      },
+      "col": {
+        "confluence": "Confluência na entrada",
+        "trades": "Operações",
+        "winRate": "Acerto",
+        "net": "Resultado"
+      },
+      "statsNote": "{n} operações com nota · acerto geral {rate}.",
+      "bits": {
+        "trendH4": "Tendência H4 a favor",
+        "trendH1": "Tendência H1 a favor",
+        "structure": "Estrutura H1 a favor (topos e fundos)",
+        "zone": "Em suporte / resistência",
+        "candle": "Vela de confirmação (M15)",
+        "divergence": "Divergência do RSI (M15)",
+        "macd": "MACD a favor (M15)",
+        "session": "Horário bom",
+        "room": "Espaço até a próxima zona",
+        "aiBias": "Viés do trader sênior a favor",
+        "counterTrend": "Contra a tendência H4 e H1",
+        "intoZone": "Colado numa zona contrária",
+        "squeeze": "Lateral espremido",
+        "oppositeCandle": "Vela contrária",
+        "lowRoom": "Pouco espaço até a zona"
+      }
     }
   },
   "Claim": {
@@ -1267,7 +1349,7 @@
       "suggest": "Meta mais segura pro último mês: {goal}% (bateu em {rate}% dos dias).",
       "useSuggest": "Usar essa meta",
       "noSuggest": "Nenhuma meta bateu em 70% dos dias no último mês. Considere uma meta menor ou o perfil conservador.",
-      "disclaimer": "Simulação nas velas da sua corretora no último mês (uma entrada por vez em cada direção, sem a recuperação). Mostra o que teria acontecido; resultado passado não garante resultado futuro.",
+      "disclaimer": "Simulação nas velas da sua corretora com custo real (spread e comissão), no pior caso dentro de cada vela e com a recuperação. Mostra o que teria acontecido; resultado passado não garante resultado futuro.",
       "pairsAuto": "Pares escolhidos pela IA e a meta de cada um",
       "autoSplit": "Voltar pra divisão automática",
       "adjust": "Ajustar por par",
@@ -1295,7 +1377,17 @@
       "restart": "Refazer o passo a passo",
       "activating": "Ativando...",
       "update": "Salvar mudanças",
-      "activate": "Ativar o robô com esse plano"
+      "activate": "Ativar o robô com esse plano",
+      "chanceTest": "Bateu a meta de {goal}% em {hit} de {days} dias de teste (dias que a IA não usou pra escolher a combinação).",
+      "chanceRef": "No mês inteiro (inclui os dias usados na escolha, mais otimista): {hit} de {days} dias.",
+      "chanceFew": "Ainda há poucos dias de teste: o número usa o mês inteiro, que é mais otimista.",
+      "mesaLevel": "Mesa de Análise: {level}",
+      "mesaLevels": {
+        "0": "desligada",
+        "1": "equilibrado",
+        "2": "rigoroso",
+        "3": "muito rigoroso"
+      }
     },
     "errors": {
       "generic": "Não deu certo. Tente de novo.",
@@ -1329,7 +1421,13 @@
         "auto": "Automático",
         "manual": "Manual"
       },
-      "note": "Resultado de hoje da conta (inclui operações abertas). Por par, só as operações já fechadas."
+      "note": "Resultado de hoje da conta (inclui operações abertas). Por par, só as operações já fechadas.",
+      "bias": {
+        "buy": "Trader sênior: compra",
+        "sell": "Trader sênior: venda",
+        "both": "Trader sênior: os dois lados",
+        "none": "Trader sênior: não operar"
+      }
     }
   }
 }

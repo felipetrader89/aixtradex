@@ -5,7 +5,7 @@ import { canConfigure } from "@/lib/robot-access";
 import { PRODUCT } from "@/lib/plans";
 import { logEvent } from "@/lib/config";
 import { getRobotConfig, getRobotPolicy, saveRobotConfig, validateConfig } from "@/lib/robot-settings";
-import { buildSpec, requestScan, SCAN_PERIODS, type ScanPeriod } from "@/lib/intelligence";
+import { buildSpec, requestScan, robotLevel, SCAN_PERIODS, type ScanPeriod } from "@/lib/intelligence";
 import { allowedSymbolKeys } from "@/lib/broker-symbols";
 import { type ConfigValues, type PairParams, type ParamKey } from "@/lib/robot-options";
 import { FULL_KEYS, STRATEGY_KEYS, fixedGroups, policyCan } from "@/lib/intel-stats";
@@ -23,7 +23,8 @@ export async function requestScanAction(login: string, symbol: string, period: S
   const symbols = symbol === "*" ? config.symbols : [symbol];
   if (!symbols.length || symbols.some((s) => !keys.has(s))) return { ok: false, error: "invalid" };
   const fix = full ? fixedGroups(user.isAdmin ? null : await getRobotPolicy()) : [];
-  const items = symbols.map((s) => ({ symbol: s, spec: buildSpec(period, config.pairs[s] ?? config.pairs[config.symbols[0]], full ? { fix } : undefined) }));
+  const mesa = (robotLevel(PRODUCT.slug, login) ?? 0) >= 4;   // v7.5 ligado: só ele faz a leitura completa (simulação honesta + Mesa)
+  const items = symbols.map((s) => ({ symbol: s, spec: buildSpec(period, config.pairs[s] ?? config.pairs[config.symbols[0]], full ? { fix, mesa } : undefined) }));
   const r = await requestScan(PRODUCT.slug, login, items, user.email, user.isAdmin);
   if (!r.ok) return { ok: false, error: r.error };
   if (user.isAdmin) await logEvent(user.email, "robot.scan", `${login}: ${full ? "leitura completa" : "estudo"} ${symbols.join(", ")} (${period})`);

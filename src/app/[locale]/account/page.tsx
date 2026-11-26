@@ -6,6 +6,7 @@ import { PRODUCT } from "@/lib/plans";
 import { Card, CardTitle, PortalHeader, StateBadge, resultTone } from "@/components/portal/ui";
 import { plansFor, todayFor } from "@/lib/plan";
 import { TodayCard } from "@/components/plan/TodayCard";
+import { currentBias } from "@/lib/market-bias";
 
 type Props = { params: Promise<{ locale: string }> };
 
@@ -51,6 +52,8 @@ export default async function AccountOverview({ params }: Props) {
         return { r, plan, today: await todayFor(PRODUCT.slug, r.account.login, plan, r.stats) };
       })
   );
+  const biasMap = planned.length ? await currentBias() : new Map();
+  const bias = Object.fromEntries([...biasMap].map(([s, b]) => [s, b.bias as string]));
   const unplanned = rows.filter((r) => plans.get(r.account.login)?.status !== "active");
   const inProgress = unplanned.find((r) => plans.has(r.account.login));
   const startLogin = (inProgress ?? unplanned[0])?.account.login;
@@ -152,6 +155,7 @@ export default async function AccountOverview({ params }: Props) {
               mode={plan.mode}
               today={today}
               href={`${base}/start?login=${r.account.login}`}
+              bias={bias}
             />
           ))}
         </div>

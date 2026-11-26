@@ -100,6 +100,16 @@ const PARAMS: Record<ParamKey, { label: string; hint?: string; fmt: (v: PolicyVa
   atrBars: { label: "ATR: velas da média", fmt: (v) => `${v} velas` },
   atrMin: { label: "ATR: mínimo (mercado parado abaixo disso)", fmt: (v) => `${String(v).replace(".", ",")}x` },
   atrMax: { label: "ATR: máximo (volatilidade alta acima disso)", fmt: (v) => `${String(v).replace(".", ",")}x` },
+  mesa: {
+    label: "Mesa de Análise: rigor",
+    hint: "Robô v7.5+. O RSI só avisa; a entrada precisa das confluências (tendência H4/H1, zona, vela, divergência, MACD, horário, espaço e o viés do trader sênior).",
+    fmt: (v) => ["Desligada", "Equilibrado (nota 3+)", "Rigoroso (nota 5+)", "Muito rigoroso (nota 7+)"][Number(v)] ?? String(v),
+  },
+  minRR: {
+    label: "Mesa de Análise: risco/retorno mínimo",
+    hint: "Espaço até a próxima zona contrária ÷ o stop. Nos rigores 2 e 3, abaixo disso não entra.",
+    fmt: (v) => (Number(v) === 0 ? "Sem mínimo" : `${String(v).replace(".", ",")}x`),
+  },
 };
 
 const GROUPS: { title: string; hint: string; keys: ParamKey[] }[] = [
@@ -112,6 +122,7 @@ const GROUPS: { title: string; hint: string; keys: ParamKey[] }[] = [
   { title: "Cada par: risco e metas", hint: "Valem pra cada par (o cliente clica no par pra ajustar).", keys: ["riskProfile", "goalPct", "lossPct", "direction"] },
   { title: "Cada par: recuperação", hint: "", keys: ["recovery", "recoveryLevels", "recoveryOpposite"] },
   { title: "Cada par: estratégia", hint: "", keys: ["rsiZone", "rsiPeriod", "rsiTf", "breakout", "pending"] },
+  { title: "Cada par: Mesa de Análise (v7.5)", hint: "Análise gráfica e técnica antes de cada entrada, como um trader experiente.", keys: ["mesa", "minRR"] },
   { title: "Cada par: filtro de volatilidade (ATR)", hint: "Opera só quando o ATR atual ÷ a média fica entre o mínimo e o máximo.", keys: ["atr", "atrTf", "atrPeriod", "atrBars", "atrMin", "atrMax"] },
   { title: "Cada par: filtro de tendência (ADX)", hint: "", keys: ["adx", "adxTf", "adxPeriod", "adxLevel", "adxRising"] },
   { title: "Cada par: zonas de topo e fundo", hint: "", keys: ["zones", "zonesMode", "zoneTfs", "zoneLines", "zoneCandles", "zoneTolerance"] },

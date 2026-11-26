@@ -1,6 +1,8 @@
-import { AI_CLIENT_DAILY_DEFAULT, SCAN_DAILY_DEFAULT, SCAN_DAILY_OPTIONS, getAiKey, getAiSettings } from "@/lib/config";
+import { AI_CLIENT_DAILY_DEFAULT, BIAS_EVERY_DEFAULT, BIAS_EVERY_OPTIONS, SCAN_DAILY_DEFAULT, SCAN_DAILY_OPTIONS, getAiKey, getAiSettings } from "@/lib/config";
+import { biasUsage30d, currentBias } from "@/lib/market-bias";
+import { symbolLabel } from "@/lib/robot-options";
 import { AI_MODEL, aiUsage30d } from "@/lib/ai-analysis";
-import { removeAiKeyAction, saveAiKeyAction, saveAiLimitAction, saveScanLimitAction, testAiAction } from "@/app/actions/settings";
+import { removeAiKeyAction, saveAiKeyAction, saveAiLimitAction, saveBiasEveryAction, saveScanLimitAction, testAiAction } from "@/app/actions/settings";
 import { Badge, Flash, InfoRow, Panel, adminBtn, adminBtnGhost, adminInput, adminLabel, fmtDateTime } from "@/components/admin/ui";
 
 type Props = { searchParams: Promise<{ msg?: string; err?: string }> };
@@ -12,8 +14,11 @@ const PRICE_OUT = 20;
 export default async function AiSettings({ searchParams }: Props) {
   const { msg, err } = await searchParams;
   const [saved, creds] = await Promise.all([getAiSettings(), getAiKey()]);
-  const usage = await aiUsage30d();
+  const [usage, biasUse, bias] = await Promise.all([aiUsage30d(), biasUsage30d(), currentBias()]);
   const cost = (usage.input * PRICE_IN + usage.output * PRICE_OUT) / 1_000_000;
+  const biasCost = (biasUse.input * PRICE_IN + biasUse.output * PRICE_OUT) / 1_000_000;
+  const biasEvery = saved.biasEvery ?? BIAS_EVERY_DEFAULT;
+  const biasLabel: Record<string, string> = { buy: "Compra", sell: "Venda", both: "Os dois lados", none: "Não operar" };
   const daily = saved.clientDaily ?? AI_CLIENT_DAILY_DEFAULT;
   const scanDaily = saved.scanDaily ?? SCAN_DAILY_DEFAULT;
 
@@ -121,6 +126,48 @@ export default async function AiSettings({ searchParams }: Props) {
           Cada par lido conta 1. Uma análise do Assistente IA lê de 8 a 12 pares de uma vez, então 60 dão umas 5 análises por dia. A leitura roda no MT4 do
           cliente e não gasta crédito da IA. Não contam: o que você (admin) pede e a reanálise diária automática do Assistente.
         </p>
+      </Panel>
+
+      <Panel title="Trader sênior (viés do dia da Mesa de Análise)">
+        <p className="mb-3 text-sm text-brand-ink-dim">
+          Os robôs v7.5 mandam o resumo do mercado (velas D1/H4/H1, médias, RSI, ADX, ATR, máximas e mínimas) de cada par que operam. A IA, no papel de
+          um trader com décadas de mercado, decide o viés das próximas horas de cada ativo: compra, venda, os dois ou não operar. O viés vale pra todas as
+          contas e entra na Mesa de Análise do robô (contra = não entra naquele lado). Cada leitura custa em média US$ 0,03 a 0,08.
+        </p>
+        <form action={saveBiasEveryAction} className="flex flex-wrap items-end gap-3">
+          <div>
+            <label className={adminLabel} htmlFor="biasEvery">
+              Reler cada ativo a cada
+            </label>
+            <select id="biasEvery" name="biasEvery" defaultValue={biasEvery} className={adminInput}>
+              {BIAS_EVERY_OPTIONS.map((n) => (
+                <option key={n} value={n}>
+                  {n === 0 ? "Desligado" : `${n} h`}
+                </option>
+              ))}
+            </select>
+          </div>
+          <button type="submit" className={adminBtnGhost}>
+            Salvar
+          </button>
+        </form>
+        <InfoRow label="Últimos 30 dias">{`${biasUse.n} leitura(s) · ~US$ ${biasCost.toFixed(2)}`}</InfoRow>
+        {bias.size > 0 ? (
+          <ul className="mt-3 flex flex-col gap-2 text-sm">
+            {[...bias.values()].map((b) => (
+              <li key={b.symbol} className="rounded-lg border border-brand-hairline px-3 py-2">
+                <span className="font-semibold text-brand-ink">{symbolLabel(b.symbol)}</span>{" "}
+                <Badge tone={b.bias === "none" ? "bad" : b.bias === "both" ? "warn" : "ok"}>{biasLabel[b.bias] ?? b.bias}</Badge>{" "}
+                <span className="text-xs text-brand-ink-dim">
+                  {b.confidence}% · {fmtDateTime(b.createdAt)}
+                </span>
+                <p className="mt-1 text-xs text-brand-ink-dim">{(b.analysis as { pt?: string }).pt}</p>
+              </li>
+            ))}
+          </ul>
+        ) : (
+          <p className="mt-3 text-xs text-brand-ink-dim">Nenhuma leitura ainda (chega quando um robô v7.5 manda o resumo do mercado).</p>
+        )}
       </Panel>
     </div>
   );

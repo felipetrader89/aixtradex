@@ -49,10 +49,11 @@ type ParsedTrade = {
   commission: number;
   comment: string;
   key: string | null; // v7.1: nome do ativo no portal que o robô mandou (sem prefixo/sufixo)
+  mesa: number | null; // v7.5: nota + confluências da Mesa de Análise na entrada
 };
 
 // 1ª linha: gmt=<fuso da corretora em s>;v=<versão>;magic=<n>. Depois uma operação por linha:
-// ticket;símbolo;tipo;lotes;abertura;fechamento;preço abertura;preço fechamento;lucro;swap;comissão;comentário
+// ticket;símbolo;tipo;lotes;abertura;fechamento;preço abertura;preço fechamento;lucro;swap;comissão;comentário[;ativo no portal (v7.1)][;Mesa (v7.5)]
 export function parseTrades(body: string) {
   const lines = body.replace(/\r/g, "").split("\n").filter(Boolean);
   const head = Object.fromEntries((lines[0] ?? "").split(";").map((x) => [x.slice(0, x.indexOf("=")), x.slice(x.indexOf("=") + 1)]));
@@ -75,6 +76,7 @@ export function parseTrades(body: string) {
       commission: Number(f[10]),
       comment: (f[11] ?? "").slice(0, 64),
       key: f[12] && SYMBOL_KEY.test(f[12]) ? f[12] : null,
+      mesa: f[13] && /^\d{1,12}$/.test(f[13]) ? Number(f[13]) : null,
     };
     const nums = [t.ticket, t.lots, t.open, t.close, t.openPrice, t.closePrice, t.profit, t.swap, t.commission];
     if (!nums.every(Number.isFinite) || !(t.ticket > 0) || (t.side !== 0 && t.side !== 1) || !(t.lots > 0) || t.close < t.open) continue;
@@ -129,6 +131,7 @@ export async function saveTrades(product: string, login: string, body: string) {
       comment: t.comment || null,
       eaVersion: version || null,
       params: paramsAt(symbol, openAt),
+      mesa: t.mesa,
     };
   });
   const inserted = await db().insert(schema.robotTrades).values(rows).onConflictDoNothing().returning({ id: schema.robotTrades.id });
@@ -188,11 +191,12 @@ const EXPIRE_MS = 30 * 60_000;
 
 // mode "full" = leitura completa (robô v7.2+); fix = grupos que o cliente não pode mudar (ficam com o valor atual).
 // daily = pedido do Assistente: precisa do resultado dia a dia (robô v7.4+, que manda fs=3).
-export type ScanSpec = { bars?: number; days?: number; tf: number; tfs: number[]; per: number[]; period: ScanPeriod; mode?: "full"; fix?: string[]; daily?: boolean };
+// mesa = (v7.5) pedido feito quando a conta tem robô v7.5+ ligado: só robô v7.5+ (fs=4) pega (a leitura testa a Mesa de Análise e é a simulação honesta).
+export type ScanSpec = { bars?: number; days?: number; tf: number; tfs: number[]; per: number[]; period: ScanPeriod; mode?: "full"; fix?: string[]; daily?: boolean; mesa?: boolean };
 
-export function buildSpec(period: ScanPeriod, pair: PairParams, full?: { fix: string[]; daily?: boolean }): ScanSpec {
+export function buildSpec(period: ScanPeriod, pair: PairParams, full?: { fix: string[]; daily?: boolean; mesa?: boolean }): ScanSpec {
   const base = buildBasicSpec(period, pair);
-  return full ? { ...base, mode: "full", fix: full.fix, ...(full.daily ? { daily: true } : {}) } : base;
+  return full ? { ...base, mode: "full", fix: full.fix, ...(full.daily ? { daily: true } : {}), ...(full.mesa ? { mesa: true } : {}) } : base;
 }
 
 // Nível do robô de cada conta visto na consulta de 30 s: 0 = antigo, 2 = v7.3 (leitura completa), 3 = v7.4+ (+ dia a dia).
@@ -234,6 +238,18 @@ const specText = (symbol: string, s: ScanSpec) =>
 // Leitura completa que nenhum robô v7.3+ pegou: vence com o aviso de atualizar o robô (do Assistente: v7.4+).
 async function expireStale(product: string, login: string) {
   const limit = new Date(Date.now() - EXPIRE_MS);
+  await db()
+    .update(schema.robotScans)
+    .set({ status: "expired", finishedAt: new Date(), error: "needs v7.5" })
+    .where(
+      and(
+        eq(schema.robotScans.product, product),
+        eq(schema.robotScans.login, login),
+        eq(schema.robotScans.status, "pending"),
+        lt(schema.robotScans.createdAt, limit),
+        sql`${schema.robotScans.spec}->>'mesa' = 'true'`
+      )
+    );
   await db()
     .update(schema.robotScans)
     .set({ status: "expired", finishedAt: new Date(), error: "needs v7.4" })
@@ -312,7 +328,8 @@ export async function pendingScan(product: string, login: string, level = 0) {
         eq(schema.robotScans.login, login),
         eq(schema.robotScans.status, "pending"),
         level >= 2 ? undefined : sql`coalesce(${schema.robotScans.spec}->>'mode', '') <> 'full'`,
-        level >= 3 ? undefined : sql`coalesce(${schema.robotScans.spec}->>'daily', '') <> 'true'`
+        level >= 3 ? undefined : sql`coalesce(${schema.robotScans.spec}->>'daily', '') <> 'true'`,
+        level >= 4 ? undefined : sql`coalesce(${schema.robotScans.spec}->>'mesa', '') <> 'true'`
       )
     )
     .orderBy(asc(schema.robotScans.createdAt))

@@ -9,6 +9,7 @@ import {
   getAiKey,
   getAiSettings,
   SCAN_DAILY_OPTIONS,
+  BIAS_EVERY_OPTIONS,
   getBinanceCreds,
   getBinanceSettings,
   getSetting,
@@ -314,10 +315,19 @@ export async function saveScanLimitAction(form: FormData) {
   back("ai", n === 0 ? "Leituras de velas sem limite pros clientes." : `Clientes podem pedir até ${n} leituras de pares por conta a cada 24 h.`);
 }
 
+export async function saveBiasEveryAction(form: FormData) {
+  const admin = await requireAdmin();
+  const n = Number(field(form, "biasEvery"));
+  if (!BIAS_EVERY_OPTIONS.includes(n)) back("ai", "Escolha um dos valores da lista.", true);
+  await setSetting("ai", { ...(await getAiSettings()), biasEvery: n });
+  await logEvent(admin.email, "ai.bias", n === 0 ? "Trader sênior (viés do dia) desligado" : `Trader sênior relê cada ativo a cada ${n} h`);
+  back("ai", n === 0 ? "Trader sênior desligado: a Mesa segue sem o viés do dia." : `Trader sênior relê cada ativo a cada ${n} h.`);
+}
+
 export async function removeAiKeyAction() {
   const admin = await requireAdmin();
   const saved = await getAiSettings();
-  await setSetting("ai", { clientDaily: saved.clientDaily, scanDaily: saved.scanDaily });
+  await setSetting("ai", { clientDaily: saved.clientDaily, scanDaily: saved.scanDaily, biasEvery: saved.biasEvery });
   await logEvent(admin.email, "ai.remove", "Chave da IA removida");
   back("ai", "Chave removida. Lembre de apagar a chave também no console da Anthropic, se não for mais usar.");
 }

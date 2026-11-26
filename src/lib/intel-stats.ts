@@ -334,6 +334,8 @@ export function fullPatch(cfg: Record<string, number>, pair: PairParams): Partia
     direction: cfg.d,
     goalPct: cfg.g,
     lossPct: cfg.l,
+    // v7.5: Mesa de Análise (leitura feita por robô v7.5+; as antigas não mandam e o par fica como está)
+    ...(cfg.ms !== undefined ? { mesa: cfg.ms, ...(cfg.ms > 0 && cfg.rr !== undefined ? { minRR: cfg.rr } : {}) } : {}),
   };
   const out: Partial<PairParams> = {};
   for (const [k, v] of Object.entries(next) as [keyof PairParams, unknown][]) {
@@ -354,6 +356,7 @@ export const FULL_GROUPS: Record<string, ParamKey[]> = {
   adx: ["adx", "adxTf", "adxPeriod", "adxLevel", "adxRising"],
   zones: ["zones", "zonesMode", "zoneTfs", "zoneCandles"],
   dir: ["direction"],
+  mesa: ["mesa", "minRR"],
   goal: ["goalPct"],
   dloss: ["lossPct"],
 };

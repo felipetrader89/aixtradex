@@ -15,7 +15,10 @@ import {
   evaluatePlan,
   suggestGoal,
   suggestPairGoal,
+  testDaysOnly,
+  PLAN_MIN_TEST_DAYS,
   type PairAnalysis,
+  type PairSeries,
   type PlanEval,
   type PlanProfile,
 } from "@/lib/plan-math";
@@ -480,33 +483,39 @@ function Review({ plan, analyses, pairRisk, profileRisk, days, pairGoalOptions, 
   const hasDaily = analyses.some((a) => a.daily);
 
   const cands = useMemo(() => autoCandidates(analyses, (s) => profileRisk[plan.profile] ?? pairRisk[s] ?? 2, days), [analyses, plan.profile, profileRisk, pairRisk, days]);
-  const sug = useMemo(() => (plan.mode === "auto" ? suggestGoal(cands, loss, days) : null), [plan.mode, cands, loss, days]);
-
-  let alloc: Record<string, number> = {};
-  let ev: PlanEval | null = null;
-  if (plan.mode === "auto") {
-    if (custom) {
-      alloc = custom;
-      ev = evaluatePlan(
-        cands.filter((c) => custom[c.symbol]).map((c) => ({ ...c, goal: custom[c.symbol] })),
-        total(custom),
-        loss,
-        days
-      );
-    } else {
-      const r = evaluateAuto(cands, goal, loss, days);
-      alloc = r.alloc;
-      ev = r.ev;
+  // v7.5: a chance é medida nos DIAS DE TESTE (a IA escolheu a combinação sem olhar esses dias); o mês inteiro fica só como referência.
+  const split = Math.max(0, ...analyses.map((a) => a.split || 0));
+  const evalOn = (test: boolean): { alloc: Record<string, number>; ev: PlanEval | null } => {
+    const cut = <T extends PairSeries>(p: T) => (test ? testDaysOnly(p, split) : p);
+    if (plan.mode === "auto") {
+      if (custom)
+        return {
+          alloc: custom,
+          ev: evaluatePlan(
+            cands.filter((c) => custom[c.symbol]).map((c) => ({ ...cut(c), goal: custom[c.symbol] })),
+            total(custom),
+            loss,
+            days
+          ),
+        };
+      return evaluateAuto(cands.map(cut), goal, loss, days);
     }
-  } else {
-    alloc = pg;
     const sims = Object.entries(pg).flatMap(([s, g]) => {
       const a = analyses.find((x) => x.symbol === s);
       const ser = useAi.includes(s) ? a?.best : a?.cur;
-      return ser ? [{ ...ser, risk: riskOf(s), goal: g }] : [];
+      return ser ? [{ ...cut(ser), risk: riskOf(s), goal: g }] : [];
     });
-    ev = sims.length ? evaluatePlan(sims, total(pg), loss, days) : null;
-  }
+    return { alloc: pg, ev: sims.length ? evaluatePlan(sims, total(pg), loss, days) : null };
+  };
+  const onTest = evalOn(true);
+  const onAll = evalOn(false);
+  const useTest = split > 0 && !!onTest.ev && onTest.ev.days >= PLAN_MIN_TEST_DAYS;
+  const { alloc, ev } = useTest ? onTest : onAll;
+  const evAll = onAll.ev;
+  const sug = useMemo(
+    () => (plan.mode === "auto" ? suggestGoal(useTest ? cands.map((c) => testDaysOnly(c, split)) : cands, loss, days) : null),
+    [plan.mode, cands, loss, days, useTest, split]
+  );
   const goalNow = total(alloc);
   const rate = ev && ev.days ? ev.hitDays / ev.days : 0;
   const tone = rate >= PLAN_TARGET_RATE ? "text-brand-accent" : rate >= 0.4 ? "text-amber-300" : "text-red-300";
@@ -558,8 +567,14 @@ function Review({ plan, analyses, pairRisk, profileRisk, days, pairGoalOptions, 
           <p className="text-xs font-semibold uppercase tracking-wide text-brand-ink-dim">{t("review.chanceTitle")}</p>
           <div className="flex flex-wrap items-end gap-x-4 gap-y-1">
             <p className={`font-display text-5xl font-extrabold ${tone}`}>{Math.round(rate * 100)}%</p>
-            <p className="pb-1.5 text-sm text-brand-ink">{t("review.chance", { hit: ev.hitDays, days: ev.days, goal: nf.format(goalNow) })}</p>
+            <p className="pb-1.5 text-sm text-brand-ink">
+              {t(useTest ? "review.chanceTest" : "review.chance", { hit: ev.hitDays, days: ev.days, goal: nf.format(goalNow) })}
+            </p>
           </div>
+          {useTest && evAll && evAll.days > ev.days && (
+            <p className="-mt-1 text-xs text-brand-ink-dim">{t("review.chanceRef", { hit: evAll.hitDays, days: evAll.days })}</p>
+          )}
+          {!useTest && split > 0 && <p className="-mt-1 text-xs text-amber-300">{t("review.chanceFew")}</p>}
           <div className="grid grid-cols-2 gap-2 text-sm sm:grid-cols-4">
             <Metric label={t("review.positive")} value={`${ev.positiveDays}/${ev.days}`} />
             <Metric label={t("review.lossDays")} value={`${ev.lossDays}/${ev.days}`} />
@@ -604,7 +619,13 @@ function Review({ plan, analyses, pairRisk, profileRisk, days, pairGoalOptions, 
             {ev.pairs.map((p) => (
               <li key={p.symbol} className="flex flex-wrap items-center justify-between gap-2 rounded-lg bg-brand-surface/60 px-3 py-2 text-sm">
                 <span className="font-semibold text-brand-ink">{symbolLabel(p.symbol)}</span>
-                <span className="text-xs text-brand-ink-dim">{t("review.pairHit", { hit: p.hitDays, days: p.days })}</span>
+                <span className="text-xs text-brand-ink-dim">
+                  {t("review.pairHit", { hit: p.hitDays, days: p.days })}
+                  {(() => {
+                    const ms = analyses.find((a) => a.symbol === p.symbol)?.bestCfg?.ms;
+                    return ms !== undefined && t.has(`review.mesaLevels.${ms}`) ? ` · ${t("review.mesaLevel", { level: t(`review.mesaLevels.${ms}`) })}` : "";
+                  })()}
+                </span>
                 {custom && editing ? (
                   <span className="flex items-center gap-1.5">
                     <select className={select} value={custom[p.symbol]} onChange={(e) => setCustom({ ...custom, [p.symbol]: Number(e.target.value) })}>

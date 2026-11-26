@@ -57,6 +57,10 @@ export async function FullStudyCard({
       case "atrMin":
       case "atrMax":
         return `${nf(Number(v), 1)}x`;
+      case "minRR":
+        return Number(v) ? `${nf(Number(v), 1)}x` : t("off");
+      case "mesa":
+        return t.has(`mesaLevels.${Number(v)}`) ? t(`mesaLevels.${Number(v)}`) : String(v);
       case "lossPips":
       case "profitPips":
       case "beTrigger":

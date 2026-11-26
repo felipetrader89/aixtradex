@@ -6,6 +6,7 @@ import { configPayload, getRobotConfig } from "@/lib/robot-settings";
 import { noteRobotLevel, pendingScan, saveTrades, scanReport } from "@/lib/intelligence";
 import { saveBrokerSymbols, symbolsRefreshPending } from "@/lib/broker-symbols";
 import { maybeAutoRun, planScanFinished } from "@/lib/plan";
+import { biasForConfig, handleSnapshot } from "@/lib/market-bias";
 
 // Consulta feita pelo robô (MQL4 WebRequest):
 //   GET /api/license/check?account=12345678&product=pulse-rs&nonce=abc123&v=1.00&server=Broker-Live
@@ -35,6 +36,7 @@ function reply(body: string, status = 200) {
 //   ?trades=1  → operações fechadas deste robô (src/lib/intelligence.ts parseTrades) → "OK|<novas>"
 //   ?scan=<id> → "start" ou o resultado do estudo de velas → "OK"
 //   ?symbols=1 → (v7.1) ativos negociáveis da corretora (src/lib/broker-symbols.ts) → "OK|<quantos>"
+//   ?snap=1    → (v7.5) resumo do mercado dos pares que o robô opera, pro trader sênior (src/lib/market-bias.ts) → "OK|<pares>"
 // Assinatura: &ts=HMAC(LICENSE_SECRET, "conta|nonce|corpo").
 export async function POST(request: Request) {
   const params = new URL(request.url).searchParams;
@@ -52,6 +54,7 @@ export async function POST(request: Request) {
   try {
     if (params.get("trades") === "1") return reply(`OK|${await saveTrades(product, account, body)}`);
     if (params.get("symbols") === "1") return reply(`OK|${await saveBrokerSymbols(product, account, body)}`);
+    if (params.get("snap") === "1") return reply(`OK|${await handleSnapshot(account, body)}`);
     const scanId = Number(params.get("scan"));
     if (Number.isInteger(scanId) && scanId > 0) {
       await scanReport(product, account, scanId, body);
@@ -82,7 +85,7 @@ export async function GET(request: Request) {
     const expected = Buffer.from(sign(`${account}|${nonce}|cfg`));
     if (cs.length !== expected.length || !timingSafeEqual(cs, expected)) return reply("ERROR|bad_signature", 403);
     try {
-      const cfg = configPayload(await getRobotConfig(product, account));
+      const cfg = configPayload(await getRobotConfig(product, account), await biasForConfig());
       let body = params.get("cv") === cfg.slice(cfg.lastIndexOf(";ver=") + 5) ? "SAME" : `CFG|${cfg}|${sign(`${account}|${nonce}|${cfg}`)}`;
       // v7 (&sc=1): estudo de velas pendente pra esta conta → linha a mais "SCAN|id|pedido|assinatura".
       if (params.get("sc") === "1") {
@@ -133,7 +136,7 @@ SCAN|${scan.id}|${scan.spec}|${sign(`${account}|${nonce}|${scan.id}|${scan.spec}
     const sig = createHmac("sha256", secret).update(payload).digest("hex");
     let body = `${result.status}|${result.plan}|${expires}|${now}|${sig}`;
     if (params.get("cfg") === "1" && result.status !== "NOT_FOUND") {
-      const cfg = configPayload(await getRobotConfig(product, account));
+      const cfg = configPayload(await getRobotConfig(product, account), await biasForConfig());
       body += `
 CFG|${cfg}|${sign(`${account}|${nonce}|${cfg}`)}`;
     }

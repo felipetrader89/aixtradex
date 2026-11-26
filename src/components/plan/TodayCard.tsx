@@ -4,7 +4,28 @@ import type { Today } from "@/lib/plan";
 import { Card } from "@/components/portal/ui";
 
 // Painel "Hoje" de uma conta com o Assistente ativo: meta geral e de cada par (server component).
-export function TodayCard({ login, company, mode, today, href }: { login: string; company: string | null; mode: "auto" | "manual"; today: Today | null; href: string }) {
+// bias = viés do dia do trader sênior (IA) por par (v7.5), quando houver.
+const BIAS_CLS: Record<string, string> = {
+  buy: "text-brand-accent",
+  sell: "text-red-300",
+  both: "text-amber-200",
+  none: "text-brand-ink-dim",
+};
+export function TodayCard({
+  login,
+  company,
+  mode,
+  today,
+  href,
+  bias = {},
+}: {
+  login: string;
+  company: string | null;
+  mode: "auto" | "manual";
+  today: Today | null;
+  href: string;
+  bias?: Record<string, string>;
+}) {
   const t = useTranslations("Plan.today");
   const locale = useLocale();
   const nf = new Intl.NumberFormat(locale, { minimumFractionDigits: 1, maximumFractionDigits: 2 });
@@ -58,7 +79,12 @@ export function TodayCard({ login, company, mode, today, href }: { login: string
                   <div className="mt-1.5 h-1.5 overflow-hidden rounded-full bg-brand-hairline">
                     <div className={`h-full ${b.cls}`} style={{ width: b.width }} />
                   </div>
-                  <p className="mt-1 text-[11px] text-brand-ink-dim">{t(`pair.${p.status}`)}</p>
+                  <p className="mt-1 text-[11px] text-brand-ink-dim">
+                    {t(`pair.${p.status}`)}
+                    {bias[p.symbol] && t.has(`bias.${bias[p.symbol]}`) && (
+                      <span className={`ml-2 font-semibold ${BIAS_CLS[bias[p.symbol]] ?? ""}`}>· {t(`bias.${bias[p.symbol]}`)}</span>
+                    )}
+                  </p>
                 </li>
               );
             })}

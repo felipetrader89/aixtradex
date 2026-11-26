@@ -181,10 +181,11 @@ export type PairAnalysis = {
   full: boolean; // teve leitura completa
   daily: boolean; // robô v7.4+ (mandou o dia a dia)
   days: number; // dias com mercado que o MT4 tinha no período
+  split: number; // v7.5: começo dos dias de teste (a IA escolheu a combinação só com os dias antes disso)
 };
 
 export function analyzePair(symbol: string, status: PairAnalysis["status"], error: string | null, result: ScanResult | null): PairAnalysis {
-  const base: PairAnalysis = { symbol, status, error, cur: null, best: null, bestCfg: null, validated: false, netR: 0, pf: 0, trades: 0, full: false, daily: false, days: 0 };
+  const base: PairAnalysis = { symbol, status, error, cur: null, best: null, bestCfg: null, validated: false, netR: 0, pf: 0, trades: 0, full: false, daily: false, days: 0, split: 0 };
   if (status !== "done" || !result) return base;
   const best = result.full?.best ?? null;
   const st = best ? fullStats(best.st) : null;
@@ -202,7 +203,14 @@ export function analyzePair(symbol: string, status: PairAnalysis["status"], erro
     netR: st?.netR ?? 0,
     pf: st?.pf ?? 0,
     trades: st?.trades ?? 0,
+    split: Number(result.full?.meta?.split) || 0,
   };
+}
+
+// v7.5: só os dias de teste (depois do split): é o número honesto - nesses dias a combinação não foi escolhida olhando o resultado.
+export const PLAN_MIN_TEST_DAYS = 4;
+export function testDaysOnly<T extends PairSeries>(p: T, split: number): T {
+  return split > 0 ? { ...p, days: p.days.filter((d) => d >= split) } : p;
 }
 
 // Pares que o modo automático usa: melhor configuração confirmada e com média positiva no dia.

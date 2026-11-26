@@ -24,6 +24,8 @@ import {
   ATR_MIN_RATIOS,
   ATR_PERIODS,
   AUTO_PIPS,
+  MESA_LEVELS,
+  MIN_RR_OPTIONS,
   FILTER_TFS,
   TIMEFRAMES,
   paramDef,
@@ -703,6 +705,37 @@ export function RobotSettingsForm({
             )}
           </div>
           )}
+        </div>
+        )}
+
+        {anyShown("mesa", "minRR") && (
+        <div>
+          <h3 className={h2}>{t("mesa.title")}</h3>
+          <p className="mt-1 text-xs text-brand-ink-dim">{t("mesa.intro")}</p>
+          <div className="mt-3 grid gap-4 sm:grid-cols-2">
+            {show("mesa") && (
+            <Field label={t("mesa.rigor")} hint={t(`mesa.rigorHint${p.mesa ?? 0}`)}>
+              <select value={p.mesa ?? 0} onChange={(e) => setPair(editing, { mesa: Number(e.target.value) })} className={field}>
+                {allowed("mesa", MESA_LEVELS).map((n) => (
+                  <option key={n} value={n}>
+                    {t(`mesa.levels.${n}`)}
+                  </option>
+                ))}
+              </select>
+            </Field>
+            )}
+            {show("minRR") && (p.mesa ?? 0) > 0 && (
+            <Field label={t("mesa.minRR")} hint={t("mesa.minRRHint")}>
+              <select value={p.minRR ?? 1.5} onChange={(e) => setPair(editing, { minRR: Number(e.target.value) })} className={field}>
+                {allowed("minRR", MIN_RR_OPTIONS).map((n) => (
+                  <option key={n} value={n}>
+                    {n === 0 ? t("mesa.noMin") : `${String(n).replace(".", ",")}x`}
+                  </option>
+                ))}
+              </select>
+            </Field>
+            )}
+          </div>
         </div>
         )}
 

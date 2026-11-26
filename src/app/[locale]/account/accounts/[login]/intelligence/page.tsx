@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import { PortalHeader } from "@/components/portal/ui";
 import { IntelPanel } from "@/components/intel/IntelPanel";
+import { MesaPanel } from "@/components/intel/MesaPanel";
 import { RobotTabs } from "@/components/intel/RobotTabs";
 import { requireCustomer } from "@/lib/portal";
 import { canConfigure } from "@/lib/robot-access";
@@ -33,6 +34,7 @@ export default async function IntelligencePage({ params }: Props) {
         </NextLink>
       </PortalHeader>
       <RobotTabs base={base} active="intel" labels={{ config: t("tabConfig"), intel: t("tabIntel") }} />
+      <MesaPanel login={login} locale={locale} />
       <IntelPanel login={login} locale={locale} policy={user.isAdmin ? null : await getRobotPolicy()} />
     </div>
   );

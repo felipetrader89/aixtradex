@@ -22,6 +22,8 @@ import {
   ATR_MIN_RATIOS,
   ATR_PERIODS,
   FILTER_TFS,
+  MESA_LEVELS,
+  MIN_RR_OPTIONS,
   TIMEFRAMES,
   MAX_SYMBOLS,
   SYMBOL_KEY,
@@ -165,7 +167,9 @@ function validatePair(p: PairParams, isAdmin: boolean): ConfigError | null {
     !inList(p.atrBars, ATR_BARS) ||
     !inList(p.atrMin, ATR_MIN_RATIOS) ||
     !inList(p.atrMax, ATR_MAX_RATIOS) ||
-    p.atrMin >= p.atrMax
+    p.atrMin >= p.atrMax ||
+    !inList(p.mesa, MESA_LEVELS) ||
+    !inList(p.minRR, MIN_RR_OPTIONS)
   )
     return "strategy";
   return null;
@@ -270,7 +274,8 @@ export async function saveRobotConfig(product: string, login: string, raw: Confi
 const n = (v: number) => String(Math.round(v * 100) / 100);
 const b = (v: boolean) => (v ? 1 : 0);
 
-function pairPayload(p: PairParams) {
+// v7.5: viés do dia do trader sênior (IA) por par: 0 nenhum, 1 compra, 2 venda, 3 os dois, 4 não operar.
+function pairPayload(p: PairParams, bias = 0) {
   return [
     `r:${n(p.riskPct)}`,
     `g:${n(p.goalPct)}`,
@@ -313,6 +318,10 @@ function pairPayload(p: PairParams) {
     `yb:${p.atrBars}`,
     `yn:${n(p.atrMin)}`,
     `yx:${n(p.atrMax)}`,
+    // v7.5 Mesa de Análise (o v7.4 ignora): rigor, risco/retorno mínimo × 10 e o viés do dia da IA
+    `ms:${p.mesa ?? DEFAULT_PAIR.mesa}`,
+    `rr:${Math.round((p.minRR ?? DEFAULT_PAIR.minRR) * 10)}`,
+    `ai:${bias}`,
   ].join(",");
 }
 
@@ -323,7 +332,7 @@ const tfMask = (list: number[]) => TIMEFRAMES.reduce((m, t, i) => (list.includes
 // p.XAUUSD=r:2,g:0,...;p.EURUSD=...;ver=3f9a1c2b7d10
 // risk/rec/lv = do 1º par (o robô v6.7 só entende esses); v6.8+ usa os "p.PAR". ver = muda sempre que algo muda.
 // v6.9: manda os ajustes de TODOS os pares (os desligados também) - o backtest usa os do par testado.
-export function configPayload(c: ConfigValues) {
+export function configPayload(c: ConfigValues, bias: Record<string, number> = {}) {
   const first = c.pairs[c.symbols[0]] ?? DEFAULT_PAIR;
   const body = [
     `sym=${c.symbols.join(",")}`,
@@ -342,7 +351,7 @@ export function configPayload(c: ConfigValues) {
     `nb=${c.newsBefore}`,
     `na=${c.newsAfter}`,
     `nc=${c.newsClose}`,
-    ...[...new Set([...ROBOT_SYMBOLS, ...c.symbols])].map((s) => `p.${s}=${pairPayload(c.pairs[s] ?? DEFAULT_PAIR)}`),
+    ...[...new Set([...ROBOT_SYMBOLS, ...c.symbols])].map((s) => `p.${s}=${pairPayload(c.pairs[s] ?? DEFAULT_PAIR, bias[s] ?? 0)}`),
   ].join(";");
   return `${body};ver=${createHash("sha256").update(body).digest("hex").slice(0, 12)}`;
 }
