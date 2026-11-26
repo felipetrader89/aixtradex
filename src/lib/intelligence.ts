@@ -1,6 +1,7 @@
 import "server-only";
 import { and, asc, desc, eq, gte, inArray, lt, or, sql } from "drizzle-orm";
 import { db, schema } from "@/lib/db";
+import { SCAN_DAILY_DEFAULT, getAiSettings } from "@/lib/config";
 import { DEFAULT_PAIR, ROBOT_SYMBOLS, RSI_TIMEFRAMES, SYMBOL_KEY, type PairParams } from "@/lib/robot-options";
 import { parseScan, type ScanResult, type TradeLite } from "@/lib/intel-stats";
 
@@ -184,7 +185,6 @@ export const SCAN_PERIODS = ["1000", "10000", "1m", "2m", "3m", "6m", "1y"] as c
 export type ScanPeriod = (typeof SCAN_PERIODS)[number];
 export const SCAN_RSI_PERIODS = [3, 5, 7, 10, 14];
 const EXPIRE_MS = 30 * 60_000;
-export const SCANS_PER_DAY = 30;
 
 // mode "full" = leitura completa (robô v7.2+); fix = grupos que o cliente não pode mudar (ficam com o valor atual).
 // daily = pedido do Assistente: precisa do resultado dia a dia (robô v7.4+, que manda fs=3).
@@ -274,7 +274,8 @@ async function expireStale(product: string, login: string) {
 }
 
 // Um pedido por par (v7.1: "todos os pares ligados" = vários de uma vez; o robô faz um de cada vez, na ordem).
-export async function requestScan(product: string, login: string, items: { symbol: string; spec: ScanSpec }[], requestedBy: string) {
+// Limite de leituras por conta a cada 24 h: o admin define em Configurações → IA (0 = sem limite). noLimit = admin ou reanálise diária do Assistente.
+export async function requestScan(product: string, login: string, items: { symbol: string; spec: ScanSpec }[], requestedBy: string, noLimit = false) {
   await expireStale(product, login);
   const active = await db()
     .select({ id: schema.robotScans.id })
@@ -282,11 +283,14 @@ export async function requestScan(product: string, login: string, items: { symbo
     .where(and(eq(schema.robotScans.product, product), eq(schema.robotScans.login, login), inArray(schema.robotScans.status, ["pending", "running"])))
     .limit(1);
   if (active.length) return { ok: false as const, error: "busy" as const };
-  const today = await db()
-    .select({ n: sql<number>`count(*)::int` })
-    .from(schema.robotScans)
-    .where(and(eq(schema.robotScans.product, product), eq(schema.robotScans.login, login), gte(schema.robotScans.createdAt, new Date(Date.now() - 86_400_000))));
-  if ((today[0]?.n ?? 0) + items.length > SCANS_PER_DAY) return { ok: false as const, error: "limit" as const };
+  const max = noLimit ? 0 : ((await getAiSettings()).scanDaily ?? SCAN_DAILY_DEFAULT);
+  if (max > 0) {
+    const today = await db()
+      .select({ n: sql<number>`count(*)::int` })
+      .from(schema.robotScans)
+      .where(and(eq(schema.robotScans.product, product), eq(schema.robotScans.login, login), gte(schema.robotScans.createdAt, new Date(Date.now() - 86_400_000))));
+    if ((today[0]?.n ?? 0) + items.length > max) return { ok: false as const, error: "limit" as const };
+  }
   const rows = await db()
     .insert(schema.robotScans)
     .values(items.map(({ symbol, spec }) => ({ product, login, symbol, spec, requestedBy })))

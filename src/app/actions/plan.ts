@@ -44,7 +44,7 @@ export async function analyzePlanAction(login: string, draft: PlanDraft): Promis
     if (!can("dailyGoalPct", draft.goalPct, cfg.dailyGoalPct) || !can("dailyLossPct", draft.lossPct, cfg.dailyLossPct)) return { ok: false, error: "blocked" };
     if (Object.values(pairGoals).some((v) => !can("goalPct", v, null))) return { ok: false, error: "blocked" };
   }
-  const r = await analyzePlan(PRODUCT.slug, login, { ...draft, pairGoals }, policy, user.email);
+  const r = await analyzePlan(PRODUCT.slug, login, { ...draft, pairGoals }, policy, user.email, user.isAdmin);
   if (!r.ok) return { ok: false, error: r.error };
   if (user.isAdmin) await logEvent(user.email, "robot.plan", `${login}: Assistente ${draft.mode} - meta ${draft.goalPct}% / perda ${draft.lossPct}% (análise pedida)`);
   refresh();

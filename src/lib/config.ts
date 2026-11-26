@@ -38,7 +38,8 @@ export type SmtpSettings = { host?: string; port?: number; user?: string; passBo
 export type WalletSettings = Partial<Record<MethodKey, { value: string; enabled: boolean }>>;
 export type AdminSettings = { emails: string[] };
 // Ai X Intelligence: análise escrita pela IA (Claude). clientDaily = análises por conta a cada 24 h pros clientes (0 = só o admin).
-export type AiSettings = { apiKeyBox?: string; keyHint?: string; clientDaily?: number; savedAt?: string; savedBy?: string; lastTest?: { at: string; ok: boolean; error?: string } };
+// scanDaily = leituras de velas (pares) por conta a cada 24 h, pedidas por clientes (0 = sem limite). Admin e a reanálise diária do Assistente não contam.
+export type AiSettings = { apiKeyBox?: string; keyHint?: string; clientDaily?: number; scanDaily?: number; savedAt?: string; savedBy?: string; lastTest?: { at: string; ok: boolean; error?: string } };
 
 type SettingsMap = {
   binance_config: BinanceSettings;
@@ -110,6 +111,8 @@ export async function isAutoPayActive() {
 
 //--- IA (Claude) -----------------------------------------------------------------------------------------------------
 export const AI_CLIENT_DAILY_DEFAULT = 3;
+export const SCAN_DAILY_DEFAULT = 60;
+export const SCAN_DAILY_OPTIONS = [0, 30, 60, 100, 200, 500];
 
 export async function getAiSettings(): Promise<AiSettings> {
   return (await getSetting("ai")) ?? {};

@@ -845,7 +845,7 @@
       "scanStart": "Pedir leitura",
       "scanSent": "Pedido enviado. O robô começa em até 30 segundos (ele precisa estar ligado nesta conta, na v7.0).",
       "scanBusy": "Já tem uma leitura em andamento nesta conta.",
-      "scanLimit": "Limite de 20 leituras por dia nesta conta.",
+      "scanLimit": "Essa conta chegou no limite de leituras das últimas 24 h. Tente de novo mais tarde.",
       "scanError": "Não deu pra pedir. Tente de novo.",
       "status": {
         "pending": "Aguardando o robô",
@@ -1297,7 +1297,7 @@
       "invalid": "Confira as escolhas (a soma dos pares precisa dar a meta geral).",
       "blocked": "Esse valor não está liberado pra sua conta.",
       "busy": "Já tem uma leitura em andamento nessa conta. Espere terminar e tente de novo.",
-      "limit": "Limite de leituras de hoje atingido. Tente amanhã.",
+      "limit": "Essa conta chegou no limite de leituras das últimas 24 h (cada análise lê vários pares). Tente de novo mais tarde.",
       "state": "Faça a análise antes de ativar.",
       "noPairs": "Escolha pelo menos um par.",
       "config": "A configuração não passou na conferência. Fale com o suporte."

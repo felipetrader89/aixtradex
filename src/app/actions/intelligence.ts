@@ -24,7 +24,7 @@ export async function requestScanAction(login: string, symbol: string, period: S
   if (!symbols.length || symbols.some((s) => !keys.has(s))) return { ok: false, error: "invalid" };
   const fix = full ? fixedGroups(user.isAdmin ? null : await getRobotPolicy()) : [];
   const items = symbols.map((s) => ({ symbol: s, spec: buildSpec(period, config.pairs[s] ?? config.pairs[config.symbols[0]], full ? { fix } : undefined) }));
-  const r = await requestScan(PRODUCT.slug, login, items, user.email);
+  const r = await requestScan(PRODUCT.slug, login, items, user.email, user.isAdmin);
   if (!r.ok) return { ok: false, error: r.error };
   if (user.isAdmin) await logEvent(user.email, "robot.scan", `${login}: ${full ? "leitura completa" : "estudo"} ${symbols.join(", ")} (${period})`);
   revalidatePath("/[locale]/account", "layout");

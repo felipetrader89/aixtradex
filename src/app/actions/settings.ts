@@ -8,6 +8,7 @@ import {
   getAdminEmails,
   getAiKey,
   getAiSettings,
+  SCAN_DAILY_OPTIONS,
   getBinanceCreds,
   getBinanceSettings,
   getSetting,
@@ -304,10 +305,19 @@ export async function saveAiLimitAction(form: FormData) {
   back("ai", n === 0 ? "Clientes não geram análise (só você)." : `Clientes podem gerar até ${n} análise(s) por conta a cada 24 h.`);
 }
 
+export async function saveScanLimitAction(form: FormData) {
+  const admin = await requireAdmin();
+  const n = Number(field(form, "scanDaily"));
+  if (!SCAN_DAILY_OPTIONS.includes(n)) back("ai", "Escolha um dos valores da lista.", true);
+  await setSetting("ai", { ...(await getAiSettings()), scanDaily: n });
+  await logEvent(admin.email, "ai.scanLimit", `Leituras de velas por conta a cada 24 h (clientes): ${n === 0 ? "sem limite" : n}`);
+  back("ai", n === 0 ? "Leituras de velas sem limite pros clientes." : `Clientes podem pedir até ${n} leituras de pares por conta a cada 24 h.`);
+}
+
 export async function removeAiKeyAction() {
   const admin = await requireAdmin();
   const saved = await getAiSettings();
-  await setSetting("ai", { clientDaily: saved.clientDaily });
+  await setSetting("ai", { clientDaily: saved.clientDaily, scanDaily: saved.scanDaily });
   await logEvent(admin.email, "ai.remove", "Chave da IA removida");
   back("ai", "Chave removida. Lembre de apagar a chave também no console da Anthropic, se não for mais usar.");
 }

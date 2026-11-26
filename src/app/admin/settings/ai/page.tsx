@@ -1,6 +1,6 @@
-import { AI_CLIENT_DAILY_DEFAULT, getAiKey, getAiSettings } from "@/lib/config";
+import { AI_CLIENT_DAILY_DEFAULT, SCAN_DAILY_DEFAULT, SCAN_DAILY_OPTIONS, getAiKey, getAiSettings } from "@/lib/config";
 import { AI_MODEL, aiUsage30d } from "@/lib/ai-analysis";
-import { removeAiKeyAction, saveAiKeyAction, saveAiLimitAction, testAiAction } from "@/app/actions/settings";
+import { removeAiKeyAction, saveAiKeyAction, saveAiLimitAction, saveScanLimitAction, testAiAction } from "@/app/actions/settings";
 import { Badge, Flash, InfoRow, Panel, adminBtn, adminBtnGhost, adminInput, adminLabel, fmtDateTime } from "@/components/admin/ui";
 
 type Props = { searchParams: Promise<{ msg?: string; err?: string }> };
@@ -15,6 +15,7 @@ export default async function AiSettings({ searchParams }: Props) {
   const usage = await aiUsage30d();
   const cost = (usage.input * PRICE_IN + usage.output * PRICE_OUT) / 1_000_000;
   const daily = saved.clientDaily ?? AI_CLIENT_DAILY_DEFAULT;
+  const scanDaily = saved.scanDaily ?? SCAN_DAILY_DEFAULT;
 
   return (
     <div className="flex flex-col gap-6">
@@ -96,6 +97,30 @@ export default async function AiSettings({ searchParams }: Props) {
           </button>
         </form>
         <p className="mt-2 text-xs text-brand-ink-dim">Você (admin) pode gerar até 20 por conta por dia, em qualquer conta.</p>
+      </Panel>
+
+      <Panel title="Leituras de velas por conta (Assistente IA e Ai X Intelligence)">
+        <form action={saveScanLimitAction} className="flex flex-wrap items-end gap-3">
+          <div>
+            <label className={adminLabel} htmlFor="scanDaily">
+              Pares lidos por conta, a cada 24 h
+            </label>
+            <select id="scanDaily" name="scanDaily" defaultValue={scanDaily} className={adminInput}>
+              {SCAN_DAILY_OPTIONS.map((n) => (
+                <option key={n} value={n}>
+                  {n === 0 ? "Sem limite" : n}
+                </option>
+              ))}
+            </select>
+          </div>
+          <button type="submit" className={adminBtnGhost}>
+            Salvar
+          </button>
+        </form>
+        <p className="mt-2 text-xs text-brand-ink-dim">
+          Cada par lido conta 1. Uma análise do Assistente IA lê de 8 a 12 pares de uma vez, então 60 dão umas 5 análises por dia. A leitura roda no MT4 do
+          cliente e não gasta crédito da IA. Não contam: o que você (admin) pede e a reanálise diária automática do Assistente.
+        </p>
       </Panel>
     </div>
   );

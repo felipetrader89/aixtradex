@@ -101,10 +101,10 @@ export async function autoSymbols(product: string, login: string, config: Config
 }
 
 // Pede a leitura completa de 1 mês dos pares (o robô faz um de cada vez). Meta/perda do dia ficam de fora (o Assistente decide).
-async function startRun(product: string, login: string, symbols: string[], config: ConfigValues, policy: RobotPolicy | null, by: string) {
+async function startRun(product: string, login: string, symbols: string[], config: ConfigValues, policy: RobotPolicy | null, by: string, noLimit = false) {
   const fix = [...new Set([...fixedGroups(policy), "goal", "dloss"])];
   const items = symbols.map((s) => ({ symbol: s, spec: buildSpec(PERIOD, config.pairs[s] ?? config.pairs[config.symbols[0]] ?? DEFAULT_PAIR, { fix, daily: true }) }));
-  return requestScan(product, login, items, by);
+  return requestScan(product, login, items, by, noLimit);
 }
 
 export type PlanDraft = {
@@ -116,11 +116,11 @@ export type PlanDraft = {
 };
 
 // Passo 4: guarda o que o cliente escolheu e pede as leituras.
-export async function analyzePlan(product: string, login: string, draft: PlanDraft, policy: RobotPolicy | null, by: string) {
+export async function analyzePlan(product: string, login: string, draft: PlanDraft, policy: RobotPolicy | null, by: string, noLimit = false) {
   const config = await getRobotConfig(product, login);
   const symbols = draft.mode === "auto" ? await autoSymbols(product, login, config, policy) : Object.keys(draft.pairGoals);
   if (!symbols.length) return { ok: false as const, error: "invalid" as const };
-  const r = await startRun(product, login, symbols, config, policy, by);
+  const r = await startRun(product, login, symbols, config, policy, by, noLimit);
   if (!r.ok) return r;
   const values = {
     mode: draft.mode,
@@ -286,8 +286,8 @@ export async function maybeAutoRun(product: string, login: string) {
   const policy = config.admin ? null : await getRobotPolicy();
   const symbols = await autoSymbols(product, login, config, policy);
   if (!symbols.length) return;
-  const r = await startRun(product, login, symbols, config, policy, BY_AUTO);
-  if (!r.ok) return; // ocupado (leitura pedida pelo cliente) ou limite do dia: tenta de novo em 10 min
+  const r = await startRun(product, login, symbols, config, policy, BY_AUTO, true); // reanálise diária não conta no limite
+  if (!r.ok) return; // ocupado (leitura pedida pelo cliente): tenta de novo em 10 min
   await updatePlan(product, login, { scanIds: r.ids, pendingApply: true, lastRunAt: now });
 }
 

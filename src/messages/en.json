@@ -845,7 +845,7 @@
       "scanStart": "Request study",
       "scanSent": "Request sent. The robot starts within 30 seconds (it must be running on this account, v7.0).",
       "scanBusy": "A study is already running on this account.",
-      "scanLimit": "Limit of 20 studies per day on this account.",
+      "scanLimit": "This account reached its reading limit for the last 24 h. Please try again later.",
       "scanError": "Could not request it. Please try again.",
       "status": {
         "pending": "Waiting for the robot",
@@ -1297,7 +1297,7 @@
       "invalid": "Check your choices (the pairs must add up to the total goal).",
       "blocked": "This value is not allowed for your account.",
       "busy": "There is already a reading running on this account. Wait for it to finish and try again.",
-      "limit": "Today's reading limit reached. Try tomorrow.",
+      "limit": "This account reached its reading limit for the last 24 h (each analysis reads several pairs). Please try again later.",
       "state": "Run the analysis before activating.",
       "noPairs": "Choose at least one pair.",
       "config": "The setup didn't pass the check. Contact support."
