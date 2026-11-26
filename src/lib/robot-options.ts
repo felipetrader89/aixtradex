@@ -137,7 +137,8 @@ export const DEFAULT_PAIR: PairParams = {
   atrBars: 200,
   atrMin: 0.1,
   atrMax: 1.4,
-  mesa: 1,
+  // Mesa desligada por padrão: no backtest do ouro (27/10-25/11) ela piorou o resultado com o gatilho RSI; liga por par quando a leitura completa provar que ajuda
+  mesa: 0,
   minRR: 1.5,
 };
 
