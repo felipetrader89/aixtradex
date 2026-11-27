@@ -16,11 +16,11 @@ export function Header({ logoExists }: { logoExists: boolean }) {
 
   const links = [
     { href: "/", label: t("home") },
-    { href: "/products", label: t("products") },
+    { href: "/how-it-works", label: t("howItWorks") },
     { href: "/results", label: t("results") },
+    { href: "/products", label: t("products") },
     { href: "/about", label: t("about") },
     { href: "/faq", label: t("faq") },
-    { href: "/how-it-works", label: t("howItWorks") },
   ];
 
   return (
