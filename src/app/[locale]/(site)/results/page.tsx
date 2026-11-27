@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { getTranslations, setRequestLocale } from "next-intl/server";
-import { pageMetadata } from "@/lib/seo";
+import { sitePageMetadata } from "@/components/seo/sitePageMetadata";
 import { ResultsTabs } from "@/components/results/ResultsTabs";
 import { PageHeader } from "@/components/sections/PageHeader";
 import { VerifiedSoon } from "@/components/sections/VerifiedSoon";
@@ -15,7 +15,7 @@ type Props = { params: Promise<{ locale: string }> };
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { locale } = await params;
-  return pageMetadata({ locale, href: "/results", namespace: "Metadata.results" });
+  return sitePageMetadata({ locale, href: "/results", namespace: "Metadata.results" });
 }
 
 export default async function ResultsPage({ params }: Props) {

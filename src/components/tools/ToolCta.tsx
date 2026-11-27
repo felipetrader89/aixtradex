@@ -32,7 +32,7 @@ export async function ToolCta({ current }: { current?: string }) {
           <Button href="/how-it-works" variant="secondary" className="!px-5 !py-2.5">
             {t("cta.button")}
           </Button>
-          <Link href="/products#pass" className="text-center text-xs font-semibold text-brand-accent hover:underline">
+          <Link href="/products#pass" className="py-2 text-center text-xs font-semibold text-brand-accent hover:underline">
             {t("cta.secondary")} →
           </Link>
         </div>

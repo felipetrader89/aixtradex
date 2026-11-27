@@ -30,6 +30,11 @@ export function Footer() {
   const t = useTranslations("Footer");
   const nav = useTranslations("Nav");
   const year = new Date().getFullYear();
+  const legal = [
+    { href: "/terms", label: t("legal.terms") },
+    { href: "/privacy", label: t("legal.privacy") },
+    { href: "/risk", label: t("legal.risk") },
+  ] as const;
 
   const menu = [
     { href: "/", label: nav("home") },
@@ -38,7 +43,7 @@ export function Footer() {
     { href: "/products", label: nav("products") },
     { href: "/about", label: nav("about") },
     { href: "/faq", label: nav("faq") },
-    { href: "/blog", label: nav("blog") },
+    { href: "/contact", label: nav("contact") },
     { href: "/account", label: nav("account") },
   ];
 
@@ -133,6 +138,13 @@ export function Footer() {
         <div className="mt-10 border-t border-brand-hairline pt-8">
           <p className="mb-1 text-xs font-semibold uppercase tracking-wide text-brand-ink">{t("riskTitle")}</p>
           <p className="mb-6 max-w-3xl text-xs leading-relaxed">{t("disclaimer")}</p>
+          <nav aria-label="Legal" className="mb-4 flex flex-wrap gap-x-5 gap-y-2 text-xs">
+            {legal.map((item) => (
+              <Link key={item.href} href={item.href} className={`${linkClass} underline-offset-4 hover:underline`}>
+                {item.label}
+              </Link>
+            ))}
+          </nav>
           <p className="text-xs">
             {t("rightsPrefix", { year })} <BrandMark className="font-display text-xs font-extrabold" />
             {t("rightsSuffix")}

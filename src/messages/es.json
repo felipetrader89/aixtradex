@@ -35,6 +35,18 @@
     "tools": {
       "title": "Herramientas para el Trader",
       "description": "Herramientas gratis para el trader de forex y oro: calculadora de lote, sesiones del mercado en tu horario y cotizaciones de referencia."
+    },
+    "terms": {
+      "title": "Términos de Uso",
+      "description": "Términos de uso del sitio, del portal y de la licencia del Ai X PULSE RS: qué compras, pago, renovación, reembolso, uso permitido y responsabilidades."
+    },
+    "privacy": {
+      "title": "Política de Privacidad",
+      "description": "Qué datos recopila Ai X TradeX en el sitio, en el portal y a través del Ai X PULSE RS, para qué los usa, con quién los comparte y cómo pedir corrección o eliminación."
+    },
+    "risk": {
+      "title": "Aviso de Riesgo",
+      "description": "Los riesgos de operar forex y oro con el Ai X PULSE RS: pérdida de capital, límites de las simulaciones, de la IA, de la meta y del límite de pérdida, y riesgos técnicos."
     }
   },
   "Nav": {
@@ -102,6 +114,7 @@
       "ctaPrimary": "Empezar ahora",
       "ctaSecondary": "Probar 1 día por US$10",
       "ctaTertiary": "Entrar al grupo de Telegram",
+      "eyebrow": "Trading forex con inteligencia artificial",
       "trust": [
         "Tu dinero en tu bróker",
         "Licencia, sin gestión de cuenta",
@@ -224,7 +237,7 @@
     },
     "partners": {
       "title": "Brókers asociados",
-      "body": "Funciona en cualquier bróker con MT4. En los asociados, abriendo cuenta con mi enlace o cambiando el código IB al mío, obtienes descuento en la licencia."
+      "body": "Funciona en cualquier bróker con MT4, en una cuenta Raw, Zero o ECN. En los asociados, abriendo cuenta con mi enlace o cambiando el código IB al mío, obtienes descuento en la licencia."
     },
     "finalCta": {
       "title": "¿Listo para probarlo en tu cuenta?",
@@ -404,8 +417,8 @@
   },
   "Contact": {
     "title": "Contacto",
-    "body": "Hoy, todo el soporte, dudas y onboarding pasan por el grupo de Telegram - es la forma más rápida de hablar conmigo directamente.",
-    "cta": "Unirse a Telegram",
+    "body": "Dudas antes de comprar, ayuda con la instalación o soporte de la licencia: escríbeme directamente por Telegram. Es el canal más rápido.",
+    "cta": "Hablar conmigo por Telegram",
     "note": "¿Prefieres email? Escribe a support@aixtradex.com - también respondo por ahí."
   },
   "Footer": {
@@ -421,6 +434,12 @@
     "comingSoon": "Muy pronto",
     "rightsPrefix": "© 2015-{year} -",
     "rightsSuffix": ". Todos los derechos reservados.",
+    "legal": {
+      "terms": "Términos de uso",
+      "privacy": "Política de privacidad",
+      "risk": "Aviso de riesgo",
+      "contact": "Contacto"
+    },
     "toolsLinks": {
       "calculator": "Calculadora de lote",
       "sessions": "Sesiones del mercado",
@@ -457,7 +476,7 @@
       },
       {
         "q": "¿El sistema usa recuperación de lote?",
-        "a": "La recuperación es una opción por par, que activas o desactivas en el portal. Aumenta el lote después de una pérdida para recuperar más rápido, y por eso también aumenta el riesgo. Para el camino más conservador, deja la recuperación desactivada y mantén activo el límite de pérdida del día."
+        "a": "No por defecto: la recuperación viene desactivada. Es una opción por par en el portal y aumenta el lote después de una pérdida para recuperar más rápido, y por eso también aumenta el riesgo. Para el camino más conservador, deja la recuperación desactivada y mantén activo el límite de pérdida del día."
       },
       {
         "q": "¿Qué brókers son compatibles?",
@@ -515,7 +534,7 @@
     "cta": {
       "title": "¿Todavía con dudas?",
       "body": "Habla directo conmigo por Telegram o en support@aixtradex.com.",
-      "button": "Entrar a Telegram"
+      "button": "Hablar conmigo por Telegram"
     }
   },
   "Blog": {

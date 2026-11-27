@@ -1,23 +1,14 @@
 import type { Metadata } from "next";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import { TelegramCta } from "@/components/sections/TelegramCta";
-import { getPathname } from "@/i18n/navigation";
-import { routing } from "@/i18n/routing";
+import { sitePageMetadata } from "@/components/seo/sitePageMetadata";
+import { siteConfig } from "@/lib/site-config";
 
 type Props = { params: Promise<{ locale: string }> };
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { locale } = await params;
-  const t = await getTranslations({ locale, namespace: "Metadata.contact" });
-  return {
-    title: t("title"),
-    description: t("description"),
-    alternates: {
-      languages: Object.fromEntries(
-        routing.locales.map((l) => [l, getPathname({ href: "/contact", locale: l })])
-      ),
-    },
-  };
+  return sitePageMetadata({ locale, href: "/contact", namespace: "Metadata.contact" });
 }
 
 export default async function ContactPage({ params }: Props) {
@@ -31,7 +22,7 @@ export default async function ContactPage({ params }: Props) {
         {t("title")}
       </h1>
 
-      <TelegramCta body={t("body")} cta={t("cta")} />
+      <TelegramCta body={t("body")} cta={t("cta")} href={siteConfig.telegramDmUrl} />
 
       <p className="mt-6 text-sm text-brand-ink-dim">{t("note")}</p>
     </div>

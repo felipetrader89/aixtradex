@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { getTranslations, setRequestLocale } from "next-intl/server";
-import { pageMetadata } from "@/lib/seo";
+import { sitePageMetadata } from "@/components/seo/sitePageMetadata";
 import { GlowCard } from "@/components/brand/GlowCard";
 import { IconClock, IconShield, IconSpark, IconTarget } from "@/components/brand/icons";
 import { SpecTable } from "@/components/sections/SpecTable";
@@ -17,7 +17,7 @@ const DAY_ICONS = [IconClock, IconShield, IconTarget, IconSpark];
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { locale } = await params;
-  return pageMetadata({ locale, href: "/how-it-works", namespace: "Metadata.howItWorks" });
+  return sitePageMetadata({ locale, href: "/how-it-works", namespace: "Metadata.howItWorks" });
 }
 
 export default async function HowItWorksPage({ params }: Props) {
