@@ -25,7 +25,8 @@ const HEADER_LOGO_HEIGHT = 298;
 // vertical padding — the logo grows into the padding that py-4 used to
 // waste, so the row's total height (logo + padding) stays the same and
 // the nav/CTA don't shift. md keeps the original py-4 + h-5 pairing.
-const HEADER_LOGO_CLASS = "h-14 w-auto md:h-5 lg:h-[68px]";
+// Menu completo só a partir de 1280 px (xl); abaixo disso, menu sanfona e logo no tamanho normal.
+const HEADER_LOGO_CLASS = "h-14 w-auto xl:h-[68px]";
 
 export function LogoMark({
   variant = "header",

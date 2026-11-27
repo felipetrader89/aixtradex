@@ -29,18 +29,18 @@ export function Header({ logoExists }: { logoExists: boolean }) {
       <div className="mx-auto flex max-w-6xl items-stretch justify-between px-4 sm:px-6">
         <Link
           href="/"
-          className="flex shrink-0 items-center py-1 md:py-4 lg:pt-[2px] lg:pb-[6px]"
+          className="flex shrink-0 items-center py-1 xl:pt-[2px] xl:pb-[6px]"
           onClick={() => setOpen(false)}
         >
           <LogoMark variant="header" hasLogo={logoExists} />
         </Link>
 
-        <nav className="hidden items-stretch gap-1 md:flex">
+        <nav className="hidden items-stretch gap-1 xl:flex">
           {links.map((link) => (
             <Link
               key={link.href}
               href={link.href}
-              className={`nav-pill text-sm min-[1100px]:whitespace-nowrap font-medium text-brand-ink-dim ${
+              className={`nav-pill whitespace-nowrap text-sm font-medium text-brand-ink-dim ${
                 (link.href === "/" ? pathname === "/" : pathname.startsWith(link.href)) ? "nav-pill-active" : ""
               }`}
             >
@@ -49,11 +49,11 @@ export function Header({ logoExists }: { logoExists: boolean }) {
           ))}
         </nav>
 
-        <div className="hidden items-center gap-4 py-4 md:flex">
+        <div className="hidden items-center gap-4 py-4 xl:flex">
           <Suspense fallback={<div className="h-6 w-14" />}>
             <LanguageSwitcher />
           </Suspense>
-          <Link href="/account" className="text-sm min-[1100px]:whitespace-nowrap font-medium text-brand-ink-dim transition-colors hover:text-brand-accent">
+          <Link href="/account" className="whitespace-nowrap text-sm font-medium text-brand-ink-dim transition-colors hover:text-brand-accent">
             {t("account")}
           </Link>
           <Button href={siteConfig.telegramDmUrl} variant="neon" className="!px-4 !py-2 text-sm">
@@ -62,7 +62,7 @@ export function Header({ logoExists }: { logoExists: boolean }) {
           </Button>
         </div>
 
-        <div className="flex items-center gap-4 py-4 md:hidden">
+        <div className="flex items-center gap-4 py-4 xl:hidden">
           <Suspense fallback={<div className="h-6 w-14" />}>
             <LanguageSwitcher />
           </Suspense>
@@ -81,7 +81,7 @@ export function Header({ logoExists }: { logoExists: boolean }) {
       </div>
 
       {open && (
-        <div className="flex flex-col gap-4 border-t border-brand-hairline px-6 py-6 md:hidden">
+        <div className="flex flex-col gap-4 border-t border-brand-hairline px-6 py-6 xl:hidden">
           {links.map((link) => (
             <Link
               key={link.href}
