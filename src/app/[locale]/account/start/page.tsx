@@ -70,7 +70,12 @@ export default async function StartPage({ params, searchParams }: Props) {
       .sort()
       .map((key) => ({ key, std: false })),
   ];
-  const profileRisk = Object.fromEntries(Object.entries(PROFILE_RISK).map(([p, r]) => [p, RISK_PROFILES[r!]]));
+  // só os perfis que o admin libera pro cliente (2026-11-27: Agressivo fora até ser testado)
+  const profileRisk = Object.fromEntries(
+    Object.entries(PROFILE_RISK)
+      .filter(([, r]) => !policy || hasValue(policy.riskProfile.allow, r!))
+      .map(([p, r]) => [p, RISK_PROFILES[r!]])
+  );
 
   const wizardPlan: WizardPlan | null = plan
     ? {

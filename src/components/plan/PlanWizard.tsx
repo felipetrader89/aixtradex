@@ -234,7 +234,7 @@ export function PlanWizard(props: Props) {
         <section className="flex flex-col gap-4">
           <h2 className="font-display text-xl font-extrabold text-chrome">{t("goal.title")}</h2>
           <div className="grid gap-2 sm:grid-cols-4">
-            {(["conservative", "moderate", "aggressive", "custom"] as const).map((p) => (
+            {(["conservative", "moderate", "aggressive", "custom"] as const).filter((p) => p === "custom" || p in props.profileRisk).map((p) => (
               <button key={p} type="button" onClick={() => pickProfile(p)} className={`${chip(profile === p)} text-left`}>
                 <span className="block">{t(`profiles.${p}`)}</span>
                 <span className="mt-0.5 block text-[11px] font-normal opacity-80">
@@ -477,12 +477,12 @@ function Review({ plan, analyses, pairRisk, profileRisk, days, pairGoalOptions, 
   // plano ativo abre só pra conferir (fim do passo a passo); "Alterar metas" libera a edição
   const [editing, setEditing] = useState(plan.status !== "active");
   const loss = plan.lossPct;
-  const riskOf = (s: string) => profileRisk[plan.profile] ?? pairRisk[s] ?? 2;
+  const riskOf = (s: string) => profileRisk[plan.profile] ?? pairRisk[s] ?? 1;
   const nf = new Intl.NumberFormat(locale, { maximumFractionDigits: 1 });
   const pctTxt = (v: number, signed = false) => `${signed && v > 0 ? "+" : ""}${nf.format(v)}%`;
   const hasDaily = analyses.some((a) => a.daily);
 
-  const cands = useMemo(() => autoCandidates(analyses, (s) => profileRisk[plan.profile] ?? pairRisk[s] ?? 2, days), [analyses, plan.profile, profileRisk, pairRisk, days]);
+  const cands = useMemo(() => autoCandidates(analyses, (s) => profileRisk[plan.profile] ?? pairRisk[s] ?? 1, days), [analyses, plan.profile, profileRisk, pairRisk, days]);
   // v7.5: a chance é medida nos DIAS DE TESTE (a IA escolheu a combinação sem olhar esses dias); o mês inteiro fica só como referência.
   const split = Math.max(0, ...analyses.map((a) => a.split || 0));
   const evalOn = (test: boolean): { alloc: Record<string, number>; ev: PlanEval | null } => {
