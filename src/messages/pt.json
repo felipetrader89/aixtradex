@@ -1490,7 +1490,7 @@
       "profitClose": "Fechar no alvo de lucro",
       "profitPips": "Alvo de lucro",
       "lossClose": "Fechar no limite de perda",
-      "lossCloseHint": "Desligado, a posição fica só com o stop de emergência na corretora (3x o limite).",
+      "lossCloseHint": "Desligado, a posição fica só com o stop de emergência na corretora (1,15x o limite desde o robô v7.7).",
       "lossPips": "Limite de perda",
       "lossPipsHint": "De {min} a {max} pips. O lote é calculado por ele (o risco % do saldo). Automático = {auto} pips no ouro; nos pares, no mínimo 10 pips.",
       "beTrigger": "Liga com lucro de",

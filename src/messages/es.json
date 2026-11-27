@@ -1490,7 +1490,7 @@
       "profitClose": "Cerrar en el objetivo de ganancia",
       "profitPips": "Objetivo de ganancia",
       "lossClose": "Cerrar en el límite de pérdida",
-      "lossCloseHint": "Apagado, la posición queda solo con el stop de emergencia en el bróker (3x el límite).",
+      "lossCloseHint": "Apagado, la posición queda solo con el stop de emergencia en el bróker (1,15x el límite desde el robot v7.7).",
       "lossPips": "Límite de pérdida",
       "lossPipsHint": "De {min} a {max} pips. El lote se calcula con él (tu riesgo %). Automático = {auto} pips en el oro; en los pares, mínimo 10 pips.",
       "beTrigger": "Se activa con ganancia de",

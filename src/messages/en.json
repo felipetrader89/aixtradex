@@ -1490,7 +1490,7 @@
       "profitClose": "Close at the profit target",
       "profitPips": "Profit target",
       "lossClose": "Close at the loss limit",
-      "lossCloseHint": "When off, the position only has the emergency stop at the broker (3x the limit).",
+      "lossCloseHint": "When off, the position only has the emergency stop at the broker (1.15x the limit since robot v7.7).",
       "lossPips": "Loss limit",
       "lossPipsHint": "From {min} to {max} pips. The lot size is based on it (your % risk). Automatic = {auto} pips on gold; at least 10 pips on pairs.",
       "beTrigger": "Turns on at a profit of",
