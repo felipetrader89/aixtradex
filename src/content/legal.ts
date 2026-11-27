@@ -91,6 +91,12 @@ export const LEGAL: Record<LegalLocale, Record<LegalKey, LegalDoc>> = {
             "O sistema, o portal, os preços e estes termos podem ser atualizados. Mudança de preço vale pra compras novas e não altera o período que você já pagou. Mudanças importantes nestes termos são avisadas no site.",
           ],
         },
+        {
+          h: "10. Lei aplicável",
+          p: [
+            "Estes termos seguem as leis do Brasil. Antes de qualquer disputa, fale com a gente em support@aixtradex.com: a maioria das questões se resolve ali.",
+          ],
+        },
       ],
     },
     privacy: {
@@ -279,6 +285,12 @@ export const LEGAL: Record<LegalLocale, Record<LegalKey, LegalDoc>> = {
             "The system, the portal, prices and these terms may be updated. Price changes apply to new purchases and do not change a period you have already paid for. Important changes to these terms are announced on the website.",
           ],
         },
+        {
+          h: "10. Governing law",
+          p: [
+            "These terms are governed by the laws of Brazil. Before any dispute, talk to us at support@aixtradex.com: most issues are solved there.",
+          ],
+        },
       ],
     },
     privacy: {
@@ -465,6 +477,12 @@ export const LEGAL: Record<LegalLocale, Record<LegalKey, LegalDoc>> = {
           h: "9. Cambios",
           p: [
             "El sistema, el portal, los precios y estos términos pueden actualizarse. Un cambio de precio vale para compras nuevas y no altera el período que ya pagaste. Los cambios importantes en estos términos se avisan en el sitio.",
+          ],
+        },
+        {
+          h: "10. Ley aplicable",
+          p: [
+            "Estos términos se rigen por las leyes de Brasil. Antes de cualquier disputa, escríbenos a support@aixtradex.com: la mayoría de los temas se resuelve ahí.",
           ],
         },
       ],
