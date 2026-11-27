@@ -21,6 +21,7 @@ def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("version")
     ap.add_argument("--current", action="store_true")
+    ap.add_argument("--replace", action="store_true", help="substitui a versão com o mesmo número")
     ap.add_argument("--notes-pt", default="")
     ap.add_argument("--notes-en", default="")
     ap.add_argument("--notes-es", default="")
@@ -39,6 +40,9 @@ def main():
     notes_i18n = {k: v for k, v in (("pt", a.notes_pt), ("en", a.notes_en), ("es", a.notes_es)) if v}
     file_name = f"Ai X PULSE RS {a.version}.ex4"
     sql = ["\\set ON_ERROR_STOP on", "set client_encoding = 'UTF8';", "begin;"]
+    if a.replace:
+        # mesma versão recompilada (correção logo depois de publicar): apaga a anterior (os arquivos vão junto, cascade)
+        sql.append(f"delete from product_versions where product = {lit(PRODUCT)} and version = {lit(a.version)};")
     sql.append(
         "with v as (insert into product_versions (product, version, notes, notes_i18n, file_name, size, is_current) values "
         f"({lit(PRODUCT)}, {lit(a.version)}, {lit(a.notes_pt or None)}, {lit(json.dumps(notes_i18n, ensure_ascii=False)) + '::jsonb' if notes_i18n else 'NULL'}, "

@@ -48,8 +48,9 @@ export const tfLabel = (m: number) =>
   ({ 1: "M1", 5: "M5", 15: "M15", 30: "M30", 60: "H1", 240: "H4", 1440: "D1", 10080: "W1", 43200: "MN" })[m] ?? `M${m}`;
 
 // v7: distâncias em pips DO PAR (0 = automático: no ouro os valores de sempre, nos outros pares acompanha a volatilidade do ouro).
-// No ouro 1 pip = 0,01 (o mesmo do robô desde a v6 M5: break-even 250, perda 500, lucro 2500).
-export const AUTO_PIPS = { beTrigger: 250, beOffset: 200, trailStart: 500, trailDistance: 250, trailStep: 250, profitPips: 2500, lossPips: 500, zoneTolerance: 25 } as const;
+// No ouro 1 pip = 0,01. Robô v7.7+: as saídas testadas (2024-2026, sem recuperação): perda 188, break-even 94 trava 19,
+// stop móvel a partir de 188 a 94 de distância, passo 19 (até a v7.5: break-even 250, perda 500).
+export const AUTO_PIPS = { beTrigger: 94, beOffset: 19, trailStart: 188, trailDistance: 94, trailStep: 19, profitPips: 2500, lossPips: 188, zoneTolerance: 25 } as const;
 
 export type PairParams = {
   riskProfile: RiskProfile;
