@@ -172,25 +172,7 @@ export function IconTarget({ className = "" }: IconProps) {
   );
 }
 
-export function IconStop({ className = "" }: IconProps) {
-  return (
-    <Stroke className={className}>
-      <path d="M8.5 3h7L21 8.5v7L15.5 21h-7L3 15.5v-7L8.5 3z" />
-      <path d="M9 12h6" />
-    </Stroke>
-  );
-}
 
-export function IconNoStack({ className = "" }: IconProps) {
-  return (
-    <Stroke className={className}>
-      <rect x="6" y="14" width="12" height="4" rx="1" />
-      <rect x="7.5" y="9" width="9" height="4" rx="1" />
-      <rect x="9" y="4" width="6" height="4" rx="1" />
-      <path d="M4 4 20 20" />
-    </Stroke>
-  );
-}
 
 export function IconCheck({ className = "" }: IconProps) {
   return (
@@ -254,6 +236,24 @@ export function IconUser({ className = "" }: IconProps) {
     <Stroke className={className}>
       <circle cx="12" cy="8" r="3.5" />
       <path d="M5 20c.8-3.6 3.6-5.5 7-5.5s6.2 1.9 7 5.5" />
+    </Stroke>
+  );
+}
+
+export function IconClock({ className = "" }: IconProps) {
+  return (
+    <Stroke className={className}>
+      <circle cx="12" cy="12" r="8.5" />
+      <path d="M12 7.5V12l3 2" />
+    </Stroke>
+  );
+}
+
+export function IconChat({ className = "" }: IconProps) {
+  return (
+    <Stroke className={className}>
+      <path d="M4.5 5.5h15v10h-8l-4 3.5v-3.5h-3z" />
+      <path d="M8.5 10.5h7" />
     </Stroke>
   );
 }

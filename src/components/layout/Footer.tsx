@@ -46,8 +46,8 @@ export function Footer() {
       <div className="footer-divider mb-10" />
 
       <div className="mx-auto max-w-5xl">
-        <div className="grid grid-cols-2 gap-8 md:grid-cols-[1.4fr_1fr_1.2fr]">
-          <div className="col-span-2 md:col-span-1">
+        <div className="grid grid-cols-2 gap-8 lg:grid-cols-[1.3fr_0.8fr_1.1fr_1.1fr]">
+          <div className="col-span-2 lg:col-span-1">
             <BrandMark className="font-display text-xl font-extrabold uppercase" />
             <p className="mt-3 max-w-xs leading-relaxed">{t("tagline")}</p>
             <h3 className={`${headingClass} mt-6`}>{t("socialHeading")}</h3>
@@ -79,6 +79,21 @@ export function Footer() {
               ))}
             </ul>
           </nav>
+
+          {/* Área futura de ferramentas: só rótulos "em breve" (sem link) até cada página existir */}
+          <div>
+            <h3 className={headingClass}>{t("toolsHeading")}</h3>
+            <ul className="grid gap-2">
+              {(t.raw("tools") as string[]).map((tool) => (
+                <li key={tool} className="flex flex-wrap items-center gap-2 opacity-70">
+                  <span>{tool}</span>
+                  <span className="rounded-full border border-brand-hairline px-1.5 py-px text-[10px] uppercase tracking-wide text-brand-ink-dim">
+                    {t("comingSoon")}
+                  </span>
+                </li>
+              ))}
+            </ul>
+          </div>
 
           <div>
             <h3 className={headingClass}>{t("contactHeading")}</h3>

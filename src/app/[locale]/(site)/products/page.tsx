@@ -5,8 +5,7 @@ import { IconCalendar, IconRocket } from "@/components/brand/icons";
 import { SpecTable } from "@/components/sections/SpecTable";
 import { PricingCard } from "@/components/sections/PricingCard";
 import { PageHeader } from "@/components/sections/PageHeader";
-import { SectionHeading } from "@/components/sections/SectionHeading";
-import { RiskPrinciples, type RiskItem } from "@/components/sections/RiskPrinciples";
+import { ProfilesSection } from "@/components/sections/ProfilesSection";
 import { RiskNotice } from "@/components/sections/RiskNotice";
 import { CheckList } from "@/components/sections/CheckList";
 import { Link, getPathname } from "@/i18n/navigation";
@@ -33,7 +32,6 @@ export default async function ProductsPage({ params }: Props) {
   setRequestLocale(locale);
   const t = await getTranslations("Products");
   const tRisk = await getTranslations("Risk");
-  const riskItems = tRisk.raw("items") as RiskItem[];
   const includes = t.raw("includes.items") as string[];
 
   const specs = [
@@ -43,7 +41,6 @@ export default async function ProductsPage({ params }: Props) {
     { label: t("pulse.specs.leverage"), value: t("pulse.specs.leverageValue") },
     { label: t("pulse.specs.deposit"), value: t("pulse.specs.depositValue") },
     { label: t("pulse.specs.operation"), value: t("pulse.specs.operationValue") },
-    { label: t("pulse.specs.risk"), value: t("pulse.specs.riskValue") },
   ];
 
   // Links do checkout: não mudar (o /payment lê o ?plan=).
@@ -122,7 +119,7 @@ export default async function ProductsPage({ params }: Props) {
           </GlowCard>
         </section>
 
-        {/* Passe de teste: testar o robô por 1, 3 ou 7 dias antes de assinar */}
+        {/* Passe de teste: 1, 3 ou 7 dias antes de assinar */}
         <section id="pass" className="mb-14 scroll-mt-24">
           <GlowCard>
             <p className="text-xs font-semibold uppercase tracking-wide text-brand-accent">{t("pass.tag")}</p>
@@ -146,25 +143,35 @@ export default async function ProductsPage({ params }: Props) {
           </GlowCard>
         </section>
 
-        {/* O que inclui + requisitos */}
-        <section className="mb-14 grid grid-cols-1 gap-5 lg:grid-cols-2">
-          <GlowCard>
+        {/* O que inclui */}
+        <section className="mb-14">
+          <GlowCard className="sm:!p-8">
             <h2 className="mb-5 font-display text-lg font-bold uppercase text-chrome">{t("includes.title")}</h2>
-            <CheckList items={includes} />
-          </GlowCard>
-          <GlowCard>
-            <h2 className="mb-5 font-display text-lg font-bold uppercase text-chrome">{t("specsTitle")}</h2>
-            <SpecTable rows={specs} bare />
-            <p className="mt-4 text-xs text-brand-ink-dim">{t("license.requirementsNote")}</p>
+            <CheckList items={includes} className="sm:grid-cols-2 sm:gap-x-8" />
           </GlowCard>
         </section>
 
-        {/* Gestão de risco */}
-        <section className="mb-12">
-          <SectionHeading eyebrow={tRisk("eyebrow")} title={tRisk("title")} intro={tRisk("intro")} />
-          <RiskPrinciples items={riskItems} />
-          <p className="mt-6 text-center text-sm text-brand-ink-dim">{tRisk("footnote")}</p>
+        {/* Perfis de risco */}
+        <section className="mb-14">
+          <ProfilesSection />
         </section>
+
+        {/* Detalhes técnicos (fechado por padrão) */}
+        <details className="faq-item glow-border mb-10 rounded-2xl bg-brand-surface">
+          <summary className="flex cursor-pointer items-center justify-between gap-4 px-5 py-4 sm:px-6">
+            <h2 className="font-display text-base font-semibold uppercase text-brand-ink">{t("techTitle")}</h2>
+            <span
+              aria-hidden="true"
+              className="faq-plus flex h-7 w-7 shrink-0 items-center justify-center rounded-full border border-brand-accent/40 text-lg leading-none text-brand-accent"
+            >
+              +
+            </span>
+          </summary>
+          <div className="px-5 pb-5 sm:px-6">
+            <SpecTable rows={specs} bare />
+            <p className="mt-4 text-xs text-brand-ink-dim">{t("license.requirementsNote")}</p>
+          </div>
+        </details>
 
         <RiskNotice title={tRisk("noticeTitle")} body={tRisk("noticeBody")} />
 
