@@ -31,6 +31,10 @@
     "results": {
       "title": "Results",
       "description": "Real screenshots of accounts trading with Ai X TradeX systems, straight from MetaTrader 4, unedited. Myfxbook-verified account coming soon."
+    },
+    "tools": {
+      "title": "Trader Tools",
+      "description": "Free tools for forex and gold traders: lot size calculator, market sessions in your time zone and reference quotes."
     }
   },
   "Nav": {
@@ -43,7 +47,8 @@
     "blog": "Blog",
     "howItWorks": "How It Works",
     "contact": "Contact",
-    "cta": "Telegram"
+    "cta": "Telegram",
+    "tools": "Tools"
   },
   "Common": {
     "marketTicker": "Live market",
@@ -59,7 +64,7 @@
   "Profiles": {
     "eyebrow": "Risk profiles",
     "title": "You choose how much to risk",
-    "intro": "In the AI Assistant you pick a profile. It sets the daily target, the daily loss limit and the risk of each entry. Once the target or the limit is hit, the system stops until the next day.",
+    "intro": "In the AI Assistant you pick a profile. It sets the daily target, the daily loss limit and the risk on each entry. Once the target or the limit is reached, the system stops until the next day.",
     "goal": "Daily target",
     "loss": "Daily loss limit",
     "risk": "Risk per entry",
@@ -73,7 +78,7 @@
         "risk": "1%",
         "level": 1,
         "levelText": "Lower",
-        "body": "For beginners or anyone who wants less fluctuation. It is the starting point I recommend."
+        "body": "For beginners or anyone who prefers smaller swings. It's the starting point I recommend."
       },
       {
         "key": "moderate",
@@ -83,22 +88,12 @@
         "risk": "2%",
         "level": 2,
         "levelText": "Medium",
-        "body": "A balance between target and risk, for those who already know how their account behaves."
-      },
-      {
-        "key": "aggressive",
-        "name": "Aggressive",
-        "goal": "10%",
-        "loss": "-5%",
-        "risk": "3%",
-        "level": 3,
-        "levelText": "High",
-        "body": "A higher target with much higher risk. Losing days are bigger too. Only for those who accept that fluctuation."
+        "body": "A higher target with more risk. For traders who already know how their account behaves."
       }
     ],
-    "customTitle": "Custom",
-    "customBody": "You set the daily target and loss limit, and adjust each pair in the portal.",
-    "warning": "A higher target means higher risk. The target is a stopping point, not a promise of profit. The daily loss limit can be turned off in the portal, but it is what holds back a bad day."
+    "customTitle": "Custom and other profiles",
+    "customBody": "are available in the portal: set your own daily target and loss limit and fine-tune each pair.",
+    "warning": "A higher target means higher risk. The target is a stopping point, not a promise of profit. You can switch off the daily loss limit in the portal, but it's what protects you on a bad day."
   },
   "Home": {
     "hero": {
@@ -120,23 +115,23 @@
     "benefits": {
       "eyebrow": "Why use it",
       "title": "Trading with a plan, without being glued to the screen",
-      "intro": "From beginners to professionals, the problem is usually the same: lack of time, discipline and a clear plan. That is what Ai X PULSE RS solves.",
+      "intro": "Beginner or pro, the problem is usually the same: not enough time, not enough discipline and no clear plan. That's what Ai X PULSE RS solves.",
       "items": [
         {
           "title": "Your time back",
-          "body": "With MT4 running (on your computer or a VPS), the system follows the market on weekdays, 24 hours, without you watching charts."
+          "body": "With MT4 running (on your computer or a VPS), the system watches the market 24 hours a day on weekdays, so you don't have to."
         },
         {
           "title": "Discipline without emotion",
-          "body": "No fear, no greed, no impulse trades. It follows the day's plan, hits the target or stops at the limit."
+          "body": "No fear, no greed, no impulse trades. It follows the day's plan and stops at the target or the limit."
         },
         {
           "title": "A plan built by AI",
-          "body": "The AI Assistant picks the pairs, target and loss limit with you in 5 steps, no need to understand parameters."
+          "body": "The AI Assistant sets up pairs, target and loss limit with you in 5 steps. No need to understand every parameter."
         },
         {
-          "title": "Decisions based on data, not guesses",
-          "body": "Before you turn it on, the AI tests the plan on your own broker's candles and shows on how many days the target was hit."
+          "title": "Data, not guesswork",
+          "body": "Before you switch it on, the AI tests the plan on your own broker's candles and shows how many days the target was reached."
         },
         {
           "title": "Your money, your control",
@@ -144,13 +139,13 @@
         },
         {
           "title": "Real people behind it",
-          "body": "Support comes from the person who builds and runs the system every day, on Telegram or by email."
+          "body": "Support comes straight from the person who builds and trades the system every day, on Telegram or by email."
         }
       ]
     },
     "how": {
       "eyebrow": "How it works",
-      "title": "4 steps and you are trading",
+      "title": "Up and running in 4 steps",
       "items": [
         {
           "title": "Connect to your MT4",
@@ -158,7 +153,7 @@
         },
         {
           "title": "Choose the profile",
-          "body": "In the AI Assistant, set the risk profile and the mode: automatic (the AI picks the pairs) or manual."
+          "body": "In the AI Assistant, choose your risk profile and the mode: automatic (the AI picks the pairs) or manual."
         },
         {
           "title": "The AI analyzes",
@@ -166,18 +161,18 @@
         },
         {
           "title": "Follow it on the dashboard",
-          "body": "Balance and today's, this week's and this month's results for each account, in your client area."
+          "body": "Balance plus today's, this week's and this month's results for each account, in your client area."
         }
       ],
       "cta": "See how it works"
     },
     "ai": {
-      "eyebrow": "Where the AI is",
-      "title": "Artificial intelligence working for you",
+      "eyebrow": "Where AI comes in",
+      "title": "AI that works for you",
       "items": [
         {
           "title": "AI Assistant",
-          "body": "Builds the account plan in 5 steps. In automatic mode it redoes the analysis every weekday and adjusts the pairs on its own."
+          "body": "Builds your account plan in 5 steps. In automatic mode it re-runs the analysis every weekday and adjusts the pairs on its own."
         },
         {
           "title": "Ai X Intelligence",
@@ -185,7 +180,7 @@
         },
         {
           "title": "Senior trader opinion",
-          "body": "An AI acting as an experienced trader reads the daily, 4-hour and 1-hour charts and gives each pair's bias for the day."
+          "body": "With system v7.5 or newer, an AI acting as a seasoned trader reads the daily, 4-hour and 1-hour charts and shows each pair's bias for the day on your dashboard, refreshed throughout the day."
         }
       ],
       "honest": "The AI builds the plan and analyzes the market. Orders on MT4 follow defined rules you can see in the portal. No AI predicts the market or guarantees results."
@@ -194,7 +189,7 @@
       "eyebrow": "Client area",
       "title": "Everything in one dashboard",
       "items": [
-        "MT4 accounts: balance, today's, this week's and this month's results and open trades",
+        "MT4 accounts: balance, results for today, this week and this month, and open trades",
         "Today panel: daily target, loss limit and the status of each pair",
         "Per-pair settings, applied by the system within 30 seconds",
         "Licenses, renewal, downloads and installation guide"
@@ -212,7 +207,7 @@
     "plans": {
       "eyebrow": "Licenses",
       "title": "Choose how to start",
-      "intro": "A license for the system, no account management. Start with the trial pass and, if you like it, what you paid becomes a discount on the license.",
+      "intro": "A license for the system, with no account management. Start with the trial pass; if you like it, what you paid counts toward your license.",
       "passLabel": "Trial pass",
       "passFrom": "from",
       "passPrice": "$10",
@@ -223,19 +218,40 @@
     },
     "aboutTeaser": {
       "eyebrow": "Who is behind it",
-      "title": "The person who builds it trades it and answers you",
+      "title": "The person who builds it also trades it and answers you",
       "body": "I'm Alesson Felipe, a developer since 2012 and in forex since 2015. I lost money on miracle robots and fell for scams, so I built my own system. I build, test and run Ai X PULSE RS, and I personally support the people who use it.",
       "cta": "Read the story"
     },
     "partners": {
       "title": "Partner brokers",
-      "body": "Works with any MT4 broker. At partner brokers, opening an account through my link or switching the IB code to mine gives you a discount on the license."
+      "body": "Works with any MT4 broker. At partner brokers, open an account through my link or switch your IB code to mine to get a license discount."
     },
     "finalCta": {
       "title": "Ready to try it on your account?",
       "body": "Start with 1 day for US$10, on a demo or real account. No commitment.",
       "primary": "Try 1 day",
       "secondary": "Message me on Telegram"
+    },
+    "mockup": {
+      "label": "Illustrative image",
+      "title": "Today",
+      "account": "MT4 account · demo",
+      "status": "Working toward today's target",
+      "profile": "Profile",
+      "profileValue": "Conservative",
+      "mode": "Mode",
+      "modeValue": "Automatic",
+      "goal": "Daily target",
+      "loss": "Loss limit",
+      "progress": "Target progress",
+      "pairs": "Pairs in the plan",
+      "pairTrading": "Trading",
+      "pairWaiting": "Waiting for a signal",
+      "pairPaused": "Paused until tomorrow",
+      "assistant": "AI Assistant",
+      "assistantText": "Plan active · new analysis every weekday",
+      "bias": "Senior trader",
+      "biasValue": "both sides"
     }
   },
   "Products": {
@@ -248,7 +264,7 @@
         "Ai X PULSE RS for MT4, in English, Portuguese and Spanish",
         "AI Assistant: builds the day's plan, in automatic or manual mode",
         "Ai X Intelligence: chance of hitting the target measured on your own MT4",
-        "Daily senior trader (AI) opinion for each pair",
+        "Senior trader (AI) opinion on your dashboard, with system v7.5 or newer",
         "Dashboard with balance and today's, this week's and this month's results per account",
         "Installation guide and direct support from the developer"
       ]
@@ -264,8 +280,8 @@
         "spreadValue": "30 pts",
         "leverage": "Leverage",
         "leverageValue": "1:500",
-        "deposit": "Recommended minimum deposit",
-        "depositValue": "$100",
+        "deposit": "Recommended capital",
+        "depositValue": "US$500 on gold · US$100 on currency pairs",
         "operation": "Operation",
         "operationValue": "24/5, automatic (MT4 on or VPS)"
       }
@@ -394,14 +410,7 @@
     "tagline": "AI trading system that connects to your MetaTrader 4 account. License, no account management.",
     "menuHeading": "Menu",
     "contactHeading": "Contact",
-    "toolsHeading": "Trader tools",
-    "tools": [
-      "Economic calendar",
-      "Daily AI analysis",
-      "Market news",
-      "Lot size calculator",
-      "Market sessions"
-    ],
+    "toolsHeading": "Tools",
     "socialHeading": "Social media",
     "telegramGroup": "Telegram group",
     "telegramDm": "Message me on Telegram",
@@ -409,7 +418,15 @@
     "disclaimer": "Trading forex and gold involves risk of loss, including all deposited capital. Past results and simulations do not guarantee future results. Ai X PULSE RS is an AI-powered automation tool sold by license; nothing on this site is financial advice or an investment offer.",
     "comingSoon": "Coming soon",
     "rightsPrefix": "© 2015-{year} -",
-    "rightsSuffix": ". All rights reserved."
+    "rightsSuffix": ". All rights reserved.",
+    "toolsLinks": {
+      "calculator": "Lot size calculator",
+      "sessions": "Market sessions",
+      "quotes": "Live quotes",
+      "calendar": "Economic calendar",
+      "analysis": "Daily AI analysis",
+      "news": "Market news"
+    }
   },
   "Faq": {
     "title": "FAQ",
@@ -434,7 +451,7 @@
       },
       {
         "q": "How do the risk profiles work?",
-        "a": "In the AI Assistant you choose: Conservative (3% daily target, 2% loss limit, 1% risk per entry), Moderate (5%, 3% and 2%), Aggressive (10%, 5% and 3%) or Custom. A higher target means higher risk. Once the target or the limit is hit, the system stops until the next day."
+        "a": "You choose a profile in the AI Assistant. The main ones are Conservative (3% daily target, 2% loss limit, 1% risk per entry) and Moderate (5%, 3% and 2%). Custom and other profiles are available in the portal. A higher target means higher risk. Once the target or the limit is reached, the system stops until the next day."
       },
       {
         "q": "Does the system use lot recovery?",
@@ -449,8 +466,8 @@
         "a": "Not yet. Today it is MetaTrader 4 only. The MT5 version is coming soon."
       },
       {
-        "q": "What is the minimum deposit?",
-        "a": "The recommended amount is from $100, on an MT4 account with 1:500 leverage - any account type, with spread up to 30 pts."
+        "q": "How much do I need to start?",
+        "a": "Recommended capital: from US$500 for gold and from US$100 for currency pairs, on an MT4 account with 1:500 leverage - any account type, with spreads up to 30 points. With less than that, even the broker's minimum lot (0.01) may risk more than your chosen profile allows."
       },
       {
         "q": "Do I need to keep my computer on?",
@@ -517,7 +534,7 @@
       "steps": [
         {
           "title": "Choose the license",
-          "body": "Trial pass, Monthly or Lifetime License. Paying in USDT or USDC, the license is released in a few minutes."
+          "body": "Trial pass, Monthly or Lifetime License. Pay in USDT or USDC and your license is released within minutes."
         },
         {
           "title": "Connect to your MT4",
@@ -525,7 +542,7 @@
         },
         {
           "title": "Build the plan with the AI Assistant",
-          "body": "Choose the risk profile and the mode. In automatic, the AI picks the pairs and splits the target. In manual, you choose and the AI gives its opinion."
+          "body": "Choose the risk profile and the mode. In automatic mode, the AI picks the pairs and splits the target. In manual mode, you choose and the AI weighs in."
         },
         {
           "title": "See the chance before turning it on",
@@ -551,7 +568,7 @@
         },
         {
           "title": "Respects the day",
-          "body": "Target hit: it stops until tomorrow. Loss limit reached: it stops too."
+          "body": "Target reached: it stops until tomorrow. Loss limit reached: it stops as well."
         },
         {
           "title": "Reports back",
@@ -560,8 +577,8 @@
       ]
     },
     "honest": {
-      "title": "What is AI and what is rules",
-      "ai": "AI: builds the plan, picks pairs and targets, tests on your history and gives the day's technical opinion.",
+      "title": "What's AI and what's rules",
+      "ai": "AI: builds the plan, picks pairs and targets, tests them on your own history and, with system v7.5 or newer, gives the day's technical opinion.",
       "rules": "Rules: entries, exits, stops and lot size follow the settings you see in the portal.",
       "note": "No AI predicts the market. What it does is replace guesses with a plan and data."
     },
@@ -570,7 +587,7 @@
       "steps": [
         {
           "title": "Settings from the portal",
-          "body": "Every 30 seconds the system fetches the pairs, risk and targets from the portal. Change it on the site and it applies it on its own."
+          "body": "Every 30 seconds the system pulls the pairs, risk and targets from the portal. Change them on the site and it applies them automatically."
         },
         {
           "title": "Entry trigger",
@@ -661,13 +678,34 @@
         "label": "Binance Pay",
         "network": "Pay directly through the Binance app using the ID below"
       },
-      "btc": { "label": "Bitcoin (BTC)", "network": "Bitcoin network" },
-      "usdtTrc20": { "label": "USDT", "network": "TRC-20 network (Tron)" },
-      "usdtErc20": { "label": "USDT", "network": "ERC-20 network (Ethereum)" },
-      "usdtBep20": { "label": "USDT", "network": "BEP-20 network (BNB Smart Chain)" },
-      "usdc": { "label": "USDC", "network": "BASE network" },
-      "ltc": { "label": "Litecoin (LTC)", "network": "Litecoin network" },
-      "eth": { "label": "Ethereum (ETH)", "network": "Ethereum network (ERC-20)" }
+      "btc": {
+        "label": "Bitcoin (BTC)",
+        "network": "Bitcoin network"
+      },
+      "usdtTrc20": {
+        "label": "USDT",
+        "network": "TRC-20 network (Tron)"
+      },
+      "usdtErc20": {
+        "label": "USDT",
+        "network": "ERC-20 network (Ethereum)"
+      },
+      "usdtBep20": {
+        "label": "USDT",
+        "network": "BEP-20 network (BNB Smart Chain)"
+      },
+      "usdc": {
+        "label": "USDC",
+        "network": "BASE network"
+      },
+      "ltc": {
+        "label": "Litecoin (LTC)",
+        "network": "Litecoin network"
+      },
+      "eth": {
+        "label": "Ethereum (ETH)",
+        "network": "Ethereum network (ERC-20)"
+      }
     },
     "ctaTelegram": "I've paid - Send proof on Telegram",
     "dmMessage": "Hi! I've paid for the {plan} ({price}).\nName: {name}\nCountry: {country}\nEmail: {email}\nOrder: {order}\nMT4 accounts: {accounts}\nI'll send the payment screenshot.",
@@ -712,8 +750,8 @@
         "platformValue": "MetaTrader 4",
         "leverage": "Leverage",
         "leverageValue": "1:500",
-        "deposit": "Min deposit",
-        "depositValue": "$100",
+        "deposit": "Recommended capital",
+        "depositValue": "US$500 on gold · US$100 on currency pairs",
         "type": "Account type",
         "typeValue": "Any type",
         "note": "After creating the account, fill in your details and the number (login) of each MT4 account below. The license is linked to these accounts right away.",
@@ -1745,6 +1783,93 @@
         "both": "Senior trader: both sides",
         "none": "Senior trader: stay out"
       }
+    }
+  },
+  "Tools": {
+    "hub": {
+      "eyebrow": "Free",
+      "title": "Trader tools",
+      "intro": "Simple, free tools to plan every trade, with or without Ai X PULSE RS.",
+      "open": "Open",
+      "soon": "Coming soon",
+      "items": {
+        "calculator": "Find the right lot size for your risk in seconds.",
+        "sessions": "See which markets are open right now, in your time zone.",
+        "quotes": "Reference prices for gold and the major pairs.",
+        "calendar": "Economic releases that move the market.",
+        "analysis": "Each pair's bias for the day, written by AI.",
+        "news": "Today's headlines, linked to the source."
+      }
+    },
+    "cta": {
+      "title": "Want an AI to handle this for you?",
+      "body": "Ai X PULSE RS sizes each position by risk, respects trading hours and spreads, and stops at the daily target or limit, right on your MT4 account.",
+      "button": "Discover Ai X PULSE RS",
+      "secondary": "Try 1 day for US$10"
+    },
+    "calculator": {
+      "metaTitle": "Lot Size & Pip Value Calculator",
+      "metaDescription": "Calculate your MT4 lot size from your risk: balance, risk % and stop in pips or by price. Gold (XAU/USD) and forex pairs, including JPY pairs. Free.",
+      "eyebrow": "Free tool",
+      "title": "Lot size calculator",
+      "intro": "Enter your balance, how much you're willing to risk and where your stop is. The calculator shows the lot size and the value of each pip.",
+      "balance": "Account balance (US$)",
+      "riskPct": "Risk on this trade (%)",
+      "pair": "Instrument",
+      "stopMode": "How to enter the stop",
+      "byPips": "Distance in pips",
+      "byPrice": "Entry and stop price",
+      "stopPips": "Stop (pips)",
+      "entry": "Entry price",
+      "stopPrice": "Stop price",
+      "convPrice": "{pair} price",
+      "convHint": "Used to convert the pip value to US dollars. Pre-filled with the reference price when available; double-check it on your platform.",
+      "goldPip": "For gold, 1 pip = 0.01 in price (the Ai X PULSE RS standard).",
+      "resultLot": "Lot size",
+      "resultRisk": "Amount at risk",
+      "resultPip": "Pip value (0.01 lot)",
+      "resultActual": "Actual risk at this lot",
+      "explain": "With a {balance} balance and {pct} risk, you accept losing up to {risk} on this trade. With a {pips}-pip stop on {pair} (each pip is worth {pip} per 0.01 lot), the lot size is {lot}.",
+      "belowMin": "The calculated lot is below the broker minimum (0.01). At 0.01 you'd be risking {risk} ({pct} of your balance). Add capital or use a tighter stop.",
+      "invalid": "Enter a balance, risk and stop greater than zero.",
+      "assumptions": "Assumes a US dollar (USD) account and standard contract size (100,000 units; gold 100 oz), and rounds the lot down in 0.01 steps. Check the contract size and minimum lot with your broker."
+    },
+    "sessions": {
+      "metaTitle": "Forex Market Sessions in Your Time Zone",
+      "metaDescription": "See which forex sessions are open right now (Sydney, Tokyo, London and New York) in your own time zone, with daylight saving and overlaps.",
+      "eyebrow": "Free tool",
+      "title": "Market sessions",
+      "intro": "Which markets are open right now, in your local time. Daylight saving time in each city is already accounted for.",
+      "yourTime": "Your time",
+      "open": "Open",
+      "closed": "Closed",
+      "opensIn": "opens in {time}",
+      "closesIn": "closes in {time}",
+      "weekend": "Weekend: the forex market is closed. It reopens on Sunday at {time} your time.",
+      "overlaps": "Today's overlaps",
+      "noOverlap": "No overlaps today.",
+      "overlapNote": "When two sessions are open at the same time, volume and price movement tend to pick up.",
+      "cities": {
+        "sydney": "Sydney",
+        "tokyo": "Tokyo",
+        "london": "London",
+        "newyork": "New York"
+      },
+      "hoursNote": "Reference hours (local time in each city): Sydney 7am-4pm, Tokyo 9am-6pm, London 8am-5pm, New York 8am-5pm. Local holidays are not included.",
+      "loading": "Loading your local time..."
+    },
+    "quotes": {
+      "metaTitle": "Gold & Forex Quotes",
+      "metaDescription": "Reference prices for gold (XAU/USD) and the major currency pairs, updated every 15 minutes.",
+      "eyebrow": "Reference",
+      "title": "Quotes",
+      "intro": "Reference prices for gold and the major currency pairs.",
+      "updated": "Updated at {time}",
+      "delay": "Reference prices, delayed by up to 15 minutes. Don't use them to open or close trades: always check your platform.",
+      "sources": "Sources: gold-api.com (gold) and Twelve Data (currencies).",
+      "empty": "Quotes are unavailable right now. Please try again in a few minutes.",
+      "loading": "Loading quotes...",
+      "gold": "Gold"
     }
   }
 }

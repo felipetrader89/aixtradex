@@ -31,6 +31,10 @@
     "results": {
       "title": "Resultados",
       "description": "Capturas reales de cuentas operando con los sistemas Ai X TradeX, directo de MetaTrader 4, sin edición. Cuenta verificada en Myfxbook muy pronto."
+    },
+    "tools": {
+      "title": "Herramientas para el Trader",
+      "description": "Herramientas gratis para el trader de forex y oro: calculadora de lote, sesiones del mercado en tu horario y cotizaciones de referencia."
     }
   },
   "Nav": {
@@ -43,7 +47,8 @@
     "blog": "Blog",
     "howItWorks": "Cómo Funciona",
     "contact": "Contacto",
-    "cta": "Telegram"
+    "cta": "Telegram",
+    "tools": "Herramientas"
   },
   "Common": {
     "marketTicker": "Mercado en tiempo real",
@@ -59,7 +64,7 @@
   "Profiles": {
     "eyebrow": "Perfiles de riesgo",
     "title": "Tú eliges cuánto quieres arriesgar",
-    "intro": "En el Asistente IA eliges un perfil. Define la meta del día, el límite de pérdida del día y el riesgo de cada entrada. Al alcanzar la meta o el límite, el sistema se detiene hasta el día siguiente.",
+    "intro": "En el Asistente IA eliges el perfil. Define la meta del día, el límite de pérdida del día y el riesgo de cada entrada. Al llegar a la meta o al límite, el sistema se detiene hasta el día siguiente.",
     "goal": "Meta del día",
     "loss": "Límite de pérdida del día",
     "risk": "Riesgo por entrada",
@@ -73,7 +78,7 @@
         "risk": "1%",
         "level": 1,
         "levelText": "Menor",
-        "body": "Para quien está empezando o quiere menos oscilación. Es el punto de partida que recomiendo."
+        "body": "Para quien empieza o prefiere menos oscilación. Es el punto de partida que recomiendo."
       },
       {
         "key": "moderate",
@@ -83,22 +88,12 @@
         "risk": "2%",
         "level": 2,
         "levelText": "Medio",
-        "body": "Equilibrio entre meta y riesgo, para quien ya conoce el comportamiento de su propia cuenta."
-      },
-      {
-        "key": "aggressive",
-        "name": "Agresivo",
-        "goal": "10%",
-        "loss": "-5%",
-        "risk": "3%",
-        "level": 3,
-        "levelText": "Alto",
-        "body": "Meta mayor con un riesgo mucho mayor. Los días de pérdida también son mayores. Solo para quien acepta esa oscilación."
+        "body": "Más meta, más riesgo. Para quien ya conoce el comportamiento de su propia cuenta."
       }
     ],
-    "customTitle": "Personalizado",
-    "customBody": "Tú defines la meta y el límite de pérdida del día, y ajustas cada par en el portal.",
-    "warning": "Meta mayor significa riesgo mayor. La meta es un punto de parada, no una promesa de ganancia. El límite de pérdida del día se puede desactivar en el portal, pero es lo que contiene un mal día."
+    "customTitle": "Personalizado y otros perfiles",
+    "customBody": "están en el portal: defines la meta y el límite de pérdida del día y ajustas cada par.",
+    "warning": "Una meta mayor significa más riesgo. La meta es un punto de parada, no una promesa de ganancia. El límite de pérdida diario se puede desactivar en el portal, pero es lo que te protege en un mal día."
   },
   "Home": {
     "hero": {
@@ -120,7 +115,7 @@
     "benefits": {
       "eyebrow": "Por qué usarlo",
       "title": "Trading con plan, sin quedarte pegado a la pantalla",
-      "intro": "Del principiante al profesional, el problema suele ser el mismo: falta de tiempo, de disciplina y de un plan claro. Eso es lo que resuelve el Ai X PULSE RS.",
+      "intro": "Seas principiante o profesional, el problema suele ser el mismo: falta de tiempo, de disciplina y de un plan claro. Eso es lo que resuelve el Ai X PULSE RS.",
       "items": [
         {
           "title": "Recupera tu tiempo",
@@ -185,7 +180,7 @@
         },
         {
           "title": "Opinión del trader sénior",
-          "body": "Una IA en el papel de trader experimentado lee los gráficos diario, de 4 horas y de 1 hora y da el sesgo del día de cada par."
+          "body": "Con el sistema v7.5 o más nuevo, una IA en el papel de trader experimentado lee los gráficos diario, de 4 horas y de 1 hora y muestra en el panel el sesgo del día de cada par, renovado a lo largo del día."
         }
       ],
       "honest": "La IA arma el plan y analiza el mercado. Las órdenes en MT4 siguen reglas definidas que ves en el portal. Ninguna IA predice el mercado ni garantiza resultados."
@@ -236,6 +231,27 @@
       "body": "Empieza con 1 día por US$10, en una cuenta demo o real. Sin compromiso.",
       "primary": "Probar 1 día",
       "secondary": "Hablar conmigo por Telegram"
+    },
+    "mockup": {
+      "label": "Imagen ilustrativa",
+      "title": "Hoy",
+      "account": "Cuenta MT4 · demo",
+      "status": "Buscando la meta del día",
+      "profile": "Perfil",
+      "profileValue": "Conservador",
+      "mode": "Modo",
+      "modeValue": "Automático",
+      "goal": "Meta del día",
+      "loss": "Límite de pérdida",
+      "progress": "Avance de la meta",
+      "pairs": "Pares del plan",
+      "pairTrading": "Operando",
+      "pairWaiting": "Esperando señal",
+      "pairPaused": "En pausa hasta mañana",
+      "assistant": "Asistente IA",
+      "assistantText": "Plan activo · nuevo análisis cada día hábil",
+      "bias": "Trader sénior",
+      "biasValue": "ambos lados"
     }
   },
   "Products": {
@@ -248,7 +264,7 @@
         "Ai X PULSE RS para MT4, en español, portugués e inglés",
         "Asistente IA: arma el plan del día, en modo automático o manual",
         "Ai X Intelligence: probabilidad de alcanzar la meta medida en tu propio MT4",
-        "Opinión diaria del trader sénior (IA) para cada par",
+        "Opinión del trader sénior (IA) en el panel, con el sistema v7.5 o más nuevo",
         "Panel con saldo y resultado de hoy, de la semana y del mes de cada cuenta",
         "Guía de instalación y soporte directo con el desarrollador"
       ]
@@ -264,8 +280,8 @@
         "spreadValue": "30 pts",
         "leverage": "Apalancamiento",
         "leverageValue": "1:500",
-        "deposit": "Depósito mínimo recomendado",
-        "depositValue": "$100",
+        "deposit": "Capital recomendado",
+        "depositValue": "US$ 500 en oro · US$ 100 en pares",
         "operation": "Operación",
         "operationValue": "24/5, automática (MT4 encendido o VPS)"
       }
@@ -394,14 +410,7 @@
     "tagline": "Inteligencia artificial de trading que se conecta a tu cuenta MetaTrader 4. Licencia, sin gestión de cuenta.",
     "menuHeading": "Menú",
     "contactHeading": "Contacto",
-    "toolsHeading": "Herramientas para el trader",
-    "tools": [
-      "Calendario económico",
-      "Análisis del día con IA",
-      "Noticias del mercado",
-      "Calculadora de lote",
-      "Sesiones del mercado"
-    ],
+    "toolsHeading": "Herramientas",
     "socialHeading": "Redes sociales",
     "telegramGroup": "Grupo de Telegram",
     "telegramDm": "Hablar conmigo por Telegram",
@@ -409,7 +418,15 @@
     "disclaimer": "Operar forex y oro implica riesgo de pérdida, incluso de todo el capital depositado. Los resultados pasados y las simulaciones no garantizan resultados futuros. El Ai X PULSE RS es una herramienta de automatización con inteligencia artificial vendida por licencia; nada en este sitio es asesoría financiera ni oferta de inversión.",
     "comingSoon": "Muy pronto",
     "rightsPrefix": "© 2015-{year} -",
-    "rightsSuffix": ". Todos los derechos reservados."
+    "rightsSuffix": ". Todos los derechos reservados.",
+    "toolsLinks": {
+      "calculator": "Calculadora de lote",
+      "sessions": "Sesiones del mercado",
+      "quotes": "Cotizaciones",
+      "calendar": "Calendario económico",
+      "analysis": "Análisis del día con IA",
+      "news": "Noticias del mercado"
+    }
   },
   "Faq": {
     "title": "Preguntas Frecuentes",
@@ -434,7 +451,7 @@
       },
       {
         "q": "¿Cómo funcionan los perfiles de riesgo?",
-        "a": "En el Asistente IA eliges: Conservador (meta del 3% al día, límite de pérdida del 2%, 1% de riesgo por entrada), Moderado (5%, 3% y 2%), Agresivo (10%, 5% y 3%) o Personalizado. Meta mayor es riesgo mayor. Al alcanzar la meta o el límite, el sistema se detiene hasta el día siguiente."
+        "a": "En el Asistente IA eliges el perfil. Los principales: Conservador (meta del 3% al día, límite de pérdida del 2%, 1% de riesgo por entrada) y Moderado (5%, 3% y 2%). Personalizado y otros perfiles están en el portal. Una meta mayor significa más riesgo. Al llegar a la meta o al límite, el sistema se detiene hasta el día siguiente."
       },
       {
         "q": "¿El sistema usa recuperación de lote?",
@@ -449,8 +466,8 @@
         "a": "Todavía no. Hoy es solo MetaTrader 4. La versión para MT5 llega muy pronto."
       },
       {
-        "q": "¿Cuál es el depósito mínimo?",
-        "a": "Lo recomendado es desde $100, en una cuenta MT4 con apalancamiento 1:500 - cualquier tipo de cuenta, con spread de hasta 30 pts."
+        "q": "¿Cuánto necesito para empezar?",
+        "a": "Capital recomendado: desde US$ 500 en oro y desde US$ 100 en pares de divisas, en una cuenta MT4 con apalancamiento 1:500 - cualquier tipo de cuenta, con spread de hasta 30 pts. Con menos, incluso el lote mínimo del bróker (0,01) puede arriesgar más de lo que permite el perfil elegido."
       },
       {
         "q": "¿Tengo que dejar la computadora encendida?",
@@ -561,7 +578,7 @@
     },
     "honest": {
       "title": "Qué es IA y qué es regla",
-      "ai": "IA: arma el plan, elige pares y metas, prueba en tu historial y da la opinión técnica del día.",
+      "ai": "IA: arma el plan, elige pares y metas, los prueba en tu propio historial y, con el sistema v7.5 o más nuevo, da la opinión técnica del día.",
       "rules": "Reglas: entradas, salidas, stops y el lote siguen la configuración que ves en el portal.",
       "note": "Ninguna IA predice el mercado. Lo que hace es cambiar corazonadas por un plan y por datos."
     },
@@ -661,13 +678,34 @@
         "label": "Binance Pay",
         "network": "Paga directamente desde la app de Binance usando el ID abajo"
       },
-      "btc": { "label": "Bitcoin (BTC)", "network": "Red Bitcoin" },
-      "usdtTrc20": { "label": "USDT", "network": "Red TRC-20 (Tron)" },
-      "usdtErc20": { "label": "USDT", "network": "Red ERC-20 (Ethereum)" },
-      "usdtBep20": { "label": "USDT", "network": "Red BEP-20 (BNB Smart Chain)" },
-      "usdc": { "label": "USDC", "network": "Red BASE" },
-      "ltc": { "label": "Litecoin (LTC)", "network": "Red Litecoin" },
-      "eth": { "label": "Ethereum (ETH)", "network": "Red Ethereum (ERC-20)" }
+      "btc": {
+        "label": "Bitcoin (BTC)",
+        "network": "Red Bitcoin"
+      },
+      "usdtTrc20": {
+        "label": "USDT",
+        "network": "Red TRC-20 (Tron)"
+      },
+      "usdtErc20": {
+        "label": "USDT",
+        "network": "Red ERC-20 (Ethereum)"
+      },
+      "usdtBep20": {
+        "label": "USDT",
+        "network": "Red BEP-20 (BNB Smart Chain)"
+      },
+      "usdc": {
+        "label": "USDC",
+        "network": "Red BASE"
+      },
+      "ltc": {
+        "label": "Litecoin (LTC)",
+        "network": "Red Litecoin"
+      },
+      "eth": {
+        "label": "Ethereum (ETH)",
+        "network": "Red Ethereum (ERC-20)"
+      }
     },
     "ctaTelegram": "Ya pagué - Enviar comprobante por Telegram",
     "dmMessage": "¡Hola! Hice el pago de la {plan} ({price}).\nNombre: {name}\nPaís: {country}\nEmail: {email}\nPedido: {order}\nCuentas MT4: {accounts}\nVoy a enviar la captura del pago.",
@@ -712,8 +750,8 @@
         "platformValue": "MetaTrader 4",
         "leverage": "Apalancamiento",
         "leverageValue": "1:500",
-        "deposit": "Depósito mínimo",
-        "depositValue": "$100",
+        "deposit": "Capital recomendado",
+        "depositValue": "US$ 500 en oro · US$ 100 en pares",
         "type": "Tipo de cuenta",
         "typeValue": "Cualquier tipo",
         "note": "Después de crear la cuenta, completa tus datos y el número (login) de cada cuenta MT4 abajo. La licencia queda vinculada a esas cuentas.",
@@ -1745,6 +1783,93 @@
         "both": "Trader sénior: ambos lados",
         "none": "Trader sénior: no operar"
       }
+    }
+  },
+  "Tools": {
+    "hub": {
+      "eyebrow": "Gratis",
+      "title": "Herramientas para el trader",
+      "intro": "Herramientas simples y gratuitas para planificar cada operación, con o sin el Ai X PULSE RS.",
+      "open": "Abrir",
+      "soon": "Muy pronto",
+      "items": {
+        "calculator": "Encuentra el lote correcto para tu riesgo en segundos.",
+        "sessions": "Mira qué mercados están abiertos ahora, en tu horario.",
+        "quotes": "Precio de referencia del oro y de los principales pares.",
+        "calendar": "Noticias económicas que mueven el mercado.",
+        "analysis": "El sesgo del día de cada par, escrito por IA.",
+        "news": "Los titulares del día con enlace a la fuente."
+      }
+    },
+    "cta": {
+      "title": "¿Quieres que una IA lo haga por ti?",
+      "body": "El Ai X PULSE RS calcula el lote según el riesgo, respeta horario y spread y se detiene en la meta o el límite del día, directo en tu cuenta MT4.",
+      "button": "Conocer el Ai X PULSE RS",
+      "secondary": "Probar 1 día por US$10"
+    },
+    "calculator": {
+      "metaTitle": "Calculadora de Lote y Valor del Pip",
+      "metaDescription": "Calcula el tamaño del lote en MT4 según tu riesgo: saldo, % de riesgo y stop en pips o por precio. Oro (XAU/USD) y pares forex, incluidos los JPY. Gratis.",
+      "eyebrow": "Herramienta gratis",
+      "title": "Calculadora de lote",
+      "intro": "Indica el saldo, cuánto aceptas arriesgar y dónde está el stop. La calculadora muestra el lote y cuánto vale cada pip.",
+      "balance": "Saldo de la cuenta (US$)",
+      "riskPct": "Riesgo en esta operación (%)",
+      "pair": "Activo",
+      "stopMode": "Cómo indicar el stop",
+      "byPips": "Distancia en pips",
+      "byPrice": "Precio de entrada y de stop",
+      "stopPips": "Stop (pips)",
+      "entry": "Precio de entrada",
+      "stopPrice": "Precio del stop",
+      "convPrice": "Cotización del {pair}",
+      "convHint": "Se usa para convertir el valor del pip a dólares. Se completa con la cotización de referencia cuando está disponible; confírmala en tu plataforma.",
+      "goldPip": "En el oro, 1 pip = 0,01 de precio (estándar del Ai X PULSE RS).",
+      "resultLot": "Lote",
+      "resultRisk": "Monto en riesgo",
+      "resultPip": "Valor del pip (lote 0,01)",
+      "resultActual": "Riesgo real con ese lote",
+      "explain": "Con un saldo de {balance} y un riesgo del {pct}, aceptas perder hasta {risk} en esta operación. Con un stop de {pips} pips en {pair} (cada pip vale {pip} por cada 0,01 lote), el lote es {lot}.",
+      "belowMin": "El lote calculado quedó por debajo del mínimo del bróker (0,01). Con 0,01 arriesgarías {risk} ({pct} del saldo). Aumenta el capital o usa un stop más corto.",
+      "invalid": "Completa saldo, riesgo y stop con valores mayores que cero.",
+      "assumptions": "Considera una cuenta en dólares (USD), contrato estándar (100.000 unidades; oro 100 onzas) y redondea el lote hacia abajo en pasos de 0,01. Confirma el tamaño del contrato y el lote mínimo con tu bróker."
+    },
+    "sessions": {
+      "metaTitle": "Sesiones del Mercado Forex en Tu Horario",
+      "metaDescription": "Mira ahora qué sesiones del forex están abiertas (Sídney, Tokio, Londres y Nueva York), en tu zona horaria, con horario de verano y superposiciones.",
+      "eyebrow": "Herramienta gratis",
+      "title": "Sesiones del mercado",
+      "intro": "Qué mercados están abiertos ahora, en tu horario. El horario de verano de cada ciudad ya está considerado.",
+      "yourTime": "Tu horario",
+      "open": "Abierta",
+      "closed": "Cerrada",
+      "opensIn": "abre en {time}",
+      "closesIn": "cierra en {time}",
+      "weekend": "Fin de semana: el forex está cerrado. Reabre el domingo a las {time} en tu horario.",
+      "overlaps": "Superposiciones de hoy",
+      "noOverlap": "No hay superposiciones hoy.",
+      "overlapNote": "Cuando dos sesiones están abiertas a la vez, suele haber más volumen y movimiento.",
+      "cities": {
+        "sydney": "Sídney",
+        "tokyo": "Tokio",
+        "london": "Londres",
+        "newyork": "Nueva York"
+      },
+      "hoursNote": "Horarios de referencia (hora local de cada ciudad): Sídney 7-16 h, Tokio 9-18 h, Londres 8-17 h, Nueva York 8-17 h. No incluye feriados locales.",
+      "loading": "Cargando tu horario..."
+    },
+    "quotes": {
+      "metaTitle": "Cotizaciones del Oro y Forex",
+      "metaDescription": "Precio de referencia del oro (XAU/USD) y de los principales pares de divisas, actualizado cada 15 minutos.",
+      "eyebrow": "Referencia",
+      "title": "Cotizaciones",
+      "intro": "Precio de referencia del oro y de los principales pares de divisas.",
+      "updated": "Actualizado a las {time}",
+      "delay": "Cotizaciones de referencia, con un retraso de hasta 15 minutos. No las uses para abrir o cerrar operaciones: confirma siempre en tu plataforma.",
+      "sources": "Fuentes: gold-api.com (oro) y Twelve Data (divisas).",
+      "empty": "Cotizaciones no disponibles en este momento. Intenta de nuevo en unos minutos.",
+      "loading": "Cargando cotizaciones...",
+      "gold": "Oro"
     }
   }
 }

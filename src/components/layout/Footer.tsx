@@ -9,6 +9,7 @@ import {
   IconFacebook,
 } from "@/components/brand/socialIcons";
 import { siteConfig } from "@/lib/site-config";
+import { TOOLS } from "@/lib/tools";
 
 const SOCIALS = [
   { name: "Telegram", Icon: IconTelegram, url: siteConfig.telegramUrl },
@@ -80,20 +81,32 @@ export function Footer() {
             </ul>
           </nav>
 
-          {/* Área futura de ferramentas: só rótulos "em breve" (sem link) até cada página existir */}
-          <div>
-            <h3 className={headingClass}>{t("toolsHeading")}</h3>
+          {/* Ferramentas: link pras que já existem, "em breve" (sem link) pro resto */}
+          <nav aria-label={t("toolsHeading")}>
+            <h3 className={headingClass}>
+              <Link href="/tools" className="hover:underline">
+                {t("toolsHeading")}
+              </Link>
+            </h3>
             <ul className="grid gap-2">
-              {(t.raw("tools") as string[]).map((tool) => (
-                <li key={tool} className="flex flex-wrap items-center gap-2 opacity-70">
-                  <span>{tool}</span>
-                  <span className="rounded-full border border-brand-hairline px-1.5 py-px text-[10px] uppercase tracking-wide text-brand-ink-dim">
-                    {t("comingSoon")}
-                  </span>
+              {TOOLS.map((tool) => (
+                <li key={tool.key}>
+                  {tool.href ? (
+                    <Link href={tool.href} className={linkClass}>
+                      {t(`toolsLinks.${tool.key}`)}
+                    </Link>
+                  ) : (
+                    <span className="flex flex-wrap items-center gap-2 opacity-70">
+                      {t(`toolsLinks.${tool.key}`)}
+                      <span className="rounded-full border border-brand-hairline px-1.5 py-px text-[10px] uppercase tracking-wide">
+                        {t("comingSoon")}
+                      </span>
+                    </span>
+                  )}
                 </li>
               ))}
             </ul>
-          </div>
+          </nav>
 
           <div>
             <h3 className={headingClass}>{t("contactHeading")}</h3>

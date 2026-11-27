@@ -1,26 +1,16 @@
 import type { Metadata } from "next";
 import { getTranslations, setRequestLocale } from "next-intl/server";
+import { pageMetadata } from "@/lib/seo";
 import { TelegramCta } from "@/components/sections/TelegramCta";
 import { PageHeader } from "@/components/sections/PageHeader";
 import { GlowCard } from "@/components/brand/GlowCard";
-import { getPathname } from "@/i18n/navigation";
-import { routing } from "@/i18n/routing";
 import { siteConfig } from "@/lib/site-config";
 
 type Props = { params: Promise<{ locale: string }> };
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { locale } = await params;
-  const t = await getTranslations({ locale, namespace: "Metadata.about" });
-  return {
-    title: t("title"),
-    description: t("description"),
-    alternates: {
-      languages: Object.fromEntries(
-        routing.locales.map((l) => [l, getPathname({ href: "/about", locale: l })])
-      ),
-    },
-  };
+  return pageMetadata({ locale, href: "/about", namespace: "Metadata.about" });
 }
 
 export default async function AboutPage({ params }: Props) {

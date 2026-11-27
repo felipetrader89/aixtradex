@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { getTranslations, setRequestLocale } from "next-intl/server";
+import { pageMetadata } from "@/lib/seo";
 import { GlowCard } from "@/components/brand/GlowCard";
 import { IconClock, IconShield, IconSpark, IconTarget } from "@/components/brand/icons";
 import { SpecTable } from "@/components/sections/SpecTable";
@@ -9,8 +10,6 @@ import { StepList, type Step } from "@/components/sections/StepList";
 import { ProfilesSection } from "@/components/sections/ProfilesSection";
 import { RiskNotice } from "@/components/sections/RiskNotice";
 import { Button } from "@/components/ui/Button";
-import { getPathname } from "@/i18n/navigation";
-import { routing } from "@/i18n/routing";
 
 type Props = { params: Promise<{ locale: string }> };
 
@@ -18,16 +17,7 @@ const DAY_ICONS = [IconClock, IconShield, IconTarget, IconSpark];
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { locale } = await params;
-  const t = await getTranslations({ locale, namespace: "Metadata.howItWorks" });
-  return {
-    title: t("title"),
-    description: t("description"),
-    alternates: {
-      languages: Object.fromEntries(
-        routing.locales.map((l) => [l, getPathname({ href: "/how-it-works", locale: l })])
-      ),
-    },
-  };
+  return pageMetadata({ locale, href: "/how-it-works", namespace: "Metadata.howItWorks" });
 }
 
 export default async function HowItWorksPage({ params }: Props) {

@@ -1,7 +1,9 @@
 import type { Metadata } from "next";
 import Image from "next/image";
 import { getTranslations, setRequestLocale } from "next-intl/server";
+import { pageMetadata } from "@/lib/seo";
 import { Hero } from "@/components/sections/Hero";
+import { PanelMockup } from "@/components/sections/PanelMockup";
 import { MarketTicker } from "@/components/sections/MarketTicker";
 import { SectionHeading } from "@/components/sections/SectionHeading";
 import { ProfilesSection } from "@/components/sections/ProfilesSection";
@@ -23,8 +25,7 @@ import {
   IconUser,
 } from "@/components/brand/icons";
 import { Button } from "@/components/ui/Button";
-import { Link, getPathname } from "@/i18n/navigation";
-import { routing } from "@/i18n/routing";
+import { Link } from "@/i18n/navigation";
 import { siteConfig } from "@/lib/site-config";
 import { PARTNER_LOGOS, hasPartnerLogo } from "@/lib/partnerLogos";
 import { getHomeResultImages } from "@/lib/results";
@@ -38,16 +39,7 @@ type Item = { title: string; body: string };
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { locale } = await params;
-  const t = await getTranslations({ locale, namespace: "Metadata.home" });
-  return {
-    title: t("title"),
-    description: t("description"),
-    alternates: {
-      languages: Object.fromEntries(
-        routing.locales.map((l) => [l, getPathname({ href: "/", locale: l })])
-      ),
-    },
-  };
+  return pageMetadata({ locale, href: "/", namespace: "Metadata.home", absoluteTitle: true });
 }
 
 export default async function HomePage({ params }: Props) {
@@ -116,6 +108,7 @@ export default async function HomePage({ params }: Props) {
         ctaTertiary={t("hero.ctaTertiary")}
         ctaTertiaryHref={siteConfig.telegramUrl}
         trust={trust}
+        visual={<PanelMockup />}
       />
 
       <section aria-label={t("market.title")}>

@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { getTranslations, setRequestLocale } from "next-intl/server";
+import { pageMetadata } from "@/lib/seo";
 import { ResultsTabs } from "@/components/results/ResultsTabs";
 import { PageHeader } from "@/components/sections/PageHeader";
 import { VerifiedSoon } from "@/components/sections/VerifiedSoon";
@@ -8,24 +9,13 @@ import { GlowCard } from "@/components/brand/GlowCard";
 import { IconTelegram } from "@/components/brand/icons";
 import { Button } from "@/components/ui/Button";
 import { getResultImages, RESULT_VIDEOS } from "@/lib/results";
-import { getPathname } from "@/i18n/navigation";
-import { routing } from "@/i18n/routing";
 import { siteConfig } from "@/lib/site-config";
 
 type Props = { params: Promise<{ locale: string }> };
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { locale } = await params;
-  const t = await getTranslations({ locale, namespace: "Metadata.results" });
-  return {
-    title: t("title"),
-    description: t("description"),
-    alternates: {
-      languages: Object.fromEntries(
-        routing.locales.map((l) => [l, getPathname({ href: "/results", locale: l })])
-      ),
-    },
-  };
+  return pageMetadata({ locale, href: "/results", namespace: "Metadata.results" });
 }
 
 export default async function ResultsPage({ params }: Props) {

@@ -26,7 +26,7 @@ type Labels = {
 export function ProfileCards({ items, labels }: { items: ProfileItem[]; labels: Labels }) {
   return (
     <div>
-      <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
+      <div className="mx-auto grid max-w-4xl grid-cols-1 gap-4 md:grid-cols-2">
         {items.map((p) => (
           <div key={p.key} className="glow-border hover-card flex flex-col rounded-2xl bg-brand-surface p-6">
             <div className="flex items-center justify-between gap-3">
@@ -60,7 +60,7 @@ export function ProfileCards({ items, labels }: { items: ProfileItem[]; labels: 
           </div>
         ))}
       </div>
-      <div className="mt-4 flex items-start gap-3 rounded-2xl border border-dashed border-brand-hairline px-5 py-4 text-sm">
+      <div className="mx-auto mt-4 flex max-w-4xl items-start gap-3 rounded-2xl border border-dashed border-brand-hairline px-5 py-4 text-sm">
         <IconSliders className="mt-0.5 h-5 w-5 shrink-0 text-brand-accent" />
         <p className="text-brand-ink-dim">
           <span className="font-semibold text-brand-ink">{labels.customTitle}: </span>
