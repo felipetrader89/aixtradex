@@ -88,6 +88,43 @@ body {
   );
 }
 
+/* ---------- Topo das páginas internas ---------- */
+.page-header {
+  background:
+    radial-gradient(700px 260px at 50% 0%, rgba(51, 214, 160, 0.12), transparent 70%),
+    linear-gradient(180deg, rgba(18, 35, 54, 0.6), transparent);
+}
+
+/* ---------- Seção com faixa de fundo alternativo ---------- */
+.band {
+  background: linear-gradient(180deg, transparent, rgba(18, 35, 54, 0.55) 18%, rgba(18, 35, 54, 0.55) 82%, transparent);
+}
+
+/* ---------- FAQ (details/summary) ---------- */
+.faq-item summary {
+  list-style: none;
+}
+.faq-item summary::-webkit-details-marker {
+  display: none;
+}
+.faq-item .faq-plus {
+  transition: transform 0.2s ease;
+}
+.faq-item[open] .faq-plus {
+  transform: rotate(45deg);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hover-card,
+  .hover-card:hover {
+    transform: none;
+  }
+  .ticker-track,
+  .results-track {
+    animation-duration: 400s;
+  }
+}
+
 /* ---------- Hover-interactive cards ---------- */
 .hover-card {
   transition:
