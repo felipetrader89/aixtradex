@@ -203,6 +203,8 @@ export async function applyPlan(opts: {
       pair = { ...pair, ...(patch as Partial<PairParams>) };
     }
     if (riskKey && can("riskProfile", riskKey, pair.riskProfile)) pair = { ...pair, riskProfile: riskKey, riskPct: RISK_PROFILES[riskKey] };
+    // 2026-11-27: o Assistente segue o modelo testado - sem recuperação (lote maior depois de perda)
+    if (can("recovery", false, pair.recovery)) pair.recovery = false;
     pair.goalPct = goals[s];
     pair.lossPct = 0; // o limite de perda é o da conta (para tudo)
     pairs[s] = pair;

@@ -986,7 +986,7 @@
       "editing": "Ajustes de {pair}",
       "tradeThis": "Operar este par",
       "risk": "Riesgo por entrada",
-      "riskHint": "Cuánto del saldo arriesga el robot en cada entrada de este par (hasta el cierre en pérdida).",
+      "riskHint": "Cuánto del saldo arriesga el robot en cada entrada de este par. El perfil también activa la meta y el límite de pérdida del día (probados juntos, sin recuperación).",
       "profiles": {
         "conservative": "Conservador",
         "moderate": "Moderado",
@@ -994,6 +994,7 @@
         "custom": "Personalizado (pruebas)"
       },
       "profileDesc": "{pct}% del saldo por entrada",
+      "profileDescFull": "{pct}% por entrada · meta del día {goal}% · límite {loss}%",
       "customPct": "% por entrada",
       "pairGoal": "Meta del día de este par",
       "pairLoss": "Límite de pérdida del día de este par",
@@ -1005,7 +1006,7 @@
         "d2": "Solo venta"
       },
       "recovery": "Recuperación de pérdidas",
-      "recoveryHint": "Después de una pérdida, la siguiente entrada aumenta un poco el lote para recuperar.",
+      "recoveryHint": "Después de una pérdida, la siguiente entrada aumenta el lote para recuperar. Viene desactivada: en las pruebas de 2024 a 2026 causó los peores días.",
       "levels": "Máximo de niveles",
       "recoveryDir": "Después de una pérdida",
       "recoveryDirs": {

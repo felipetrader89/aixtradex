@@ -9,6 +9,7 @@ import {
   NEWS_MINUTES,
   PCT_OPTIONS,
   RISK_PROFILES,
+  PROFILE_LIMITS,
   RSI_PERIODS,
   RSI_TIMEFRAMES,
   ASSET_CATEGORIES,
@@ -431,6 +432,16 @@ export function RobotSettingsForm({
     ...allowed("riskProfile", ["conservative", "moderate", "aggressive"] as RiskProfile[]),
     ...(allowCustom ? (["custom"] as RiskProfile[]) : []),
   ];
+  // 2026-11-27: o perfil liga junto a meta e o limite do dia do par e desliga a recuperação (o que o admin liberar)
+  const profilePatch = (pr: RiskProfile, value: number): Partial<PairParams> => {
+    const patch: Partial<PairParams> = { riskProfile: pr, riskPct: value };
+    if (pr === "custom") return patch;
+    const lim = PROFILE_LIMITS[pr];
+    if (allowed("goalPct", [lim.goal]).length) patch.goalPct = lim.goal;
+    if (allowed("lossPct", [lim.loss]).length) patch.lossPct = lim.loss;
+    if (allowed("recovery", [false]).length) patch.recovery = false;
+    return patch;
+  };
   const riskOf = (p: PairParams) => (p.riskProfile === "custom" ? p.riskPct : RISK_PROFILES[p.riskProfile]);
   const ddCap = policy ? policyMax(policy.ddPct) : 100;
   const ddOptions = useMemo(() => {
@@ -540,13 +551,17 @@ export function RobotSettingsForm({
                   key={pr}
                   type="button"
                   aria-pressed={on}
-                  onClick={() => setPair(editing, { riskProfile: pr, riskPct: value })}
+                  onClick={() => setPair(editing, profilePatch(pr, value))}
                   className={`rounded-xl border p-3 text-left transition ${
                     on ? "border-brand-accent bg-brand-accent/10" : "border-brand-hairline bg-brand-surface-2 hover:border-brand-accent/40"
                   }`}
                 >
                   <span className={`block text-sm font-bold ${on ? "text-brand-accent" : "text-brand-ink"}`}>{t(`profiles.${pr}`)}</span>
-                  <span className="mt-1 block text-[11px] text-brand-ink-dim">{t("profileDesc", { pct: pct(value) })}</span>
+                  <span className="mt-1 block text-[11px] text-brand-ink-dim">
+                    {pr === "custom"
+                      ? t("profileDesc", { pct: pct(value) })
+                      : t("profileDescFull", { pct: pct(value), goal: pct(PROFILE_LIMITS[pr].goal), loss: pct(PROFILE_LIMITS[pr].loss) })}
+                  </span>
                 </button>
               );
             })}

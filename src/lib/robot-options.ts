@@ -10,9 +10,16 @@ export const isStandardSymbol = (s: string) => (ROBOT_SYMBOLS as readonly string
 export const ASSET_CATEGORIES = ["forex", "metals", "crypto", "indices", "energy", "stocks", "commodities", "other"] as const;
 export type AssetCategory = (typeof ASSET_CATEGORIES)[number];
 
-// % do saldo arriscado em cada entrada (até o fechamento na perda). Moderado = o padrão de sempre no ouro (0,01 a cada $250).
-export const RISK_PROFILES = { conservative: 1, moderate: 2, aggressive: 3 } as const;
+// % do saldo arriscado em cada entrada (até o fechamento na perda).
+// 2026-11-27: perfis do modelo testado (sem recuperação): risco × 2 = meta do dia, risco × 3 = limite de perda do dia.
+export const RISK_PROFILES = { conservative: 0.5, moderate: 1, aggressive: 1.5 } as const;
 export type RiskProfile = keyof typeof RISK_PROFILES | "custom";
+// Meta e limite de perda do dia que cada perfil liga junto (por par e na conta).
+export const PROFILE_LIMITS = {
+  conservative: { goal: 1, loss: 1.5 },
+  moderate: { goal: 2, loss: 3 },
+  aggressive: { goal: 3, loss: 4.5 },
+} as const;
 
 // Metas e limites de perda do dia (0 = desligado). 2026-11-25: de 0,5 em 0,5 até 10 (o Assistente divide a meta entre os pares).
 export const PCT_OPTIONS = [0, 0.5, 1, 1.5, 2, 2.5, 3, 3.5, 4, 4.5, 5, 5.5, 6, 6.5, 7, 7.5, 8, 8.5, 9, 9.5, 10, 10.5, 11, 12, 13, 14, 15, 20] as const;
@@ -98,10 +105,10 @@ export type PairParams = {
 export const DEFAULT_PAIR: PairParams = {
   riskProfile: "moderate",
   riskPct: RISK_PROFILES.moderate,
-  goalPct: 0,
-  lossPct: 0,
+  goalPct: PROFILE_LIMITS.moderate.goal,
+  lossPct: PROFILE_LIMITS.moderate.loss,
   direction: 0,
-  recovery: true,
+  recovery: false, // 2026-11-27: a recuperação (lote maior depois de perda) causou os dias de -42% a -67% nos testes
   recoveryLevels: 10,
   recoveryOpposite: false,
   rsiZone: 0,
@@ -266,8 +273,8 @@ export const ACCOUNT_DEFAULTS = {
   symbols: ["XAUUSD"],
   maxPositions: MAX_POSITIONS,
   ddPct: DD_CAP_DEFAULT,
-  dailyGoalPct: 10.5,
-  dailyLossPct: 5.5,
+  dailyGoalPct: PROFILE_LIMITS.moderate.goal,
+  dailyLossPct: PROFILE_LIMITS.moderate.loss,
   startHour: 0,
   endHour: 22,
   days: [0, 1, 2, 3, 4, 5, 6],

@@ -986,7 +986,7 @@
       "editing": "{pair} settings",
       "tradeThis": "Trade this pair",
       "risk": "Risk per entry",
-      "riskHint": "How much of the balance the robot risks on each entry in this pair (up to the loss close).",
+      "riskHint": "How much of the balance the robot risks on each entry in this pair. The profile also sets the daily goal and loss limit (tested together, no recovery).",
       "profiles": {
         "conservative": "Conservative",
         "moderate": "Moderate",
@@ -994,6 +994,7 @@
         "custom": "Custom (testing)"
       },
       "profileDesc": "{pct}% of balance per entry",
+      "profileDescFull": "{pct}% per entry · daily goal {goal}% · limit {loss}%",
       "customPct": "% per entry",
       "pairGoal": "Daily goal for this pair",
       "pairLoss": "Daily loss limit for this pair",
@@ -1005,7 +1006,7 @@
         "d2": "Sell only"
       },
       "recovery": "Loss recovery",
-      "recoveryHint": "After a loss, the next entry slightly increases the lot to recover.",
+      "recoveryHint": "After a loss, the next entry increases the lot to recover. Off by default: in the 2024-2026 tests it caused the worst days.",
       "levels": "Maximum levels",
       "recoveryDir": "After a loss",
       "recoveryDirs": {

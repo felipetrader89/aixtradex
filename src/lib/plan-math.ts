@@ -8,17 +8,19 @@
 // É simulação em velas (uma entrada por vez em cada lado, sem a recuperação): mostra o que teria acontecido, não promete nada.
 import { fullStats, type ScanResult } from "./intel-stats";
 
+// 2026-11-27: modelo testado no MT4 (ouro, 2024-01 a 2026-11, sem recuperação): limite do dia = 1,5 × meta = 3 × risco por entrada.
+// Conservador e Moderado: 34 de 35 meses positivos. Meta igual ao limite falhou (uma perda encerra o dia).
 export const PLAN_PROFILES = {
-  conservative: { goal: 3, loss: 2 },
-  moderate: { goal: 5, loss: 3 },
-  aggressive: { goal: 10, loss: 5 },
+  conservative: { goal: 1, loss: 1.5 },
+  moderate: { goal: 2, loss: 3 },
+  aggressive: { goal: 3, loss: 4.5 },
 } as const;
 export type PlanProfile = keyof typeof PLAN_PROFILES | "custom";
 export const PLAN_PROFILE_KEYS = ["conservative", "moderate", "aggressive", "custom"] as const;
 export const PLAN_STEP = 0.5;
 export const PLAN_MAX_GOAL = 20;
-// meta sugerida nunca passa de 10% (o teto do produto): a simulação em velas é otimista e o site não promete mais que isso
-export const PLAN_SUGGEST_MAX = 10;
+// meta sugerida nunca passa de 5% (2026-11-27: metas de 1% a 5%; acima disso o dia fica arriscado demais)
+export const PLAN_SUGGEST_MAX = 5;
 export const PLAN_TARGET_RATE = 0.7; // meta sugerida = a maior que bateu em pelo menos 70% dos dias
 export const PLAN_MAX_AUTO_PAIRS = 5;
 export const PLAN_MAX_PAIRS = 12;
