@@ -1091,6 +1091,22 @@
       "month": "This month",
       "note": "Data comes from the robot every 5 minutes. Days and weeks follow the broker's time (the week starts on Monday). Results = closed trades, including swap and commission; deposits and withdrawals only affect the balance. For full week and month figures, set MT4's Account History tab to \"All History\"."
     },
+    "consistency": {
+      "title": "Consistency",
+      "intro": "The goal is to close the day, the week and the month in profit. Here you see how often that happened on this account (the robot's closed trades, in broker time).",
+      "days": "Positive days",
+      "weeks": "Positive weeks",
+      "months": "Positive months",
+      "ofTotal": "{pos} of {total}",
+      "rate": "{pct}% positive",
+      "bestWorst": "Best day: {best} ({bestDay}) · Worst day: {worst} ({worstDay})",
+      "legend": "Green = positive day · Red = negative day · Gray = no closed trade. The stronger the color, the bigger the result in the month.",
+      "lastWeeks": "Last 8 weeks (starting Monday)",
+      "lastMonths": "Last 6 months",
+      "tooltip": "{date}: {value} · {count, plural, one {# trade} other {# trades}}",
+      "noTrade": "{date}: no closed trade",
+      "empty": "No closed trades from this account yet. Robot v7.4 or newer sends every closed trade, and the panel shows up here."
+    },
     "accounts": {
       "title": "MT4 Accounts",
       "intro": "Balance, results and open orders for each account, straight from the robot.",

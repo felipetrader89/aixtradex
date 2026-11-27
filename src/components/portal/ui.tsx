@@ -74,6 +74,7 @@ export function AccountStatsCard({
   lastCheckAt,
   configureHref,
   configureLabel,
+  children,
 }: {
   login: string;
   planLabel: string;
@@ -82,6 +83,7 @@ export function AccountStatsCard({
   lastCheckAt?: Date | null;
   configureHref?: string;
   configureLabel?: string;
+  children?: React.ReactNode;
 }) {
   const t = useTranslations("Portal.stats");
   const locale = useLocale();
@@ -142,6 +144,7 @@ export function AccountStatsCard({
           </div>
         </>
       )}
+      {children}
     </Card>
   );
 }

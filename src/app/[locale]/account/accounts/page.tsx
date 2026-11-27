@@ -2,6 +2,9 @@ import NextLink from "next/link";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import { loadAccountsWithStats, requireCustomer } from "@/lib/portal";
 import { AccountStatsCard, Card, PortalHeader } from "@/components/portal/ui";
+import { ConsistencyPanel } from "@/components/portal/Consistency";
+import { brokerToday, dailyResultsFor } from "@/lib/consistency";
+import { PRODUCT } from "@/lib/plans";
 
 type Props = { params: Promise<{ locale: string }> };
 
@@ -18,6 +21,7 @@ export default async function AccountsPage({ params }: Props) {
   const t = await getTranslations("Portal");
   const ta = await getTranslations("Account");
   const { rows } = await loadAccountsWithStats(user.id);
+  const daily = await dailyResultsFor(PRODUCT.slug, rows.map((r) => r.account.login));
 
   return (
     <div className="flex flex-col gap-5">
@@ -41,7 +45,9 @@ export default async function AccountsPage({ params }: Props) {
             lastCheckAt={account.lastCheckAt}
             configureHref={`/${locale}/account/accounts/${account.login}`}
             configureLabel={t("robot.configure")}
-          />
+          >
+            {stats && <ConsistencyPanel days={daily.get(account.login) ?? []} today={brokerToday(stats.brokerGmt)} currency={stats.currency} />}
+          </AccountStatsCard>
         ))
       )}
       <p className="text-xs leading-relaxed text-brand-ink-dim">{t("stats.note")}</p>

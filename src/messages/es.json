@@ -1091,6 +1091,22 @@
       "month": "Este mes",
       "note": "Los datos llegan del robot cada 5 minutos. Los días y semanas siguen el horario del bróker (la semana empieza el lunes). Resultados = operaciones cerradas, ya con swap y comisión; depósitos y retiros solo afectan el saldo. Para ver la semana y el mes completos, deja la pestaña Historial de la cuenta de MT4 en \"Todo el historial\"."
     },
+    "consistency": {
+      "title": "Consistencia",
+      "intro": "La meta es cerrar el día, la semana y el mes en positivo. Aquí ves cuántas veces pasó en esta cuenta (operaciones cerradas del robot, en el horario del bróker).",
+      "days": "Días positivos",
+      "weeks": "Semanas positivas",
+      "months": "Meses positivos",
+      "ofTotal": "{pos} de {total}",
+      "rate": "{pct}% en positivo",
+      "bestWorst": "Mejor día: {best} ({bestDay}) · Peor día: {worst} ({worstDay})",
+      "legend": "Verde = día positivo · Rojo = día negativo · Gris = sin operación cerrada. Cuanto más fuerte el color, mayor el resultado en el mes.",
+      "lastWeeks": "Últimas 8 semanas (inicio el lunes)",
+      "lastMonths": "Últimos 6 meses",
+      "tooltip": "{date}: {value} · {count, plural, one {# operación} other {# operaciones}}",
+      "noTrade": "{date}: sin operación cerrada",
+      "empty": "Todavía no hay operaciones cerradas de esta cuenta. El robot v7.4 o más nuevo envía cada operación cerrada, y el panel aparece aquí."
+    },
     "accounts": {
       "title": "Cuentas MT4",
       "intro": "Saldo, resultados y órdenes abiertas de cada cuenta, directo del robot.",
