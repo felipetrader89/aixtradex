@@ -1,12 +1,12 @@
 {
   "Metadata": {
     "home": {
-      "title": "Ai X TradeX - Automated Forex Trading Robot",
-      "description": "Automated trading robot license for MetaTrader 4. Documented results, no empty hype - monthly plan or lifetime license."
+      "title": "Ai X TradeX - AI Trading for MT4",
+      "description": "Ai X PULSE RS: our AI trading system that connects to your MetaTrader 4 account. The AI builds the day's plan, you choose the risk profile and the system trades with a daily target and loss limit. Your money stays at your broker."
     },
     "products": {
       "title": "Plans",
-      "description": "Ai X PULSE RS: robot license on the monthly plan (up to 2 MT4 accounts) or lifetime plan (up to 5 MT4 accounts), with a performance target of up to 10% per day."
+      "description": "Ai X PULSE RS license: Monthly (US$99, up to 2 MT4 accounts), Lifetime (US$499, up to 5 MT4 accounts) or a trial pass from US$10. No account management."
     },
     "about": {
       "title": "About",
@@ -18,7 +18,7 @@
     },
     "faq": {
       "title": "FAQ",
-      "description": "Answers about Ai X PULSE RS - minimum deposit, compatible brokers, billing, and how to get started."
+      "description": "Questions about Ai X PULSE RS: how the AI works, risk profiles, brokers, deposit, requirements, billing, trial pass and how to start."
     },
     "blog": {
       "title": "Blog",
@@ -26,11 +26,15 @@
     },
     "howItWorks": {
       "title": "How It Works",
-      "description": "See how Ai X PULSE RS trades XAU/USD on MetaTrader 4 - strategy, risk management, automatic goals, and a real-time dashboard."
+      "description": "How Ai X PULSE RS works: connect it to MT4, choose a profile in the AI Assistant, see the chance of hitting the target measured on your history and follow everything on the dashboard."
     },
     "results": {
       "title": "Results",
-      "description": "Real screenshots and videos from my own and clients' accounts trading with Ai X TradeX robots - documented results, no empty promises."
+      "description": "Real screenshots of accounts trading with Ai X TradeX systems, straight from MetaTrader 4, unedited. Myfxbook-verified account coming soon."
+    },
+    "tools": {
+      "title": "Trader Tools",
+      "description": "Free tools for forex and gold traders: lot size calculator, market sessions in your time zone and reference quotes."
     }
   },
   "Nav": {
@@ -43,7 +47,8 @@
     "blog": "Blog",
     "howItWorks": "How It Works",
     "contact": "Contact",
-    "cta": "Telegram"
+    "cta": "Telegram",
+    "tools": "Tools"
   },
   "Common": {
     "marketTicker": "Live market",
@@ -52,57 +57,239 @@
     "previous": "Previous",
     "next": "Next"
   },
+  "Risk": {
+    "noticeTitle": "Risk warning",
+    "noticeBody": "Trading forex and gold involves a real risk of loss, including all deposited capital. Past results and simulations do not guarantee future results. Ai X PULSE RS is an AI-powered automation tool, not an investment or financial advice. Test first on a demo account or with the trial pass and only trade money you can afford to lose."
+  },
+  "Profiles": {
+    "eyebrow": "Risk profiles",
+    "title": "You choose how much to risk",
+    "intro": "In the AI Assistant you pick a profile. It sets the daily target, the daily loss limit and the risk on each entry. Once the target or the limit is reached, the system stops until the next day.",
+    "goal": "Daily target",
+    "loss": "Daily loss limit",
+    "risk": "Risk per entry",
+    "levelLabel": "Risk",
+    "items": [
+      {
+        "key": "conservative",
+        "name": "Conservative",
+        "goal": "3%",
+        "loss": "-2%",
+        "risk": "1%",
+        "level": 1,
+        "levelText": "Lower",
+        "body": "For beginners or anyone who prefers smaller swings. It's the starting point I recommend."
+      },
+      {
+        "key": "moderate",
+        "name": "Moderate",
+        "goal": "5%",
+        "loss": "-3%",
+        "risk": "2%",
+        "level": 2,
+        "levelText": "Medium",
+        "body": "A higher target with more risk. For traders who already know how their account behaves."
+      }
+    ],
+    "customTitle": "Custom and other profiles",
+    "customBody": "are available in the portal: set your own daily target and loss limit and fine-tune each pair.",
+    "warning": "A higher target means higher risk. The target is a stopping point, not a promise of profit. You can switch off the daily loss limit in the portal, but it's what protects you on a bad day."
+  },
   "Home": {
     "hero": {
-      "title": "Ai X TradeX",
-      "subtitle": "Automated trading robot for MetaTrader 4. Documented results, no empty hype.",
-      "ctaPrimary": "See the Plans",
-      "ctaSecondary": "Join the group"
+      "title": "AI trading on your MT4 account",
+      "subtitle": "Ai X PULSE RS connects to your MetaTrader 4. The AI builds the day's plan with you and the system trades on its own, with a daily target and loss limit, while your money stays at your broker.",
+      "ctaPrimary": "Get started",
+      "ctaSecondary": "Try 1 day for US$10",
+      "ctaTertiary": "Join the Telegram group",
+      "trust": [
+        "Your money stays at your broker",
+        "License, no account management",
+        "4,759 members in the Telegram group",
+        "Direct support from the developer"
+      ]
     },
     "market": {
       "title": "Live market"
     },
-    "calculatorCta": "See the Plans",
-    "whyUs": {
-      "heading": "Why",
+    "benefits": {
+      "eyebrow": "Why use it",
+      "title": "Trading with a plan, without being glued to the screen",
+      "intro": "Beginner or pro, the problem is usually the same: not enough time, not enough discipline and no clear plan. That's what Ai X PULSE RS solves.",
       "items": [
-        { "title": "Your account, 100%", "body": "The license runs directly on your own account - deposit and withdraw whenever you want, no third party managing your money." },
-        { "title": "Up to 5 MT4 Accounts", "body": "You get the robot's .ex4 file and install it on your own accounts: up to 2 with the monthly license, up to 5 with the lifetime one." },
-        { "title": "Real Performance", "body": "A target of up to 10% per day, following the robot's standard risk settings - the same logic running on my own accounts every day." },
-        { "title": "Partner Broker Discount", "body": "Works on any MT4 account type. At FPMarkets, Tickmill, Vantage, or Exness through my link/IB code, you get up to $50 off." }
+        {
+          "title": "Your time back",
+          "body": "With MT4 running (on your computer or a VPS), the system watches the market 24 hours a day on weekdays, so you don't have to."
+        },
+        {
+          "title": "Discipline without emotion",
+          "body": "No fear, no greed, no impulse trades. It follows the day's plan and stops at the target or the limit."
+        },
+        {
+          "title": "A plan built by AI",
+          "body": "The AI Assistant sets up pairs, target and loss limit with you in 5 steps. No need to understand every parameter."
+        },
+        {
+          "title": "Data, not guesswork",
+          "body": "Before you switch it on, the AI tests the plan on your own broker's candles and shows how many days the target was reached."
+        },
+        {
+          "title": "Your money, your control",
+          "body": "The account is yours, at the broker you choose. Deposit, withdraw, pause or change the plan whenever you want."
+        },
+        {
+          "title": "Real people behind it",
+          "body": "Support comes straight from the person who builds and trades the system every day, on Telegram or by email."
+        }
       ]
     },
-    "aboutTeaser": {
-      "title": "Who's behind this",
-      "body": "I started with nothing - at 15 I was already renting a place, working at a beverage warehouse. I went through computing, an online store, and binary options, where I reached #1 in Brazil and Top 5 in the world in 2019. After losing money chasing miracle robots in forex, I decided to develop my own EA - with realistic targets and compound interest, not empty promises.",
-      "cta": "Read the Full Story"
+    "how": {
+      "eyebrow": "How it works",
+      "title": "Up and running in 4 steps",
+      "items": [
+        {
+          "title": "Connect to your MT4",
+          "body": "Choose the license, download Ai X PULSE RS in My Account and follow the installation guide."
+        },
+        {
+          "title": "Choose the profile",
+          "body": "In the AI Assistant, choose your risk profile and the mode: automatic (the AI picks the pairs) or manual."
+        },
+        {
+          "title": "The AI analyzes",
+          "body": "It reads the last month of candles from your broker, tests the combinations and shows the chance of hitting the target."
+        },
+        {
+          "title": "Follow it on the dashboard",
+          "body": "Balance plus today's, this week's and this month's results for each account, in your client area."
+        }
+      ],
+      "cta": "See how it works"
     },
-    "partners": {
-      "title": "Partner Brokers"
+    "ai": {
+      "eyebrow": "Where AI comes in",
+      "title": "AI that works for you",
+      "items": [
+        {
+          "title": "AI Assistant",
+          "body": "Builds your account plan in 5 steps. In automatic mode it re-runs the analysis every weekday and adjusts the pairs on its own."
+        },
+        {
+          "title": "Ai X Intelligence",
+          "body": "Reads the candles on your own MT4 and measures the chance of hitting the target on test days, with real spread and commission costs."
+        },
+        {
+          "title": "Senior trader opinion",
+          "body": "With system v7.5 or newer, an AI acting as a seasoned trader reads the daily, 4-hour and 1-hour charts and shows each pair's bias for the day on your dashboard, refreshed throughout the day."
+        }
+      ],
+      "honest": "The AI builds the plan and analyzes the market. Orders on MT4 follow defined rules you can see in the portal. No AI predicts the market or guarantees results."
+    },
+    "panel": {
+      "eyebrow": "Client area",
+      "title": "Everything in one dashboard",
+      "items": [
+        "MT4 accounts: balance, results for today, this week and this month, and open trades",
+        "Today panel: daily target, loss limit and the status of each pair",
+        "Per-pair settings, applied by the system within 30 seconds",
+        "Licenses, renewal, downloads and installation guide"
+      ]
     },
     "results": {
-      "title": "Real Results",
-      "cta": "See All Results"
+      "eyebrow": "Real results",
+      "title": "Real screenshots, unedited",
+      "intro": "Real accounts, mine and clients', straight from the MetaTrader 4 app.",
+      "cta": "See all results",
+      "verifiedBadge": "Coming soon",
+      "verifiedTitle": "Real account verified on Myfxbook",
+      "verifiedBody": "At the v8 VIP launch, a real account will be verified on Myfxbook, with full history open for anyone to check."
+    },
+    "plans": {
+      "eyebrow": "Licenses",
+      "title": "Choose how to start",
+      "intro": "A license for the system, with no account management. Start with the trial pass; if you like it, what you paid counts toward your license.",
+      "passLabel": "Trial pass",
+      "passFrom": "from",
+      "passPrice": "$10",
+      "passNote": "1, 3 or 7 days · 1 MT4 account",
+      "popular": "Most complete",
+      "ibNote": "Partner broker discount: $30/month on Monthly and $50 on Lifetime.",
+      "cta": "See plans and details"
+    },
+    "aboutTeaser": {
+      "eyebrow": "Who is behind it",
+      "title": "The person who builds it also trades it and answers you",
+      "body": "I'm Alesson Felipe, a developer since 2012 and in forex since 2015. I lost money on miracle robots and fell for scams, so I built my own system. I build, test and run Ai X PULSE RS, and I personally support the people who use it.",
+      "cta": "Read the story"
+    },
+    "partners": {
+      "title": "Partner brokers",
+      "body": "Works with any MT4 broker. At partner brokers, open an account through my link or switch your IB code to mine to get a license discount."
+    },
+    "finalCta": {
+      "title": "Ready to try it on your account?",
+      "body": "Start with 1 day for US$10, on a demo or real account. No commitment.",
+      "primary": "Try 1 day",
+      "secondary": "Message me on Telegram"
+    },
+    "mockup": {
+      "label": "Illustrative image",
+      "title": "Today",
+      "account": "MT4 account · demo",
+      "status": "Working toward today's target",
+      "profile": "Profile",
+      "profileValue": "Conservative",
+      "mode": "Mode",
+      "modeValue": "Automatic",
+      "goal": "Daily target",
+      "loss": "Loss limit",
+      "progress": "Target progress",
+      "pairs": "Pairs in the plan",
+      "pairTrading": "Trading",
+      "pairWaiting": "Waiting for a signal",
+      "pairPaused": "Paused until tomorrow",
+      "assistant": "AI Assistant",
+      "assistantText": "Plan active · new analysis every weekday",
+      "bias": "Senior trader",
+      "biasValue": "both sides"
     }
   },
   "Products": {
     "title": "Ai X PULSE RS",
-    "intro": "Ai X PULSE RS is a hybrid HFT/Scalper robot, built to deliver results in the short, medium, and long term. Get your license and start trading on your account today.",
+    "eyebrow": "License",
+    "intro": "Our AI trading system connected to your MT4 account. You install it on your accounts and keep full control of your money. No account management.",
+    "includes": {
+      "title": "What the license includes",
+      "items": [
+        "Ai X PULSE RS for MT4, in English, Portuguese and Spanish",
+        "AI Assistant: builds the day's plan, in automatic or manual mode",
+        "Ai X Intelligence: chance of hitting the target measured on your own MT4",
+        "Senior trader (AI) opinion on your dashboard, with system v7.5 or newer",
+        "Dashboard with balance and today's, this week's and this month's results per account",
+        "Installation guide and direct support from the developer"
+      ]
+    },
+    "techTitle": "Technical details",
     "pulse": {
       "specs": {
-        "platform": "Platform", "platformValue": "MetaTrader 4 (MT4 only)",
-        "accountType": "Account Type", "accountTypeValue": "Any type",
-        "leverage": "Leverage", "leverageValue": "1:500",
-        "deposit": "Min. Starting Deposit", "depositValue": "$100",
-        "operation": "Operation", "operationValue": "24/5 100% Automated",
-        "interest": "Interest", "interestValue": "Compound / Simple",
-        "term": "Term", "termValue": "Short / Medium / Long"
+        "platform": "Platform",
+        "platformValue": "MetaTrader 4 (MT5 coming soon)",
+        "accountType": "Account type",
+        "accountTypeValue": "Any type",
+        "spread": "Maximum spread",
+        "spreadValue": "30 pts",
+        "leverage": "Leverage",
+        "leverageValue": "1:500",
+        "deposit": "Recommended capital",
+        "depositValue": "US$500 on gold · US$100 on currency pairs",
+        "operation": "Operation",
+        "operationValue": "24/5, automatic (MT4 on or VPS)"
       }
     },
     "pass": {
       "tag": "Trial pass",
-      "title": "Test the robot before you subscribe",
-      "description": "Turn the robot on in 1 MT4 account for 1, 3 or 7 days. Want more time? Top up in My Account and the days add up. Same robot, same portal and the same Ai X Intelligence (1 AI analysis per day).",
+      "title": "Try before you subscribe",
+      "description": "Turn on Ai X PULSE RS on 1 MT4 account for 1, 3 or 7 days. Want more time? Top up in My Account and the days add up. Same system, same portal and the same Ai X Intelligence (1 AI analysis per day).",
       "d1": {
         "label": "1-day pass",
         "price": "$10",
@@ -125,57 +312,93 @@
       "creditNote": "Liked it? What you paid in passes over the last 7 days becomes a discount on the Monthly or Lifetime License (up to half the price)."
     },
     "license": {
-      "tag": "Robot license - up to 2 accounts (monthly) or up to 5 accounts (lifetime)",
-      "description": "You get the robot file and install it directly on your own MT4 accounts, no account management from me. The monthly license covers up to 2 MT4 accounts and the lifetime license up to 5. You enter each account number at checkout and, if needed, can correct them once in My Account.",
-      "requirementsNote": "All accounts need a spread below 30 pts for the robot to perform well.",
-      "oneMonth": { "label": "Monthly License", "price": "$99", "period": "/month", "note": "Up to 2 MT4 accounts", "discount": "$30", "discountPrice": "$69", "discountNote": "or $69/month with a partner broker discount" },
-      "lifetime": { "label": "Lifetime License", "price": "$499", "period": "", "originalPrice": "$997", "badge": "50% OFF", "note": "One-time payment, lifetime access - up to 5 MT4 accounts", "discount": "$50", "discountPrice": "$449", "discountNote": "or $449 with a partner broker discount" },
+      "tag": "License - up to 2 accounts (monthly) or up to 5 accounts (lifetime)",
+      "description": "You get Ai X PULSE RS and install it directly on your MT4 accounts, with no account management by me. The monthly license covers up to 2 MT4 accounts and the lifetime license up to 5. You enter each account number at purchase and, if needed, can correct it once in My Account.",
+      "requirementsNote": "All accounts need a spread below 30 pts for the system to perform well.",
+      "oneMonth": {
+        "label": "Monthly License",
+        "price": "$99",
+        "period": "/month",
+        "note": "Up to 2 MT4 accounts",
+        "discount": "$30",
+        "discountPrice": "$69",
+        "discountNote": "or $69/month with a partner broker discount"
+      },
+      "lifetime": {
+        "label": "Lifetime License",
+        "price": "$499",
+        "period": "",
+        "originalPrice": "$997",
+        "badge": "50% OFF",
+        "note": "One-time payment, lifetime access - up to 5 MT4 accounts",
+        "discount": "$50",
+        "discountPrice": "$449",
+        "discountNote": "or $449 with a partner broker discount"
+      },
       "discountTitle": "Get up to $50 off your license",
       "discountBody": "Open your account through my link (or switch your account's IB code to mine) at FPMarkets, Tickmill, Vantage, or Exness: $30 OFF every month on the Monthly License and $50 OFF the Lifetime one. You choose this in the next step.",
       "ctaOneMonth": "Get the Monthly License",
       "ctaLifetime": "Get the Lifetime License"
     },
-    "calculator": {
-      "title": "Calculate Your Account Growth",
-      "depositLabel": "Initial deposit ($)",
-      "rateLabel": "Daily Target",
-      "modeLabel": "Interest type",
-      "simpleLabel": "Simple Interest",
-      "compoundLabel": "Compound Interest",
-      "monthsLabel": "Simulation month(s)",
-      "rateNote": "{count, plural, one {{rate}% per trading day × # trading day selected} other {{rate}% per trading day × # trading days selected}}",
-      "resultLabel": "Final Balance",
-      "profitLabel": "Estimated Profit",
-      "profitDayLabel": "Daily Profit",
-      "profitWeekLabel": "Weekly Profit",
-      "profitMonthLabel": "Monthly Profit",
-      "resultNote": "Starting from {deposit}.",
-      "disclaimer": "Illustrative simulation based on the published performance target - not a guarantee of results. Trading involves risk."
-    }
+    "faqCta": "Still unsure? See the FAQ"
   },
   "About": {
     "title": "About",
-    "intro": "From renting a place at 15 to being Brazil's #1 trader - the full journey behind Ai X PULSE RS.",
+    "eyebrow": "Alesson Felipe",
+    "intro": "Developer since 2012, in forex since 2015. The story behind Ai X PULSE RS.",
+    "facts": [
+      {
+        "value": "2012",
+        "label": "coding"
+      },
+      {
+        "value": "2015",
+        "label": "in the financial markets"
+      },
+      {
+        "value": "4,759",
+        "label": "members in the Telegram group"
+      }
+    ],
+    "storyTitle": "My story",
     "story": [
       "My name is Alesson Felipe, 36 years old today. I've always been a simple person with big dreams. At 15, I was already renting a place with my wife, who was 16 at the time - just a bed, a mattress, a stove, and a gas canister. I spent seven years working at a beverage warehouse that supplied the beach vendors of Boa Viagem, in Recife. I used to watch the buildings along the shore and the cars driving down the seafront, picturing myself one day moving out of that rental, with a decent car to take my family out in.",
       "It was at that warehouse that I bought my first PC, paying it off little by little. I taught myself computing, downloading guides from the internet - formatting computers, installing Windows, then slideshow discs and CD compilations. I left the warehouse job, went to work as a waiter's assistant, and kept dreaming: one day I'd give my family what I saw successful people doing every day.",
       "I started studying how to make money online - affiliate systems, dropshipping. Affiliates didn't work out, but dropshipping did: I sold my first R$10,000, R$15,000 importing from China. When marketplaces started banning dropshippers in Brazil, I learned to code and built my own online store. Traffic was the problem, so I went after marketing, automated posting in Facebook groups, and ended up with over 100 recurring customers in an affiliate system I built myself - until that also ran into account bans.",
       "At the end of 2015 I discovered binary options. I lost a lot of money at first. I studied it in depth - probability, tops and bottoms, uptrend/downtrend lines, pullbacks - until I became the #1 trader in Brazil and Top 5 in the world on IQ Option, in 2019.",
       "The binary options accounts eventually got banned too, and that's how I ended up in forex. I tried applying the same strategy - it didn't work, so I went back to studying from scratch, this time focused on market structure and automated strategy. Between 2022 and 2023 I lost money chasing miracle robots, buying HFT EAs that promised to turn a little into a lot overnight. I fell for scams more than once.",
-      "So I decided to develop my own EA - a hybrid HFT/scalper model, since serious brokers don't allow pure HFT. That's when profit started becoming consistent. And that's also when I learned the most important lesson: without a target and without compound interest, an account blows up. Today, Ai X PULSE RS is that lesson applied - a realistic daily target, aiming for a high return over the long term through compound interest, not the empty promise of getting rich overnight.",
+      "So I decided to develop my own system. That's when profit started becoming consistent, and that's also when I learned the most important lesson: what blows up an account is not a day without profit, it is a loss without a limit.",
+      "In 2026 I combined that lesson with artificial intelligence: the AI Assistant builds the day's plan, Ai X Intelligence tests the plan on each client's own broker history, and each person chooses the risk profile knowing what is at stake, with a defined target and loss limit.",
       "I'm still married to my wife after more than 21 years - she's been through every high and low of this journey with me - and today I'm a father of three. I'm a Christian, and it was my faith that kept me steady through the hardest periods.",
-      "If you've ever fallen for a scam, tried everything and gotten frustrated, or just want to see your money actually working for you - that's exactly why Ai X PULSE RS exists."
+      "If you have fallen for a scam or are tired of easy-money promises, Ai X PULSE RS was built with that in mind: a clear plan, risk you choose and results shown as they are."
     ],
+    "values": {
+      "title": "How I work",
+      "items": [
+        {
+          "title": "Results as they are",
+          "body": "I show real, unedited screenshots. The Myfxbook-verified account arrives with the v8 VIP launch."
+        },
+        {
+          "title": "Direct support",
+          "body": "The person who answers is the one who builds and runs the system, on Telegram or at support@aixtradex.com."
+        },
+        {
+          "title": "No promises",
+          "body": "No guaranteed gains. Trading involves risk and I say so openly, before the sale."
+        }
+      ]
+    },
     "brokers": {
-      "title": "Partner Brokers",
-      "body": "The robot works on any MetaTrader 4 (MT4) account type, at any broker, with spread below 30 pts. At the partner brokers below you get a discount on the license: open your account through my link or switch your account's IB code to mine - $30 off the Monthly License and $50 off the Lifetime one. This isn't investment advice.",
-      "comingSoon": "More Brokers Coming Soon..."
+      "title": "Partner brokers",
+      "body": "Ai X PULSE RS works on any type of MetaTrader 4 account, at any broker, with spread up to 30 pts. At the partner brokers below you get a license discount by opening an account through my link or switching your account's IB code to mine: $30 per month on the Monthly License and $50 on the Lifetime License. This is not investment advice.",
+      "comingSoon": "More brokers coming soon"
     },
     "closing": {
-      "title": "Let's talk",
-      "body": "Questions about the robot or how the license works? Just reach out on Telegram."
+      "title": "Talk to me",
+      "body": "Questions about the system or the license? Message me on Telegram."
     },
-    "cta": "Join Telegram"
+    "cta": "Message me on Telegram"
   },
   "Contact": {
     "title": "Contact",
@@ -184,74 +407,112 @@
     "note": "Prefer email? Write to support@aixtradex.com - I answer there too."
   },
   "Footer": {
-    "disclaimer": "Trading involves risk. Past results do not guarantee future results. Nothing on this site is financial advice.",
+    "tagline": "AI trading system that connects to your MetaTrader 4 account. License, no account management.",
     "menuHeading": "Menu",
-    "usefulHeading": "Useful Links",
-    "socialHeading": "Social Media",
-    "usefulLinks": {
-      "markets": "Markets",
-      "tools": "Tools",
-      "news": "News",
-      "analysis": "Analysis",
-      "brokers": "Brokers",
-      "calendar": "Calendar"
-    },
+    "contactHeading": "Contact",
+    "toolsHeading": "Tools",
+    "socialHeading": "Social media",
+    "telegramGroup": "Telegram group",
+    "telegramDm": "Message me on Telegram",
+    "riskTitle": "Risk warning",
+    "disclaimer": "Trading forex and gold involves risk of loss, including all deposited capital. Past results and simulations do not guarantee future results. Ai X PULSE RS is an AI-powered automation tool sold by license; nothing on this site is financial advice or an investment offer.",
     "comingSoon": "Coming soon",
     "rightsPrefix": "© 2015-{year} -",
-    "rightsSuffix": ". All rights reserved."
+    "rightsSuffix": ". All rights reserved.",
+    "toolsLinks": {
+      "calculator": "Lot size calculator",
+      "sessions": "Market sessions",
+      "quotes": "Live quotes",
+      "calendar": "Economic calendar",
+      "analysis": "Daily AI analysis",
+      "news": "Market news"
+    }
   },
   "Faq": {
     "title": "FAQ",
-    "intro": "Everything you need to know before getting started with Ai X PULSE RS.",
+    "eyebrow": "Your questions",
+    "intro": "What you need to know before starting with Ai X PULSE RS.",
     "items": [
       {
         "q": "What is Ai X PULSE RS?",
-        "a": "It's a hybrid HFT/Scalper robot (Expert Advisor) that trades XAU/USD automatically on MetaTrader 4. You purchase the license, install it on your accounts, and the robot trades on its own, following the same tested logic every day."
+        "a": "It is our AI trading system that connects to your MetaTrader 4 account. The AI builds the day's plan with you (pairs, target and loss limit) and analyzes the market; order execution on MT4 follows defined rules that you can see and adjust in the portal."
+      },
+      {
+        "q": "Is it an AI that predicts the market?",
+        "a": "No. No AI predicts the market. The Ai X PULSE RS AI builds the plan, tests combinations on your broker's history and gives a technical opinion for the day. Trades follow clear entry, exit and risk rules, and results are not guaranteed."
       },
       {
         "q": "Do I need trading experience?",
-        "a": "No. You just need to know how to install an Expert Advisor on MetaTrader 4 - after purchase, the step-by-step installation guide is in My Account, and I'll help with any questions on Telegram."
+        "a": "No. The AI Assistant guides you in 5 steps, and the installation guide is in My Account. For any question, I help on Telegram. Experienced traders can fine-tune each pair in the portal."
       },
       {
-        "q": "Is this an investment fund or a pooled account?",
-        "a": "No. The license runs directly on your own account, at the broker you choose - no third party managing your money."
+        "q": "Is this an investment fund or account management?",
+        "a": "No. The license runs directly on your own account, at the broker you choose. I don't manage accounts and I have no access to your money: you deposit and withdraw whenever you want."
+      },
+      {
+        "q": "How do the risk profiles work?",
+        "a": "You choose a profile in the AI Assistant. The main ones are Conservative (3% daily target, 2% loss limit, 1% risk per entry) and Moderate (5%, 3% and 2%). Custom and other profiles are available in the portal. A higher target means higher risk. Once the target or the limit is reached, the system stops until the next day."
+      },
+      {
+        "q": "Does the system use lot recovery?",
+        "a": "Recovery is a per-pair option that you turn on or off in the portal. It raises the lot after a loss to recover faster, and so it also raises the risk. For the most conservative path, keep recovery off and keep the daily loss limit on."
       },
       {
         "q": "Which brokers are compatible?",
-        "a": "Any broker with MetaTrader 4, on any account type, with spread below 30 pts. If you open your account through my link (or switch your IB code to mine) at a partner broker - FPMarkets, Tickmill, Vantage, or Exness - you get $30 off the Monthly License or $50 off the Lifetime one."
+        "a": "Any broker with MetaTrader 4, any account type, with spread up to 30 pts. If you open an account through my link (or switch the IB code to mine) at a partner broker - FPMarkets, Tickmill, Vantage or Exness - you get $30 off per month on the Monthly License or $50 off the Lifetime License."
       },
       {
-        "q": "What's the minimum deposit?",
-        "a": "The recommended amount is $100 or more, on an MT4 account with 1:500 leverage - any account type, with spread below 30 pts."
+        "q": "Does it work on MT5?",
+        "a": "Not yet. Today it is MetaTrader 4 only. The MT5 version is coming soon."
+      },
+      {
+        "q": "How much do I need to start?",
+        "a": "Recommended capital: from US$500 for gold and from US$100 for currency pairs, on an MT4 account with 1:500 leverage - any account type, with spreads up to 30 points. With less than that, even the broker's minimum lot (0.01) may risk more than your chosen profile allows."
+      },
+      {
+        "q": "Do I need to keep my computer on?",
+        "a": "Yes. MT4 must stay open with Ai X PULSE RS running, on your computer or on a VPS (a cloud computer that stays on 24 hours). If MT4 closes, the system stops trading."
+      },
+      {
+        "q": "What are the technical details?",
+        "a": "MetaTrader 4, any account type, spread up to 30 pts, 1:500 leverage recommended. The system sits on the gold chart (XAU/USD) and trades gold and the pairs you choose (the major forex pairs or other assets from your broker). Portal settings are read every 30 seconds, and accounts send balance and results to the dashboard every 5 minutes. Available in English, Portuguese and Spanish."
+      },
+      {
+        "q": "Can I test before subscribing?",
+        "a": "Yes. The trial pass enables the system on 1 MT4 account for 1 day ($10), 3 days ($25) or 7 days ($49). Top-ups add days, and what you paid in passes in the last 7 days becomes a discount on the Monthly or Lifetime License (up to half the price)."
       },
       {
         "q": "How does billing work?",
-        "a": "Monthly License: $99/month, covers up to 2 MT4 accounts. Lifetime License: $499 (from $997), one-time payment, covers up to 5 MT4 accounts."
+        "a": "Monthly License: $99/month, up to 2 MT4 accounts. Lifetime License: $499 (from $997), one-time payment, up to 5 MT4 accounts. Payment is in USDT or USDC (Binance Pay or wallet)."
       },
       {
         "q": "How many accounts can I use with the license?",
-        "a": "The Monthly License activates the robot on up to 2 of your own MT4 accounts, and the Lifetime License on up to 5. You enter each account number at checkout; after that, you can change the accounts once in My Account, and further changes only through support. To use the robot on more accounts, you need another license. All accounts need a spread below 30 pts for the robot to perform well."
+        "a": "The Monthly License covers up to 2 of your MT4 accounts, and the Lifetime License up to 5. You enter each account number at purchase; after that, you can change the accounts once in My Account, and further changes only through support. To use it on more accounts, you need another license."
       },
       {
-        "q": "How do I get the robot after paying?",
-        "a": "As soon as the payment is confirmed, you get an email and the license shows up in My Account (you sign in with your purchase email using a code, no password). There you download the robot and follow the MT4 installation guide."
+        "q": "How do I receive the system after payment?",
+        "a": "As soon as payment is confirmed, you get an email and the license appears in My Account (you sign in with the purchase email, by code, no password). There you download Ai X PULSE RS and follow the MT4 installation guide."
       },
       {
         "q": "What happens if the Monthly License expires?",
-        "a": "The robot stops trading until you renew, including managing open orders - so renew before it expires. You renew in My Account, and once the payment is confirmed the robot resumes by itself within 5 minutes."
+        "a": "The system stops opening new trades but keeps managing the ones already open. Renewal is done in My Account and, once payment is confirmed, it resumes on its own within 5 minutes."
+      },
+      {
+        "q": "Are the results verified?",
+        "a": "Today the results are real screenshots of my accounts and clients' accounts, on the Results page and in the Telegram group. At the v8 VIP launch, a real account will be verified on Myfxbook, with full, open history."
       },
       {
         "q": "Is the result guaranteed?",
-        "a": "No. It's a performance target, not a guarantee - trading involves risk and past results don't guarantee future results."
+        "a": "No. Trading involves risk of loss, including all capital. Past results and simulations do not guarantee future results. A target and a loss limit organize the day, but they do not remove the risk."
       },
       {
         "q": "How do I get started?",
-        "a": "Pick your plan on the Plans page and follow the steps: partner broker discount (optional), your details and MT4 accounts, and payment in USDT or USDC (Binance Pay or wallet). Paying the exact amount, confirmation is automatic: within a few minutes your license is activated and you get an email with access."
+        "a": "Choose a plan on the Plans page and follow the steps: partner broker discount (optional), your details and MT4 accounts, and payment in USDT or USDC. Paying the exact amount, confirmation is automatic: within minutes the license is released and you get an email with access."
       }
     ],
     "cta": {
       "title": "Still have questions?",
-      "body": "Talk to me directly on Telegram.",
+      "body": "Talk to me directly on Telegram or at support@aixtradex.com.",
       "button": "Join Telegram"
     }
   },
@@ -264,62 +525,132 @@
     }
   },
   "HowItWorks": {
-    "title": "Ai X PULSE RS - How It Works",
-    "intro": "An Expert Advisor built specifically for XAU/USD (Gold) on MetaTrader 4 - automated, goal-driven, and with configurable risk management.",
-    "benefits": {
-      "heading": "What Makes Ai X PULSE RS Different?",
-      "items": [
-        { "title": "Gold-Focused (XAU/USD)", "body": "Built and calibrated specifically for gold's behavior - not a generic robot adapted to fit." },
-        { "title": "Goal-Based Operation", "body": "You set how much you want to earn per day, week, and month. Once the target is hit, the robot closes everything and pauses automatically." },
-        { "title": "Flexible Risk Management", "body": "Fixed lot, balance-proportional lot, or percentage risk per trade - you choose how much to risk." },
-        { "title": "Smart Profit Protection", "body": "The robot tracks open trades and protects gains as the market moves in your favor." },
-        { "title": "Real-Time Dashboard", "body": "Balance, daily/weekly/monthly profit, open trades, and robot status directly on the chart." },
-        { "title": "Full Control", "body": "Buttons to pause, resume, or close trades at any moment." },
-        { "title": "Time Filter", "body": "Only trades during the high-liquidity hours you configure." }
+    "title": "How it works",
+    "eyebrow": "Ai X PULSE RS",
+    "intro": "An AI trading system connected to your MT4 account. You choose the profile, the AI builds the plan and the system executes it with discipline.",
+    "flow": {
+      "eyebrow": "Step by step",
+      "heading": "From installation to your first day",
+      "steps": [
+        {
+          "title": "Choose the license",
+          "body": "Trial pass, Monthly or Lifetime License. Pay in USDT or USDC and your license is released within minutes."
+        },
+        {
+          "title": "Connect to your MT4",
+          "body": "Download Ai X PULSE RS in My Account and follow the guide: allow the license address in MT4 and place the system on the gold chart."
+        },
+        {
+          "title": "Build the plan with the AI Assistant",
+          "body": "Choose the risk profile and the mode. In automatic mode, the AI picks the pairs and splits the target. In manual mode, you choose and the AI weighs in."
+        },
+        {
+          "title": "See the chance before turning it on",
+          "body": "The AI reads the last month of candles from your broker and shows on how many test days the target was hit, the worst day and the days at the loss limit."
+        },
+        {
+          "title": "Activate and follow",
+          "body": "The system receives the plan within 30 seconds. In the Today panel you see the target, the limit and each pair's status."
+        }
       ]
     },
-    "technical": {
-      "heading": "How It Works Under the Hood",
+    "day": {
+      "eyebrow": "Day to day",
+      "heading": "What the system does for you",
+      "items": [
+        {
+          "title": "Waits for the right moment",
+          "body": "It only enters when the configured trigger appears and the volatility, trend, time and spread filters allow it."
+        },
+        {
+          "title": "Sizes the position",
+          "body": "The lot comes from the balance and your profile's risk per entry. Every trade has a protective stop at the broker."
+        },
+        {
+          "title": "Respects the day",
+          "body": "Target reached: it stops until tomorrow. Loss limit reached: it stops as well."
+        },
+        {
+          "title": "Reports back",
+          "body": "Balance and results go to your dashboard every 5 minutes."
+        }
+      ]
+    },
+    "honest": {
+      "title": "What's AI and what's rules",
+      "ai": "AI: builds the plan, picks pairs and targets, tests them on your own history and, with system v7.5 or newer, gives the day's technical opinion.",
+      "rules": "Rules: entries, exits, stops and lot size follow the settings you see in the portal.",
+      "note": "No AI predicts the market. What it does is replace guesses with a plan and data."
+    },
+    "tech": {
+      "title": "Technical details",
       "steps": [
-        { "title": "Entry Strategy", "body": "Continuously monitors the market and positions orders strategically around price. When gold breaks out with strength in one direction, the robot enters in favor of that move, with entry distance that adapts automatically to current market conditions." },
-        { "title": "Volatility Filter", "body": "Only opens trades when it detects real market expansion - staying out during sideways, directionless periods, which is exactly where most robots lose money to unnecessary costs." },
-        { "title": "Position Management", "body": "Tracks each trade and adjusts protection as profit builds, reacting quickly to price changes to preserve accumulated gains." },
-        { "title": "Trend-Following", "body": "Once a direction is identified, the robot trades only in favor of the trend - and automatically resolves conflicting positions if the market spikes both ways at once." },
-        { "title": "Goals & Auto-Pause", "body": "Tracks cumulative results per day, week, and month (in value or percentage). Once the target is hit, it closes everything and pauses until the next period." },
-        { "title": "Configurable Risk Management", "body": "Three lot-sizing modes: fixed lot, balance-based lot (scales with account size), or percentage risk calculated on account balance." },
-        { "title": "Broker Overload Protection", "body": "Internal safeguards prevent excessive requests to the broker - a common technical issue that triggers alerts and blocks - keeping operation stable even on stricter brokers." },
-        { "title": "Time & Spread Filter", "body": "Only trades within the configured time window (down to the minute) and respects a maximum spread ceiling." },
-        { "title": "Visual Control Panel", "body": "On-chart interface showing balance, equity, floating profit, results by period, open/pending trades, session status, and manual control buttons." }
+        {
+          "title": "Settings from the portal",
+          "body": "Every 30 seconds the system pulls the pairs, risk and targets from the portal. Change them on the site and it applies them automatically."
+        },
+        {
+          "title": "Entry trigger",
+          "body": "RSI, on reversal or breakout, on the chosen timeframe, with market or pending entry."
+        },
+        {
+          "title": "Filters",
+          "body": "Volatility (ATR), trend strength (ADX), price zones, direction, time, spread and news."
+        },
+        {
+          "title": "Exit",
+          "body": "Target, stop, break-even and trailing stop, per pair."
+        },
+        {
+          "title": "Account limits",
+          "body": "Daily target and loss limit, maximum open trades and maximum account drawdown."
+        }
       ]
     },
     "specs": {
       "heading": "Specifications",
-      "platform": "Platform", "platformValue": "MetaTrader 4",
-      "pair": "Recommended Pair", "pairValue": "XAU/USD (Gold)",
-      "timeframe": "Timeframe", "timeframeValue": "M5 (auto-adjusted)",
-      "accountType": "Account Type", "accountTypeValue": "Any type (spread up to 30 pts)",
-      "operation": "Operation Mode", "operationValue": "Automatic, with manual controls",
-      "dashboard": "Visual Dashboard", "dashboardValue": "Yes, real-time"
-    },
-    "risk": {
-      "body": "Ai X PULSE RS is an automated trading tool. Like any operation in financial markets, it involves risk, and past results don't guarantee future ones. We strongly recommend testing on a demo account before trading real capital, and always using risk management suited to your profile."
+      "platform": "Platform",
+      "platformValue": "MetaTrader 4 (MT5 coming soon)",
+      "chart": "Chart",
+      "chartValue": "XAU/USD (trades the other pairs from it)",
+      "accountType": "Account type",
+      "accountTypeValue": "Any type",
+      "spread": "Maximum spread",
+      "spreadValue": "30 pts",
+      "operation": "Operation",
+      "operationValue": "Automatic, with manual controls",
+      "dashboard": "Dashboard",
+      "dashboardValue": "On the chart and in the portal",
+      "languages": "Languages",
+      "languagesValue": "English, Portuguese and Spanish"
     },
     "cta": {
-      "title": "Want This Robot on Your Account?",
-      "body": "Now that you know how the robot works under the hood, check out the license plans and start trading today.",
-      "button": "View Plans"
+      "title": "Want to see it on your account?",
+      "body": "Try it for 1 day or choose a license. If you have questions, talk to me first.",
+      "button": "See plans"
     }
   },
   "Results": {
-    "title": "Real Results",
-    "intro": "Screenshots and videos from real accounts - mine and clients' - trading with the many versions of my Ai X TradeX robots, developed over more than a year. No editing, no simulation, straight from the MetaTrader 4 app.",
+    "title": "Real results",
+    "eyebrow": "Unedited",
+    "intro": "Screenshots and videos of real accounts, mine and clients', trading with Ai X TradeX systems. Straight from the MetaTrader 4 app.",
+    "contextTitle": "Before you look",
+    "context": [
+      "These are selected screenshots from several versions over time, with different settings and risk profiles.",
+      "A screenshot shows a moment, not the full history. That is why the next step is a verified real account.",
+      "Day-to-day results are also shared in the Telegram group."
+    ],
+    "verifiedBadge": "Coming soon",
+    "verifiedTitle": "Real account verified on Myfxbook",
+    "verifiedBody": "At the v8 VIP launch, a real account will be verified on Myfxbook, with full history open for anyone to check.",
+    "telegramCta": "Follow on Telegram",
     "tabs": {
       "images": "Images",
       "videos": "Videos"
     },
-    "videosEmpty": "Coming soon: trade videos straight from the phone.",
-    "showMore": "Show More",
-    "showLess": "Show Less"
+    "videosEmpty": "Coming soon: videos of the trades straight from the phone.",
+    "showMore": "Show more",
+    "showLess": "Show less"
   },
   "Payment": {
     "auto": {
@@ -347,13 +678,34 @@
         "label": "Binance Pay",
         "network": "Pay directly through the Binance app using the ID below"
       },
-      "btc": { "label": "Bitcoin (BTC)", "network": "Bitcoin network" },
-      "usdtTrc20": { "label": "USDT", "network": "TRC-20 network (Tron)" },
-      "usdtErc20": { "label": "USDT", "network": "ERC-20 network (Ethereum)" },
-      "usdtBep20": { "label": "USDT", "network": "BEP-20 network (BNB Smart Chain)" },
-      "usdc": { "label": "USDC", "network": "BASE network" },
-      "ltc": { "label": "Litecoin (LTC)", "network": "Litecoin network" },
-      "eth": { "label": "Ethereum (ETH)", "network": "Ethereum network (ERC-20)" }
+      "btc": {
+        "label": "Bitcoin (BTC)",
+        "network": "Bitcoin network"
+      },
+      "usdtTrc20": {
+        "label": "USDT",
+        "network": "TRC-20 network (Tron)"
+      },
+      "usdtErc20": {
+        "label": "USDT",
+        "network": "ERC-20 network (Ethereum)"
+      },
+      "usdtBep20": {
+        "label": "USDT",
+        "network": "BEP-20 network (BNB Smart Chain)"
+      },
+      "usdc": {
+        "label": "USDC",
+        "network": "BASE network"
+      },
+      "ltc": {
+        "label": "Litecoin (LTC)",
+        "network": "Litecoin network"
+      },
+      "eth": {
+        "label": "Ethereum (ETH)",
+        "network": "Ethereum network (ERC-20)"
+      }
     },
     "ctaTelegram": "I've paid - Send proof on Telegram",
     "dmMessage": "Hi! I've paid for the {plan} ({price}).\nName: {name}\nCountry: {country}\nEmail: {email}\nOrder: {order}\nMT4 accounts: {accounts}\nI'll send the payment screenshot.",
@@ -398,8 +750,8 @@
         "platformValue": "MetaTrader 4",
         "leverage": "Leverage",
         "leverageValue": "1:500",
-        "deposit": "Min deposit",
-        "depositValue": "$100",
+        "deposit": "Recommended capital",
+        "depositValue": "US$500 on gold · US$100 on currency pairs",
         "type": "Account type",
         "typeValue": "Any type",
         "note": "After creating the account, fill in your details and the number (login) of each MT4 account below. The license is linked to these accounts right away.",
@@ -1432,6 +1784,93 @@
         "both": "Senior trader: both sides",
         "none": "Senior trader: stay out"
       }
+    }
+  },
+  "Tools": {
+    "hub": {
+      "eyebrow": "Free",
+      "title": "Trader tools",
+      "intro": "Simple, free tools to plan every trade, with or without Ai X PULSE RS.",
+      "open": "Open",
+      "soon": "Coming soon",
+      "items": {
+        "calculator": "Find the right lot size for your risk in seconds.",
+        "sessions": "See which markets are open right now, in your time zone.",
+        "quotes": "Reference prices for gold and the major pairs.",
+        "calendar": "Economic releases that move the market.",
+        "analysis": "Each pair's bias for the day, written by AI.",
+        "news": "Today's headlines, linked to the source."
+      }
+    },
+    "cta": {
+      "title": "Want an AI to handle this for you?",
+      "body": "Ai X PULSE RS sizes each position by risk, respects trading hours and spreads, and stops at the daily target or limit, right on your MT4 account.",
+      "button": "Discover Ai X PULSE RS",
+      "secondary": "Try 1 day for US$10"
+    },
+    "calculator": {
+      "metaTitle": "Lot Size & Pip Value Calculator",
+      "metaDescription": "Calculate your MT4 lot size from your risk: balance, risk % and stop in pips or by price. Gold (XAU/USD) and forex pairs, including JPY pairs. Free.",
+      "eyebrow": "Free tool",
+      "title": "Lot size calculator",
+      "intro": "Enter your balance, how much you're willing to risk and where your stop is. The calculator shows the lot size and the value of each pip.",
+      "balance": "Account balance (US$)",
+      "riskPct": "Risk on this trade (%)",
+      "pair": "Instrument",
+      "stopMode": "How to enter the stop",
+      "byPips": "Distance in pips",
+      "byPrice": "Entry and stop price",
+      "stopPips": "Stop (pips)",
+      "entry": "Entry price",
+      "stopPrice": "Stop price",
+      "convPrice": "{pair} price",
+      "convHint": "Used to convert the pip value to US dollars. Pre-filled with the reference price when available; double-check it on your platform.",
+      "goldPip": "For gold, 1 pip = 0.01 in price (the Ai X PULSE RS standard).",
+      "resultLot": "Lot size",
+      "resultRisk": "Amount at risk",
+      "resultPip": "Pip value (0.01 lot)",
+      "resultActual": "Actual risk at this lot",
+      "explain": "With a {balance} balance and {pct} risk, you accept losing up to {risk} on this trade. With a {pips}-pip stop on {pair} (each pip is worth {pip} per 0.01 lot), the lot size is {lot}.",
+      "belowMin": "The calculated lot is below the broker minimum (0.01). At 0.01 you'd be risking {risk} ({pct} of your balance). Add capital or use a tighter stop.",
+      "invalid": "Enter a balance, risk and stop greater than zero.",
+      "assumptions": "Assumes a US dollar (USD) account and standard contract size (100,000 units; gold 100 oz), and rounds the lot down in 0.01 steps. Check the contract size and minimum lot with your broker."
+    },
+    "sessions": {
+      "metaTitle": "Forex Market Sessions in Your Time Zone",
+      "metaDescription": "See which forex sessions are open right now (Sydney, Tokyo, London and New York) in your own time zone, with daylight saving and overlaps.",
+      "eyebrow": "Free tool",
+      "title": "Market sessions",
+      "intro": "Which markets are open right now, in your local time. Daylight saving time in each city is already accounted for.",
+      "yourTime": "Your time",
+      "open": "Open",
+      "closed": "Closed",
+      "opensIn": "opens in {time}",
+      "closesIn": "closes in {time}",
+      "weekend": "Weekend: the forex market is closed. It reopens on Sunday at {time} your time.",
+      "overlaps": "Today's overlaps",
+      "noOverlap": "No overlaps today.",
+      "overlapNote": "When two sessions are open at the same time, volume and price movement tend to pick up.",
+      "cities": {
+        "sydney": "Sydney",
+        "tokyo": "Tokyo",
+        "london": "London",
+        "newyork": "New York"
+      },
+      "hoursNote": "Reference hours (local time in each city): Sydney 7am-4pm, Tokyo 9am-6pm, London 8am-5pm, New York 8am-5pm. Local holidays are not included.",
+      "loading": "Loading your local time..."
+    },
+    "quotes": {
+      "metaTitle": "Gold & Forex Quotes",
+      "metaDescription": "Reference prices for gold (XAU/USD) and the major currency pairs, updated every 15 minutes.",
+      "eyebrow": "Reference",
+      "title": "Quotes",
+      "intro": "Reference prices for gold and the major currency pairs.",
+      "updated": "Updated at {time}",
+      "delay": "Reference prices, delayed by up to 15 minutes. Don't use them to open or close trades: always check your platform.",
+      "sources": "Sources: gold-api.com (gold) and Twelve Data (currencies).",
+      "empty": "Quotes are unavailable right now. Please try again in a few minutes.",
+      "loading": "Loading quotes...",
+      "gold": "Gold"
     }
   }
 }

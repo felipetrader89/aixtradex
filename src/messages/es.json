@@ -1,12 +1,12 @@
 {
   "Metadata": {
     "home": {
-      "title": "Ai X TradeX - Robot de Trading Automatizado para Forex",
-      "description": "Licencia del robot de trading automatizado para MetaTrader 4. Resultados documentados, sin promesas vacías - plan mensual o licencia vitalicia."
+      "title": "Ai X TradeX - Inteligencia Artificial de Trading para MT4",
+      "description": "Ai X PULSE RS: nuestra inteligencia artificial de trading que se conecta a tu cuenta MetaTrader 4. La IA arma el plan del día, tú eliges el perfil de riesgo y el sistema opera con meta y límite de pérdida. Tu dinero queda en tu bróker."
     },
     "products": {
       "title": "Planes",
-      "description": "Ai X PULSE RS: licencia del robot en el plan mensual (hasta 2 cuentas MT4) o vitalicio (hasta 5 cuentas MT4), con una meta de rendimiento de hasta 10% por día."
+      "description": "Licencia del Ai X PULSE RS: Mensual (US$99, hasta 2 cuentas MT4), Vitalicia (US$499, hasta 5 cuentas MT4) o pase de prueba desde US$10. Sin gestión de cuenta."
     },
     "about": {
       "title": "Sobre mí",
@@ -18,7 +18,7 @@
     },
     "faq": {
       "title": "Preguntas Frecuentes",
-      "description": "Respuestas sobre Ai X PULSE RS - depósito mínimo, brókers compatibles, facturación y cómo empezar."
+      "description": "Dudas sobre el Ai X PULSE RS: cómo funciona la IA, perfiles de riesgo, brókers, depósito, requisitos, cobro, pase de prueba y cómo empezar."
     },
     "blog": {
       "title": "Blog",
@@ -26,11 +26,15 @@
     },
     "howItWorks": {
       "title": "Cómo Funciona",
-      "description": "Descubre cómo Ai X PULSE RS opera XAU/USD en MetaTrader 4 - estrategia, gestión de riesgo, metas automáticas y panel en tiempo real."
+      "description": "Cómo funciona el Ai X PULSE RS: conéctalo a MT4, elige el perfil en el Asistente IA, mira la probabilidad de alcanzar la meta medida en tu historial y sigue todo en el panel."
     },
     "results": {
       "title": "Resultados",
-      "description": "Capturas y videos reales de cuentas mías y de clientes operando con los robots Ai X TradeX - resultados documentados, sin promesas vacías."
+      "description": "Capturas reales de cuentas operando con los sistemas Ai X TradeX, directo de MetaTrader 4, sin edición. Cuenta verificada en Myfxbook muy pronto."
+    },
+    "tools": {
+      "title": "Herramientas para el Trader",
+      "description": "Herramientas gratis para el trader de forex y oro: calculadora de lote, sesiones del mercado en tu horario y cotizaciones de referencia."
     }
   },
   "Nav": {
@@ -43,7 +47,8 @@
     "blog": "Blog",
     "howItWorks": "Cómo Funciona",
     "contact": "Contacto",
-    "cta": "Telegram"
+    "cta": "Telegram",
+    "tools": "Herramientas"
   },
   "Common": {
     "marketTicker": "Mercado en tiempo real",
@@ -52,57 +57,239 @@
     "previous": "Anterior",
     "next": "Siguiente"
   },
+  "Risk": {
+    "noticeTitle": "Aviso de riesgo",
+    "noticeBody": "Operar forex y oro implica un riesgo real de pérdida, incluso de todo el capital depositado. Los resultados pasados y las simulaciones no garantizan resultados futuros. El Ai X PULSE RS es una herramienta de automatización con inteligencia artificial, no una inversión ni asesoría financiera. Prueba antes en una cuenta demo o con el pase de prueba y opera solo con dinero que puedas perder."
+  },
+  "Profiles": {
+    "eyebrow": "Perfiles de riesgo",
+    "title": "Tú eliges cuánto quieres arriesgar",
+    "intro": "En el Asistente IA eliges el perfil. Define la meta del día, el límite de pérdida del día y el riesgo de cada entrada. Al llegar a la meta o al límite, el sistema se detiene hasta el día siguiente.",
+    "goal": "Meta del día",
+    "loss": "Límite de pérdida del día",
+    "risk": "Riesgo por entrada",
+    "levelLabel": "Riesgo",
+    "items": [
+      {
+        "key": "conservative",
+        "name": "Conservador",
+        "goal": "3%",
+        "loss": "-2%",
+        "risk": "1%",
+        "level": 1,
+        "levelText": "Menor",
+        "body": "Para quien empieza o prefiere menos oscilación. Es el punto de partida que recomiendo."
+      },
+      {
+        "key": "moderate",
+        "name": "Moderado",
+        "goal": "5%",
+        "loss": "-3%",
+        "risk": "2%",
+        "level": 2,
+        "levelText": "Medio",
+        "body": "Más meta, más riesgo. Para quien ya conoce el comportamiento de su propia cuenta."
+      }
+    ],
+    "customTitle": "Personalizado y otros perfiles",
+    "customBody": "están en el portal: defines la meta y el límite de pérdida del día y ajustas cada par.",
+    "warning": "Una meta mayor significa más riesgo. La meta es un punto de parada, no una promesa de ganancia. El límite de pérdida diario se puede desactivar en el portal, pero es lo que te protege en un mal día."
+  },
   "Home": {
     "hero": {
-      "title": "Ai X TradeX",
-      "subtitle": "Robot de trading automatizado para MetaTrader 4. Resultados documentados, sin promesas vacías.",
-      "ctaPrimary": "Ver los Planes",
-      "ctaSecondary": "Unirse al grupo"
+      "title": "Inteligencia artificial de trading en tu cuenta MT4",
+      "subtitle": "El Ai X PULSE RS se conecta a tu MetaTrader 4. La IA arma el plan del día contigo y el sistema opera solo, con meta y límite de pérdida, mientras el dinero sigue en tu bróker.",
+      "ctaPrimary": "Empezar ahora",
+      "ctaSecondary": "Probar 1 día por US$10",
+      "ctaTertiary": "Entrar al grupo de Telegram",
+      "trust": [
+        "Tu dinero en tu bróker",
+        "Licencia, sin gestión de cuenta",
+        "4.759 miembros en el grupo de Telegram",
+        "Soporte directo con el desarrollador"
+      ]
     },
     "market": {
       "title": "Mercado en tiempo real"
     },
-    "calculatorCta": "Conoce los Planes",
-    "whyUs": {
-      "heading": "¿Por qué",
+    "benefits": {
+      "eyebrow": "Por qué usarlo",
+      "title": "Trading con plan, sin quedarte pegado a la pantalla",
+      "intro": "Seas principiante o profesional, el problema suele ser el mismo: falta de tiempo, de disciplina y de un plan claro. Eso es lo que resuelve el Ai X PULSE RS.",
       "items": [
-        { "title": "Tu cuenta, 100% tuya", "body": "La licencia corre directo en tu propia cuenta - depositas y retiras cuando quieras, sin terceros administrando tu dinero." },
-        { "title": "Hasta 5 Cuentas MT4", "body": "Recibes el archivo .ex4 del robot y lo instalas en tus propias cuentas: hasta 2 con la licencia mensual, hasta 5 con la vitalicia." },
-        { "title": "Rendimiento Real", "body": "Meta de hasta 10% por día, siguiendo la gestión de riesgo estándar del robot - la misma lógica que corre todos los días en mis cuentas." },
-        { "title": "Descuento con Socios", "body": "Funciona en cualquier tipo de cuenta MT4. En FPMarkets, Tickmill, Vantage o Exness con mi enlace/código IB, obtienes hasta $50 de descuento." }
+        {
+          "title": "Recupera tu tiempo",
+          "body": "Con el MT4 encendido (en la computadora o en una VPS), el sistema sigue el mercado en días hábiles, 24 horas, sin que mires gráficos."
+        },
+        {
+          "title": "Disciplina sin emoción",
+          "body": "Sin miedo, sin codicia, sin operar por impulso. Sigue el plan del día, alcanza la meta o se detiene en el límite."
+        },
+        {
+          "title": "Plan armado por la IA",
+          "body": "El Asistente IA elige contigo los pares, la meta y el límite de pérdida en 5 pasos, sin necesidad de entender parámetros."
+        },
+        {
+          "title": "Decisiones con datos, no con corazonadas",
+          "body": "Antes de activarlo, la IA prueba el plan en las velas de tu propio bróker y muestra en cuántos días se alcanzó la meta."
+        },
+        {
+          "title": "Tu dinero, tu control",
+          "body": "La cuenta es tuya, en el bróker que elijas. Depositas, retiras, pausas o cambias el plan cuando quieras."
+        },
+        {
+          "title": "Personas reales detrás",
+          "body": "Te atiende quien desarrolla y opera el sistema todos los días, por Telegram o por email."
+        }
       ]
     },
-    "aboutTeaser": {
-      "title": "Quién está detrás de esto",
-      "body": "Empecé sin nada - a los 15 años ya vivía de alquiler, trabajando en un depósito de bebidas. Pasé por informática, tienda virtual y opciones binarias, donde llegué al Top 1 de Brasil y Top 5 del mundo en 2019. Después de perder dinero persiguiendo robots milagrosos en el forex, decidí desarrollar mi propio EA - con metas realistas e interés compuesto, no promesas vacías.",
-      "cta": "Conocer la Historia Completa"
+    "how": {
+      "eyebrow": "Cómo funciona",
+      "title": "En 4 pasos estás operando",
+      "items": [
+        {
+          "title": "Conéctalo a tu MT4",
+          "body": "Elige la licencia, descarga el Ai X PULSE RS en Mi Cuenta y sigue la guía de instalación."
+        },
+        {
+          "title": "Elige el perfil",
+          "body": "En el Asistente IA, define el perfil de riesgo y el modo: automático (la IA elige los pares) o manual."
+        },
+        {
+          "title": "La IA analiza",
+          "body": "Lee el último mes de velas de tu bróker, prueba las combinaciones y muestra la probabilidad de alcanzar la meta."
+        },
+        {
+          "title": "Síguelo en el panel",
+          "body": "Saldo y resultado de hoy, de la semana y del mes de cada cuenta, en tu área de cliente."
+        }
+      ],
+      "cta": "Ver cómo funciona"
     },
-    "partners": {
-      "title": "Brókers Asociados"
+    "ai": {
+      "eyebrow": "Dónde está la IA",
+      "title": "Inteligencia artificial que trabaja para ti",
+      "items": [
+        {
+          "title": "Asistente IA",
+          "body": "Arma el plan de la cuenta en 5 pasos. En modo automático, rehace el análisis cada día hábil y ajusta los pares solo."
+        },
+        {
+          "title": "Ai X Intelligence",
+          "body": "Lee las velas en tu propio MT4 y mide la probabilidad de alcanzar la meta en días de prueba, con costo real de spread y comisión."
+        },
+        {
+          "title": "Opinión del trader sénior",
+          "body": "Con el sistema v7.5 o más nuevo, una IA en el papel de trader experimentado lee los gráficos diario, de 4 horas y de 1 hora y muestra en el panel el sesgo del día de cada par, renovado a lo largo del día."
+        }
+      ],
+      "honest": "La IA arma el plan y analiza el mercado. Las órdenes en MT4 siguen reglas definidas que ves en el portal. Ninguna IA predice el mercado ni garantiza resultados."
+    },
+    "panel": {
+      "eyebrow": "Área de cliente",
+      "title": "Todo en un solo panel",
+      "items": [
+        "Cuentas MT4: saldo, resultado de hoy, de la semana y del mes y operaciones abiertas",
+        "Panel Hoy: meta del día, límite de pérdida y situación de cada par",
+        "Configuración por par, aplicada por el sistema en hasta 30 segundos",
+        "Licencias, renovación, descargas y guía de instalación"
+      ]
     },
     "results": {
-      "title": "Resultados Reales",
-      "cta": "Ver Todos los Resultados"
+      "eyebrow": "Resultados reales",
+      "title": "Capturas reales, sin edición",
+      "intro": "Cuentas reales, mías y de clientes, directo de la app de MetaTrader 4.",
+      "cta": "Ver todos los resultados",
+      "verifiedBadge": "Muy pronto",
+      "verifiedTitle": "Cuenta real verificada en Myfxbook",
+      "verifiedBody": "En el lanzamiento de la v8 VIP, una cuenta real quedará verificada en Myfxbook, con historial completo y abierto para que cualquiera lo revise."
+    },
+    "plans": {
+      "eyebrow": "Licencias",
+      "title": "Elige cómo empezar",
+      "intro": "Licencia del sistema, sin gestión de cuenta. Empieza por el pase de prueba y, si te gusta, lo pagado se convierte en descuento en la licencia.",
+      "passLabel": "Pase de prueba",
+      "passFrom": "desde",
+      "passPrice": "$10",
+      "passNote": "1, 3 o 7 días · 1 cuenta MT4",
+      "popular": "La más completa",
+      "ibNote": "Descuento de bróker asociado: $30/mes en la Mensual y $50 en la Vitalicia.",
+      "cta": "Ver planes y detalles"
+    },
+    "aboutTeaser": {
+      "eyebrow": "Quién está detrás",
+      "title": "Quien desarrolla es quien opera y atiende",
+      "body": "Soy Alesson Felipe, desarrollador desde 2012 y en forex desde 2015. Perdí dinero con robots milagrosos y caí en estafas, por eso construí mi propio sistema. Desarrollo, pruebo y opero el Ai X PULSE RS, y atiendo personalmente a quien lo usa.",
+      "cta": "Conocer la historia"
+    },
+    "partners": {
+      "title": "Brókers asociados",
+      "body": "Funciona en cualquier bróker con MT4. En los asociados, abriendo cuenta con mi enlace o cambiando el código IB al mío, obtienes descuento en la licencia."
+    },
+    "finalCta": {
+      "title": "¿Listo para probarlo en tu cuenta?",
+      "body": "Empieza con 1 día por US$10, en una cuenta demo o real. Sin compromiso.",
+      "primary": "Probar 1 día",
+      "secondary": "Hablar conmigo por Telegram"
+    },
+    "mockup": {
+      "label": "Imagen ilustrativa",
+      "title": "Hoy",
+      "account": "Cuenta MT4 · demo",
+      "status": "Buscando la meta del día",
+      "profile": "Perfil",
+      "profileValue": "Conservador",
+      "mode": "Modo",
+      "modeValue": "Automático",
+      "goal": "Meta del día",
+      "loss": "Límite de pérdida",
+      "progress": "Avance de la meta",
+      "pairs": "Pares del plan",
+      "pairTrading": "Operando",
+      "pairWaiting": "Esperando señal",
+      "pairPaused": "En pausa hasta mañana",
+      "assistant": "Asistente IA",
+      "assistantText": "Plan activo · nuevo análisis cada día hábil",
+      "bias": "Trader sénior",
+      "biasValue": "ambos lados"
     }
   },
   "Products": {
     "title": "Ai X PULSE RS",
-    "intro": "Ai X PULSE RS es un robot híbrido HFT/Scalper, diseñado para darte resultados a corto, medio y largo plazo. Consigue tu licencia y empieza a operar en tu cuenta hoy mismo.",
+    "eyebrow": "Licencia",
+    "intro": "Nuestra inteligencia artificial de trading conectada a tu cuenta MT4. La instalas en tus cuentas y mantienes el control total de tu dinero. Sin gestión de cuenta.",
+    "includes": {
+      "title": "Qué incluye la licencia",
+      "items": [
+        "Ai X PULSE RS para MT4, en español, portugués e inglés",
+        "Asistente IA: arma el plan del día, en modo automático o manual",
+        "Ai X Intelligence: probabilidad de alcanzar la meta medida en tu propio MT4",
+        "Opinión del trader sénior (IA) en el panel, con el sistema v7.5 o más nuevo",
+        "Panel con saldo y resultado de hoy, de la semana y del mes de cada cuenta",
+        "Guía de instalación y soporte directo con el desarrollador"
+      ]
+    },
+    "techTitle": "Detalles técnicos",
     "pulse": {
       "specs": {
-        "platform": "Plataforma", "platformValue": "MetaTrader 4 (solo MT4)",
-        "accountType": "Tipo de Cuenta", "accountTypeValue": "Cualquier tipo",
-        "leverage": "Apalancamiento", "leverageValue": "1:500",
-        "deposit": "Depósito Mínimo Inicial", "depositValue": "$100",
-        "operation": "Operación", "operationValue": "24/5 100% Automatizado",
-        "interest": "Interés", "interestValue": "Compuesto / Simple",
-        "term": "Plazo", "termValue": "Corto / Medio / Largo"
+        "platform": "Plataforma",
+        "platformValue": "MetaTrader 4 (MT5 muy pronto)",
+        "accountType": "Tipo de cuenta",
+        "accountTypeValue": "Cualquier tipo",
+        "spread": "Spread máximo",
+        "spreadValue": "30 pts",
+        "leverage": "Apalancamiento",
+        "leverageValue": "1:500",
+        "deposit": "Capital recomendado",
+        "depositValue": "US$ 500 en oro · US$ 100 en pares",
+        "operation": "Operación",
+        "operationValue": "24/5, automática (MT4 encendido o VPS)"
       }
     },
     "pass": {
       "tag": "Pase de prueba",
-      "title": "Prueba el robot antes de suscribirte",
-      "description": "Activa el robot en 1 cuenta MT4 por 1, 3 o 7 días. ¿Quieres más tiempo? Recarga en Mi Cuenta y los días se suman. El mismo robot, el mismo portal y la misma Ai X Intelligence (1 análisis por IA al día).",
+      "title": "Pruébalo antes de suscribirte",
+      "description": "Activa el Ai X PULSE RS en 1 cuenta MT4 por 1, 3 o 7 días. ¿Quieres más tiempo? Recarga en Mi Cuenta y los días se suman. El mismo sistema, el mismo portal y la misma Ai X Intelligence (1 análisis por IA al día).",
       "d1": {
         "label": "Pase 1 día",
         "price": "$10",
@@ -125,57 +312,93 @@
       "creditNote": "¿Te gustó? Lo que pagaste en pases en los últimos 7 días se convierte en descuento en la Licencia Mensual o Vitalicia (hasta la mitad del precio)."
     },
     "license": {
-      "tag": "Licencia del robot - hasta 2 cuentas (mensual) o hasta 5 cuentas (vitalicia)",
-      "description": "Recibes el archivo del robot y lo instalas directo en tus propias cuentas MT4, sin que yo gestione la cuenta. La licencia mensual cubre hasta 2 cuentas MT4 y la vitalicia hasta 5. Indicas el número de cada cuenta en la compra y, si lo necesitas, puedes corregirlas 1 vez en Mi Cuenta.",
-      "requirementsNote": "Todas las cuentas necesitan un spread por debajo de 30 pts para que el robot rinda bien.",
-      "oneMonth": { "label": "Licencia Mensual", "price": "$99", "period": "/mes", "note": "Hasta 2 cuentas MT4", "discount": "$30", "discountPrice": "$69", "discountNote": "o $69/mes con descuento de bróker asociado" },
-      "lifetime": { "label": "Licencia Vitalicia", "price": "$499", "period": "", "originalPrice": "$997", "badge": "50% OFF", "note": "Pago único, acceso vitalicio - hasta 5 cuentas MT4", "discount": "$50", "discountPrice": "$449", "discountNote": "o $449 con descuento de bróker asociado" },
+      "tag": "Licencia - hasta 2 cuentas (mensual) o hasta 5 cuentas (vitalicia)",
+      "description": "Recibes el Ai X PULSE RS y lo instalas directo en tus cuentas MT4, sin que yo haga la gestión. La licencia mensual habilita hasta 2 cuentas MT4 y la vitalicia hasta 5. Indicas el número de cada cuenta en la compra y, si lo necesitas, puedes corregirlo 1 vez en Mi Cuenta.",
+      "requirementsNote": "Todas las cuentas necesitan un spread por debajo de 30 pts para que el sistema rinda bien.",
+      "oneMonth": {
+        "label": "Licencia Mensual",
+        "price": "$99",
+        "period": "/mes",
+        "note": "Hasta 2 cuentas MT4",
+        "discount": "$30",
+        "discountPrice": "$69",
+        "discountNote": "o $69/mes con descuento de bróker asociado"
+      },
+      "lifetime": {
+        "label": "Licencia Vitalicia",
+        "price": "$499",
+        "period": "",
+        "originalPrice": "$997",
+        "badge": "50% OFF",
+        "note": "Pago único, acceso vitalicio - hasta 5 cuentas MT4",
+        "discount": "$50",
+        "discountPrice": "$449",
+        "discountNote": "o $449 con descuento de bróker asociado"
+      },
       "discountTitle": "Obtén hasta $50 de descuento en la licencia",
       "discountBody": "Abre tu cuenta con mi enlace (o cambia el código IB de tu cuenta al mío) en FPMarkets, Tickmill, Vantage o Exness: $30 OFF todos los meses en la Licencia Mensual y $50 OFF en la Vitalicia. Lo eliges en el siguiente paso.",
       "ctaOneMonth": "Obtener Licencia Mensual",
       "ctaLifetime": "Obtener Licencia Vitalicia"
     },
-    "calculator": {
-      "title": "Calcula el Crecimiento de tu Cuenta",
-      "depositLabel": "Depósito inicial ($)",
-      "rateLabel": "Meta Diaria",
-      "modeLabel": "Tipo de interés",
-      "simpleLabel": "Interés Simple",
-      "compoundLabel": "Interés Compuesto",
-      "monthsLabel": "Mes(es) de la simulación",
-      "rateNote": "{count, plural, one {{rate}% por día hábil × # día hábil seleccionado} other {{rate}% por día hábil × # días hábiles seleccionados}}",
-      "resultLabel": "Saldo Final",
-      "profitLabel": "Ganancia Estimada",
-      "profitDayLabel": "Ganancia Diaria",
-      "profitWeekLabel": "Ganancia Semanal",
-      "profitMonthLabel": "Ganancia Mensual",
-      "resultNote": "Partiendo de {deposit}.",
-      "disclaimer": "Simulación ilustrativa basada en la meta de rendimiento publicada - no es garantía de resultado. El trading implica riesgo."
-    }
+    "faqCta": "¿Todavía con dudas? Mira las preguntas frecuentes"
   },
   "About": {
     "title": "Sobre mí",
-    "intro": "Del alquiler a los 15 años al Top 1 de Brasil en trading - la jornada completa detrás del Ai X PULSE RS.",
+    "eyebrow": "Alesson Felipe",
+    "intro": "Desarrollador desde 2012, en forex desde 2015. La historia detrás del Ai X PULSE RS.",
+    "facts": [
+      {
+        "value": "2012",
+        "label": "programando"
+      },
+      {
+        "value": "2015",
+        "label": "en el mercado financiero"
+      },
+      {
+        "value": "4.759",
+        "label": "miembros en el grupo de Telegram"
+      }
+    ],
+    "storyTitle": "Mi historia",
     "story": [
       "Me llamo Alesson Felipe, hoy con 36 años. Siempre fui una persona simple, con grandes sueños. A los 15 años ya vivía de alquiler con mi esposa, que en esa época tenía 16 - solo una cama, un colchón, una estufa y un cilindro de gas. Pasé siete años trabajando en un depósito de bebidas que abastecía a los vendedores de la playa de Boa Viagem, en Recife. Me quedaba mirando los edificios frente al mar y los autos pasando por la costanera, imaginándome algún día dejando el alquiler, con un auto decente para salir con la familia.",
       "Fue en ese depósito donde compré mi primera PC, pagándola de a poco. Aprendí informática solo, bajando apuntes de internet - formatear computadoras, instalar Windows, después shows de diapositivas y recopilaciones en CD. Dejé el depósito, fui a trabajar como ayudante de mesero y seguí soñando: un día iba a darle a mi familia lo que veía hacer a la gente exitosa todos los días.",
       "Empecé a estudiar cómo ganar dinero por internet - sistema de afiliados, dropshipping. No funcionó con afiliados, pero el dropshipping sí: vendí mis primeros R$10 mil, R$15 mil importando de China. Cuando los marketplaces empezaron a banear a quienes hacían dropshipping en Brasil, aprendí programación y creé mi propia tienda virtual. Faltaba tráfico, así que fui detrás del marketing, automaticé publicaciones en grupos de Facebook y llegué a tener más de 100 clientes recurrentes en un sistema de afiliados que yo mismo desarrollé - hasta que eso también terminó en baneo de cuenta.",
       "A finales de 2015 conocí las opciones binarias. Perdí mucho dinero al principio. Estudié a fondo - probabilidad, techos y suelos, línea de tendencia alcista y bajista, pullback - hasta convertirme en el Top 1 de Brasil y Top 5 del mundo en IQ Option, en 2019.",
       "Las cuentas de opciones binarias también terminaron baneadas, y así fue como llegué al forex. Intenté aplicar la misma estrategia, no tuvo sentido, y volví a estudiar desde cero - ahora estructura de mercado y estrategia automatizada. Entre 2022 y 2023 perdí dinero persiguiendo robots milagrosos, comprando EAs de HFT que prometían convertir poco en mucho de la noche a la mañana. Caí en estafas más de una vez.",
-      "Entonces decidí desarrollar mi propio EA - un modelo híbrido HFT/Scalper, ya que un bróker serio no permite HFT puro. Fue ahí que la ganancia empezó a ser consistente. Y fue ahí, también, que aprendí la lección más importante: sin meta y sin interés compuesto, la cuenta quiebra. Hoy el Ai X PULSE RS es ese aprendizaje aplicado - una meta diaria realista, buscando un retorno alto en el largo plazo a través del interés compuesto, no la promesa vacía de hacerse rico de la noche a la mañana.",
+      "Entonces decidí desarrollar mi propio sistema. Fue ahí que la ganancia empezó a ser consistente, y fue ahí también que aprendí la lección más importante: lo que quiebra una cuenta no es el día sin ganancia, es la pérdida sin límite.",
+      "En 2026 uní ese aprendizaje con inteligencia artificial: el Asistente IA arma el plan del día, la Ai X Intelligence prueba el plan en el historial del bróker de cada cliente, y cada uno elige el perfil de riesgo sabiendo lo que está en juego, con meta y límite de pérdida definidos.",
       "Sigo casado con mi esposa hace más de 21 años - ella acompañó cada alto y bajo de esta jornada - hoy padre de tres hijos. Soy cristiano, y fue mi fe la que me mantuvo firme en los períodos más difíciles.",
-      "Si ya caíste en una estafa, ya lo intentaste todo y te frustraste, o solo quieres ver tu dinero trabajando de verdad - es justamente para eso que existe el Ai X PULSE RS."
+      "Si ya caíste en una estafa o te cansaste de promesas de dinero fácil, el Ai X PULSE RS fue hecho pensando en eso: un plan claro, el riesgo que tú eliges y el resultado mostrado tal como es."
     ],
+    "values": {
+      "title": "Cómo trabajo",
+      "items": [
+        {
+          "title": "El resultado tal como es",
+          "body": "Muestro capturas reales, sin edición. La cuenta verificada en Myfxbook llega con el lanzamiento de la v8 VIP."
+        },
+        {
+          "title": "Atención directa",
+          "body": "Quien responde es quien desarrolla y opera el sistema, por Telegram o en support@aixtradex.com."
+        },
+        {
+          "title": "Sin promesas",
+          "body": "Nada de ganancias garantizadas. El trading implica riesgo y lo digo abiertamente, antes de la venta."
+        }
+      ]
+    },
     "brokers": {
-      "title": "Brókers Asociados",
-      "body": "El robot funciona en cualquier tipo de cuenta MetaTrader 4 (MT4), en cualquier bróker, con spread por debajo de 30 pts. En los brókers asociados de abajo obtienes descuento en la licencia: abriendo tu cuenta con mi enlace o cambiando el código IB de tu cuenta al mío - $30 en la Licencia Mensual y $50 en la Vitalicia. Esto no es una recomendación de inversión.",
-      "comingSoon": "Más Brókers Próximamente..."
+      "title": "Brókers asociados",
+      "body": "El Ai X PULSE RS funciona en cualquier tipo de cuenta MetaTrader 4, en cualquier bróker, con spread de hasta 30 pts. En los brókers asociados de abajo obtienes descuento en la licencia, abriendo cuenta con mi enlace o cambiando el código IB de tu cuenta al mío: $30 al mes en la Licencia Mensual y $50 en la Vitalicia. Esto no es una recomendación de inversión.",
+      "comingSoon": "Más brókers muy pronto"
     },
     "closing": {
-      "title": "Hablemos",
-      "body": "¿Dudas sobre el robot o cómo funciona la licencia? Solo escríbeme por Telegram."
+      "title": "Habla conmigo",
+      "body": "¿Dudas sobre el sistema o la licencia? Escríbeme por Telegram."
     },
-    "cta": "Unirse a Telegram"
+    "cta": "Hablar por Telegram"
   },
   "Contact": {
     "title": "Contacto",
@@ -184,75 +407,113 @@
     "note": "¿Prefieres email? Escribe a support@aixtradex.com - también respondo por ahí."
   },
   "Footer": {
-    "disclaimer": "El trading implica riesgo. Los resultados pasados no garantizan resultados futuros. Nada en este sitio es asesoría financiera.",
+    "tagline": "Inteligencia artificial de trading que se conecta a tu cuenta MetaTrader 4. Licencia, sin gestión de cuenta.",
     "menuHeading": "Menú",
-    "usefulHeading": "Enlaces Útiles",
-    "socialHeading": "Redes Sociales",
-    "usefulLinks": {
-      "markets": "Mercados",
-      "tools": "Herramientas",
-      "news": "Noticias",
-      "analysis": "Análisis",
-      "brokers": "Brókers",
-      "calendar": "Calendario"
-    },
-    "comingSoon": "Próximamente",
+    "contactHeading": "Contacto",
+    "toolsHeading": "Herramientas",
+    "socialHeading": "Redes sociales",
+    "telegramGroup": "Grupo de Telegram",
+    "telegramDm": "Hablar conmigo por Telegram",
+    "riskTitle": "Aviso de riesgo",
+    "disclaimer": "Operar forex y oro implica riesgo de pérdida, incluso de todo el capital depositado. Los resultados pasados y las simulaciones no garantizan resultados futuros. El Ai X PULSE RS es una herramienta de automatización con inteligencia artificial vendida por licencia; nada en este sitio es asesoría financiera ni oferta de inversión.",
+    "comingSoon": "Muy pronto",
     "rightsPrefix": "© 2015-{year} -",
-    "rightsSuffix": ". Todos los derechos reservados."
+    "rightsSuffix": ". Todos los derechos reservados.",
+    "toolsLinks": {
+      "calculator": "Calculadora de lote",
+      "sessions": "Sesiones del mercado",
+      "quotes": "Cotizaciones",
+      "calendar": "Calendario económico",
+      "analysis": "Análisis del día con IA",
+      "news": "Noticias del mercado"
+    }
   },
   "Faq": {
     "title": "Preguntas Frecuentes",
-    "intro": "Todo lo que necesitas saber antes de empezar con Ai X PULSE RS.",
+    "eyebrow": "Resuelve tus dudas",
+    "intro": "Lo que necesitas saber antes de empezar con el Ai X PULSE RS.",
     "items": [
       {
-        "q": "¿Qué es Ai X PULSE RS?",
-        "a": "Es un robot híbrido HFT/Scalper (Expert Advisor) que opera XAU/USD automáticamente en MetaTrader 4. Compras la licencia, la instalas en tus cuentas y el robot opera solo, siguiendo la misma lógica probada todos los días."
+        "q": "¿Qué es el Ai X PULSE RS?",
+        "a": "Es nuestra inteligencia artificial de trading que se conecta a tu cuenta MetaTrader 4. La IA arma el plan del día contigo (pares, meta y límite de pérdida) y analiza el mercado; la ejecución de las órdenes en MT4 sigue reglas definidas, que ves y ajustas en el portal."
+      },
+      {
+        "q": "¿Es una IA que adivina el mercado?",
+        "a": "No. Ninguna IA predice el mercado. La IA del Ai X PULSE RS arma el plan, prueba las combinaciones en el historial de tu bróker y da una opinión técnica del día. Las operaciones siguen reglas claras de entrada, salida y riesgo, y el resultado no está garantizado."
       },
       {
         "q": "¿Necesito experiencia en trading?",
-        "a": "No. Solo necesitas saber instalar un Expert Advisor en MetaTrader 4 - después de la compra, la guía de instalación paso a paso queda en Mi Cuenta, y cualquier duda te ayudo por Telegram."
+        "a": "No. El Asistente IA te guía en 5 pasos, y la guía de instalación está en Mi Cuenta. Cualquier duda, te ayudo por Telegram. Quien ya opera puede ajustar cada par en detalle en el portal."
       },
       {
-        "q": "¿Es un fondo de inversión o una cuenta agrupada?",
-        "a": "No. La licencia corre directo en tu propia cuenta, en el bróker que elijas - sin terceros administrando tu dinero."
+        "q": "¿Es un fondo de inversión o gestión de cuenta?",
+        "a": "No. La licencia funciona directo en tu propia cuenta, en el bróker que elijas. No hago gestión de cuentas y no tengo acceso a tu dinero: depositas y retiras cuando quieras."
+      },
+      {
+        "q": "¿Cómo funcionan los perfiles de riesgo?",
+        "a": "En el Asistente IA eliges el perfil. Los principales: Conservador (meta del 3% al día, límite de pérdida del 2%, 1% de riesgo por entrada) y Moderado (5%, 3% y 2%). Personalizado y otros perfiles están en el portal. Una meta mayor significa más riesgo. Al llegar a la meta o al límite, el sistema se detiene hasta el día siguiente."
+      },
+      {
+        "q": "¿El sistema usa recuperación de lote?",
+        "a": "La recuperación es una opción por par, que activas o desactivas en el portal. Aumenta el lote después de una pérdida para recuperar más rápido, y por eso también aumenta el riesgo. Para el camino más conservador, deja la recuperación desactivada y mantén activo el límite de pérdida del día."
       },
       {
         "q": "¿Qué brókers son compatibles?",
-        "a": "Cualquier bróker con MetaTrader 4, en cualquier tipo de cuenta, con spread por debajo de 30 pts. Si abres tu cuenta con mi enlace (o cambias el código IB al mío) en un bróker asociado - FPMarkets, Tickmill, Vantage o Exness - obtienes $30 de descuento en la Licencia Mensual o $50 en la Vitalicia."
+        "a": "Cualquier bróker con MetaTrader 4, en cualquier tipo de cuenta, con spread de hasta 30 pts. Si abres cuenta con mi enlace (o cambias el código IB al mío) en un bróker asociado - FPMarkets, Tickmill, Vantage o Exness - obtienes $30 de descuento al mes en la Licencia Mensual o $50 en la Vitalicia."
       },
       {
-        "q": "¿Cuál es el depósito mínimo?",
-        "a": "Lo recomendado es desde $100, en una cuenta MT4 con apalancamiento 1:500 - cualquier tipo de cuenta, con spread por debajo de 30 pts."
+        "q": "¿Funciona en MT5?",
+        "a": "Todavía no. Hoy es solo MetaTrader 4. La versión para MT5 llega muy pronto."
+      },
+      {
+        "q": "¿Cuánto necesito para empezar?",
+        "a": "Capital recomendado: desde US$ 500 en oro y desde US$ 100 en pares de divisas, en una cuenta MT4 con apalancamiento 1:500 - cualquier tipo de cuenta, con spread de hasta 30 pts. Con menos, incluso el lote mínimo del bróker (0,01) puede arriesgar más de lo que permite el perfil elegido."
+      },
+      {
+        "q": "¿Tengo que dejar la computadora encendida?",
+        "a": "Sí. El MT4 tiene que quedar abierto con el Ai X PULSE RS activo, en tu computadora o en una VPS (una computadora en la nube que queda encendida 24 horas). Si se cierra el MT4, el sistema deja de operar."
+      },
+      {
+        "q": "¿Cuáles son los detalles técnicos?",
+        "a": "MetaTrader 4, cualquier tipo de cuenta, spread de hasta 30 pts, apalancamiento 1:500 recomendado. El sistema se coloca en el gráfico del oro (XAU/USD) y opera el oro y los pares que elijas (los principales pares forex u otros activos de tu bróker). La configuración del portal se lee cada 30 segundos, y las cuentas envían saldo y resultados al panel cada 5 minutos. Disponible en español, portugués e inglés."
+      },
+      {
+        "q": "¿Puedo probar antes de suscribirme?",
+        "a": "Sí. El pase de prueba habilita el sistema en 1 cuenta MT4 por 1 día ($10), 3 días ($25) o 7 días ($49). Las recargas suman días, y lo que pagaste en pases en los últimos 7 días se convierte en descuento en la Licencia Mensual o Vitalicia (hasta la mitad del precio)."
       },
       {
         "q": "¿Cómo funciona el cobro?",
-        "a": "Licencia Mensual: $99/mes, cubre hasta 2 cuentas MT4. Licencia Vitalicia: $499 (de $997), pago único, cubre hasta 5 cuentas MT4."
+        "a": "Licencia Mensual: $99/mes, hasta 2 cuentas MT4. Licencia Vitalicia: $499 (antes $997), pago único, hasta 5 cuentas MT4. El pago es en USDT o USDC (Binance Pay o billetera)."
       },
       {
         "q": "¿Cuántas cuentas puedo usar con la licencia?",
-        "a": "La Licencia Mensual activa el robot en hasta 2 cuentas MT4 tuyas, y la Licencia Vitalicia en hasta 5. Indicas el número de cada cuenta en la compra; después, puedes cambiar las cuentas 1 vez en Mi Cuenta, y otros cambios solo por soporte. Para usar el robot en más cuentas, necesitas otra licencia. Todas las cuentas necesitan un spread por debajo de 30 pts para que el robot rinda bien."
+        "a": "La Licencia Mensual habilita hasta 2 de tus cuentas MT4, y la Licencia Vitalicia hasta 5. Indicas el número de cada cuenta en la compra; después, puedes cambiar las cuentas 1 vez en Mi Cuenta, y otros cambios solo por soporte. Para usarlo en más cuentas, necesitas otra licencia."
       },
       {
-        "q": "¿Cómo recibo el robot después del pago?",
-        "a": "En cuanto se confirma el pago, recibes un email y la licencia aparece en Mi Cuenta (entras con el email de la compra, con un código, sin contraseña). Ahí descargas el robot y sigues la guía de instalación en MT4."
+        "q": "¿Cómo recibo el sistema después del pago?",
+        "a": "En cuanto se confirma el pago, recibes un email y la licencia aparece en Mi Cuenta (entras con el email de la compra, por código, sin contraseña). Allí descargas el Ai X PULSE RS y sigues la guía de instalación en MT4."
       },
       {
         "q": "¿Qué pasa si vence la Licencia Mensual?",
-        "a": "El robot deja de operar hasta la renovación, incluso de administrar órdenes abiertas - por eso, renueva antes del vencimiento. La renovación se hace en Mi Cuenta y, con el pago confirmado, el robot vuelve a operar solo en hasta 5 minutos."
+        "a": "El sistema deja de abrir operaciones nuevas, pero sigue administrando las que ya están abiertas. La renovación se hace en Mi Cuenta y, con el pago confirmado, vuelve a operar solo en hasta 5 minutos."
+      },
+      {
+        "q": "¿Los resultados están verificados?",
+        "a": "Hoy los resultados son capturas reales de cuentas mías y de clientes, en la página de Resultados y en el grupo de Telegram. En el lanzamiento de la v8 VIP, una cuenta real quedará verificada en Myfxbook, con historial completo y abierto."
       },
       {
         "q": "¿El resultado está garantizado?",
-        "a": "No. Es una meta de rendimiento, no una garantía - el trading implica riesgo y los resultados pasados no garantizan resultados futuros."
+        "a": "No. El trading implica riesgo de pérdida, incluso de todo el capital. Los resultados pasados y las simulaciones no garantizan resultados futuros. La meta y el límite de pérdida organizan el día, pero no eliminan el riesgo."
       },
       {
         "q": "¿Cómo empiezo?",
-        "a": "Elige el plan en la página de Planes y sigue el paso a paso: descuento del bróker asociado (opcional), tus datos y tus cuentas MT4, y pago en USDT o USDC (Binance Pay o billetera). Pagando el valor exacto, la confirmación es automática: en pocos minutos tu licencia se activa y recibes un email con el acceso."
+        "a": "Elige el plan en la página de Planes y sigue el paso a paso: descuento del bróker asociado (opcional), tus datos y tus cuentas MT4, y pago en USDT o USDC. Pagando el monto exacto, la confirmación es automática: en pocos minutos se libera la licencia y recibes un email con el acceso."
       }
     ],
     "cta": {
-      "title": "¿Todavía tienes dudas?",
-      "body": "Habla conmigo directamente por Telegram.",
-      "button": "Unirse a Telegram"
+      "title": "¿Todavía con dudas?",
+      "body": "Habla directo conmigo por Telegram o en support@aixtradex.com.",
+      "button": "Entrar a Telegram"
     }
   },
   "Blog": {
@@ -264,62 +525,132 @@
     }
   },
   "HowItWorks": {
-    "title": "Ai X PULSE RS - Cómo Funciona",
-    "intro": "Un Expert Advisor creado específicamente para XAU/USD (Oro) en MetaTrader 4 - automatizado, disciplinado por metas y con gestión de riesgo configurable.",
-    "benefits": {
-      "heading": "¿Por qué Ai X PULSE RS es diferente?",
-      "items": [
-        { "title": "Enfoque en el Oro (XAU/USD)", "body": "Desarrollado y calibrado específicamente para el comportamiento del oro - no es un robot genérico adaptado." },
-        { "title": "Opera por Metas", "body": "Tú defines cuánto quieres ganar por día, semana y mes. Al alcanzar la meta, el robot cierra todo y se pausa automáticamente." },
-        { "title": "Gestión de Riesgo Flexible", "body": "Lote fijo, lote proporcional al saldo o riesgo porcentual por operación - tú eliges cuánto arriesgar." },
-        { "title": "Protección de Ganancia Inteligente", "body": "El robot sigue las operaciones y protege la ganancia a medida que el mercado se mueve a favor." },
-        { "title": "Panel en Tiempo Real", "body": "Saldo, ganancia del día/semana/mes, operaciones abiertas y estado del robot directo en el gráfico." },
-        { "title": "Control Total", "body": "Botones para pausar, reanudar o cerrar operaciones en cualquier momento." },
-        { "title": "Filtro de Horarios", "body": "Opera solo en los horarios de mayor liquidez que tú configures." }
+    "title": "Cómo funciona",
+    "eyebrow": "Ai X PULSE RS",
+    "intro": "Una inteligencia artificial de trading conectada a tu cuenta MT4. Tú eliges el perfil, la IA arma el plan y el sistema lo ejecuta con disciplina.",
+    "flow": {
+      "eyebrow": "Paso a paso",
+      "heading": "De la instalación al primer día",
+      "steps": [
+        {
+          "title": "Elige la licencia",
+          "body": "Pase de prueba, Licencia Mensual o Vitalicia. Pagando en USDT o USDC, la licencia sale en pocos minutos."
+        },
+        {
+          "title": "Conéctalo a tu MT4",
+          "body": "Descarga el Ai X PULSE RS en Mi Cuenta y sigue la guía: libera la dirección de la licencia en MT4 y coloca el sistema en el gráfico del oro."
+        },
+        {
+          "title": "Arma el plan con el Asistente IA",
+          "body": "Elige el perfil de riesgo y el modo. En automático, la IA elige los pares y divide la meta. En manual, tú eliges y la IA opina."
+        },
+        {
+          "title": "Mira la probabilidad antes de activarlo",
+          "body": "La IA lee el último mes de velas de tu bróker y muestra en cuántos días de prueba se alcanzó la meta, el peor día y los días en el límite de pérdida."
+        },
+        {
+          "title": "Actívalo y síguelo",
+          "body": "El sistema recibe el plan en hasta 30 segundos. En el panel Hoy ves la meta, el límite y la situación de cada par."
+        }
       ]
     },
-    "technical": {
-      "heading": "Cómo funciona por dentro",
+    "day": {
+      "eyebrow": "En el día a día",
+      "heading": "Lo que el sistema hace por ti",
+      "items": [
+        {
+          "title": "Espera el momento correcto",
+          "body": "Solo entra cuando aparece el gatillo configurado y los filtros de volatilidad, tendencia, horario y spread lo permiten."
+        },
+        {
+          "title": "Calcula el tamaño de la posición",
+          "body": "El lote sale del saldo y del riesgo por entrada de tu perfil. Cada operación tiene un stop de protección en el bróker."
+        },
+        {
+          "title": "Respeta el día",
+          "body": "Alcanzó la meta: se detiene hasta mañana. Llegó al límite de pérdida: también se detiene."
+        },
+        {
+          "title": "Rinde cuentas",
+          "body": "Saldo y resultados van a tu panel cada 5 minutos."
+        }
+      ]
+    },
+    "honest": {
+      "title": "Qué es IA y qué es regla",
+      "ai": "IA: arma el plan, elige pares y metas, los prueba en tu propio historial y, con el sistema v7.5 o más nuevo, da la opinión técnica del día.",
+      "rules": "Reglas: entradas, salidas, stops y el lote siguen la configuración que ves en el portal.",
+      "note": "Ninguna IA predice el mercado. Lo que hace es cambiar corazonadas por un plan y por datos."
+    },
+    "tech": {
+      "title": "Detalles técnicos",
       "steps": [
-        { "title": "Estrategia de Entrada", "body": "Monitorea el mercado continuamente y se posiciona estratégicamente alrededor del precio. Cuando el oro rompe con fuerza en una dirección, el robot entra a favor de ese movimiento, con una distancia de entrada que se adapta automáticamente a las condiciones del momento." },
-        { "title": "Filtro de Volatilidad", "body": "Solo abre operaciones cuando detecta una expansión real de movimiento - se mantiene fuera en los períodos laterales, justo donde la mayoría de los robots pierde dinero con costos innecesarios." },
-        { "title": "Gestión de Posiciones", "body": "Sigue la operación y ajusta la protección a medida que avanza la ganancia, reaccionando rápido a los cambios de precio para preservar lo acumulado." },
-        { "title": "Operación por Tendencia", "body": "Tras identificar la dirección, opera solo a favor de la tendencia - y resuelve automáticamente si el mercado se dispara en ambos sentidos a la vez." },
-        { "title": "Metas y Pausa Automática", "body": "Controla el resultado acumulado por día, semana y mes (en valor o %). Al alcanzar la meta, cierra todo y se pausa hasta el siguiente período." },
-        { "title": "Gestión de Riesgo Configurable", "body": "Tres modos de lote: fijo, por saldo (crece con el capital) o riesgo porcentual calculado sobre el saldo." },
-        { "title": "Protección contra Sobrecarga", "body": "Mecanismos internos evitan el exceso de solicitudes al bróker, garantizando una operación estable incluso en brókers más exigentes." },
-        { "title": "Filtro de Horario y Spread", "body": "Opera solo dentro de la ventana horaria configurada (por minuto) y respeta un tope máximo de spread." },
-        { "title": "Panel de Control Visual", "body": "Interfaz en el gráfico con saldo, patrimonio, ganancia flotante, resultado por período, operaciones abiertas/pendientes, estado de la sesión y botones de control manual." }
+        {
+          "title": "Configuración desde el portal",
+          "body": "Cada 30 segundos el sistema busca en el portal los pares, el riesgo y las metas. Si cambias algo en el sitio, lo aplica solo."
+        },
+        {
+          "title": "Gatillo de entrada",
+          "body": "RSI, en giro o ruptura, en la temporalidad elegida, con entrada a mercado o pendiente."
+        },
+        {
+          "title": "Filtros",
+          "body": "Volatilidad (ATR), fuerza de la tendencia (ADX), zonas de precio, dirección, horario, spread y noticias."
+        },
+        {
+          "title": "Salida",
+          "body": "Objetivo, stop, protección en break-even y stop móvil, por par."
+        },
+        {
+          "title": "Límites de la cuenta",
+          "body": "Meta y límite de pérdida del día, máximo de operaciones abiertas y drawdown máximo de la cuenta."
+        }
       ]
     },
     "specs": {
       "heading": "Especificaciones",
-      "platform": "Plataforma", "platformValue": "MetaTrader 4",
-      "pair": "Par Recomendado", "pairValue": "XAU/USD (Oro)",
-      "timeframe": "Timeframe", "timeframeValue": "M5 (ajuste automático)",
-      "accountType": "Tipo de Cuenta", "accountTypeValue": "Cualquier tipo (spread hasta 30 pts)",
-      "operation": "Modo de Operación", "operationValue": "Automático, con controles manuales",
-      "dashboard": "Panel Visual", "dashboardValue": "Sí, en tiempo real"
-    },
-    "risk": {
-      "body": "Ai X PULSE RS es una herramienta de automatización de operaciones. Como toda operación en los mercados financieros, implica riesgo, y los resultados pasados no garantizan resultados futuros. Recomendamos probar en una cuenta demo antes de operar con capital real, y usar siempre una gestión de riesgo acorde a tu perfil."
+      "platform": "Plataforma",
+      "platformValue": "MetaTrader 4 (MT5 muy pronto)",
+      "chart": "Gráfico",
+      "chartValue": "XAU/USD (opera los otros pares desde él)",
+      "accountType": "Tipo de cuenta",
+      "accountTypeValue": "Cualquier tipo",
+      "spread": "Spread máximo",
+      "spreadValue": "30 pts",
+      "operation": "Operación",
+      "operationValue": "Automática, con controles manuales",
+      "dashboard": "Panel",
+      "dashboardValue": "En el gráfico y en el portal",
+      "languages": "Idiomas",
+      "languagesValue": "Español, portugués e inglés"
     },
     "cta": {
-      "title": "¿Quieres tener este robot en tu cuenta?",
-      "body": "Ahora que ya sabes cómo funciona el robot por dentro, mira los planes de licencia disponibles y empieza a operar hoy mismo.",
-      "button": "Ver Planes"
+      "title": "¿Quieres verlo en tu cuenta?",
+      "body": "Pruébalo 1 día o elige la licencia. Si tienes dudas, habla conmigo antes.",
+      "button": "Ver planes"
     }
   },
   "Results": {
-    "title": "Resultados Reales",
-    "intro": "Capturas y videos de cuentas reales - mías y de clientes - operando con las distintas versiones de mis robots Ai X TradeX, desarrolladas a lo largo de más de 1 año. Sin edición, sin simulación, directo desde la app de MetaTrader 4.",
+    "title": "Resultados reales",
+    "eyebrow": "Sin edición",
+    "intro": "Capturas y videos de cuentas reales, mías y de clientes, operando con los sistemas Ai X TradeX. Directo de la app de MetaTrader 4.",
+    "contextTitle": "Antes de ver",
+    "context": [
+      "Son capturas seleccionadas de varias versiones a lo largo del tiempo, con configuraciones y perfiles de riesgo distintos.",
+      "Una captura muestra un momento, no el historial completo. Por eso el siguiente paso es una cuenta real verificada.",
+      "Los resultados del día a día también se comparten en el grupo de Telegram."
+    ],
+    "verifiedBadge": "Muy pronto",
+    "verifiedTitle": "Cuenta real verificada en Myfxbook",
+    "verifiedBody": "En el lanzamiento de la v8 VIP, una cuenta real quedará verificada en Myfxbook, con historial completo y abierto para que cualquiera lo revise.",
+    "telegramCta": "Seguir en Telegram",
     "tabs": {
       "images": "Imágenes",
       "videos": "Videos"
     },
-    "videosEmpty": "Próximamente: videos de las operaciones directo desde el celular.",
-    "showMore": "Mostrar Más",
-    "showLess": "Mostrar Menos"
+    "videosEmpty": "Muy pronto: videos de las operaciones directo del celular.",
+    "showMore": "Mostrar más",
+    "showLess": "Mostrar menos"
   },
   "Payment": {
     "auto": {
@@ -347,13 +678,34 @@
         "label": "Binance Pay",
         "network": "Paga directamente desde la app de Binance usando el ID abajo"
       },
-      "btc": { "label": "Bitcoin (BTC)", "network": "Red Bitcoin" },
-      "usdtTrc20": { "label": "USDT", "network": "Red TRC-20 (Tron)" },
-      "usdtErc20": { "label": "USDT", "network": "Red ERC-20 (Ethereum)" },
-      "usdtBep20": { "label": "USDT", "network": "Red BEP-20 (BNB Smart Chain)" },
-      "usdc": { "label": "USDC", "network": "Red BASE" },
-      "ltc": { "label": "Litecoin (LTC)", "network": "Red Litecoin" },
-      "eth": { "label": "Ethereum (ETH)", "network": "Red Ethereum (ERC-20)" }
+      "btc": {
+        "label": "Bitcoin (BTC)",
+        "network": "Red Bitcoin"
+      },
+      "usdtTrc20": {
+        "label": "USDT",
+        "network": "Red TRC-20 (Tron)"
+      },
+      "usdtErc20": {
+        "label": "USDT",
+        "network": "Red ERC-20 (Ethereum)"
+      },
+      "usdtBep20": {
+        "label": "USDT",
+        "network": "Red BEP-20 (BNB Smart Chain)"
+      },
+      "usdc": {
+        "label": "USDC",
+        "network": "Red BASE"
+      },
+      "ltc": {
+        "label": "Litecoin (LTC)",
+        "network": "Red Litecoin"
+      },
+      "eth": {
+        "label": "Ethereum (ETH)",
+        "network": "Red Ethereum (ERC-20)"
+      }
     },
     "ctaTelegram": "Ya pagué - Enviar comprobante por Telegram",
     "dmMessage": "¡Hola! Hice el pago de la {plan} ({price}).\nNombre: {name}\nPaís: {country}\nEmail: {email}\nPedido: {order}\nCuentas MT4: {accounts}\nVoy a enviar la captura del pago.",
@@ -398,8 +750,8 @@
         "platformValue": "MetaTrader 4",
         "leverage": "Apalancamiento",
         "leverageValue": "1:500",
-        "deposit": "Depósito mínimo",
-        "depositValue": "$100",
+        "deposit": "Capital recomendado",
+        "depositValue": "US$ 500 en oro · US$ 100 en pares",
         "type": "Tipo de cuenta",
         "typeValue": "Cualquier tipo",
         "note": "Después de crear la cuenta, completa tus datos y el número (login) de cada cuenta MT4 abajo. La licencia queda vinculada a esas cuentas.",
@@ -1432,6 +1784,93 @@
         "both": "Trader sénior: ambos lados",
         "none": "Trader sénior: no operar"
       }
+    }
+  },
+  "Tools": {
+    "hub": {
+      "eyebrow": "Gratis",
+      "title": "Herramientas para el trader",
+      "intro": "Herramientas simples y gratuitas para planificar cada operación, con o sin el Ai X PULSE RS.",
+      "open": "Abrir",
+      "soon": "Muy pronto",
+      "items": {
+        "calculator": "Encuentra el lote correcto para tu riesgo en segundos.",
+        "sessions": "Mira qué mercados están abiertos ahora, en tu horario.",
+        "quotes": "Precio de referencia del oro y de los principales pares.",
+        "calendar": "Noticias económicas que mueven el mercado.",
+        "analysis": "El sesgo del día de cada par, escrito por IA.",
+        "news": "Los titulares del día con enlace a la fuente."
+      }
+    },
+    "cta": {
+      "title": "¿Quieres que una IA lo haga por ti?",
+      "body": "El Ai X PULSE RS calcula el lote según el riesgo, respeta horario y spread y se detiene en la meta o el límite del día, directo en tu cuenta MT4.",
+      "button": "Conocer el Ai X PULSE RS",
+      "secondary": "Probar 1 día por US$10"
+    },
+    "calculator": {
+      "metaTitle": "Calculadora de Lote y Valor del Pip",
+      "metaDescription": "Calcula el tamaño del lote en MT4 según tu riesgo: saldo, % de riesgo y stop en pips o por precio. Oro (XAU/USD) y pares forex, incluidos los JPY. Gratis.",
+      "eyebrow": "Herramienta gratis",
+      "title": "Calculadora de lote",
+      "intro": "Indica el saldo, cuánto aceptas arriesgar y dónde está el stop. La calculadora muestra el lote y cuánto vale cada pip.",
+      "balance": "Saldo de la cuenta (US$)",
+      "riskPct": "Riesgo en esta operación (%)",
+      "pair": "Activo",
+      "stopMode": "Cómo indicar el stop",
+      "byPips": "Distancia en pips",
+      "byPrice": "Precio de entrada y de stop",
+      "stopPips": "Stop (pips)",
+      "entry": "Precio de entrada",
+      "stopPrice": "Precio del stop",
+      "convPrice": "Cotización del {pair}",
+      "convHint": "Se usa para convertir el valor del pip a dólares. Se completa con la cotización de referencia cuando está disponible; confírmala en tu plataforma.",
+      "goldPip": "En el oro, 1 pip = 0,01 de precio (estándar del Ai X PULSE RS).",
+      "resultLot": "Lote",
+      "resultRisk": "Monto en riesgo",
+      "resultPip": "Valor del pip (lote 0,01)",
+      "resultActual": "Riesgo real con ese lote",
+      "explain": "Con un saldo de {balance} y un riesgo del {pct}, aceptas perder hasta {risk} en esta operación. Con un stop de {pips} pips en {pair} (cada pip vale {pip} por cada 0,01 lote), el lote es {lot}.",
+      "belowMin": "El lote calculado quedó por debajo del mínimo del bróker (0,01). Con 0,01 arriesgarías {risk} ({pct} del saldo). Aumenta el capital o usa un stop más corto.",
+      "invalid": "Completa saldo, riesgo y stop con valores mayores que cero.",
+      "assumptions": "Considera una cuenta en dólares (USD), contrato estándar (100.000 unidades; oro 100 onzas) y redondea el lote hacia abajo en pasos de 0,01. Confirma el tamaño del contrato y el lote mínimo con tu bróker."
+    },
+    "sessions": {
+      "metaTitle": "Sesiones del Mercado Forex en Tu Horario",
+      "metaDescription": "Mira ahora qué sesiones del forex están abiertas (Sídney, Tokio, Londres y Nueva York), en tu zona horaria, con horario de verano y superposiciones.",
+      "eyebrow": "Herramienta gratis",
+      "title": "Sesiones del mercado",
+      "intro": "Qué mercados están abiertos ahora, en tu horario. El horario de verano de cada ciudad ya está considerado.",
+      "yourTime": "Tu horario",
+      "open": "Abierta",
+      "closed": "Cerrada",
+      "opensIn": "abre en {time}",
+      "closesIn": "cierra en {time}",
+      "weekend": "Fin de semana: el forex está cerrado. Reabre el domingo a las {time} en tu horario.",
+      "overlaps": "Superposiciones de hoy",
+      "noOverlap": "No hay superposiciones hoy.",
+      "overlapNote": "Cuando dos sesiones están abiertas a la vez, suele haber más volumen y movimiento.",
+      "cities": {
+        "sydney": "Sídney",
+        "tokyo": "Tokio",
+        "london": "Londres",
+        "newyork": "Nueva York"
+      },
+      "hoursNote": "Horarios de referencia (hora local de cada ciudad): Sídney 7-16 h, Tokio 9-18 h, Londres 8-17 h, Nueva York 8-17 h. No incluye feriados locales.",
+      "loading": "Cargando tu horario..."
+    },
+    "quotes": {
+      "metaTitle": "Cotizaciones del Oro y Forex",
+      "metaDescription": "Precio de referencia del oro (XAU/USD) y de los principales pares de divisas, actualizado cada 15 minutos.",
+      "eyebrow": "Referencia",
+      "title": "Cotizaciones",
+      "intro": "Precio de referencia del oro y de los principales pares de divisas.",
+      "updated": "Actualizado a las {time}",
+      "delay": "Cotizaciones de referencia, con un retraso de hasta 15 minutos. No las uses para abrir o cerrar operaciones: confirma siempre en tu plataforma.",
+      "sources": "Fuentes: gold-api.com (oro) y Twelve Data (divisas).",
+      "empty": "Cotizaciones no disponibles en este momento. Intenta de nuevo en unos minutos.",
+      "loading": "Cargando cotizaciones...",
+      "gold": "Oro"
     }
   }
 }

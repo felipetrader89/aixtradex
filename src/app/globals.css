@@ -88,6 +88,94 @@ body {
   );
 }
 
+/* ---------- Topo das páginas internas ---------- */
+.page-header {
+  background:
+    radial-gradient(700px 260px at 50% 0%, rgba(51, 214, 160, 0.12), transparent 70%),
+    linear-gradient(180deg, rgba(18, 35, 54, 0.6), transparent);
+}
+
+/* ---------- Seção com faixa de fundo alternativo ---------- */
+.band {
+  background: linear-gradient(180deg, transparent, rgba(18, 35, 54, 0.55) 18%, rgba(18, 35, 54, 0.55) 82%, transparent);
+}
+
+/* ---------- FAQ (details/summary) ---------- */
+.faq-item summary {
+  list-style: none;
+}
+.faq-item summary::-webkit-details-marker {
+  display: none;
+}
+.faq-item .faq-plus {
+  transition: transform 0.2s ease;
+}
+.faq-item[open] .faq-plus {
+  transform: rotate(45deg);
+}
+
+/* ---------- Hero: grade sutil e ilustração do painel ---------- */
+.hero-grid {
+  background-image:
+    linear-gradient(rgba(51, 214, 160, 0.05) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(51, 214, 160, 0.05) 1px, transparent 1px);
+  background-size: 48px 48px;
+  mask-image: radial-gradient(ellipse at 60% 40%, black 20%, transparent 75%);
+}
+@keyframes mockup-float {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-8px);
+  }
+}
+.mockup-float {
+  animation: mockup-float 7s ease-in-out infinite;
+}
+@keyframes mockup-pulse {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.35;
+  }
+}
+.mockup-pulse {
+  animation: mockup-pulse 1.8s ease-in-out infinite;
+}
+@keyframes mockup-bar {
+  from {
+    transform: scaleX(0.2);
+  }
+  to {
+    transform: scaleX(1);
+  }
+}
+.mockup-bar {
+  transform-origin: left center;
+  animation: mockup-bar 1.4s cubic-bezier(0.2, 0.7, 0.2, 1) both;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .mockup-float,
+  .mockup-pulse,
+  .mockup-bar,
+  .rocket-float {
+    animation: none;
+  }
+  .hover-card,
+  .hover-card:hover {
+    transform: none;
+  }
+  .ticker-track,
+  .results-track {
+    animation-duration: 400s;
+  }
+}
+
 /* ---------- Hover-interactive cards ---------- */
 .hover-card {
   transition:
