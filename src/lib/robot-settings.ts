@@ -24,6 +24,13 @@ import {
   FILTER_TFS,
   MESA_LEVELS,
   MIN_RR_OPTIONS,
+  FIXED_LOTS,
+  EXIT_UNITS,
+  EXIT_UNIT_CODE,
+  EXIT_VALUE_MAX,
+  EXIT_VALUE_KEYS,
+  MGMT_VALUE_KEYS,
+  type ExitUnit,
   TIMEFRAMES,
   MAX_SYMBOLS,
   SYMBOL_KEY,
@@ -172,6 +179,14 @@ function validatePair(p: PairParams, isAdmin: boolean): ConfigError | null {
     !inList(p.minRR, MIN_RR_OPTIONS)
   )
     return "strategy";
+  // v7.8: lote fixo e saídas por valor/% (valores com até 2 casas; 0 = automático)
+  if (!inList(p.fixedLot, FIXED_LOTS) || !EXIT_UNITS.includes(p.exitUnit) || !EXIT_UNITS.includes(p.mgmtUnit)) return "strategy";
+  const valueOk = (unit: ExitUnit, keys: readonly (keyof PairParams)[]) =>
+    keys.every((k) => {
+      const v = p[k] as unknown;
+      return typeof v === "number" && Number.isFinite(v) && v >= 0 && (unit === "pips" || v <= EXIT_VALUE_MAX[unit]);
+    });
+  if (!valueOk(p.exitUnit, EXIT_VALUE_KEYS) || !valueOk(p.mgmtUnit, MGMT_VALUE_KEYS)) return "strategy";
   return null;
 }
 
@@ -276,6 +291,11 @@ const b = (v: boolean) => (v ? 1 : 0);
 
 // v7.5: viés do dia do trader sênior (IA) por par: 0 nenhum, 1 compra, 2 venda, 3 os dois, 4 não operar.
 function pairPayload(p: PairParams, bias = 0) {
+  // v7.8: com a unidade em valor ou %, as chaves de pips vão 0 (automático): robô antigo nunca lê dinheiro como pip.
+  const ue = EXIT_UNIT_CODE[p.exitUnit ?? "pips"] ?? 0;
+  const um = EXIT_UNIT_CODE[p.mgmtUnit ?? "pips"] ?? 0;
+  const pip = (on: number, v: number) => (on ? 0 : v);
+  const val = (v: number | undefined) => n(Number(v ?? 0));
   return [
     `r:${n(p.riskPct)}`,
     `g:${n(p.goalPct)}`,
@@ -297,15 +317,15 @@ function pairPayload(p: PairParams, bias = 0) {
     `be:${b(p.breakEven)}`,
     `tr:${b(p.trailing)}`,
     // v7 (o v6.9 ignora chaves que não conhece). Pips do par, 0 = automático. Zonas: bits na ordem M1,M5,M15,M30,H1,H4,D1,W1,MN.
-    `bt:${p.beTrigger}`,
-    `bo:${p.beOffset}`,
-    `ts:${p.trailStart}`,
-    `td:${p.trailDistance}`,
-    `tt:${p.trailStep}`,
+    `bt:${pip(um, p.beTrigger)}`,
+    `bo:${pip(um, p.beOffset)}`,
+    `ts:${pip(um, p.trailStart)}`,
+    `td:${pip(um, p.trailDistance)}`,
+    `tt:${pip(um, p.trailStep)}`,
     `pe:${b(p.profitClose)}`,
-    `pp:${p.profitPips}`,
+    `pp:${pip(ue, p.profitPips)}`,
     `le:${b(p.lossClose)}`,
-    `lp:${p.lossPips}`,
+    `lp:${pip(ue, p.lossPips)}`,
     `zu:${tfMask(p.zoneTfs)}`,
     `zs:${tfMask(p.zoneLines)}`,
     `zc:${p.zoneCandles}`,
@@ -322,6 +342,14 @@ function pairPayload(p: PairParams, bias = 0) {
     `ms:${p.mesa ?? DEFAULT_PAIR.mesa}`,
     `rr:${Math.round((p.minRR ?? DEFAULT_PAIR.minRR) * 10)}`,
     `ai:${bias}`,
+    // v7.8 (o v7.7 ignora): lote fixo, unidades e valores
+    `fl:${n(p.fixedLot ?? 0)}`,
+    `ue:${ue}`,
+    `um:${um}`,
+    ...(ue ? [`vp:${val(p.profitValue)}`, `vl:${val(p.lossValue)}`] : []),
+    ...(um
+      ? [`vbt:${val(p.beTriggerValue)}`, `vbo:${val(p.beOffsetValue)}`, `vts:${val(p.trailStartValue)}`, `vtd:${val(p.trailDistanceValue)}`, `vtt:${val(p.trailStepValue)}`]
+      : []),
   ].join(",");
 }
 

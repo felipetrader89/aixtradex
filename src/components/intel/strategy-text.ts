@@ -3,6 +3,9 @@ import { RISK_PROFILES, tfLabel, type PairParams } from "@/lib/robot-options";
 
 const onOff = (v: unknown) => (v ? "ligado" : "desligado");
 const pips = (v: unknown) => (Number(v) === 0 ? "auto" : `${v} pips`);
+// v7.8: saída em pips, valor (dinheiro da conta) ou % do saldo
+const amt = (unit: string | undefined, pipsV: unknown, value: unknown) =>
+  unit === "money" ? (Number(value) ? `$${value}` : "auto") : unit === "pct" ? (Number(value) ? `${value}%` : "auto") : pips(pipsV);
 
 export const KEY_PT: Record<string, string> = {
   rsiZone: "Zona do RSI",
@@ -71,10 +74,13 @@ export function pairSummary(p: PairParams): [string, string][] {
     [
       "Saída",
       [
-        p.profitClose ? `alvo ${pips(p.profitPips)}` : "sem alvo",
-        p.lossClose ? `perda ${pips(p.lossPips)}` : `perda ${pips(p.lossPips)} (só stop de emergência)`,
-        p.breakEven ? `BE ${pips(p.beTrigger)}/${pips(p.beOffset)}` : "sem BE",
-        p.trailing ? `stop móvel ${pips(p.trailStart)}/${pips(p.trailDistance)}/${pips(p.trailStep)}` : "sem stop móvel",
+        ...(p.fixedLot ? [`lote fixo ${p.fixedLot}`] : []),
+        p.profitClose ? `alvo ${amt(p.exitUnit, p.profitPips, p.profitValue)}` : "sem alvo",
+        p.lossClose ? `perda ${amt(p.exitUnit, p.lossPips, p.lossValue)}` : `perda ${amt(p.exitUnit, p.lossPips, p.lossValue)} (só stop de emergência)`,
+        p.breakEven ? `BE ${amt(p.mgmtUnit, p.beTrigger, p.beTriggerValue)}/${amt(p.mgmtUnit, p.beOffset, p.beOffsetValue)}` : "sem BE",
+        p.trailing
+          ? `stop móvel ${amt(p.mgmtUnit, p.trailStart, p.trailStartValue)}/${amt(p.mgmtUnit, p.trailDistance, p.trailDistanceValue)}/${amt(p.mgmtUnit, p.trailStep, p.trailStepValue)}`
+          : "sem stop móvel",
       ].join(" · "),
     ],
   ];

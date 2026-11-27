@@ -27,6 +27,10 @@ import {
   AUTO_PIPS,
   MESA_LEVELS,
   MIN_RR_OPTIONS,
+  FIXED_LOTS,
+  EXIT_UNITS,
+  EXIT_VALUE_MAX,
+  type ExitUnit,
   FILTER_TFS,
   TIMEFRAMES,
   paramDef,
@@ -198,6 +202,69 @@ function NumberField({
             setText(e.target.value);
             const v = Number(e.target.value);
             if (e.target.value !== "" && Number.isFinite(v)) onChange(Math.min(max, Math.max(min, Math.round(v))));
+          }}
+          onBlur={() => setText(String(value))}
+          className={`${field} w-28`}
+        />
+      )}
+      <span className="text-xs text-brand-ink-dim">{unit}</span>
+    </div>
+  );
+}
+
+// v7.8: valor em dinheiro da conta ou % do saldo (até 2 casas). Vazio/"Automático" = 0.
+function ValueField({
+  value,
+  onChange,
+  max,
+  autoLabel,
+  unit,
+  label,
+}: {
+  value: number;
+  onChange: (v: number) => void;
+  max: number;
+  autoLabel: string;
+  unit: string;
+  label: string;
+}) {
+  const [text, setText] = useState(value === 0 ? "" : String(value));
+  const isAuto = value === 0;
+  const fit = (v: number) => Math.min(max, Math.max(0.01, Math.round(v * 100) / 100));
+  return (
+    <div className="flex items-center gap-2">
+      <button
+        type="button"
+        aria-pressed={isAuto}
+        onClick={() => {
+          if (isAuto) {
+            const v = fit(Number(text) || 1);
+            setText(String(v));
+            onChange(v);
+          } else {
+            setText("");
+            onChange(0);
+          }
+        }}
+        className={`shrink-0 rounded-xl border px-3 py-2 text-xs font-semibold transition ${
+          isAuto ? "border-brand-accent bg-brand-accent/15 text-brand-accent" : "border-brand-hairline bg-brand-surface-2 text-brand-ink-dim hover:text-brand-ink"
+        }`}
+      >
+        {autoLabel}
+      </button>
+      {!isAuto && (
+        <input
+          type="number"
+          inputMode="decimal"
+          aria-label={label}
+          min={0.01}
+          max={max}
+          step={0.01}
+          value={text}
+          onChange={(e) => {
+            setText(e.target.value);
+            const v = Number(e.target.value);
+            if (e.target.value !== "" && Number.isFinite(v) && v > 0) onChange(fit(v));
           }}
           onBlur={() => setText(String(value))}
           className={`${field} w-28`}
@@ -453,6 +520,45 @@ export function RobotSettingsForm({
   const p = v.pairs[editing] ?? defaultPair;
   const editingOn = v.symbols.includes(editing);
 
+  // v7.8: unidade das saídas (pips, valor ou % do saldo)
+  const unitOptions = (k: "exitUnit" | "mgmtUnit") =>
+    allowed(k, EXIT_UNITS).map((u) => ({ value: u, label: t(u === "pips" ? "unitPips" : u === "money" ? "unitMoney" : "unitPct") }));
+  const unitHint = (u: ExitUnit) => (u === "money" ? t("unitHintMoney") : u === "pct" ? t("unitHintPct") : undefined);
+  type PipKey = "profitPips" | "lossPips" | "beTrigger" | "beOffset" | "trailStart" | "trailDistance" | "trailStep";
+  type ValueKey = "profitValue" | "lossValue" | "beTriggerValue" | "beOffsetValue" | "trailStartValue" | "trailDistanceValue" | "trailStepValue";
+  const exitField = (k: PipKey, vk: ValueKey, unit: ExitUnit, pipsHint: string, extra?: string) =>
+    unit === "pips" ? (
+      <Field label={t(k)} hint={pipsHint} group>
+        <NumberField
+          key={`${k}-${editing}`}
+          value={p[k]}
+          onChange={(x) => setPair(editing, { [k]: x } as Partial<PairParams>)}
+          {...lim(k)}
+          autoLabel={t("auto")}
+          unit="pips"
+          label={t(k)}
+        />
+      </Field>
+    ) : (
+      <Field
+        label={t(k)}
+        hint={[unit === "pct" ? t("valueHintPct", { max: pct(EXIT_VALUE_MAX.pct) }) : t("valueHintMoney", { max: pct(EXIT_VALUE_MAX.money) }), extra]
+          .filter(Boolean)
+          .join(" ")}
+        group
+      >
+        <ValueField
+          key={`${vk}-${unit}-${editing}`}
+          value={p[vk] ?? 0}
+          max={EXIT_VALUE_MAX[unit]}
+          onChange={(x) => setPair(editing, { [vk]: x } as Partial<PairParams>)}
+          autoLabel={t("auto")}
+          unit={unit === "pct" ? "%" : "$"}
+          label={t(k)}
+        />
+      </Field>
+    );
+
   function save() {
     start(async () => {
       const result = await saveRobotSettingsAction(login, v);
@@ -579,6 +685,24 @@ export function RobotSettingsForm({
                 className={`${field} !w-24`}
               />
             </label>
+          )}
+          {show("fixedLot") && (
+            <div className="mt-4 max-w-xs">
+              <Field label={t("fixedLot")} hint={t("fixedLotHint")}>
+                <select
+                  value={p.fixedLot ?? 0}
+                  disabled={locked("fixedLot")}
+                  onChange={(e) => setPair(editing, { fixedLot: Number(e.target.value) })}
+                  className={field}
+                >
+                  {allowed("fixedLot", FIXED_LOTS).map((o) => (
+                    <option key={o} value={o}>
+                      {o === 0 ? t("fixedLotRisk") : o.toLocaleString(locale, { minimumFractionDigits: 2 })}
+                    </option>
+                  ))}
+                </select>
+              </Field>
+            </div>
           )}
         </div>
         )}
@@ -931,6 +1055,20 @@ export function RobotSettingsForm({
         <div>
           <h3 className={h2}>{t("exits")}</h3>
           <p className="mt-1 text-xs text-brand-ink-dim">{t("exitsHint")}</p>
+          {anyShown("exitUnit", "mgmtUnit") && (
+            <div className="mt-3 grid gap-4 sm:grid-cols-2">
+              {show("exitUnit") && (
+                <Field label={t("exitUnit")} hint={unitHint(p.exitUnit ?? "pips")} group>
+                  <Segmented value={p.exitUnit ?? "pips"} options={unitOptions("exitUnit")} onChange={(x) => setPair(editing, { exitUnit: x })} />
+                </Field>
+              )}
+              {show("mgmtUnit") && (
+                <Field label={t("mgmtUnit")} hint={unitHint(p.mgmtUnit ?? "pips")} group>
+                  <Segmented value={p.mgmtUnit ?? "pips"} options={unitOptions("mgmtUnit")} onChange={(x) => setPair(editing, { mgmtUnit: x })} />
+                </Field>
+              )}
+            </div>
+          )}
           <div className="mt-3 grid gap-5 sm:grid-cols-2">
             {anyShown("profitClose", "profitPips") && (
             <div className="flex flex-col gap-3 rounded-xl bg-brand-surface-2/40 p-4">
@@ -938,9 +1076,7 @@ export function RobotSettingsForm({
                 <Toggle checked={p.profitClose} onChange={(x) => setPair(editing, { profitClose: x })} label={t("profitClose")} disabled={locked("profitClose")} />
               )}
               {p.profitClose && show("profitPips") && (
-                <Field label={t("profitPips")} hint={t("pipsHint", { ...lim("profitPips"), auto: AUTO_PIPS.profitPips })} group>
-                  <NumberField key={`pp-${editing}`} value={p.profitPips} onChange={(x) => setPair(editing, { profitPips: x })} {...lim("profitPips")} autoLabel={t("auto")} unit="pips" label={t("profitPips")} />
-                </Field>
+                exitField("profitPips", "profitValue", p.exitUnit ?? "pips", t("pipsHint", { ...lim("profitPips"), auto: AUTO_PIPS.profitPips }))
               )}
             </div>
             )}
@@ -950,9 +1086,7 @@ export function RobotSettingsForm({
                 <Toggle checked={p.lossClose} onChange={(x) => setPair(editing, { lossClose: x })} label={t("lossClose")} hint={t("lossCloseHint")} disabled={locked("lossClose")} />
               )}
               {show("lossPips") && (
-                <Field label={t("lossPips")} hint={t("lossPipsHint", { ...lim("lossPips"), auto: AUTO_PIPS.lossPips })} group>
-                  <NumberField key={`lp-${editing}`} value={p.lossPips} onChange={(x) => setPair(editing, { lossPips: x })} {...lim("lossPips")} autoLabel={t("auto")} unit="pips" label={t("lossPips")} />
-                </Field>
+                exitField("lossPips", "lossValue", p.exitUnit ?? "pips", t("lossPipsHint", { ...lim("lossPips"), auto: AUTO_PIPS.lossPips }), (p.fixedLot ?? 0) > 0 ? undefined : t("lossValueHint"))
               )}
             </div>
             )}
@@ -964,14 +1098,10 @@ export function RobotSettingsForm({
               {p.breakEven && (
                 <>
                   {show("beTrigger") && (
-                    <Field label={t("beTrigger")} hint={t("pipsHint", { ...lim("beTrigger"), auto: AUTO_PIPS.beTrigger })} group>
-                      <NumberField key={`bt-${editing}`} value={p.beTrigger} onChange={(x) => setPair(editing, { beTrigger: x })} {...lim("beTrigger")} autoLabel={t("auto")} unit="pips" label={t("beTrigger")} />
-                    </Field>
+                    exitField("beTrigger", "beTriggerValue", p.mgmtUnit ?? "pips", t("pipsHint", { ...lim("beTrigger"), auto: AUTO_PIPS.beTrigger }))
                   )}
                   {show("beOffset") && (
-                    <Field label={t("beOffset")} hint={t("pipsHint", { ...lim("beOffset"), auto: AUTO_PIPS.beOffset })} group>
-                      <NumberField key={`bo-${editing}`} value={p.beOffset} onChange={(x) => setPair(editing, { beOffset: x })} {...lim("beOffset")} autoLabel={t("auto")} unit="pips" label={t("beOffset")} />
-                    </Field>
+                    exitField("beOffset", "beOffsetValue", p.mgmtUnit ?? "pips", t("pipsHint", { ...lim("beOffset"), auto: AUTO_PIPS.beOffset }))
                   )}
                 </>
               )}
@@ -985,19 +1115,13 @@ export function RobotSettingsForm({
               {p.trailing && (
                 <>
                   {show("trailStart") && (
-                    <Field label={t("trailStart")} hint={t("pipsHint", { ...lim("trailStart"), auto: AUTO_PIPS.trailStart })} group>
-                      <NumberField key={`ts-${editing}`} value={p.trailStart} onChange={(x) => setPair(editing, { trailStart: x })} {...lim("trailStart")} autoLabel={t("auto")} unit="pips" label={t("trailStart")} />
-                    </Field>
+                    exitField("trailStart", "trailStartValue", p.mgmtUnit ?? "pips", t("pipsHint", { ...lim("trailStart"), auto: AUTO_PIPS.trailStart }))
                   )}
                   {show("trailDistance") && (
-                    <Field label={t("trailDistance")} hint={t("pipsHint", { ...lim("trailDistance"), auto: AUTO_PIPS.trailDistance })} group>
-                      <NumberField key={`td-${editing}`} value={p.trailDistance} onChange={(x) => setPair(editing, { trailDistance: x })} {...lim("trailDistance")} autoLabel={t("auto")} unit="pips" label={t("trailDistance")} />
-                    </Field>
+                    exitField("trailDistance", "trailDistanceValue", p.mgmtUnit ?? "pips", t("pipsHint", { ...lim("trailDistance"), auto: AUTO_PIPS.trailDistance }))
                   )}
                   {show("trailStep") && (
-                    <Field label={t("trailStep")} hint={t("pipsHint", { ...lim("trailStep"), auto: AUTO_PIPS.trailStep })} group>
-                      <NumberField key={`tt-${editing}`} value={p.trailStep} onChange={(x) => setPair(editing, { trailStep: x })} {...lim("trailStep")} autoLabel={t("auto")} unit="pips" label={t("trailStep")} />
-                    </Field>
+                    exitField("trailStep", "trailStepValue", p.mgmtUnit ?? "pips", t("pipsHint", { ...lim("trailStep"), auto: AUTO_PIPS.trailStep }))
                   )}
                 </>
               )}

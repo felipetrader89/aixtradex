@@ -44,6 +44,12 @@ export const ATR_MAX_RATIOS = [0.5, 0.8, 1, 1.1, 1.2, 1.3, 1.4, 1.5, 1.6, 1.7, 1
 // v7.5 Mesa de Análise: rigor (0 desligada, 1 equilibrado, 2 rigoroso, 3 muito rigoroso) e risco/retorno mínimo (espaço até a próxima zona ÷ stop)
 export const MESA_LEVELS = [0, 1, 2, 3] as const;
 export const MIN_RR_OPTIONS = [0, 1, 1.5, 2, 2.5, 3] as const;
+// v7.8: lote fixo por par (0 = pelo risco) e unidade das saídas (pips do par, valor em dinheiro da conta ou % do saldo).
+export const FIXED_LOTS = [0, 0.01, 0.02, 0.03, 0.04, 0.05, 0.06, 0.08, 0.1, 0.15, 0.2, 0.25, 0.3, 0.4, 0.5, 0.75, 1, 1.5, 2, 3, 5] as const;
+export const EXIT_UNITS = ["pips", "money", "pct"] as const;
+export type ExitUnit = (typeof EXIT_UNITS)[number];
+export const EXIT_UNIT_CODE: Record<ExitUnit, number> = { pips: 0, money: 1, pct: 2 };
+export const EXIT_VALUE_MAX: Record<Exclude<ExitUnit, "pips">, number> = { money: 100000, pct: 10 };
 export const tfLabel = (m: number) =>
   ({ 1: "M1", 5: "M5", 15: "M15", 30: "M30", 60: "H1", 240: "H4", 1440: "D1", 10080: "W1", 43200: "MN" })[m] ?? `M${m}`;
 
@@ -100,6 +106,17 @@ export type PairParams = {
   // v7.5 Mesa de Análise (robô v7.5+; os anteriores ignoram)
   mesa: number;
   minRR: number;
+  // v7.8 (robô v7.8+; os anteriores usam o lote pelo risco e as saídas automáticas quando a unidade não é pips)
+  fixedLot: number; // 0 = lote pelo risco
+  exitUnit: ExitUnit; // alvo e perda de cada operação
+  mgmtUnit: ExitUnit; // break-even e stop móvel
+  profitValue: number; // valor (dinheiro da conta) ou % do saldo; 0 = automático
+  lossValue: number;
+  beTriggerValue: number;
+  beOffsetValue: number;
+  trailStartValue: number;
+  trailDistanceValue: number;
+  trailStepValue: number;
 };
 
 // Padrão de cada par = os parâmetros que o Alesson deixou no robô (conta demo 74033338).
@@ -148,7 +165,21 @@ export const DEFAULT_PAIR: PairParams = {
   // Mesa desligada por padrão: no backtest do ouro (27/10-25/11) ela piorou o resultado com o gatilho RSI; liga por par quando a leitura completa provar que ajuda
   mesa: 0,
   minRR: 1.5,
+  fixedLot: 0,
+  exitUnit: "pips",
+  mgmtUnit: "pips",
+  profitValue: 0,
+  lossValue: 0,
+  beTriggerValue: 0,
+  beOffsetValue: 0,
+  trailStartValue: 0,
+  trailDistanceValue: 0,
+  trailStepValue: 0,
 };
+
+// v7.8: campos de valor de cada unidade (pips usa os campos antigos).
+export const EXIT_VALUE_KEYS = ["profitValue", "lossValue"] as const;
+export const MGMT_VALUE_KEYS = ["beTriggerValue", "beOffsetValue", "trailStartValue", "trailDistanceValue", "trailStepValue"] as const;
 
 export type RobotConfig = {
   symbols: string[];
@@ -261,6 +292,10 @@ export const PARAM_DEFS = {
   // v7.5
   mesa: { scope: "pair", options: MESA_LEVELS, ordered: true },
   minRR: { scope: "pair", options: MIN_RR_OPTIONS, ordered: true },
+  // v7.8
+  fixedLot: { scope: "pair", options: FIXED_LOTS, ordered: true },
+  exitUnit: { scope: "pair", options: EXIT_UNITS },
+  mgmtUnit: { scope: "pair", options: EXIT_UNITS },
 } satisfies Record<string, ParamDef>;
 
 export type ParamKey = keyof typeof PARAM_DEFS;

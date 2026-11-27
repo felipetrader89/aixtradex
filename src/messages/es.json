@@ -1486,7 +1486,7 @@
       "zoneTolerance": "Tolerancia",
       "auto": "Automático",
       "pipsHint": "De {min} a {max} pips. Automático = {auto} pips en el oro; en los otros pares sigue la volatilidad.",
-      "exitsHint": "Valores en pips del par (en el oro 1 pip = 0,01). Automático = los valores de siempre del robot.",
+      "exitsHint": "En pips del par (en el oro 1 pip = 0,01), en valor o en % del saldo. Automático = los valores de siempre del robot.",
       "profitClose": "Cerrar en el objetivo de ganancia",
       "profitPips": "Objetivo de ganancia",
       "lossClose": "Cerrar en el límite de pérdida",
@@ -1580,7 +1580,20 @@
         "minRR": "Riesgo/beneficio mínimo",
         "minRRHint": "Espacio hasta la próxima zona contraria, en veces el stop. Ej.: 1,5x = solo entra si hay al menos 1,5 veces el riesgo de camino libre.",
         "noMin": "Sin mínimo"
-      }
+      },
+      "fixedLot": "Lote",
+      "fixedLotHint": "Por riesgo = el lote sale del riesgo % del saldo (como siempre). Lote fijo = cada entrada abre con ese lote. Necesita el robot v7.8 o más nuevo.",
+      "fixedLotRisk": "Por riesgo",
+      "exitUnit": "Objetivo y pérdida de cada operación en",
+      "mgmtUnit": "Break-even y stop móvil en",
+      "unitPips": "Pips",
+      "unitMoney": "Valor",
+      "unitPct": "% del saldo",
+      "unitHintMoney": "Valor en dinero de la cuenta por operación (US$ en una cuenta en dólares, centavos en una cuenta cent). Necesita el robot v7.8 o más nuevo; los anteriores usan el automático.",
+      "unitHintPct": "Porcentaje del saldo por operación (ej.: 0,5 = medio por ciento). Necesita el robot v7.8 o más nuevo; los anteriores usan el automático.",
+      "valueHintMoney": "Hasta {max} en la moneda de la cuenta. Automático = el valor de siempre del robot.",
+      "valueHintPct": "De 0,01% a {max}% del saldo. Automático = el valor de siempre del robot.",
+      "lossValueHint": "Sin lote fijo, el lote sale del riesgo con el cierre automático y la pérdida pasa a ser este valor."
     },
     "downloads": {
       "title": "Descargas",

@@ -321,6 +321,8 @@ export function fullPatch(cfg: Record<string, number>, pair: PairParams): Partia
     breakout: cfg.logic === 1,
     lossClose: true,
     lossPips: cfg.lp,
+    exitUnit: "pips", // v7.8: a leitura mede em pips do par
+    mgmtUnit: "pips",
     profitClose: cfg.pe === 1,
     ...(cfg.pe === 1 ? { profitPips: cfg.pp } : {}),
     breakEven: cfg.be === 1,

@@ -1486,7 +1486,7 @@
       "zoneTolerance": "Tolerância",
       "auto": "Automático",
       "pipsHint": "De {min} a {max} pips. Automático = {auto} pips no ouro; nos outros pares acompanha a volatilidade.",
-      "exitsHint": "Valores em pips do par (no ouro 1 pip = 0,01). Automático = os valores de sempre do robô.",
+      "exitsHint": "Em pips do par (no ouro 1 pip = 0,01), em valor ou em % do saldo. Automático = os valores de sempre do robô.",
       "profitClose": "Fechar no alvo de lucro",
       "profitPips": "Alvo de lucro",
       "lossClose": "Fechar no limite de perda",
@@ -1580,7 +1580,20 @@
         "minRR": "Risco/retorno mínimo",
         "minRRHint": "Espaço até a próxima zona contrária, em vezes o stop. Ex.: 1,5x = só entra se tiver pelo menos 1,5 vez o risco de caminho livre.",
         "noMin": "Sem mínimo"
-      }
+      },
+      "fixedLot": "Lote",
+      "fixedLotHint": "Pelo risco = o lote sai do risco % do saldo (como sempre). Lote fixo = toda entrada abre com esse lote. Precisa do robô v7.8 ou mais novo.",
+      "fixedLotRisk": "Pelo risco",
+      "exitUnit": "Alvo e perda de cada operação em",
+      "mgmtUnit": "Break-even e stop móvel em",
+      "unitPips": "Pips",
+      "unitMoney": "Valor",
+      "unitPct": "% do saldo",
+      "unitHintMoney": "Valor em dinheiro da conta por operação (US$ numa conta em dólar, centavos numa conta cent). Precisa do robô v7.8 ou mais novo; os anteriores usam o automático.",
+      "unitHintPct": "Porcentagem do saldo por operação (ex.: 0,5 = meio por cento). Precisa do robô v7.8 ou mais novo; os anteriores usam o automático.",
+      "valueHintMoney": "Até {max} na moeda da conta. Automático = o valor de sempre do robô.",
+      "valueHintPct": "De 0,01% a {max}% do saldo. Automático = o valor de sempre do robô.",
+      "lossValueHint": "Sem lote fixo, o lote sai do risco com o fechamento automático e a perda passa a ser este valor."
     },
     "downloads": {
       "title": "Downloads",

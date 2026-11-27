@@ -1486,7 +1486,7 @@
       "zoneTolerance": "Tolerance",
       "auto": "Automatic",
       "pipsHint": "From {min} to {max} pips. Automatic = {auto} pips on gold; on other pairs it follows volatility.",
-      "exitsHint": "Values in pips of the pair (on gold 1 pip = 0.01). Automatic = the robot's usual values.",
+      "exitsHint": "In pips of the pair (on gold 1 pip = 0.01), as an amount or as % of the balance. Automatic = the robot's usual values.",
       "profitClose": "Close at the profit target",
       "profitPips": "Profit target",
       "lossClose": "Close at the loss limit",
@@ -1580,7 +1580,20 @@
         "minRR": "Minimum risk/reward",
         "minRRHint": "Room to the next opposing zone, in multiples of the stop. E.g. 1.5x = only enters with at least 1.5 times the risk of free path.",
         "noMin": "No minimum"
-      }
+      },
+      "fixedLot": "Lot",
+      "fixedLotHint": "By risk = the lot comes from the risk % of the balance (as always). Fixed lot = every entry opens with this lot. Needs robot v7.8 or newer.",
+      "fixedLotRisk": "By risk",
+      "exitUnit": "Target and loss of each trade in",
+      "mgmtUnit": "Break-even and trailing stop in",
+      "unitPips": "Pips",
+      "unitMoney": "Amount",
+      "unitPct": "% of balance",
+      "unitHintMoney": "Amount in account money per trade (US$ on a dollar account, cents on a cent account). Needs robot v7.8 or newer; older ones use automatic.",
+      "unitHintPct": "Percentage of the balance per trade (e.g. 0.5 = half a percent). Needs robot v7.8 or newer; older ones use automatic.",
+      "valueHintMoney": "Up to {max} in the account currency. Automatic = the robot's usual value.",
+      "valueHintPct": "From 0.01% to {max}% of the balance. Automatic = the robot's usual value.",
+      "lossValueHint": "Without a fixed lot, the lot comes from the risk with the automatic loss close, and the loss becomes this amount."
     },
     "downloads": {
       "title": "Downloads",

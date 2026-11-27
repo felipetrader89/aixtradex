@@ -24,6 +24,7 @@ const pct = (v: PolicyValue) => (Number(v) === 0 ? "Desligado" : `${String(v).re
 const hour = (v: PolicyValue) => `${String(v).padStart(2, "0")}:00`;
 const WEEK = ["Dom", "Seg", "Ter", "Qua", "Qui", "Sex", "Sáb"];
 const tf = (v: PolicyValue) => tfLabel(Number(v));
+const UNIT_LABEL: Record<string, string> = { pips: "Pips", money: "Valor (dinheiro da conta)", pct: "% do saldo" };
 const pipsFmt = (v: PolicyValue) => (Number(v) === 0 ? "Automático" : `${v} pips`);
 const autoHint = (k: keyof typeof AUTO_PIPS, what: string) =>
   `${what} Pips do par. Automático = ${AUTO_PIPS[k]} pips no ouro (1 pip = 0,01); nos outros pares acompanha a volatilidade do ouro.`;
@@ -81,8 +82,15 @@ const PARAMS: Record<ParamKey, { label: string; hint?: string; fmt: (v: PolicyVa
   trailDistance: { label: "Stop móvel: segue a", hint: autoHint("trailDistance", "Distância do stop até o preço."), fmt: pipsFmt },
   trailStep: { label: "Stop móvel: passo", hint: autoHint("trailStep", "De quanto em quanto o stop anda."), fmt: pipsFmt },
   profitClose: { label: "Fechar no alvo de lucro", fmt: onOff },
+  fixedLot: {
+    label: "Lote fixo",
+    hint: "Robô v7.8+. Pelo risco = o lote sai do risco % do saldo (como sempre). Com lote fixo, o perfil de risco não muda o lote.",
+    fmt: (v) => (Number(v) === 0 ? "Pelo risco" : String(v)),
+  },
+  exitUnit: { label: "Alvo e perda da operação em", hint: "Robô v7.8+. Valor = dinheiro da conta por operação; % = do saldo.", fmt: (v) => UNIT_LABEL[String(v)] ?? String(v) },
+  mgmtUnit: { label: "Break-even e stop móvel em", hint: "Robô v7.8+.", fmt: (v) => UNIT_LABEL[String(v)] ?? String(v) },
   profitPips: { label: "Alvo de lucro", hint: autoHint("profitPips", "Fecha a posição quando o lucro chega aqui."), fmt: pipsFmt },
-  lossClose: { label: "Fechar no limite de perda", hint: "Desligado: a posição fica só com o stop de emergência na corretora (3x a distância).", fmt: onOff },
+  lossClose: { label: "Fechar no limite de perda", hint: "Desligado: a posição fica só com o stop de emergência na corretora (1,15x a distância no robô v7.7+; 3x nos anteriores).", fmt: onOff },
   lossPips: {
     label: "Limite de perda",
     hint: autoHint("lossPips", "Fecha a posição quando a perda chega aqui. O lote é calculado por ela (risco % do saldo).") + " Nos pares o automático tem no mínimo 10 pips.",
@@ -119,7 +127,7 @@ const GROUPS: { title: string; hint: string; keys: ParamKey[] }[] = [
     keys: ["symbols", "maxPositions", "ddPct", "dailyGoalPct", "dailyLossPct", "startHour", "endHour", "days"],
   },
   { title: "Notícias", hint: "", keys: ["newsFilter", "newsMedium", "newsBefore", "newsAfter", "newsClose"] },
-  { title: "Cada par: risco e metas", hint: "Valem pra cada par (o cliente clica no par pra ajustar).", keys: ["riskProfile", "goalPct", "lossPct", "direction"] },
+  { title: "Cada par: risco e metas", hint: "Valem pra cada par (o cliente clica no par pra ajustar).", keys: ["riskProfile", "fixedLot", "goalPct", "lossPct", "direction"] },
   { title: "Cada par: recuperação", hint: "", keys: ["recovery", "recoveryLevels", "recoveryOpposite"] },
   { title: "Cada par: estratégia", hint: "", keys: ["rsiZone", "rsiPeriod", "rsiTf", "breakout", "pending"] },
   { title: "Cada par: Mesa de Análise (v7.5)", hint: "Análise gráfica e técnica antes de cada entrada, como um trader experiente.", keys: ["mesa", "minRR"] },
@@ -128,8 +136,8 @@ const GROUPS: { title: string; hint: string; keys: ParamKey[] }[] = [
   { title: "Cada par: zonas de topo e fundo", hint: "", keys: ["zones", "zonesMode", "zoneTfs", "zoneLines", "zoneCandles", "zoneTolerance"] },
   {
     title: "Cada par: saída",
-    hint: "Valores em pips do par. Automático = os valores de sempre do robô.",
-    keys: ["profitClose", "profitPips", "lossClose", "lossPips", "breakEven", "beTrigger", "beOffset", "trailing", "trailStart", "trailDistance", "trailStep"],
+    hint: "Pips do par, valor ou % do saldo (robô v7.8+). Automático = os valores de sempre do robô.",
+    keys: ["exitUnit", "mgmtUnit", "profitClose", "profitPips", "lossClose", "lossPips", "breakEven", "beTrigger", "beOffset", "trailing", "trailStart", "trailDistance", "trailStep"],
   },
 ];
 
