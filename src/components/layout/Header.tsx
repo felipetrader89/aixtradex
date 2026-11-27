@@ -21,6 +21,7 @@ export function Header({ logoExists }: { logoExists: boolean }) {
     { href: "/products", label: t("products") },
     { href: "/about", label: t("about") },
     { href: "/faq", label: t("faq") },
+    { href: "/tools", label: t("tools") },
   ];
 
   return (
@@ -40,7 +41,7 @@ export function Header({ logoExists }: { logoExists: boolean }) {
               key={link.href}
               href={link.href}
               className={`nav-pill text-sm min-[1100px]:whitespace-nowrap font-medium text-brand-ink-dim ${
-                pathname === link.href ? "nav-pill-active" : ""
+                (link.href === "/" ? pathname === "/" : pathname.startsWith(link.href)) ? "nav-pill-active" : ""
               }`}
             >
               {link.label}
@@ -87,7 +88,7 @@ export function Header({ logoExists }: { logoExists: boolean }) {
               href={link.href}
               onClick={() => setOpen(false)}
               className={`nav-pill w-fit text-sm font-medium text-brand-ink-dim ${
-                pathname === link.href ? "nav-pill-active" : ""
+                (link.href === "/" ? pathname === "/" : pathname.startsWith(link.href)) ? "nav-pill-active" : ""
               }`}
             >
               {link.label}
@@ -101,7 +102,7 @@ export function Header({ logoExists }: { logoExists: boolean }) {
             {t("account")}
           </Link>
           <Button href={siteConfig.telegramDmUrl} variant="neon">
-            <IconTelegram className="h-4 w-4" />
+            <IconTelegram className="!h-4 !w-4" />
             {t("cta")}
           </Button>
         </div>
