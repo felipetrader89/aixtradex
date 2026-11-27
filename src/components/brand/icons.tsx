@@ -134,7 +134,9 @@ export function IconRocket({ className = "" }: IconProps) {
   );
 }
 
+// Ícones novos: o tamanho vem do className (h-*/w-*); sem tamanho, usa o padrão h-9 w-9.
 function Stroke({ className = "", children }: IconProps & { children: React.ReactNode }) {
+  const sized = /(^|\s)!?h-/.test(className);
   return (
     <svg
       viewBox="0 0 24 24"
@@ -143,7 +145,7 @@ function Stroke({ className = "", children }: IconProps & { children: React.Reac
       strokeWidth={1.5}
       strokeLinecap="round"
       strokeLinejoin="round"
-      className={`${base} ${className}`}
+      className={sized ? className : `${base} ${className}`}
       aria-hidden="true"
     >
       {children}

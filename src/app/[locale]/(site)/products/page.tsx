@@ -106,7 +106,7 @@ export default async function ProductsPage({ params }: Props) {
                       : "cta-neon bg-brand-surface text-brand-ink hover:text-brand-accent"
                   }`}
                 >
-                  <Icon className="h-5 w-5" />
+                  <Icon className="!h-5 !w-5" />
                   {ctaLabel}
                 </Link>
               </div>

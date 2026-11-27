@@ -62,7 +62,7 @@ export function Hero({
           <p className="max-w-xl text-pretty text-base text-brand-ink-dim sm:text-lg">{subtitle}</p>
           <div className="flex w-full flex-col items-stretch justify-center gap-3 sm:w-auto sm:flex-row sm:items-center sm:gap-4">
             <Button href={ctaPrimaryHref} variant="primary">
-              <IconChartUp className="h-5 w-5" />
+              <IconChartUp className="!h-5 !w-5" />
               {ctaPrimary}
             </Button>
             <Button href={ctaSecondaryHref} variant="neon">
@@ -76,7 +76,7 @@ export function Hero({
               rel="noopener noreferrer"
               className="inline-flex items-center gap-2 text-sm font-medium text-brand-ink-dim transition-colors hover:text-brand-accent"
             >
-              <IconTelegram className="h-4 w-4" />
+              <IconTelegram className="!h-4 !w-4" />
               {ctaTertiary}
             </a>
           )}

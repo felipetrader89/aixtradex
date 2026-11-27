@@ -55,6 +55,7 @@ export default async function HomePage({ params }: Props) {
     price: string;
     period: string;
     originalPrice?: string;
+    from?: string;
     note: string;
     href: string;
     highlight?: boolean;
@@ -63,6 +64,7 @@ export default async function HomePage({ params }: Props) {
       key: "pass",
       label: t("plans.passLabel"),
       price: t("plans.passPrice"),
+      from: t("plans.passFrom"),
       period: "",
       note: t("plans.passNote"),
       href: "/products#pass",
@@ -192,6 +194,9 @@ export default async function HomePage({ params }: Props) {
               )}
               <span className="font-display text-base font-bold text-brand-accent">{plan.label}</span>
               <span className="mt-3 font-display text-3xl font-extrabold text-chrome">
+                {plan.from && (
+                  <span className="mr-2 text-base font-medium text-brand-ink-dim">{plan.from}</span>
+                )}
                 {plan.originalPrice && (
                   <span className="mr-2 text-base font-medium text-brand-ink-dim line-through">
                     {plan.originalPrice}

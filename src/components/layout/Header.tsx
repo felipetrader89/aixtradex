@@ -25,7 +25,7 @@ export function Header({ logoExists }: { logoExists: boolean }) {
 
   return (
     <header className="sticky top-0 z-50 border-b border-brand-hairline bg-brand-bg/90 backdrop-blur">
-      <div className="mx-auto flex max-w-5xl items-stretch justify-between px-6">
+      <div className="mx-auto flex max-w-6xl items-stretch justify-between px-4 sm:px-6">
         <Link
           href="/"
           className="flex shrink-0 items-center py-1 md:py-4 lg:pt-[2px] lg:pb-[6px]"
@@ -39,7 +39,7 @@ export function Header({ logoExists }: { logoExists: boolean }) {
             <Link
               key={link.href}
               href={link.href}
-              className={`nav-pill text-sm font-medium text-brand-ink-dim ${
+              className={`nav-pill text-sm min-[1100px]:whitespace-nowrap font-medium text-brand-ink-dim ${
                 pathname === link.href ? "nav-pill-active" : ""
               }`}
             >
@@ -52,7 +52,7 @@ export function Header({ logoExists }: { logoExists: boolean }) {
           <Suspense fallback={<div className="h-6 w-14" />}>
             <LanguageSwitcher />
           </Suspense>
-          <Link href="/account" className="text-sm font-medium text-brand-ink-dim transition-colors hover:text-brand-accent">
+          <Link href="/account" className="text-sm min-[1100px]:whitespace-nowrap font-medium text-brand-ink-dim transition-colors hover:text-brand-accent">
             {t("account")}
           </Link>
           <Button href={siteConfig.telegramDmUrl} variant="neon" className="!px-4 !py-2 text-sm">
