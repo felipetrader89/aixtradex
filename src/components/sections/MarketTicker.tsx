@@ -1,11 +1,12 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import { useTranslations } from "next-intl";
 
 type Quote = { pair: string; price: number };
 
+// Rótulo curto antes do par; o do ouro vem traduzido (Tools.quotes.gold).
 const FRIENDLY_LABEL: Record<string, string> = {
-  "XAU/USD": "OURO",
   "EUR/USD": "EURO",
 };
 
@@ -24,6 +25,8 @@ function formatPrice(pair: string, price: number) {
 }
 
 export function MarketTicker() {
+  const t = useTranslations("Tools.quotes");
+  const labelFor = (pair: string) => (pair === "XAU/USD" ? t("gold") : FRIENDLY_LABEL[pair]);
   const [quotes, setQuotes] = useState<Quote[]>([]);
   const prevRef = useRef<Record<string, number>>({});
   const [directions, setDirections] = useState<
@@ -73,10 +76,8 @@ export function MarketTicker() {
       <div className="ticker-track flex w-max gap-10 whitespace-nowrap">
         {items.map((q, i) => (
           <span key={`${q.pair}-${i}`} className="flex items-center gap-2 px-1 font-mono text-sm">
-            {FRIENDLY_LABEL[q.pair] && (
-              <span className="text-xs font-semibold uppercase text-brand-accent">
-                {FRIENDLY_LABEL[q.pair]}
-              </span>
+            {labelFor(q.pair) && (
+              <span className="text-xs font-semibold uppercase text-brand-accent">{labelFor(q.pair)}</span>
             )}
             <span className="text-brand-ink-dim">{q.pair}</span>
             <span

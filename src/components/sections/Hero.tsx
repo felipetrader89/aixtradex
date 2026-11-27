@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/Button";
 
 // Topo da Home: texto à esquerda e um visual (ilustração do painel) à direita; no celular o visual vem depois do texto.
 export function Hero({
+  eyebrow,
   title,
   subtitle,
   ctaPrimary,
@@ -18,6 +19,7 @@ export function Hero({
   trust = [],
   visual,
 }: {
+  eyebrow?: string;
   title: string;
   subtitle: string;
   ctaPrimary: string;
@@ -52,7 +54,7 @@ export function Hero({
 
       <div className="relative mx-auto grid max-w-6xl grid-cols-1 items-center gap-12 lg:grid-cols-[1.1fr_1fr] lg:gap-10">
         <div className="flex flex-col items-center gap-6 text-center lg:items-start lg:text-left">
-          <Eyebrow className="justify-center text-[10px] sm:text-xs lg:justify-start">AI POWERED FOREX TRADING</Eyebrow>
+          <Eyebrow className="justify-center text-[10px] sm:text-xs lg:justify-start">{eyebrow ?? "AI POWERED FOREX TRADING"}</Eyebrow>
           <h1 className="text-balance font-display text-[2rem] font-extrabold uppercase leading-[1.08] tracking-tight text-chrome sm:text-5xl lg:text-[3.4rem]">
             {title}
           </h1>

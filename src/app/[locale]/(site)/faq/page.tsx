@@ -1,14 +1,15 @@
 import type { Metadata } from "next";
 import { getTranslations, setRequestLocale } from "next-intl/server";
-import { pageMetadata } from "@/lib/seo";
+import { sitePageMetadata } from "@/components/seo/sitePageMetadata";
 import { TelegramCta } from "@/components/sections/TelegramCta";
+import { siteConfig } from "@/lib/site-config";
 import { PageHeader } from "@/components/sections/PageHeader";
 
 type Props = { params: Promise<{ locale: string }> };
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { locale } = await params;
-  return pageMetadata({ locale, href: "/faq", namespace: "Metadata.faq" });
+  return sitePageMetadata({ locale, href: "/faq", namespace: "Metadata.faq" });
 }
 
 export default async function FaqPage({ params }: Props) {
@@ -54,7 +55,7 @@ export default async function FaqPage({ params }: Props) {
           ))}
         </div>
 
-        <TelegramCta title={t("cta.title")} body={t("cta.body")} cta={t("cta.button")} />
+        <TelegramCta title={t("cta.title")} body={t("cta.body")} cta={t("cta.button")} href={siteConfig.telegramDmUrl} />
       </div>
 
       <script

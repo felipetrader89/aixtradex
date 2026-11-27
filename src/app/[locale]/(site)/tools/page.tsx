@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { getTranslations, setRequestLocale } from "next-intl/server";
-import { pageMetadata } from "@/lib/seo";
+import { sitePageMetadata } from "@/components/seo/sitePageMetadata";
 import { PageHeader } from "@/components/sections/PageHeader";
 import { ToolCta } from "@/components/tools/ToolCta";
 import { IconCalendar, IconCandles, IconChartUp, IconClock, IconGlobe, IconSpark } from "@/components/brand/icons";
@@ -13,7 +13,7 @@ const ICONS = { calculator: IconCandles, sessions: IconClock, quotes: IconChartU
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { locale } = await params;
-  return pageMetadata({ locale, href: "/tools", namespace: "Metadata.tools" });
+  return sitePageMetadata({ locale, href: "/tools", namespace: "Metadata.tools" });
 }
 
 export default async function ToolsPage({ params }: Props) {

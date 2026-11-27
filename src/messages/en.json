@@ -35,6 +35,18 @@
     "tools": {
       "title": "Trader Tools",
       "description": "Free tools for forex and gold traders: lot size calculator, market sessions in your time zone and reference quotes."
+    },
+    "terms": {
+      "title": "Terms of Use",
+      "description": "Terms of use for the website, the client portal and the Ai X PULSE RS license: what you buy, payment, renewal, refunds, permitted use and liability."
+    },
+    "privacy": {
+      "title": "Privacy Policy",
+      "description": "What data Ai X TradeX collects on the website, in the portal and through Ai X PULSE RS, what it is used for, who it is shared with and how to request changes or deletion."
+    },
+    "risk": {
+      "title": "Risk Warning",
+      "description": "The risks of trading forex and gold with Ai X PULSE RS: loss of capital, the limits of simulations, AI, daily goal and loss limit, and technical risks."
     }
   },
   "Nav": {
@@ -102,6 +114,7 @@
       "ctaPrimary": "Get started",
       "ctaSecondary": "Try 1 day for US$10",
       "ctaTertiary": "Join the Telegram group",
+      "eyebrow": "AI powered forex trading",
       "trust": [
         "Your money stays at your broker",
         "License, no account management",
@@ -224,7 +237,7 @@
     },
     "partners": {
       "title": "Partner brokers",
-      "body": "Works with any MT4 broker. At partner brokers, open an account through my link or switch your IB code to mine to get a license discount."
+      "body": "Works with any MT4 broker on a Raw, Zero or ECN account. At partner brokers, open an account through my link or switch your IB code to mine to get a license discount."
     },
     "finalCta": {
       "title": "Ready to try it on your account?",
@@ -404,8 +417,8 @@
   },
   "Contact": {
     "title": "Contact",
-    "body": "Right now, all support, questions, and onboarding go through the Telegram group - it's the fastest way to reach me directly.",
-    "cta": "Join Telegram",
+    "body": "Questions before buying, help with installation or license support: message me directly on Telegram. It's the fastest channel.",
+    "cta": "Message me on Telegram",
     "note": "Prefer email? Write to support@aixtradex.com - I answer there too."
   },
   "Footer": {
@@ -421,6 +434,12 @@
     "comingSoon": "Coming soon",
     "rightsPrefix": "© 2015-{year} -",
     "rightsSuffix": ". All rights reserved.",
+    "legal": {
+      "terms": "Terms of use",
+      "privacy": "Privacy policy",
+      "risk": "Risk warning",
+      "contact": "Contact"
+    },
     "toolsLinks": {
       "calculator": "Lot size calculator",
       "sessions": "Market sessions",
@@ -457,7 +476,7 @@
       },
       {
         "q": "Does the system use lot recovery?",
-        "a": "Recovery is a per-pair option that you turn on or off in the portal. It raises the lot after a loss to recover faster, and so it also raises the risk. For the most conservative path, keep recovery off and keep the daily loss limit on."
+        "a": "Not by default: recovery comes turned off. It is a per-pair option in the portal that raises the lot after a loss to recover faster, so it also raises the risk. For the most conservative path, keep recovery off and keep the daily loss limit on."
       },
       {
         "q": "Which brokers are compatible?",
@@ -515,7 +534,7 @@
     "cta": {
       "title": "Still have questions?",
       "body": "Talk to me directly on Telegram or at support@aixtradex.com.",
-      "button": "Join Telegram"
+      "button": "Message me on Telegram"
     }
   },
   "Blog": {

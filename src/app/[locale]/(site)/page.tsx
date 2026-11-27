@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Image from "next/image";
 import { getTranslations, setRequestLocale } from "next-intl/server";
-import { pageMetadata } from "@/lib/seo";
+import { sitePageMetadata } from "@/components/seo/sitePageMetadata";
 import { Hero } from "@/components/sections/Hero";
 import { PanelMockup } from "@/components/sections/PanelMockup";
 import { MarketTicker } from "@/components/sections/MarketTicker";
@@ -39,7 +39,7 @@ type Item = { title: string; body: string };
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { locale } = await params;
-  return pageMetadata({ locale, href: "/", namespace: "Metadata.home", absoluteTitle: true });
+  return sitePageMetadata({ locale, href: "/", namespace: "Metadata.home", absoluteTitle: true });
 }
 
 export default async function HomePage({ params }: Props) {
@@ -99,6 +99,7 @@ export default async function HomePage({ params }: Props) {
   return (
     <>
       <Hero
+        eyebrow={t("hero.eyebrow")}
         title={t("hero.title")}
         subtitle={t("hero.subtitle")}
         ctaPrimary={t("hero.ctaPrimary")}

@@ -69,7 +69,7 @@ export function Header({ logoExists }: { logoExists: boolean }) {
           <button
             type="button"
             onClick={() => setOpen((v) => !v)}
-            className="flex flex-col gap-1.5"
+            className="-m-2 flex flex-col gap-1.5 p-2"
             aria-label="Menu"
             aria-expanded={open}
           >

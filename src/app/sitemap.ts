@@ -14,8 +14,10 @@ const paths = [
   "/tools/lot-calculator",
   "/tools/market-sessions",
   "/tools/quotes",
-  "/blog",
   "/contact",
+  "/terms",
+  "/privacy",
+  "/risk",
 ] as const;
 
 export default function sitemap(): MetadataRoute.Sitemap {

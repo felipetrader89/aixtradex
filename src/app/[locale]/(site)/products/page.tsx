@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { getTranslations, setRequestLocale } from "next-intl/server";
-import { pageMetadata } from "@/lib/seo";
+import { sitePageMetadata } from "@/components/seo/sitePageMetadata";
 import { GlowCard } from "@/components/brand/GlowCard";
 import { IconCalendar, IconRocket } from "@/components/brand/icons";
 import { SpecTable } from "@/components/sections/SpecTable";
@@ -15,7 +15,7 @@ type Props = { params: Promise<{ locale: string }> };
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { locale } = await params;
-  return pageMetadata({ locale, href: "/products", namespace: "Metadata.products" });
+  return sitePageMetadata({ locale, href: "/products", namespace: "Metadata.products" });
 }
 
 export default async function ProductsPage({ params }: Props) {
@@ -71,7 +71,11 @@ export default async function ProductsPage({ params }: Props) {
           <p className="mb-2 text-xs font-semibold uppercase tracking-wide text-brand-accent">
             {t("license.tag")}
           </p>
-          <p className="mb-6 max-w-3xl text-brand-ink-dim">{t("license.description")}</p>
+          <p className="mb-4 max-w-3xl text-brand-ink-dim">{t("license.description")}</p>
+          {/* Requisito de conta à vista (não só nos detalhes técnicos): Raw/Zero/ECN, spread até 10 pts no ouro */}
+          <p className="mb-6 max-w-3xl rounded-xl border border-brand-accent/30 bg-brand-accent/5 px-4 py-3 text-sm text-brand-ink">
+            {t("license.requirementsNote")}
+          </p>
 
           <div className="mb-6 grid grid-cols-1 gap-5 sm:grid-cols-2 sm:items-stretch">
             {plans.map(({ label, price, period, originalPrice, badge, note, discountNote, ctaLabel, ctaHref, Icon, highlight }) => (
@@ -160,7 +164,6 @@ export default async function ProductsPage({ params }: Props) {
           </summary>
           <div className="px-5 pb-5 sm:px-6">
             <SpecTable rows={specs} bare />
-            <p className="mt-4 text-xs text-brand-ink-dim">{t("license.requirementsNote")}</p>
           </div>
         </details>
 
