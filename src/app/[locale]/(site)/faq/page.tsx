@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { getTranslations, setRequestLocale } from "next-intl/server";
-import { GlowCard } from "@/components/brand/GlowCard";
 import { TelegramCta } from "@/components/sections/TelegramCta";
+import { PageHeader } from "@/components/sections/PageHeader";
 import { getPathname } from "@/i18n/navigation";
 import { routing } from "@/i18n/routing";
 
@@ -27,25 +27,50 @@ export default async function FaqPage({ params }: Props) {
   const t = await getTranslations("Faq");
   const items = t.raw("items") as { q: string; a: string }[];
 
-  return (
-    <div className="mx-auto max-w-3xl px-6 py-16">
-      <header className="mb-12 text-center">
-        <h1 className="mb-4 font-display text-3xl font-extrabold uppercase text-chrome sm:text-4xl">
-          {t("title")}
-        </h1>
-        <p className="text-brand-ink-dim">{t("intro")}</p>
-      </header>
+  // Dados estruturados de FAQ (ajuda o Google e as IAs a lerem as respostas).
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    mainEntity: items.map((item) => ({
+      "@type": "Question",
+      name: item.q,
+      acceptedAnswer: { "@type": "Answer", text: item.a },
+    })),
+  };
 
-      <div className="mb-12 space-y-4">
-        {items.map((item) => (
-          <GlowCard key={item.q} className="text-left">
-            <h2 className="mb-2 font-display text-base font-bold text-brand-ink">{item.q}</h2>
-            <p className="text-sm text-brand-ink-dim">{item.a}</p>
-          </GlowCard>
-        ))}
+  return (
+    <>
+      <PageHeader eyebrow={t("eyebrow")} title={t("title")} intro={t("intro")} />
+
+      <div className="mx-auto max-w-3xl px-4 py-14 sm:px-6 sm:py-16">
+        <div className="mb-12 space-y-3">
+          {items.map((item, i) => (
+            <details
+              key={item.q}
+              className="faq-item glow-border group rounded-2xl bg-brand-surface transition-colors open:border-brand-accent/40"
+              open={i === 0}
+            >
+              <summary className="flex cursor-pointer items-center justify-between gap-4 px-5 py-4 sm:px-6">
+                <h2 className="font-display text-base font-semibold text-brand-ink">{item.q}</h2>
+                <span
+                  aria-hidden="true"
+                  className="faq-plus flex h-7 w-7 shrink-0 items-center justify-center rounded-full border border-brand-accent/40 text-lg leading-none text-brand-accent"
+                >
+                  +
+                </span>
+              </summary>
+              <p className="px-5 pb-5 text-sm leading-relaxed text-brand-ink-dim sm:px-6">{item.a}</p>
+            </details>
+          ))}
+        </div>
+
+        <TelegramCta title={t("cta.title")} body={t("cta.body")} cta={t("cta.button")} />
       </div>
 
-      <TelegramCta title={t("cta.title")} body={t("cta.body")} cta={t("cta.button")} />
-    </div>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd).replace(/</g, "\\u003c") }}
+      />
+    </>
   );
 }

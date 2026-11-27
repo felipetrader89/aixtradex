@@ -1,13 +1,16 @@
 import type { Metadata } from "next";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import { GlowCard } from "@/components/brand/GlowCard";
-import { IconLock, IconServer, IconChartUp, IconGlobe } from "@/components/brand/icons";
 import { SpecTable } from "@/components/sections/SpecTable";
+import { PageHeader } from "@/components/sections/PageHeader";
+import { SectionHeading } from "@/components/sections/SectionHeading";
+import { StepList, type Step } from "@/components/sections/StepList";
+import { RiskPrinciples, type RiskItem } from "@/components/sections/RiskPrinciples";
+import { RiskNotice } from "@/components/sections/RiskNotice";
+import { CheckList } from "@/components/sections/CheckList";
 import { Button } from "@/components/ui/Button";
 import { getPathname } from "@/i18n/navigation";
 import { routing } from "@/i18n/routing";
-
-const BENEFIT_ICONS = [IconLock, IconServer, IconChartUp, IconGlobe];
 
 type Props = { params: Promise<{ locale: string }> };
 
@@ -29,81 +32,62 @@ export default async function HowItWorksPage({ params }: Props) {
   const { locale } = await params;
   setRequestLocale(locale);
   const t = await getTranslations("HowItWorks");
-  const benefitItems = t.raw("benefits.items") as { title: string; body: string }[];
-  const steps = t.raw("technical.steps") as { title: string; body: string }[];
+  const tRisk = await getTranslations("Risk");
+  const steps = t.raw("flow.steps") as Step[];
+  const portalItems = t.raw("portal.items") as string[];
+  const riskItems = tRisk.raw("items") as RiskItem[];
 
   const specs = [
     { label: t("specs.platform"), value: t("specs.platformValue") },
-    { label: t("specs.pair"), value: t("specs.pairValue") },
-    { label: t("specs.timeframe"), value: t("specs.timeframeValue") },
+    { label: t("specs.chart"), value: t("specs.chartValue") },
     { label: t("specs.accountType"), value: t("specs.accountTypeValue") },
+    { label: t("specs.spread"), value: t("specs.spreadValue") },
     { label: t("specs.operation"), value: t("specs.operationValue") },
     { label: t("specs.dashboard"), value: t("specs.dashboardValue") },
+    { label: t("specs.languages"), value: t("specs.languagesValue") },
   ];
 
   return (
-    <div className="mx-auto max-w-4xl px-6 py-16">
-      <header className="mb-16 text-center">
-        <h1 className="mb-4 font-display text-3xl font-extrabold uppercase text-chrome sm:text-4xl">
-          {t("title")}
-        </h1>
-        <p className="mx-auto max-w-xl text-brand-ink-dim">{t("intro")}</p>
-      </header>
+    <>
+      <PageHeader eyebrow={t("eyebrow")} title={t("title")} intro={t("intro")} />
 
-      <section className="mb-16">
-        <h2 className="mb-8 text-center font-display text-2xl font-bold uppercase text-chrome">
-          {t("benefits.heading")}
-        </h2>
-        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-          {benefitItems.map((item, i) => {
-            const Icon = BENEFIT_ICONS[i % BENEFIT_ICONS.length];
-            return (
-              <GlowCard key={item.title} className="flex items-start gap-4">
-                <Icon className="h-9 w-9 shrink-0 text-brand-accent" />
-                <div>
-                  <h3 className="mb-1 text-base font-bold text-brand-ink">{item.title}</h3>
-                  <p className="text-sm text-brand-ink-dim">{item.body}</p>
-                </div>
-              </GlowCard>
-            );
-          })}
+      <div className="mx-auto max-w-5xl px-4 py-14 sm:px-6 sm:py-16">
+        <section className="mb-20">
+          <SectionHeading eyebrow={t("flow.eyebrow")} title={t("flow.heading")} />
+          <StepList steps={steps} />
+        </section>
+
+        <section className="mb-20">
+          <SectionHeading eyebrow={tRisk("eyebrow")} title={tRisk("title")} intro={tRisk("intro")} />
+          <RiskPrinciples items={riskItems} />
+          <p className="mt-6 text-center text-sm text-brand-ink-dim">{tRisk("footnote")}</p>
+        </section>
+
+        <section className="mb-14 grid grid-cols-1 gap-5 lg:grid-cols-2">
+          <GlowCard>
+            <p className="text-xs font-semibold uppercase tracking-[0.2em] text-brand-accent">
+              {t("portal.eyebrow")}
+            </p>
+            <h2 className="mt-2 font-display text-lg font-bold uppercase text-chrome">{t("portal.heading")}</h2>
+            <p className="mb-5 mt-2 text-sm text-brand-ink-dim">{t("portal.intro")}</p>
+            <CheckList items={portalItems} />
+          </GlowCard>
+          <GlowCard>
+            <h2 className="mb-5 font-display text-lg font-bold uppercase text-chrome">{t("specs.heading")}</h2>
+            <SpecTable rows={specs} bare />
+          </GlowCard>
+        </section>
+
+        <div className="mb-14">
+          <RiskNotice title={tRisk("noticeTitle")} body={tRisk("noticeBody")} />
         </div>
-      </section>
 
-      <section className="mb-16">
-        <h2 className="mb-8 text-center font-display text-2xl font-bold uppercase text-chrome">
-          {t("technical.heading")}
-        </h2>
-        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-          {steps.map((step, i) => (
-            <GlowCard key={step.title} className="flex gap-4">
-              <span className="font-display text-2xl font-extrabold text-brand-accent">
-                {String(i + 1).padStart(2, "0")}
-              </span>
-              <div>
-                <h3 className="mb-1 text-base font-bold text-brand-ink">{step.title}</h3>
-                <p className="text-sm text-brand-ink-dim">{step.body}</p>
-              </div>
-            </GlowCard>
-          ))}
-        </div>
-      </section>
-
-      <section className="mb-10">
-        <SpecTable rows={specs} />
-      </section>
-
-      <GlowCard className="mb-16 text-sm">
-        <p className="text-brand-ink-dim">{t("risk.body")}</p>
-      </GlowCard>
-
-      <GlowCard className="flex flex-col items-center gap-4 text-center">
-        <h3 className="font-display text-2xl font-bold uppercase text-chrome">
-          {t("cta.title")}
-        </h3>
-        <p className="max-w-md text-brand-ink-dim">{t("cta.body")}</p>
-        <Button href="/products">{t("cta.button")}</Button>
-      </GlowCard>
-    </div>
+        <GlowCard className="flex flex-col items-center gap-4 text-center">
+          <h2 className="font-display text-2xl font-bold uppercase text-chrome">{t("cta.title")}</h2>
+          <p className="max-w-md text-brand-ink-dim">{t("cta.body")}</p>
+          <Button href="/products">{t("cta.button")}</Button>
+        </GlowCard>
+      </div>
+    </>
   );
 }

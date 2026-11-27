@@ -4,7 +4,11 @@ import { GlowCard } from "@/components/brand/GlowCard";
 import { IconCalendar, IconRocket } from "@/components/brand/icons";
 import { SpecTable } from "@/components/sections/SpecTable";
 import { PricingCard } from "@/components/sections/PricingCard";
-import { CompoundCalculator } from "@/components/sections/CompoundCalculator";
+import { PageHeader } from "@/components/sections/PageHeader";
+import { SectionHeading } from "@/components/sections/SectionHeading";
+import { RiskPrinciples, type RiskItem } from "@/components/sections/RiskPrinciples";
+import { RiskNotice } from "@/components/sections/RiskNotice";
+import { CheckList } from "@/components/sections/CheckList";
 import { Link, getPathname } from "@/i18n/navigation";
 import { routing } from "@/i18n/routing";
 
@@ -28,17 +32,21 @@ export default async function ProductsPage({ params }: Props) {
   const { locale } = await params;
   setRequestLocale(locale);
   const t = await getTranslations("Products");
+  const tRisk = await getTranslations("Risk");
+  const riskItems = tRisk.raw("items") as RiskItem[];
+  const includes = t.raw("includes.items") as string[];
 
   const specs = [
     { label: t("pulse.specs.platform"), value: t("pulse.specs.platformValue") },
     { label: t("pulse.specs.accountType"), value: t("pulse.specs.accountTypeValue") },
+    { label: t("pulse.specs.spread"), value: t("pulse.specs.spreadValue") },
     { label: t("pulse.specs.leverage"), value: t("pulse.specs.leverageValue") },
     { label: t("pulse.specs.deposit"), value: t("pulse.specs.depositValue") },
     { label: t("pulse.specs.operation"), value: t("pulse.specs.operationValue") },
-    { label: t("pulse.specs.interest"), value: t("pulse.specs.interestValue") },
-    { label: t("pulse.specs.term"), value: t("pulse.specs.termValue") },
+    { label: t("pulse.specs.risk"), value: t("pulse.specs.riskValue") },
   ];
 
+  // Links do checkout: não mudar (o /payment lê o ?plan=).
   const plans = [
     {
       label: t("license.oneMonth.label"),
@@ -66,84 +74,106 @@ export default async function ProductsPage({ params }: Props) {
   ];
 
   return (
-    <div className="mx-auto max-w-4xl px-6 py-16">
-      <header className="mb-12 text-center">
-        <h1 className="mb-4 font-display text-3xl font-extrabold uppercase text-chrome sm:text-4xl">
-          {t("title")}
-        </h1>
-        <p className="mx-auto max-w-xl text-brand-ink-dim">{t("intro")}</p>
-      </header>
+    <>
+      <PageHeader eyebrow={t("eyebrow")} title={t("title")} intro={t("intro")} />
 
-      <section>
-        <p className="mb-2 text-xs font-semibold uppercase tracking-wide text-brand-accent">
-          {t("license.tag")}
-        </p>
-        <p className="mb-6 max-w-2xl text-brand-ink-dim">{t("license.description")}</p>
+      <div className="mx-auto max-w-5xl px-4 py-14 sm:px-6 sm:py-16">
+        {/* Licenças */}
+        <section id="licenses" className="scroll-mt-24">
+          <p className="mb-2 text-xs font-semibold uppercase tracking-wide text-brand-accent">
+            {t("license.tag")}
+          </p>
+          <p className="mb-6 max-w-3xl text-brand-ink-dim">{t("license.description")}</p>
 
-        <GlowCard className="mb-8 flex items-start gap-3 text-sm">
-          <span className="text-2xl">🎁</span>
-          <div>
-            <p className="font-semibold text-brand-accent">{t("license.discountTitle")}</p>
-            <p className="mt-1 text-brand-ink-dim">{t("license.discountBody")}</p>
-          </div>
-        </GlowCard>
-
-        <div className="mb-8 grid grid-cols-1 gap-4 sm:grid-cols-2 sm:items-stretch">
-          {plans.map(({ label, price, period, originalPrice, badge, note, discountNote, ctaLabel, ctaHref, Icon, highlight }) => (
-            <div key={label} className="flex flex-col gap-4">
-              <PricingCard
-                label={label}
-                price={price}
-                period={period}
-                originalPrice={originalPrice}
-                badge={badge}
-                note={note}
-                discountNote={discountNote}
-                className={highlight ? "!border-2 !border-brand-accent shadow-[0_0_40px_rgba(51,214,160,0.25)]" : ""}
-              />
-              <Link
-                href={ctaHref}
-                className="cta-neon flex items-center justify-center gap-2 rounded-full bg-brand-surface px-6 py-3 text-sm font-semibold text-brand-ink transition-colors duration-300 hover:text-brand-accent"
-              >
-                <Icon className="h-5 w-5" />
-                {ctaLabel}
-              </Link>
-            </div>
-          ))}
-        </div>
-
-        {/* Passe de teste: testar o robô por 1, 3 ou 7 dias antes de assinar */}
-        <GlowCard className="mb-8">
-          <p className="text-xs font-semibold uppercase tracking-wide text-brand-accent">{t("pass.tag")}</p>
-          <h2 className="mt-2 font-display text-xl font-bold text-chrome">{t("pass.title")}</h2>
-          <p className="mt-2 text-sm text-brand-ink-dim">{t("pass.description")}</p>
-          <div className="mt-5 grid gap-3 sm:grid-cols-3">
-            {(["d1", "d3", "d7"] as const).map((d) => (
-              <Link
-                key={d}
-                href={`/payment?plan=pass${d.slice(1)}`}
-                className="flex flex-col items-center rounded-2xl border border-brand-hairline bg-brand-surface-2 px-4 py-4 text-center transition hover:border-brand-accent"
-              >
-                <span className="text-sm font-semibold text-brand-ink">{t(`pass.${d}.label`)}</span>
-                <span className="mt-1 font-display text-2xl font-extrabold text-chrome">{t(`pass.${d}.price`)}</span>
-                <span className="mt-1 text-[11px] text-brand-ink-dim">{t(`pass.${d}.note`)}</span>
-                <span className="mt-3 text-xs font-semibold text-brand-accent">{t("pass.cta")} →</span>
-              </Link>
+          <div className="mb-6 grid grid-cols-1 gap-5 sm:grid-cols-2 sm:items-stretch">
+            {plans.map(({ label, price, period, originalPrice, badge, note, discountNote, ctaLabel, ctaHref, Icon, highlight }) => (
+              <div key={label} className="flex flex-col gap-4">
+                <PricingCard
+                  label={label}
+                  price={price}
+                  period={period}
+                  originalPrice={originalPrice}
+                  badge={badge}
+                  note={note}
+                  discountNote={discountNote}
+                  className={highlight ? "!border-2 !border-brand-accent shadow-[0_0_40px_rgba(51,214,160,0.25)]" : ""}
+                />
+                <Link
+                  href={ctaHref}
+                  className={`flex items-center justify-center gap-2 rounded-full px-6 py-3 text-sm font-semibold transition-[filter,color] duration-300 ${
+                    highlight
+                      ? "bg-gradient-to-b from-brand-accent to-brand-accent-dark text-brand-bg hover:brightness-110"
+                      : "cta-neon bg-brand-surface text-brand-ink hover:text-brand-accent"
+                  }`}
+                >
+                  <Icon className="h-5 w-5" />
+                  {ctaLabel}
+                </Link>
+              </div>
             ))}
           </div>
-          <p className="mt-4 text-xs text-brand-ink-dim">💡 {t("pass.creditNote")}</p>
-        </GlowCard>
 
-        <GlowCard className="mb-6 text-sm">
-          <p className="text-brand-ink-dim">{t("license.requirementsNote")}</p>
-        </GlowCard>
+          <GlowCard className="mb-12 flex items-start gap-3 text-sm">
+            <span aria-hidden="true" className="text-2xl">🎁</span>
+            <div>
+              <p className="font-semibold text-brand-accent">{t("license.discountTitle")}</p>
+              <p className="mt-1 text-brand-ink-dim">{t("license.discountBody")}</p>
+            </div>
+          </GlowCard>
+        </section>
 
-        <div className="mb-10">
-          <SpecTable rows={specs} />
-        </div>
+        {/* Passe de teste: testar o robô por 1, 3 ou 7 dias antes de assinar */}
+        <section id="pass" className="mb-14 scroll-mt-24">
+          <GlowCard>
+            <p className="text-xs font-semibold uppercase tracking-wide text-brand-accent">{t("pass.tag")}</p>
+            <h2 className="mt-2 font-display text-xl font-bold text-chrome sm:text-2xl">{t("pass.title")}</h2>
+            <p className="mt-2 text-sm text-brand-ink-dim">{t("pass.description")}</p>
+            <div className="mt-5 grid gap-3 sm:grid-cols-3">
+              {(["d1", "d3", "d7"] as const).map((d) => (
+                <Link
+                  key={d}
+                  href={`/payment?plan=pass${d.slice(1)}`}
+                  className="flex flex-col items-center rounded-2xl border border-brand-hairline bg-brand-surface-2 px-4 py-4 text-center transition hover:border-brand-accent"
+                >
+                  <span className="text-sm font-semibold text-brand-ink">{t(`pass.${d}.label`)}</span>
+                  <span className="mt-1 font-display text-2xl font-extrabold text-chrome">{t(`pass.${d}.price`)}</span>
+                  <span className="mt-1 text-[11px] text-brand-ink-dim">{t(`pass.${d}.note`)}</span>
+                  <span className="mt-3 text-xs font-semibold text-brand-accent">{t("pass.cta")} →</span>
+                </Link>
+              ))}
+            </div>
+            <p className="mt-4 text-xs text-brand-ink-dim">💡 {t("pass.creditNote")}</p>
+          </GlowCard>
+        </section>
 
-        <CompoundCalculator locale={locale} />
-      </section>
-    </div>
+        {/* O que inclui + requisitos */}
+        <section className="mb-14 grid grid-cols-1 gap-5 lg:grid-cols-2">
+          <GlowCard>
+            <h2 className="mb-5 font-display text-lg font-bold uppercase text-chrome">{t("includes.title")}</h2>
+            <CheckList items={includes} />
+          </GlowCard>
+          <GlowCard>
+            <h2 className="mb-5 font-display text-lg font-bold uppercase text-chrome">{t("specsTitle")}</h2>
+            <SpecTable rows={specs} bare />
+            <p className="mt-4 text-xs text-brand-ink-dim">{t("license.requirementsNote")}</p>
+          </GlowCard>
+        </section>
+
+        {/* Gestão de risco */}
+        <section className="mb-12">
+          <SectionHeading eyebrow={tRisk("eyebrow")} title={tRisk("title")} intro={tRisk("intro")} />
+          <RiskPrinciples items={riskItems} />
+          <p className="mt-6 text-center text-sm text-brand-ink-dim">{tRisk("footnote")}</p>
+        </section>
+
+        <RiskNotice title={tRisk("noticeTitle")} body={tRisk("noticeBody")} />
+
+        <p className="mt-10 text-center">
+          <Link href="/faq" className="text-sm font-semibold text-brand-accent hover:underline">
+            {t("faqCta")} →
+          </Link>
+        </p>
+      </div>
+    </>
   );
 }
