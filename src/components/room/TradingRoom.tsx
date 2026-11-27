@@ -32,9 +32,9 @@ function DeskScene({ state, shirt }: { state: DeskState; shirt: string }) {
     [6, 11, 1],
   ];
   return (
-    <svg viewBox="0 0 200 120" className="h-auto w-full" aria-hidden="true">
+    <svg viewBox="0 0 200 102" className="h-auto w-full" aria-hidden="true">
       {/* chão e parede */}
-      <rect x="0" y="96" width="200" height="24" fill="#0d1e30" />
+      <rect x="0" y="96" width="200" height="6" fill="#0d1e30" />
       <rect x="0" y="95" width="200" height="1.5" fill="rgba(51,214,160,0.18)" />
       {/* mesa */}
       <rect x="88" y="70" width="100" height="6" rx="2" fill="#2a3f55" />
@@ -119,9 +119,21 @@ function DeskScene({ state, shirt }: { state: DeskState; shirt: string }) {
 // Trader sênior na mesa central, com dois monitores. viewBox 0 0 260 110.
 function SeniorScene() {
   return (
-    <svg viewBox="0 0 260 110" className="h-auto w-full max-w-md" aria-hidden="true">
-      <rect x="0" y="90" width="260" height="20" fill="#0d1e30" />
+    <svg viewBox="0 0 260 96" className="h-auto w-full max-w-md" aria-hidden="true">
+      <rect x="0" y="90" width="260" height="6" fill="#0d1e30" />
       <rect x="0" y="89" width="260" height="1.5" fill="rgba(51,214,160,0.18)" />
+      {/* trader sênior (de frente, atrás da mesa) */}
+      <g className="room-breathe">
+        <path d="M106 64 C106 44 114 38 130 38 C146 38 154 44 154 64 Z" fill="#1e293b" />
+        <path d="M126 40 L130 58 L134 40 Z" fill="#e2e8f0" />
+        <path d="M129 42 L130 56 L131 42 Z" fill="#33d6a0" />
+        <circle cx="130" cy="26" r="11" fill="#e9bf9a" />
+        <path d="M119 24 C119 12 141 12 141 24 C137 19 123 19 119 24 Z" fill="#9ca3af" />
+        <circle cx="126" cy="27" r="1.4" fill="#1b1b1b" className="room-eye" />
+        <circle cx="134" cy="27" r="1.4" fill="#1b1b1b" className="room-eye" />
+        <path d="M120 26 h7 M133 26 h7" stroke="#cbd5e1" strokeWidth="0.8" />
+        <path d="M108 52 L96 62 M152 52 L164 62" stroke="#1e293b" strokeWidth="6" strokeLinecap="round" />
+      </g>
       <rect x="40" y="64" width="180" height="7" rx="2" fill="#2a3f55" />
       <rect x="50" y="71" width="6" height="19" fill="#22364a" />
       <rect x="204" y="71" width="6" height="19" fill="#22364a" />
@@ -140,18 +152,6 @@ function SeniorScene() {
           <rect x={x + 19} y="56" width="6" height="8" fill="#1f3348" />
         </g>
       ))}
-      {/* trader sênior (de frente, atrás da mesa) */}
-      <g className="room-breathe">
-        <path d="M106 64 C106 44 114 38 130 38 C146 38 154 44 154 64 Z" fill="#1e293b" />
-        <path d="M126 40 L130 58 L134 40 Z" fill="#e2e8f0" />
-        <path d="M129 42 L130 56 L131 42 Z" fill="#33d6a0" />
-        <circle cx="130" cy="26" r="11" fill="#e9bf9a" />
-        <path d="M119 24 C119 12 141 12 141 24 C137 19 123 19 119 24 Z" fill="#9ca3af" />
-        <circle cx="126" cy="27" r="1.4" fill="#1b1b1b" className="room-eye" />
-        <circle cx="134" cy="27" r="1.4" fill="#1b1b1b" className="room-eye" />
-        <path d="M120 26 h7 M133 26 h7" stroke="#cbd5e1" strokeWidth="0.8" />
-        <path d="M108 52 L96 62 M152 52 L164 62" stroke="#1e293b" strokeWidth="6" strokeLinecap="round" />
-      </g>
       {/* café */}
       <rect x="182" y="56" width="8" height="8" rx="1.5" fill="#e2e8f0" />
       <path d="M184 52 q1 -3 0 -5 M187 52 q1 -3 0 -5" stroke="#8fa0ac" strokeWidth="0.8" fill="none" className="room-steam" />
@@ -162,14 +162,14 @@ function SeniorScene() {
 // Corredor: os analistas que estão trabalhando levam o caso até a Mesa e voltam (cada um no seu tempo).
 function Corridor({ symbols }: { symbols: { symbol: string; shirt: string }[] }) {
   return (
-    <div className="relative h-14 overflow-hidden rounded-lg border border-brand-hairline bg-[#0d1e30]" aria-hidden="true">
+    <div className="relative h-16 overflow-hidden rounded-lg border border-brand-hairline bg-[#0d1e30]" aria-hidden="true">
       <div className="absolute inset-x-0 bottom-3 h-px bg-brand-accent/15" />
       <div className="absolute bottom-1 right-2 rounded bg-brand-surface-2 px-1.5 py-0.5 text-[9px] font-bold uppercase tracking-wide text-brand-accent">Mesa</div>
       {symbols.slice(0, 8).map((s, i) => (
         <div key={s.symbol} className="room-walker absolute bottom-3" style={{ animationDelay: `${i * -2.3}s`, animationDuration: `${14 + (i % 3) * 3}s` }}>
           <div className="room-walker-flip flex flex-col items-center" style={{ animationDelay: `${i * -2.3}s`, animationDuration: `${14 + (i % 3) * 3}s` }}>
-            <span className="mb-0.5 rounded bg-brand-surface px-1 text-[8px] font-bold leading-tight text-brand-ink">{s.symbol}</span>
-            <svg viewBox="0 0 20 30" className="h-7 w-5">
+            <span className="mb-0.5 rounded bg-brand-surface px-1 text-[9px] font-bold leading-tight text-brand-ink">{s.symbol}</span>
+            <svg viewBox="0 0 20 30" className="h-9 w-6">
               <circle cx="10" cy="5" r="4" fill="#f1c9a5" />
               <rect x="5" y="9" width="10" height="11" rx="3" fill={s.shirt} />
               <rect x="13" y="12" width="6" height="7" rx="1" fill="#e2e8f0" />
