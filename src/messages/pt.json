@@ -73,9 +73,9 @@
       {
         "key": "conservative",
         "name": "Conservador",
-        "goal": "3%",
-        "loss": "-2%",
-        "risk": "1%",
+        "goal": "1%",
+        "loss": "-1,5%",
+        "risk": "0,5%",
         "level": 1,
         "levelText": "Menor",
         "body": "Pra quem está começando ou quer menos oscilação. É o ponto de partida que recomendo."
@@ -83,9 +83,9 @@
       {
         "key": "moderate",
         "name": "Moderado",
-        "goal": "5%",
+        "goal": "2%",
         "loss": "-3%",
-        "risk": "2%",
+        "risk": "1%",
         "level": 2,
         "levelText": "Médio",
         "body": "Mais meta, mais risco. Pra quem já conhece o comportamento da própria conta."
@@ -239,6 +239,8 @@
       "status": "Buscando a meta do dia",
       "profile": "Perfil",
       "profileValue": "Conservador",
+      "goalValue": "1%",
+      "lossValue": "-1,5%",
       "mode": "Modo",
       "modeValue": "Automático",
       "goal": "Meta do dia",
@@ -275,9 +277,9 @@
         "platform": "Plataforma",
         "platformValue": "MetaTrader 4 (MT5 em breve)",
         "accountType": "Tipo de conta",
-        "accountTypeValue": "Qualquer tipo",
+        "accountTypeValue": "Raw, Zero ou ECN",
         "spread": "Spread máximo",
-        "spreadValue": "30 pts",
+        "spreadValue": "Até 10 pts no ouro",
         "leverage": "Alavancagem",
         "leverageValue": "1:500",
         "deposit": "Capital recomendado",
@@ -314,7 +316,7 @@
     "license": {
       "tag": "Licença - até 2 contas (mensal) ou até 5 contas (vitalícia)",
       "description": "Você recebe o Ai X PULSE RS e instala direto nas suas contas MT4, sem que eu faça a gestão. A licença mensal libera até 2 contas MT4 e a vitalícia até 5. Você informa o número de cada conta na compra e, se precisar, pode corrigir 1 vez em Minha Conta.",
-      "requirementsNote": "Todas as contas precisam ter spread abaixo de 30 pts pro sistema ter um bom desempenho.",
+      "requirementsNote": "Use uma conta de spread baixo (Raw, Zero ou ECN), com spread de até 10 pts no ouro. Nos testes de 2024 a 2026, com custo maior o resultado cai muito. Por isso o sistema não abre operação quando o spread passa do limite.",
       "oneMonth": {
         "label": "Licença Mensal",
         "price": "$99",
@@ -391,7 +393,7 @@
     },
     "brokers": {
       "title": "Corretoras parceiras",
-      "body": "O Ai X PULSE RS funciona em qualquer tipo de conta MetaTrader 4, em qualquer corretora, com spread de até 30 pts. Nas corretoras parceiras abaixo você ganha desconto na licença, abrindo conta pelo meu link ou mudando o Código IB da sua conta pro meu: $30 por mês na Licença Mensal e $50 na Vitalícia. Isso não é indicação de investimento.",
+      "body": "O Ai X PULSE RS funciona em qualquer corretora com MetaTrader 4, numa conta de spread baixo (Raw, Zero ou ECN), com spread de até 10 pts no ouro. Nas corretoras parceiras abaixo você ganha desconto na licença, abrindo conta pelo meu link ou mudando o Código IB da sua conta pro meu: $30 por mês na Licença Mensal e $50 na Vitalícia. Isso não é indicação de investimento.",
       "comingSoon": "Mais corretoras em breve"
     },
     "closing": {
@@ -451,7 +453,7 @@
       },
       {
         "q": "Como funcionam os perfis de risco?",
-        "a": "No Assistente IA você escolhe o perfil. Os principais: Conservador (meta de 3% no dia, limite de perda de 2%, 1% de risco por entrada) e Moderado (5%, 3% e 2%). Personalizado e outros perfis ficam no portal. Meta maior é risco maior. Bateu a meta ou chegou no limite, o sistema para até o dia seguinte."
+        "a": "No Assistente IA você escolhe o perfil. Os principais: Conservador (meta de 1% no dia, limite de perda de 1,5%, 0,5% de risco por entrada) e Moderado (2%, 3% e 1%). Os dois foram testados no ouro de 2024 a 2026 sem aumentar o lote depois de perda. Personalizado e outros perfis ficam no portal. Meta maior é risco maior. Bateu a meta ou chegou no limite, o sistema para até o dia seguinte."
       },
       {
         "q": "O sistema usa recuperação de lote?",
@@ -459,7 +461,7 @@
       },
       {
         "q": "Quais corretoras são compatíveis?",
-        "a": "Qualquer corretora com MetaTrader 4, em qualquer tipo de conta, com spread de até 30 pts. Se você abrir conta pelo meu link (ou mudar o Código IB pro meu) numa corretora parceira - FPMarkets, Tickmill, Vantage ou Exness - ganha $30 de desconto por mês na Licença Mensal ou $50 na Vitalícia."
+        "a": "Qualquer corretora com MetaTrader 4, numa conta de spread baixo (Raw, Zero ou ECN), com spread de até 10 pts no ouro. Se você abrir conta pelo meu link (ou mudar o Código IB pro meu) numa corretora parceira - FPMarkets, Tickmill, Vantage ou Exness - ganha $30 de desconto por mês na Licença Mensal ou $50 na Vitalícia."
       },
       {
         "q": "Funciona no MT5?",
@@ -467,7 +469,7 @@
       },
       {
         "q": "Quanto preciso pra começar?",
-        "a": "Capital recomendado: a partir de US$ 500 no ouro e a partir de US$ 100 nos pares de moedas, numa conta MT4 com alavancagem 1:500 - qualquer tipo de conta, com spread de até 30 pts. Com menos que isso, até o lote mínimo da corretora (0,01) pode arriscar mais do que o perfil escolhido."
+        "a": "Capital recomendado: a partir de US$ 500 no ouro e a partir de US$ 100 nos pares de moedas, numa conta MT4 com alavancagem 1:500 - conta Raw, Zero ou ECN, com spread de até 10 pts no ouro. Com menos que isso, até o lote mínimo da corretora (0,01) pode arriscar mais do que o perfil escolhido."
       },
       {
         "q": "Preciso deixar o computador ligado?",
@@ -475,7 +477,7 @@
       },
       {
         "q": "Quais são os detalhes técnicos?",
-        "a": "MetaTrader 4, qualquer tipo de conta, spread de até 30 pts, alavancagem 1:500 recomendada. O sistema fica no gráfico do ouro (XAU/USD) e opera o ouro e os pares que você escolher (os principais pares forex ou outros ativos da sua corretora). A configuração do portal é lida a cada 30 segundos, e as contas enviam saldo e resultados pro painel a cada 5 minutos. Disponível em português, inglês e espanhol."
+        "a": "MetaTrader 4, conta Raw, Zero ou ECN, spread de até 10 pts no ouro, alavancagem 1:500 recomendada. O sistema fica no gráfico do ouro (XAU/USD) e opera o ouro e os pares que você escolher (os principais pares forex ou outros ativos da sua corretora). A configuração do portal é lida a cada 30 segundos, e as contas enviam saldo e resultados pro painel a cada 5 minutos. Disponível em português, inglês e espanhol."
       },
       {
         "q": "Posso testar antes de assinar?",
@@ -614,9 +616,9 @@
       "chart": "Gráfico",
       "chartValue": "XAU/USD (opera os outros pares a partir dele)",
       "accountType": "Tipo de conta",
-      "accountTypeValue": "Qualquer tipo",
+      "accountTypeValue": "Raw, Zero ou ECN",
       "spread": "Spread máximo",
-      "spreadValue": "30 pts",
+      "spreadValue": "Até 10 pts no ouro",
       "operation": "Operação",
       "operationValue": "Automática, com controles manuais",
       "dashboard": "Painel",
@@ -745,7 +747,7 @@
         "title": "Crie sua conta MT4 com estas configurações",
         "body": "Na sua corretora, abra uma conta MetaTrader 4 assim:",
         "bodyBroker": "Na área do cliente da {broker}, abra uma conta MetaTrader 4 assim:",
-        "bodyPass": "Informe a conta MT4 onde vai testar o robô. Pode ser real ou demo, de qualquer corretora, com spread até 30 pts.",
+        "bodyPass": "Informe a conta MT4 onde vai testar o robô. Pode ser real ou demo, de qualquer corretora, numa conta Raw, Zero ou ECN com spread de até 10 pts no ouro.",
         "platform": "Plataforma",
         "platformValue": "MetaTrader 4",
         "leverage": "Alavancagem",
@@ -753,7 +755,7 @@
         "deposit": "Capital recomendado",
         "depositValue": "US$ 500 no ouro · US$ 100 nos pares",
         "type": "Tipo de conta",
-        "typeValue": "Qualquer tipo",
+        "typeValue": "Raw, Zero ou ECN",
         "note": "Depois de criar a conta, preencha seus dados e o número (login) de cada conta MT4 abaixo. A licença já sai vinculada a essas contas.",
         "accountsTitle": "Suas contas MT4 - até {max} no seu plano",
         "lockNote": "Confira os números antes de seguir: essas são as contas que serão licenciadas. Depois da compra, você pode trocar as contas só 1 vez em Minha Conta (pra corrigir um número errado, por exemplo). Vaga que ficar vazia pode ser preenchida depois.",
@@ -940,7 +942,7 @@
       "tipsTitle": "Dicas",
       "tips": [
         "Pra operar 24 horas, use uma VPS: o robô só funciona com o MT4 aberto.",
-        "Use uma conta com spread de até 30 pontos no ouro.",
+        "Use uma conta Raw, Zero ou ECN, com spread de até 10 pontos no ouro.",
         "Se a licença vencer, o robô não sai do gráfico, mas para de operar, inclusive de administrar ordens abertas. Ele volta sozinho quando a licença for liberada; por isso, renove antes do vencimento.",
         "Precisa trocar uma conta MT4? Você pode trocar 1 vez na página Licenças. Depois disso, fale comigo no Telegram.",
         "Pra ver os resultados da semana e do mês completos em Contas MT4, deixe a aba Histórico da conta, no MT4, em \"Todo o histórico\" (clique com o botão direito dentro da aba)."

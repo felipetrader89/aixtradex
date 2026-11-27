@@ -43,8 +43,8 @@ export async function PanelMockup() {
             {[
               [t("profile"), t("profileValue")],
               [t("mode"), t("modeValue")],
-              [t("goal"), "3%"],
-              [t("loss"), "-2%"],
+              [t("goal"), t("goalValue")],
+              [t("loss"), t("lossValue")],
             ].map(([k, v]) => (
               <div key={k} className="flex flex-col-reverse rounded-xl bg-brand-surface-2 px-3 py-2.5">
                 <dt className="text-[10px] uppercase tracking-wide text-brand-ink-dim">{k}</dt>

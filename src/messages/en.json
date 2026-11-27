@@ -73,9 +73,9 @@
       {
         "key": "conservative",
         "name": "Conservative",
-        "goal": "3%",
-        "loss": "-2%",
-        "risk": "1%",
+        "goal": "1%",
+        "loss": "-1.5%",
+        "risk": "0.5%",
         "level": 1,
         "levelText": "Lower",
         "body": "For beginners or anyone who prefers smaller swings. It's the starting point I recommend."
@@ -83,9 +83,9 @@
       {
         "key": "moderate",
         "name": "Moderate",
-        "goal": "5%",
+        "goal": "2%",
         "loss": "-3%",
-        "risk": "2%",
+        "risk": "1%",
         "level": 2,
         "levelText": "Medium",
         "body": "A higher target with more risk. For traders who already know how their account behaves."
@@ -239,6 +239,8 @@
       "status": "Working toward today's target",
       "profile": "Profile",
       "profileValue": "Conservative",
+      "goalValue": "1%",
+      "lossValue": "-1.5%",
       "mode": "Mode",
       "modeValue": "Automatic",
       "goal": "Daily target",
@@ -275,9 +277,9 @@
         "platform": "Platform",
         "platformValue": "MetaTrader 4 (MT5 coming soon)",
         "accountType": "Account type",
-        "accountTypeValue": "Any type",
+        "accountTypeValue": "Raw, Zero or ECN",
         "spread": "Maximum spread",
-        "spreadValue": "30 pts",
+        "spreadValue": "Up to 10 pts on gold",
         "leverage": "Leverage",
         "leverageValue": "1:500",
         "deposit": "Recommended capital",
@@ -314,7 +316,7 @@
     "license": {
       "tag": "License - up to 2 accounts (monthly) or up to 5 accounts (lifetime)",
       "description": "You get Ai X PULSE RS and install it directly on your MT4 accounts, with no account management by me. The monthly license covers up to 2 MT4 accounts and the lifetime license up to 5. You enter each account number at purchase and, if needed, can correct it once in My Account.",
-      "requirementsNote": "All accounts need a spread below 30 pts for the system to perform well.",
+      "requirementsNote": "Use a low-spread account (Raw, Zero or ECN) with a gold spread of up to 10 pts. In the 2024-2026 tests, higher costs cut the results sharply, so the system does not open trades when the spread is above the limit.",
       "oneMonth": {
         "label": "Monthly License",
         "price": "$99",
@@ -391,7 +393,7 @@
     },
     "brokers": {
       "title": "Partner brokers",
-      "body": "Ai X PULSE RS works on any type of MetaTrader 4 account, at any broker, with spread up to 30 pts. At the partner brokers below you get a license discount by opening an account through my link or switching your account's IB code to mine: $30 per month on the Monthly License and $50 on the Lifetime License. This is not investment advice.",
+      "body": "Ai X PULSE RS works at any MetaTrader 4 broker, on a low-spread account (Raw, Zero or ECN) with a gold spread of up to 10 pts. At the partner brokers below you get a license discount by opening an account through my link or switching your account's IB code to mine: $30 per month on the Monthly License and $50 on the Lifetime License. This is not investment advice.",
       "comingSoon": "More brokers coming soon"
     },
     "closing": {
@@ -451,7 +453,7 @@
       },
       {
         "q": "How do the risk profiles work?",
-        "a": "You choose a profile in the AI Assistant. The main ones are Conservative (3% daily target, 2% loss limit, 1% risk per entry) and Moderate (5%, 3% and 2%). Custom and other profiles are available in the portal. A higher target means higher risk. Once the target or the limit is reached, the system stops until the next day."
+        "a": "You choose a profile in the AI Assistant. The main ones are Conservative (1% daily target, 1.5% loss limit, 0.5% risk per entry) and Moderate (2%, 3% and 1%). Both were tested on gold from 2024 to 2026 without raising the lot after a loss. Custom and other profiles are available in the portal. A higher target means higher risk. Once the target or the limit is reached, the system stops until the next day."
       },
       {
         "q": "Does the system use lot recovery?",
@@ -459,7 +461,7 @@
       },
       {
         "q": "Which brokers are compatible?",
-        "a": "Any broker with MetaTrader 4, any account type, with spread up to 30 pts. If you open an account through my link (or switch the IB code to mine) at a partner broker - FPMarkets, Tickmill, Vantage or Exness - you get $30 off per month on the Monthly License or $50 off the Lifetime License."
+        "a": "Any broker with MetaTrader 4, on a low-spread account (Raw, Zero or ECN) with a gold spread of up to 10 pts. If you open an account through my link (or switch the IB code to mine) at a partner broker - FPMarkets, Tickmill, Vantage or Exness - you get $30 off per month on the Monthly License or $50 off the Lifetime License."
       },
       {
         "q": "Does it work on MT5?",
@@ -467,7 +469,7 @@
       },
       {
         "q": "How much do I need to start?",
-        "a": "Recommended capital: from US$500 for gold and from US$100 for currency pairs, on an MT4 account with 1:500 leverage - any account type, with spreads up to 30 points. With less than that, even the broker's minimum lot (0.01) may risk more than your chosen profile allows."
+        "a": "Recommended capital: from US$500 for gold and from US$100 for currency pairs, on an MT4 account with 1:500 leverage - Raw, Zero or ECN account, with a gold spread of up to 10 points. With less than that, even the broker's minimum lot (0.01) may risk more than your chosen profile allows."
       },
       {
         "q": "Do I need to keep my computer on?",
@@ -475,7 +477,7 @@
       },
       {
         "q": "What are the technical details?",
-        "a": "MetaTrader 4, any account type, spread up to 30 pts, 1:500 leverage recommended. The system sits on the gold chart (XAU/USD) and trades gold and the pairs you choose (the major forex pairs or other assets from your broker). Portal settings are read every 30 seconds, and accounts send balance and results to the dashboard every 5 minutes. Available in English, Portuguese and Spanish."
+        "a": "MetaTrader 4, Raw, Zero or ECN account, gold spread up to 10 pts, 1:500 leverage recommended. The system sits on the gold chart (XAU/USD) and trades gold and the pairs you choose (the major forex pairs or other assets from your broker). Portal settings are read every 30 seconds, and accounts send balance and results to the dashboard every 5 minutes. Available in English, Portuguese and Spanish."
       },
       {
         "q": "Can I test before subscribing?",
@@ -614,9 +616,9 @@
       "chart": "Chart",
       "chartValue": "XAU/USD (trades the other pairs from it)",
       "accountType": "Account type",
-      "accountTypeValue": "Any type",
+      "accountTypeValue": "Raw, Zero or ECN",
       "spread": "Maximum spread",
-      "spreadValue": "30 pts",
+      "spreadValue": "Up to 10 pts on gold",
       "operation": "Operation",
       "operationValue": "Automatic, with manual controls",
       "dashboard": "Dashboard",
@@ -745,7 +747,7 @@
         "title": "Create your MT4 account with these settings",
         "body": "At your broker, open a MetaTrader 4 account like this:",
         "bodyBroker": "In your {broker} client area, open a MetaTrader 4 account like this:",
-        "bodyPass": "Enter the MT4 account where you will test the robot. It can be real or demo, at any broker, with spread up to 30 pts.",
+        "bodyPass": "Enter the MT4 account where you will test the robot. It can be real or demo, at any broker, on a Raw, Zero or ECN account with a gold spread of up to 10 pts.",
         "platform": "Platform",
         "platformValue": "MetaTrader 4",
         "leverage": "Leverage",
@@ -753,7 +755,7 @@
         "deposit": "Recommended capital",
         "depositValue": "US$500 on gold · US$100 on currency pairs",
         "type": "Account type",
-        "typeValue": "Any type",
+        "typeValue": "Raw, Zero or ECN",
         "note": "After creating the account, fill in your details and the number (login) of each MT4 account below. The license is linked to these accounts right away.",
         "accountsTitle": "Your MT4 accounts - up to {max} on your plan",
         "lockNote": "Double-check the numbers before continuing: these are the accounts that will be licensed. After purchase, you can change the accounts only once in My Account (to fix a wrong number, for example). Any slot left empty can be filled in later.",
@@ -940,7 +942,7 @@
       "tipsTitle": "Tips",
       "tips": [
         "To trade 24 hours a day, use a VPS: the robot only works while MT4 is open.",
-        "Use an account with a gold spread of up to 30 points.",
+        "Use a Raw, Zero or ECN account with a gold spread of up to 10 points.",
         "If the license expires, the robot stays on the chart but stops trading, including managing open orders. It comes back by itself when the license is active again, so renew before it expires.",
         "Need to change an MT4 account? You can change it once on the Licenses page. After that, message me on Telegram.",
         "To see full week and month results on MT4 Accounts, set the Account History tab in MT4 to \"All History\" (right-click inside the tab)."
