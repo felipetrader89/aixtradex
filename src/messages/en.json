@@ -118,7 +118,7 @@
       "trust": [
         "Your money stays at your broker",
         "License, no account management",
-        "4,759 members in the Telegram group",
+        "{members} members in the Telegram group",
         "Direct support from the developer"
       ]
     },
@@ -371,7 +371,7 @@
         "label": "in the financial markets"
       },
       {
-        "value": "4,759",
+        "value": "{members}",
         "label": "members in the Telegram group"
       }
     ],

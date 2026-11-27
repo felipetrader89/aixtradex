@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Image from "next/image";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import { sitePageMetadata } from "@/components/seo/sitePageMetadata";
+import { withMembers } from "@/lib/telegram";
 import { Hero } from "@/components/sections/Hero";
 import { PanelMockup } from "@/components/sections/PanelMockup";
 import { MarketTicker } from "@/components/sections/MarketTicker";
@@ -52,7 +53,7 @@ export default async function HomePage({ params }: Props) {
   const steps = t.raw("how.items") as Step[];
   const aiItems = t.raw("ai.items") as Item[];
   const panelItems = t.raw("panel.items") as string[];
-  const trust = t.raw("hero.trust") as string[];
+  const trust = await withMembers(t.raw("hero.trust") as string[], locale);
   const homeResults = getHomeResultImages();
 
   // Resumo das licenças: preços vêm das mesmas chaves que o checkout usa (Products.license.*).

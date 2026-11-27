@@ -118,7 +118,7 @@
       "trust": [
         "Tu dinero en tu bróker",
         "Licencia, sin gestión de cuenta",
-        "4.759 miembros en el grupo de Telegram",
+        "{members} miembros en el grupo de Telegram",
         "Soporte directo con el desarrollador"
       ]
     },
@@ -371,7 +371,7 @@
         "label": "en el mercado financiero"
       },
       {
-        "value": "4.759",
+        "value": "{members}",
         "label": "miembros en el grupo de Telegram"
       }
     ],

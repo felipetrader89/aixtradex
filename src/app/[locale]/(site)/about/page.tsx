@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { withMembers } from "@/lib/telegram";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import { sitePageMetadata } from "@/components/seo/sitePageMetadata";
 import { TelegramCta } from "@/components/sections/TelegramCta";
@@ -18,7 +19,7 @@ export default async function AboutPage({ params }: Props) {
   setRequestLocale(locale);
   const t = await getTranslations("About");
   const story = t.raw("story") as string[];
-  const facts = t.raw("facts") as { value: string; label: string }[];
+  const facts = await withMembers(t.raw("facts") as { value: string; label: string }[], locale);
   const values = t.raw("values.items") as { title: string; body: string }[];
 
   return (

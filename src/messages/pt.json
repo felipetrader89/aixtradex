@@ -118,7 +118,7 @@
       "trust": [
         "Seu dinheiro na sua corretora",
         "Licença, sem gestão de conta",
-        "4.759 membros no grupo do Telegram",
+        "{members} membros no grupo do Telegram",
         "Suporte direto com o desenvolvedor"
       ]
     },
@@ -371,7 +371,7 @@
         "label": "no mercado financeiro"
       },
       {
-        "value": "4.759",
+        "value": "{members}",
         "label": "membros no grupo do Telegram"
       }
     ],
