@@ -3,12 +3,13 @@ import { cookies } from "next/headers";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import { and, count, eq } from "drizzle-orm";
 import { db, schema } from "@/lib/db";
-import { requireCustomer } from "@/lib/portal";
+import { loadAccountsWithStats, requireCustomer } from "@/lib/portal";
 import { logoutAction } from "@/app/actions/auth";
 import { LogoMark } from "@/components/brand/LogoMark";
 import { LanguageSwitcher } from "@/components/layout/LanguageSwitcher";
 import { PanelIconSvg, PanelShell, type PanelNavItem } from "@/components/panel/PanelShell";
-import { MENU_COOKIE, parseMenuPosition } from "@/lib/panel";
+import { ACCOUNT_COOKIE, MENU_COOKIE, isDemoServer, parseMenuPosition } from "@/lib/panel";
+import { AccountSwitcher, type SwitchAccount } from "@/components/panel/AccountSwitcher";
 import { hasLogo } from "@/lib/logo";
 import { siteConfig } from "@/lib/site-config";
 
@@ -19,17 +20,33 @@ export default async function AccountLayout({ children, params }: { children: Re
   const user = await requireCustomer(locale);
   const t = await getTranslations("Portal");
 
-  const [[pending], jar] = await Promise.all([
+  const [[pending], jar, { rows }] = await Promise.all([
     db()
       .select({ n: count() })
       .from(schema.orders)
       .where(and(eq(schema.orders.userId, user.id), eq(schema.orders.status, "pending"))),
     cookies(),
+    loadAccountsWithStats(user.id),
   ]);
+
+  // Contas MT4 do cliente pro seletor do topo (a escolhida fica num cookie; sem cookie = a primeira da lista).
+  const switchAccounts: SwitchAccount[] = rows.map((r) => ({
+    login: r.account.login,
+    company: r.stats?.company ?? null,
+    server: r.stats?.server ?? null,
+    balance: r.stats?.balance ?? null,
+    equity: r.stats?.equity ?? null,
+    currency: r.stats?.currency ?? null,
+    demo: isDemoServer(r.stats?.server),
+    online: r.state === "running",
+  }));
+  const chosen = jar.get(ACCOUNT_COOKIE)?.value;
+  const selected = switchAccounts.find((a) => a.login === chosen)?.login ?? switchAccounts[0]?.login;
 
   const base = `/${locale}/account`;
   const nav: PanelNavItem[] = [
     { href: base, label: t("nav.overview"), icon: "dashboard", exact: true },
+    { href: `${base}/room`, label: t("nav.room"), icon: "room" },
     { href: `${base}/start`, label: t("nav.start"), icon: "intel" },
     { href: `${base}/accounts`, label: t("nav.accounts"), icon: "accounts" },
     { href: `${base}/licenses`, label: t("nav.licenses"), icon: "licenses" },
@@ -56,6 +73,24 @@ export default async function AccountLayout({ children, params }: { children: Re
         </NextLink>
       }
       items={nav}
+      account={
+        selected ? (
+          <AccountSwitcher
+            accounts={switchAccounts}
+            selected={selected}
+            labels={{
+              demo: t("switcher.demo"),
+              real: t("switcher.real"),
+              choose: t("switcher.choose"),
+              balance: t("switcher.balance"),
+              equity: t("switcher.equity"),
+              noData: t("switcher.noData"),
+              online: t("switcher.online"),
+              offline: t("switcher.offline"),
+            }}
+          />
+        ) : undefined
+      }
       initialPosition={parseMenuPosition(jar.get(MENU_COOKIE)?.value)}
       switchLabels={{ title: t("menu.title"), left: t("menu.left"), top: t("menu.top"), right: t("menu.right") }}
       sideFooter={

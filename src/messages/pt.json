@@ -947,16 +947,46 @@
       ],
       "statusTitle": "O que significa cada mensagem do painel",
       "statuses": [
-        { "code": "MONTHLY - Expires: data", "meaning": "Licença mensal ativa, com a data de vencimento. Está tudo certo." },
-        { "code": "LIFETIME LICENSE", "meaning": "Licença vitalícia ativa. Está tudo certo." },
-        { "code": "CHECKING LICENSE", "meaning": "O robô ainda vai conferir a licença. Aparece logo depois de abrir o MT4 ou com o mercado fechado, e some no primeiro movimento de preço." },
-        { "code": "UNLICENSED", "meaning": "Essa conta MT4 não está cadastrada em nenhuma licença. Cadastre o número na página Licenças. O robô libera sozinho em até 5 minutos." },
-        { "code": "EXPIRED LICENSE", "meaning": "A licença venceu. Renove aqui no portal: com o pagamento confirmado, o robô libera sozinho em até 5 minutos." },
-        { "code": "LICENSE BLOCKED", "meaning": "A licença foi bloqueada. Fale com o suporte." },
-        { "code": "ALLOW WEBREQUEST: license.aixtradex.com", "meaning": "Falta o passo 3: liberar o endereço do servidor de licença no MT4." },
-        { "code": "LICENSE: NO CONNECTION", "meaning": "O robô não conseguiu falar com o servidor de licença (internet ou servidor fora do ar). Ele tenta de novo a cada 5 minutos." },
-        { "code": "(OFFLINE)", "meaning": "Está sem conexão agora, mas a licença foi confirmada há pouco. O robô continua operando por até 48 horas enquanto a conexão volta." },
-        { "code": "LICENSE OFFLINE > 48H", "meaning": "Ficou mais de 48 horas sem conseguir conferir a licença. Verifique a internet e o passo 3." }
+        {
+          "code": "MONTHLY - Expires: data",
+          "meaning": "Licença mensal ativa, com a data de vencimento. Está tudo certo."
+        },
+        {
+          "code": "LIFETIME LICENSE",
+          "meaning": "Licença vitalícia ativa. Está tudo certo."
+        },
+        {
+          "code": "CHECKING LICENSE",
+          "meaning": "O robô ainda vai conferir a licença. Aparece logo depois de abrir o MT4 ou com o mercado fechado, e some no primeiro movimento de preço."
+        },
+        {
+          "code": "UNLICENSED",
+          "meaning": "Essa conta MT4 não está cadastrada em nenhuma licença. Cadastre o número na página Licenças. O robô libera sozinho em até 5 minutos."
+        },
+        {
+          "code": "EXPIRED LICENSE",
+          "meaning": "A licença venceu. Renove aqui no portal: com o pagamento confirmado, o robô libera sozinho em até 5 minutos."
+        },
+        {
+          "code": "LICENSE BLOCKED",
+          "meaning": "A licença foi bloqueada. Fale com o suporte."
+        },
+        {
+          "code": "ALLOW WEBREQUEST: license.aixtradex.com",
+          "meaning": "Falta o passo 3: liberar o endereço do servidor de licença no MT4."
+        },
+        {
+          "code": "LICENSE: NO CONNECTION",
+          "meaning": "O robô não conseguiu falar com o servidor de licença (internet ou servidor fora do ar). Ele tenta de novo a cada 5 minutos."
+        },
+        {
+          "code": "(OFFLINE)",
+          "meaning": "Está sem conexão agora, mas a licença foi confirmada há pouco. O robô continua operando por até 48 horas enquanto a conexão volta."
+        },
+        {
+          "code": "LICENSE OFFLINE > 48H",
+          "meaning": "Ficou mais de 48 horas sem conseguir conferir a licença. Verifique a internet e o passo 3."
+        }
       ],
       "tipsTitle": "Dicas",
       "tips": [
@@ -1012,7 +1042,8 @@
       "orders": "Pedidos",
       "downloads": "Downloads",
       "guide": "Guia de instalação",
-      "support": "Suporte"
+      "support": "Suporte",
+      "room": "Sala de Operações"
     },
     "menu": {
       "title": "Posição do menu",
@@ -1611,6 +1642,55 @@
         "oppositeCandle": "Vela contrária",
         "lowRoom": "Pouco espaço até a zona"
       }
+    },
+    "switcher": {
+      "demo": "Demo",
+      "real": "Real",
+      "choose": "Escolher conta MT4",
+      "balance": "Saldo",
+      "equity": "Patrimônio",
+      "noData": "sem dados",
+      "online": "Robô ligado",
+      "offline": "Robô desligado"
+    },
+    "room": {
+      "title": "Sala de Operações",
+      "intro": "Conta {login}: cada par tem um analista olhando o gráfico. Os resultados são os reais da conta e se atualizam sozinhos a cada 30 segundos.",
+      "noAccount": "Nenhuma conta MT4 cadastrada ainda.",
+      "addAccount": "Cadastrar conta",
+      "tiles": {
+        "today": "Hoje",
+        "floating": "Em aberto",
+        "open": "Ordens",
+        "week": "Semana"
+      },
+      "senior": {
+        "eyebrow": "Trader sênior (IA)",
+        "title": "Mesa de Análise",
+        "body": "Antes de cada entrada, o analista do par leva o caso até a Mesa. O trader sênior confere o viés do dia, as confluências e as notícias e diz se entra ou espera.",
+        "noBias": "Viés do dia ainda não calculado para os pares desta conta."
+      },
+      "bias": {
+        "buy": "Só compra",
+        "sell": "Só venda",
+        "both": "Compra e venda",
+        "none": "Não operar hoje"
+      },
+      "state": {
+        "analyzing": "Analisando",
+        "goal": "Meta batida",
+        "standby": "Esperando",
+        "off": "Desligado",
+        "offline": "Robô parado"
+      },
+      "today": "Hoje",
+      "week": "7 dias",
+      "ops": "{count, plural, =0 {sem operações} one {1 operação} other {# operações}}{count, plural, =0 {} other { · {wins} no lucro}}",
+      "opsShort": "{count, plural, =0 {sem operações} one {1 operação} other {# operações}}",
+      "mesaSays": "A Mesa diz:",
+      "offline": "O robô desta conta não está mandando dados agora (MT4 fechado, sem internet ou AutoTrading desligado). Os analistas voltam ao trabalho assim que ele ligar.",
+      "empty": "Nenhum par ligado nesta conta ainda. Ligue os pares em Contas MT4 > Configurar robô.",
+      "legend": "Analisando = o robô está olhando o par. Meta batida = o par já fez a meta dele hoje. Esperando = a Mesa mandou não operar hoje. Resultado já descontando comissão e swap."
     }
   },
   "Claim": {

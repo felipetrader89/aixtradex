@@ -133,7 +133,7 @@ const isBool = (v: unknown) => typeof v === "boolean";
 
 function validatePair(p: PairParams, isAdmin: boolean): ConfigError | null {
   if (p.riskProfile === "custom") {
-    if (!isAdmin || !(Number(p.riskPct) >= 0.1 && Number(p.riskPct) <= 10)) return "risk";
+    if (!isAdmin || !(Number(p.riskPct) >= 0.01 && Number(p.riskPct) <= 10)) return "risk"; // 0,01% = lote mínimo da corretora (o robô nunca abre abaixo dele)
   } else if (!(p.riskProfile in RISK_PROFILES)) return "risk";
   if (!inList(p.goalPct, PCT_OPTIONS)) return "goal";
   if (!inList(p.lossPct, PCT_OPTIONS)) return "loss";

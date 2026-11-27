@@ -25,6 +25,7 @@ const ICONS: Record<string, React.ReactNode> = {
   settings: (
     <path d="M10.3 4.3a1.7 1.7 0 0 1 3.4 0l.2.9a1.7 1.7 0 0 0 2.5 1l.8-.4a1.7 1.7 0 0 1 2.4 2.4l-.4.8a1.7 1.7 0 0 0 1 2.5l.9.2a1.7 1.7 0 0 1 0 3.4l-.9.2a1.7 1.7 0 0 0-1 2.5l.4.8a1.7 1.7 0 0 1-2.4 2.4l-.8-.4a1.7 1.7 0 0 0-2.5 1l-.2.9a1.7 1.7 0 0 1-3.4 0l-.2-.9a1.7 1.7 0 0 0-2.5-1l-.8.4a1.7 1.7 0 0 1-2.4-2.4l.4-.8a1.7 1.7 0 0 0-1-2.5l-.9-.2a1.7 1.7 0 0 1 0-3.4l.9-.2a1.7 1.7 0 0 0 1-2.5l-.4-.8a1.7 1.7 0 0 1 2.4-2.4l.8.4a1.7 1.7 0 0 0 2.5-1l.2-.9ZM15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
   ),
+  room: <path d="M3 20h18M5 20v-6h6v6M13 20v-9h6v9M7 14V9a1 1 0 0 1 1-1h0a1 1 0 0 1 1 1v5M15 11V5l2 2M8 6.5a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3Z" />,
   layoutLeft: <path d="M4 5h16v14H4V5Zm5 0v14" />,
   layoutTop: <path d="M4 5h16v14H4V5Zm0 4h16" />,
   layoutRight: <path d="M4 5h16v14H4V5Zm11 0v14" />,
@@ -127,6 +128,7 @@ export function PanelShell({
   sideFooter,
   topRight,
   actions,
+  account,
   switchLabels,
   children,
 }: {
@@ -138,6 +140,8 @@ export function PanelShell({
   topRight: React.ReactNode;
   // Botões que ficam sempre à vista, ao lado da marca (ex.: o sininho do admin).
   actions?: React.ReactNode;
+  // Seletor de conta (painel do cliente): fica no topo em qualquer posição do menu.
+  account?: React.ReactNode;
   switchLabels: { title: string; left: string; top: string; right: string };
   children: React.ReactNode;
 }) {
@@ -192,6 +196,7 @@ export function PanelShell({
             {topRight}
           </div>
         </div>
+        {account && <div className="mb-2 flex justify-end">{account}</div>}
         <nav className="-mx-4 flex gap-1 overflow-x-auto px-4 pb-2 [scrollbar-width:none]">
           {items.map((item) => (
             <NavLink key={item.href} item={item} active={isActive(item)} compact />
@@ -206,6 +211,7 @@ export function PanelShell({
           <div className="mx-auto flex max-w-7xl items-center justify-between gap-6 px-8 pt-3">
             {brand}
             <div className="flex shrink-0 items-center gap-4">
+              {account}
               {actions}
               {topRight}
               <PositionSwitch position={position} onChange={choose} labels={switchLabels} />
@@ -242,6 +248,8 @@ export function PanelShell({
           </aside>
         )}
         <main className={`min-w-0 flex-1 px-4 py-8 lg:px-8 ${side ? "" : "mx-auto max-w-7xl"}`}>
+          {/* Menu do lado: o seletor de conta fica numa faixa no topo, à direita (como nas corretoras). */}
+          {side && account && <div className="mx-auto mb-6 hidden max-w-6xl justify-end lg:flex">{account}</div>}
           <div key={pathname} className={`panel-enter ${side ? "mx-auto max-w-6xl" : ""}`}>
             {children}
           </div>

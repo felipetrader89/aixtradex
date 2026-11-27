@@ -947,16 +947,46 @@
       ],
       "statusTitle": "What each panel message means",
       "statuses": [
-        { "code": "MONTHLY - Expires: date", "meaning": "Monthly license active, with its expiry date. All good." },
-        { "code": "LIFETIME LICENSE", "meaning": "Lifetime license active. All good." },
-        { "code": "CHECKING LICENSE", "meaning": "The robot hasn't checked the license yet. It shows right after opening MT4 or while the market is closed, and goes away with the first price move." },
-        { "code": "UNLICENSED", "meaning": "This MT4 account isn't registered on any license. Add the number on the Licenses page. The robot unlocks by itself within 5 minutes." },
-        { "code": "EXPIRED LICENSE", "meaning": "The license expired. Renew it here in the portal: once the payment is confirmed, the robot unlocks by itself within 5 minutes." },
-        { "code": "LICENSE BLOCKED", "meaning": "The license was blocked. Contact support." },
-        { "code": "ALLOW WEBREQUEST: license.aixtradex.com", "meaning": "Step 3 is missing: allow the license server address in MT4." },
-        { "code": "LICENSE: NO CONNECTION", "meaning": "The robot couldn't reach the license server (internet or server down). It tries again every 5 minutes." },
-        { "code": "(OFFLINE)", "meaning": "No connection right now, but the license was confirmed recently. The robot keeps trading for up to 48 hours while the connection comes back." },
-        { "code": "LICENSE OFFLINE > 48H", "meaning": "More than 48 hours without checking the license. Check your internet and step 3." }
+        {
+          "code": "MONTHLY - Expires: date",
+          "meaning": "Monthly license active, with its expiry date. All good."
+        },
+        {
+          "code": "LIFETIME LICENSE",
+          "meaning": "Lifetime license active. All good."
+        },
+        {
+          "code": "CHECKING LICENSE",
+          "meaning": "The robot hasn't checked the license yet. It shows right after opening MT4 or while the market is closed, and goes away with the first price move."
+        },
+        {
+          "code": "UNLICENSED",
+          "meaning": "This MT4 account isn't registered on any license. Add the number on the Licenses page. The robot unlocks by itself within 5 minutes."
+        },
+        {
+          "code": "EXPIRED LICENSE",
+          "meaning": "The license expired. Renew it here in the portal: once the payment is confirmed, the robot unlocks by itself within 5 minutes."
+        },
+        {
+          "code": "LICENSE BLOCKED",
+          "meaning": "The license was blocked. Contact support."
+        },
+        {
+          "code": "ALLOW WEBREQUEST: license.aixtradex.com",
+          "meaning": "Step 3 is missing: allow the license server address in MT4."
+        },
+        {
+          "code": "LICENSE: NO CONNECTION",
+          "meaning": "The robot couldn't reach the license server (internet or server down). It tries again every 5 minutes."
+        },
+        {
+          "code": "(OFFLINE)",
+          "meaning": "No connection right now, but the license was confirmed recently. The robot keeps trading for up to 48 hours while the connection comes back."
+        },
+        {
+          "code": "LICENSE OFFLINE > 48H",
+          "meaning": "More than 48 hours without checking the license. Check your internet and step 3."
+        }
       ],
       "tipsTitle": "Tips",
       "tips": [
@@ -1012,7 +1042,8 @@
       "orders": "Orders",
       "downloads": "Downloads",
       "guide": "Installation guide",
-      "support": "Support"
+      "support": "Support",
+      "room": "Trading Room"
     },
     "menu": {
       "title": "Menu position",
@@ -1611,6 +1642,55 @@
         "oppositeCandle": "Opposite candle",
         "lowRoom": "Little room to the zone"
       }
+    },
+    "switcher": {
+      "demo": "Demo",
+      "real": "Live",
+      "choose": "Choose MT4 account",
+      "balance": "Balance",
+      "equity": "Equity",
+      "noData": "no data",
+      "online": "Robot on",
+      "offline": "Robot off"
+    },
+    "room": {
+      "title": "Trading Room",
+      "intro": "Account {login}: each pair has an analyst watching the chart. Results are the account's real ones and refresh on their own every 30 seconds.",
+      "noAccount": "No MT4 account added yet.",
+      "addAccount": "Add an account",
+      "tiles": {
+        "today": "Today",
+        "floating": "Floating",
+        "open": "Orders",
+        "week": "Week"
+      },
+      "senior": {
+        "eyebrow": "Senior trader (AI)",
+        "title": "Analysis Desk",
+        "body": "Before each entry, the pair's analyst takes the case to the Desk. The senior trader checks the daily bias, the confluences and the news and says enter or wait.",
+        "noBias": "Daily bias not calculated yet for this account's pairs."
+      },
+      "bias": {
+        "buy": "Buy only",
+        "sell": "Sell only",
+        "both": "Buy and sell",
+        "none": "No trading today"
+      },
+      "state": {
+        "analyzing": "Analyzing",
+        "goal": "Goal hit",
+        "standby": "Waiting",
+        "off": "Off",
+        "offline": "Robot stopped"
+      },
+      "today": "Today",
+      "week": "7 days",
+      "ops": "{count, plural, =0 {no trades} one {1 trade} other {# trades}}{count, plural, =0 {} other { · {wins} in profit}}",
+      "opsShort": "{count, plural, =0 {no trades} one {1 trade} other {# trades}}",
+      "mesaSays": "The Desk says:",
+      "offline": "This account's robot isn't sending data right now (MT4 closed, no internet or AutoTrading off). The analysts get back to work as soon as it's on.",
+      "empty": "No pairs turned on in this account yet. Turn them on in MT4 Accounts > Configure robot.",
+      "legend": "Analyzing = the robot is watching the pair. Goal hit = the pair already made its goal today. Waiting = the Desk said no trading today. Results already net of commission and swap."
     }
   },
   "Claim": {

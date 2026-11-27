@@ -571,9 +571,9 @@ export function RobotSettingsForm({
               {t("customPct")}
               <input
                 type="number"
-                min={0.1}
+                min={0.01}
                 max={10}
-                step={0.1}
+                step={0.01}
                 value={p.riskPct}
                 onChange={(e) => setPair(editing, { riskPct: Number(e.target.value) })}
                 className={`${field} !w-24`}

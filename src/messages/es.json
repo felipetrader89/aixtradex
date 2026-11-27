@@ -947,16 +947,46 @@
       ],
       "statusTitle": "Qué significa cada mensaje del panel",
       "statuses": [
-        { "code": "MONTHLY - Expires: fecha", "meaning": "Licencia mensual activa, con la fecha de vencimiento. Todo en orden." },
-        { "code": "LIFETIME LICENSE", "meaning": "Licencia vitalicia activa. Todo en orden." },
-        { "code": "CHECKING LICENSE", "meaning": "El robot todavía va a verificar la licencia. Aparece justo después de abrir MT4 o con el mercado cerrado, y desaparece con el primer movimiento del precio." },
-        { "code": "UNLICENSED", "meaning": "Esta cuenta MT4 no está registrada en ninguna licencia. Registra el número en la página Licencias. El robot se libera solo en hasta 5 minutos." },
-        { "code": "EXPIRED LICENSE", "meaning": "La licencia venció. Renuévala aquí en el portal: con el pago confirmado, el robot se libera solo en hasta 5 minutos." },
-        { "code": "LICENSE BLOCKED", "meaning": "La licencia fue bloqueada. Habla con soporte." },
-        { "code": "ALLOW WEBREQUEST: license.aixtradex.com", "meaning": "Falta el paso 3: habilitar la dirección del servidor de licencias en MT4." },
-        { "code": "LICENSE: NO CONNECTION", "meaning": "El robot no pudo comunicarse con el servidor de licencias (internet o servidor caído). Lo intenta de nuevo cada 5 minutos." },
-        { "code": "(OFFLINE)", "meaning": "Sin conexión ahora, pero la licencia se confirmó hace poco. El robot sigue operando hasta 48 horas mientras vuelve la conexión." },
-        { "code": "LICENSE OFFLINE > 48H", "meaning": "Más de 48 horas sin poder verificar la licencia. Revisa tu internet y el paso 3." }
+        {
+          "code": "MONTHLY - Expires: fecha",
+          "meaning": "Licencia mensual activa, con la fecha de vencimiento. Todo en orden."
+        },
+        {
+          "code": "LIFETIME LICENSE",
+          "meaning": "Licencia vitalicia activa. Todo en orden."
+        },
+        {
+          "code": "CHECKING LICENSE",
+          "meaning": "El robot todavía va a verificar la licencia. Aparece justo después de abrir MT4 o con el mercado cerrado, y desaparece con el primer movimiento del precio."
+        },
+        {
+          "code": "UNLICENSED",
+          "meaning": "Esta cuenta MT4 no está registrada en ninguna licencia. Registra el número en la página Licencias. El robot se libera solo en hasta 5 minutos."
+        },
+        {
+          "code": "EXPIRED LICENSE",
+          "meaning": "La licencia venció. Renuévala aquí en el portal: con el pago confirmado, el robot se libera solo en hasta 5 minutos."
+        },
+        {
+          "code": "LICENSE BLOCKED",
+          "meaning": "La licencia fue bloqueada. Habla con soporte."
+        },
+        {
+          "code": "ALLOW WEBREQUEST: license.aixtradex.com",
+          "meaning": "Falta el paso 3: habilitar la dirección del servidor de licencias en MT4."
+        },
+        {
+          "code": "LICENSE: NO CONNECTION",
+          "meaning": "El robot no pudo comunicarse con el servidor de licencias (internet o servidor caído). Lo intenta de nuevo cada 5 minutos."
+        },
+        {
+          "code": "(OFFLINE)",
+          "meaning": "Sin conexión ahora, pero la licencia se confirmó hace poco. El robot sigue operando hasta 48 horas mientras vuelve la conexión."
+        },
+        {
+          "code": "LICENSE OFFLINE > 48H",
+          "meaning": "Más de 48 horas sin poder verificar la licencia. Revisa tu internet y el paso 3."
+        }
       ],
       "tipsTitle": "Consejos",
       "tips": [
@@ -1012,7 +1042,8 @@
       "orders": "Pedidos",
       "downloads": "Descargas",
       "guide": "Guía de instalación",
-      "support": "Soporte"
+      "support": "Soporte",
+      "room": "Sala de Operaciones"
     },
     "menu": {
       "title": "Posición del menú",
@@ -1611,6 +1642,55 @@
         "oppositeCandle": "Vela contraria",
         "lowRoom": "Poco espacio hasta la zona"
       }
+    },
+    "switcher": {
+      "demo": "Demo",
+      "real": "Real",
+      "choose": "Elegir cuenta MT4",
+      "balance": "Saldo",
+      "equity": "Patrimonio",
+      "noData": "sin datos",
+      "online": "Robot encendido",
+      "offline": "Robot apagado"
+    },
+    "room": {
+      "title": "Sala de Operaciones",
+      "intro": "Cuenta {login}: cada par tiene un analista mirando el gráfico. Los resultados son los reales de la cuenta y se actualizan solos cada 30 segundos.",
+      "noAccount": "Todavía no hay cuentas MT4 registradas.",
+      "addAccount": "Registrar cuenta",
+      "tiles": {
+        "today": "Hoy",
+        "floating": "Abierto",
+        "open": "Órdenes",
+        "week": "Semana"
+      },
+      "senior": {
+        "eyebrow": "Trader sénior (IA)",
+        "title": "Mesa de Análisis",
+        "body": "Antes de cada entrada, el analista del par lleva el caso a la Mesa. El trader sénior revisa el sesgo del día, las confluencias y las noticias y dice si entra o espera.",
+        "noBias": "El sesgo del día aún no se calculó para los pares de esta cuenta."
+      },
+      "bias": {
+        "buy": "Solo compra",
+        "sell": "Solo venta",
+        "both": "Compra y venta",
+        "none": "No operar hoy"
+      },
+      "state": {
+        "analyzing": "Analizando",
+        "goal": "Meta lograda",
+        "standby": "Esperando",
+        "off": "Apagado",
+        "offline": "Robot detenido"
+      },
+      "today": "Hoy",
+      "week": "7 días",
+      "ops": "{count, plural, =0 {sin operaciones} one {1 operación} other {# operaciones}}{count, plural, =0 {} other { · {wins} en ganancia}}",
+      "opsShort": "{count, plural, =0 {sin operaciones} one {1 operación} other {# operaciones}}",
+      "mesaSays": "La Mesa dice:",
+      "offline": "El robot de esta cuenta no está enviando datos ahora (MT4 cerrado, sin internet o AutoTrading apagado). Los analistas vuelven al trabajo en cuanto se encienda.",
+      "empty": "Todavía no hay pares encendidos en esta cuenta. Enciéndelos en Cuentas MT4 > Configurar robot.",
+      "legend": "Analizando = el robot está mirando el par. Meta lograda = el par ya hizo su meta hoy. Esperando = la Mesa dijo no operar hoy. Resultado ya descontando comisión y swap."
     }
   },
   "Claim": {
