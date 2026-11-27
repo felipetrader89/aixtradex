@@ -30,13 +30,13 @@ function Rate({ label, pos, total }: { label: string; pos: number; total: number
   const t = useTranslations("Portal.consistency");
   const pct = total ? Math.round((pos / total) * 100) : 0;
   return (
-    <div className="panel-tile rounded-xl bg-brand-surface-2 p-3">
-      <p className="text-[11px] text-brand-ink-dim">{label}</p>
-      <p className="mt-1 font-mono text-base font-bold text-brand-ink sm:text-lg">{t("ofTotal", { pos, total })}</p>
+    <div className="panel-tile rounded-xl bg-brand-surface-2 p-2.5 sm:p-3">
+      <p className="text-[10px] leading-tight text-brand-ink-dim sm:text-[11px]">{label}</p>
+      <p className="mt-1 font-mono text-sm font-bold text-brand-ink sm:text-lg">{t("ofTotal", { pos, total })}</p>
       <div className="mt-2 h-1.5 overflow-hidden rounded-full bg-brand-surface" aria-hidden="true">
         <div className="h-full rounded-full bg-brand-accent" style={{ width: `${pct}%` }} />
       </div>
-      <p className="mt-1 text-[11px] text-brand-ink-dim">{t("rate", { pct })}</p>
+      <p className="mt-1 text-[10px] text-brand-ink-dim sm:text-[11px]">{t("rate", { pct })}</p>
     </div>
   );
 }
@@ -126,7 +126,7 @@ export function ConsistencyPanel({ days, today, currency }: { days: DayResult[];
       <CardTitle>{t("title")}</CardTitle>
       <p className="-mt-2 mb-3 text-xs text-brand-ink-dim">{t("intro")}</p>
 
-      <div className="stagger grid grid-cols-1 gap-2 sm:grid-cols-3">
+      <div className="stagger grid grid-cols-3 gap-2">
         <Rate label={t("days")} {...dayRate} />
         <Rate label={t("weeks")} {...weekRate} />
         <Rate label={t("months")} {...monthRate} />
@@ -143,7 +143,7 @@ export function ConsistencyPanel({ days, today, currency }: { days: DayResult[];
       <div className="mt-5 grid gap-6 lg:grid-cols-[minmax(0,1.1fr)_minmax(0,1fr)]">
         <div>
           <p className="mb-2 text-[11px] font-semibold uppercase tracking-wide text-brand-ink-dim">{fmtMonthLong.format(now)}</p>
-          <div className="grid grid-cols-7 gap-1 text-center">
+          <div className="grid max-w-sm grid-cols-7 gap-1 text-center">
             {weekdays.map((w, i) => (
               <span key={i} className="pb-1 text-[10px] font-semibold text-brand-ink-dim">
                 {w}
@@ -167,7 +167,7 @@ export function ConsistencyPanel({ days, today, currency }: { days: DayResult[];
               );
             })}
           </div>
-          <p className="mt-2 text-[11px] text-brand-ink-dim">{t("legend")}</p>
+          <p className="mt-2 max-w-sm text-[11px] text-brand-ink-dim">{t("legend")}</p>
         </div>
         <div className="flex flex-col gap-5">
           <Bars title={t("lastWeeks")} items={weekItems} />
