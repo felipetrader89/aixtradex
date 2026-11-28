@@ -1701,6 +1701,7 @@
       "ops": "{count, plural, =0 {sin operaciones} one {1 operación} other {# operaciones}}{count, plural, =0 {} other { · {wins} en ganancia}}",
       "opsShort": "{count, plural, =0 {sin operaciones} one {1 operación} other {# operaciones}}",
       "mesaSays": "La Mesa dice:",
+      "deskTag": "Mesa",
       "offline": "El robot de esta cuenta no está enviando datos ahora (MT4 cerrado, sin internet o AutoTrading apagado). Los analistas vuelven al trabajo en cuanto se encienda.",
       "empty": "Todavía no hay pares encendidos en esta cuenta. Enciéndelos en Cuentas MT4 > Configurar robot.",
       "legend": "Analizando = el robot está mirando el par. Meta lograda = el par ya hizo su meta hoy. Esperando = la Mesa dijo no operar hoy. Resultado ya descontando comisión y swap."

@@ -160,16 +160,18 @@ function SeniorScene() {
 }
 
 // Corredor: os analistas que estão trabalhando levam o caso até a Mesa e voltam (cada um no seu tempo).
-function Corridor({ symbols }: { symbols: { symbol: string; shirt: string }[] }) {
+function Corridor({ symbols, deskLabel }: { symbols: { symbol: string; shirt: string }[]; deskLabel: string }) {
   return (
     <div className="relative h-16 overflow-hidden rounded-lg border border-brand-hairline bg-[#0d1e30]" aria-hidden="true">
       <div className="absolute inset-x-0 bottom-3 h-px bg-brand-accent/15" />
-      <div className="absolute bottom-1 right-2 rounded bg-brand-surface-2 px-1.5 py-0.5 text-[9px] font-bold uppercase tracking-wide text-brand-accent">Mesa</div>
+      <div className="absolute bottom-1 right-2 rounded bg-brand-surface-2 px-1.5 py-0.5 text-[9px] font-bold uppercase tracking-wide text-brand-accent">{deskLabel}</div>
       {symbols.slice(0, 8).map((s, i) => (
-        <div key={s.symbol} className="room-walker absolute bottom-3" style={{ animationDelay: `${i * -2.3}s`, animationDuration: `${14 + (i % 3) * 3}s` }}>
-          <div className="room-walker-flip flex flex-col items-center" style={{ animationDelay: `${i * -2.3}s`, animationDuration: `${14 + (i % 3) * 3}s` }}>
-            <span className="mb-0.5 rounded bg-brand-surface px-1 text-[9px] font-bold leading-tight text-brand-ink">{s.symbol}</span>
-            <svg viewBox="0 0 20 30" className="h-9 w-6">
+        <div key={s.symbol} className="room-walker absolute bottom-3 flex flex-col items-center"
+          style={{ animationDelay: `${i * -2.3}s`, animationDuration: `${14 + (i % 3) * 3}s`, ["--slot" as string]: `${(i % 4) * 2.9}rem` }}>
+          {/* o par fica fora do espelhamento: só o corpo vira na volta, o texto continua legível */}
+          <span className="mb-0.5 rounded bg-brand-surface px-1 text-[9px] font-bold leading-tight text-brand-ink">{s.symbol}</span>
+          <div className="room-walker-flip" style={{ animationDelay: `${i * -2.3}s`, animationDuration: `${14 + (i % 3) * 3}s` }}>
+            <svg viewBox="0 0 20 30" className="block h-9 w-6">
               <circle cx="10" cy="5" r="4" fill="#f1c9a5" />
               <rect x="5" y="9" width="10" height="11" rx="3" fill={s.shirt} />
               <rect x="13" y="12" width="6" height="7" rx="1" fill="#e2e8f0" />
@@ -245,7 +247,7 @@ export function TradingRoom({
             <SeniorScene />
             {online && walkers.length > 0 && (
               <div className="w-full">
-                <Corridor symbols={walkers} />
+                <Corridor symbols={walkers} deskLabel={t("deskTag")} />
               </div>
             )}
           </div>

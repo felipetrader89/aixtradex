@@ -27,7 +27,7 @@ export default async function Image() {
         }}
       >
         {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img src={logoSrc} width={880} height={269} />
+        <img src={logoSrc} width={880} height={269} alt="Ai X TradeX" />
       </div>
     ),
     { ...size }

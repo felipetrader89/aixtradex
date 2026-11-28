@@ -1701,6 +1701,7 @@
       "ops": "{count, plural, =0 {no trades} one {1 trade} other {# trades}}{count, plural, =0 {} other { · {wins} in profit}}",
       "opsShort": "{count, plural, =0 {no trades} one {1 trade} other {# trades}}",
       "mesaSays": "The Desk says:",
+      "deskTag": "Desk",
       "offline": "This account's robot isn't sending data right now (MT4 closed, no internet or AutoTrading off). The analysts get back to work as soon as it's on.",
       "empty": "No pairs turned on in this account yet. Turn them on in MT4 Accounts > Configure robot.",
       "legend": "Analyzing = the robot is watching the pair. Goal hit = the pair already made its goal today. Waiting = the Desk said no trading today. Results already net of commission and swap."
