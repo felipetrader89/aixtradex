@@ -34,7 +34,7 @@
     },
     "tools": {
       "title": "Ferramentas pro Trader",
-      "description": "Ferramentas grátis pro trader de forex e ouro: calculadora de lote, sessões do mercado no seu horário e cotações de referência."
+      "description": "Ferramentas grátis pro trader de forex e ouro: calculadoras (lote, juros simples e compostos, recuperação de perda), sessões do mercado no seu horário e cotações de referência."
     },
     "terms": {
       "title": "Termos de Uso",
@@ -441,7 +441,7 @@
       "contact": "Contato"
     },
     "toolsLinks": {
-      "calculator": "Calculadora de lote",
+      "calculators": "Calculadoras",
       "sessions": "Sessões do mercado",
       "quotes": "Cotações",
       "calendar": "Calendário econômico",
@@ -1924,7 +1924,7 @@
       "open": "Abrir",
       "soon": "Em breve",
       "items": {
-        "calculator": "Descubra o lote certo pro seu risco, em segundos.",
+        "calculators": "Lote, juros simples, juros compostos e recuperação de perda.",
         "sessions": "Veja quais mercados estão abertos agora, no seu horário.",
         "quotes": "Preço de referência do ouro e dos principais pares.",
         "calendar": "Notícias econômicas que mexem com o mercado.",
@@ -1964,6 +1964,140 @@
       "belowMin": "O lote calculado ficou abaixo do mínimo da corretora (0,01). Com 0,01 você arriscaria {risk} ({pct} do saldo). Aumente o capital ou use um stop menor.",
       "invalid": "Preencha saldo, risco e stop com valores maiores que zero.",
       "assumptions": "Considera conta em dólar (USD), contrato padrão (100.000 unidades; ouro 100 onças) e arredonda o lote pra baixo em passos de 0,01. Confira o tamanho do contrato e o lote mínimo na sua corretora."
+    },
+    "calculators": {
+      "metaTitle": "Calculadoras de Trading: Lote, Juros Simples e Compostos",
+      "metaDescription": "Calculadoras grátis pro trader: lote pelo risco, juros simples, juros compostos com aporte e meta, e recuperação de perda. Ouro e forex.",
+      "eyebrow": "Calculadoras",
+      "title": "Calculadoras",
+      "intro": "Simule antes de operar: o lote certo pro seu risco, o crescimento do capital em juros simples e compostos e quanto custa recuperar uma perda.",
+      "items": {
+        "lot": {
+          "tab": "Lote",
+          "title": "Calculadora de lote",
+          "intro": "Informe o saldo, quanto aceita arriscar e onde fica o stop. A calculadora mostra o lote e quanto vale cada pip.",
+          "card": "O lote certo pro seu risco e quanto vale cada pip.",
+          "metaTitle": "Calculadora de Lote e Valor do Pip",
+          "metaDescription": "Calcule o tamanho do lote no MT4 pelo seu risco: saldo, % de risco e stop em pips ou por preço. Ouro (XAU/USD) e pares forex, inclusive JPY. Grátis."
+        },
+        "simple": {
+          "tab": "Juros simples",
+          "title": "Calculadora de juros simples",
+          "intro": "O lucro é sempre calculado sobre o valor depositado, sem reinvestir. Simule por dia, semana ou mês, com aporte mensal e meta.",
+          "card": "Lucro fixo sobre o capital, sem reinvestir o que ganhou.",
+          "metaTitle": "Calculadora de Juros Simples",
+          "metaDescription": "Simule juros simples por dia, semana ou mês: capital inicial, taxa, prazo e aporte mensal, com gráfico, tabela e comparação com juros compostos. Grátis."
+        },
+        "compound": {
+          "tab": "Juros compostos",
+          "title": "Calculadora de juros compostos",
+          "intro": "O lucro de cada dia entra no saldo e passa a render junto. Simule por dia, semana ou mês, com aporte mensal, meta e tabela de evolução.",
+          "card": "Lucro reinvestido: o saldo crescendo dia a dia, com aporte e meta.",
+          "metaTitle": "Calculadora de Juros Compostos",
+          "metaDescription": "Simule juros compostos por dia, semana ou mês: capital, taxa, prazo, aporte mensal e meta, com gráfico, tabela de evolução e comparação com juros simples. Grátis."
+        },
+        "recovery": {
+          "tab": "Recuperar perda",
+          "title": "Calculadora de recuperação de perda",
+          "intro": "Quanto você precisa ganhar pra voltar ao saldo de antes depois de uma perda, e em quanto tempo.",
+          "card": "Quanto precisa ganhar pra voltar ao saldo de antes de uma perda.",
+          "metaTitle": "Calculadora de Recuperação de Perda (Drawdown)",
+          "metaDescription": "Descubra quanto precisa lucrar pra recuperar uma perda (drawdown) na conta: perda de 50% pede 100% de ganho. Com tempo estimado e tabela. Grátis."
+        }
+      }
+    },
+    "growth": {
+      "principal": "Capital inicial (US$)",
+      "rate": "Rendimento (%)",
+      "per": {
+        "day": "ao dia",
+        "week": "à semana",
+        "month": "ao mês"
+      },
+      "horizon": "Prazo",
+      "horizonUnit": "Unidade do prazo",
+      "units": {
+        "day": "dias úteis",
+        "week": "semanas",
+        "month": "meses",
+        "year": "anos"
+      },
+      "daysNote": "Conta só os dias de mercado aberto: 1 semana = 5 dias, 1 mês = 21 dias, 1 ano = 252 dias.",
+      "capped": "O prazo máximo é de 10 anos (2.520 dias úteis).",
+      "monthly": "Aporte mensal (US$)",
+      "monthlyHint": "Opcional. Depositado no fim de cada mês.",
+      "goal": "Meta de saldo (US$)",
+      "goalPlaceholder": "Ex.: 10000",
+      "goalHint": "Opcional. Mostra em quanto tempo chega lá.",
+      "invalid": "Preencha capital, rendimento (até 100%) e prazo com valores válidos.",
+      "final": "Saldo final",
+      "profit": "Lucro total",
+      "profitPct": "Rendimento total",
+      "deposited": "Total depositado",
+      "firstsTitle": "Lucro no começo (sem aportes)",
+      "firsts": {
+        "day": "1º dia",
+        "week": "1ª semana",
+        "month": "1º mês"
+      },
+      "compareCompound": "Em juros simples, o mesmo capital terminaria em {other}. Reinvestir o lucro rende {diff} a mais.",
+      "compareSimple": "Em juros compostos, reinvestindo o lucro, terminaria em {other}: {diff} a mais.",
+      "goalReach": "Você chega em {goal} em {when}.",
+      "goalNever": "Nesse ritmo, o saldo não chega em {goal} em 10 anos.",
+      "goalAlready": "O capital inicial já está acima da meta.",
+      "goalDays": "{days, plural, one {# dia útil} other {# dias úteis}}",
+      "goalMonths": "{days} dias úteis (cerca de {months} meses)",
+      "goalYears": "{days} dias úteis (cerca de {years} anos)",
+      "highRate": "Rendimento alto e igual todo dia não existe no mercado real: há dias de perda e o resultado varia. Use a simulação pra entender a matemática, não como promessa.",
+      "chartTitle": "Evolução do saldo",
+      "simple": "Juros simples",
+      "compound": "Juros compostos",
+      "depositedLine": "Total depositado",
+      "tipDay": "Dia útil {n}",
+      "showTable": "Ver tabela de evolução",
+      "hideTable": "Esconder tabela",
+      "colPeriod": "Período",
+      "colDeposits": "Aportes",
+      "colProfit": "Lucro no período",
+      "colBalance": "Saldo",
+      "colTotalPct": "Rendimento acumulado",
+      "row": {
+        "day": "Dia {n}",
+        "week": "Semana {n}",
+        "month": "Mês {n}",
+        "year": "Ano {n}"
+      },
+      "axisDay": "{n} d",
+      "axisMonth": "{n} m",
+      "axisYear": "{n} a",
+      "howCompoundTitle": "Como funcionam os juros compostos",
+      "howCompound": "A cada dia, o rendimento é calculado sobre o saldo do dia anterior, que já inclui o lucro acumulado. Por isso a curva acelera com o tempo. Taxas por semana ou por mês viram a taxa diária equivalente: 10% ao mês, por exemplo, é cerca de 0,45% por dia útil.",
+      "howSimpleTitle": "Como funcionam os juros simples",
+      "howSimple": "O rendimento é sempre calculado sobre o valor depositado (capital inicial + aportes), nunca sobre o lucro. O lucro de cada dia é o mesmo e o saldo cresce em linha reta. É o caso de quem saca o lucro e mantém sempre o mesmo capital operando.",
+      "disclaimer": "Simulação matemática, sem custos, impostos ou spread. Trading tem risco: o resultado varia de dia pra dia, existem dias de perda e resultado passado não garante resultado futuro.",
+      "huge": "mais de US$ 1 quatrilhão",
+      "hugePct": "mais de 100 bilhões %"
+    },
+    "recovery": {
+      "by": "Como informar a perda",
+      "byPct": "Em %",
+      "byBalance": "Pelo saldo",
+      "lossPct": "Perda (%)",
+      "before": "Saldo antes da perda (US$)",
+      "after": "Saldo agora (US$)",
+      "rate": "Rendimento esperado pra recuperar (%)",
+      "rateHint": "Opcional. Usado pra estimar o tempo, em juros compostos.",
+      "invalid": "Informe uma perda entre 0% e 100% (ou um saldo atual menor que o de antes).",
+      "result": "Ganho necessário pra recuperar",
+      "explainPct": "Depois de perder {loss}, a conta precisa ganhar {gain} sobre o saldo que sobrou pra voltar ao valor de antes.",
+      "explainBalance": "A conta caiu de {before} pra {after} (perda de {loss}). Pra voltar a {before}, precisa lucrar {need}, que é {gain} sobre o saldo atual.",
+      "time": "Com {rate} {period}, reinvestindo o lucro, a recuperação leva {when}.",
+      "lesson": "Quanto maior a perda, mais difícil voltar: perder 10% pede 11% de ganho, mas perder 50% pede 100%. Por isso o Ai X PULSE RS trabalha com limite de perda do dia: proteger o capital vem antes de buscar lucro.",
+      "tableTitle": "Tabela de recuperação",
+      "tableIntro": "O ganho necessário cresce muito mais rápido que a perda.",
+      "colLoss": "Perda",
+      "colGain": "Ganho necessário",
+      "tableNote": "Barras em escala logarítmica, pra caber a perda de 90% (que pede +900%)."
     },
     "sessions": {
       "metaTitle": "Sessões do Mercado Forex no Seu Horário",

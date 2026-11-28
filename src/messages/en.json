@@ -34,7 +34,7 @@
     },
     "tools": {
       "title": "Trader Tools",
-      "description": "Free tools for forex and gold traders: lot size calculator, market sessions in your time zone and reference quotes."
+      "description": "Free tools for forex and gold traders: calculators (lot size, simple and compound interest, loss recovery), market sessions in your time zone and reference quotes."
     },
     "terms": {
       "title": "Terms of Use",
@@ -441,7 +441,7 @@
       "contact": "Contact"
     },
     "toolsLinks": {
-      "calculator": "Lot size calculator",
+      "calculators": "Calculators",
       "sessions": "Market sessions",
       "quotes": "Live quotes",
       "calendar": "Economic calendar",
@@ -1924,7 +1924,7 @@
       "open": "Open",
       "soon": "Coming soon",
       "items": {
-        "calculator": "Find the right lot size for your risk in seconds.",
+        "calculators": "Lot size, simple interest, compound interest and loss recovery.",
         "sessions": "See which markets are open right now, in your time zone.",
         "quotes": "Reference prices for gold and the major pairs.",
         "calendar": "Economic releases that move the market.",
@@ -1964,6 +1964,140 @@
       "belowMin": "The calculated lot is below the broker minimum (0.01). At 0.01 you'd be risking {risk} ({pct} of your balance). Add capital or use a tighter stop.",
       "invalid": "Enter a balance, risk and stop greater than zero.",
       "assumptions": "Assumes a US dollar (USD) account and standard contract size (100,000 units; gold 100 oz), and rounds the lot down in 0.01 steps. Check the contract size and minimum lot with your broker."
+    },
+    "calculators": {
+      "metaTitle": "Trading Calculators: Lot Size, Simple and Compound Interest",
+      "metaDescription": "Free trader calculators: lot size by risk, simple interest, compound interest with deposits and a target, and loss recovery. Gold and forex.",
+      "eyebrow": "Calculators",
+      "title": "Calculators",
+      "intro": "Simulate before you trade: the right lot for your risk, how capital grows with simple and compound interest, and what it takes to recover a loss.",
+      "items": {
+        "lot": {
+          "tab": "Lot size",
+          "title": "Lot size calculator",
+          "intro": "Enter your balance, how much you accept to risk and where the stop is. The calculator shows the lot size and the value of each pip.",
+          "card": "The right lot for your risk and the value of each pip.",
+          "metaTitle": "Lot Size and Pip Value Calculator",
+          "metaDescription": "Calculate your MT4 lot size from your risk: balance, risk % and stop in pips or by price. Gold (XAU/USD) and forex pairs, JPY included. Free."
+        },
+        "simple": {
+          "tab": "Simple interest",
+          "title": "Simple interest calculator",
+          "intro": "Profit is always calculated on the amount deposited, with no reinvesting. Simulate per day, week or month, with monthly deposits and a target.",
+          "card": "Fixed profit on your capital, without reinvesting what you earn.",
+          "metaTitle": "Simple Interest Calculator",
+          "metaDescription": "Simulate simple interest per day, week or month: starting capital, rate, period and monthly deposits, with chart, table and a comparison with compound interest. Free."
+        },
+        "compound": {
+          "tab": "Compound interest",
+          "title": "Compound interest calculator",
+          "intro": "Each day's profit is added to the balance and starts earning too. Simulate per day, week or month, with monthly deposits, a target and a growth table.",
+          "card": "Reinvested profit: watch the balance grow day by day, with deposits and a target.",
+          "metaTitle": "Compound Interest Calculator",
+          "metaDescription": "Simulate compound interest per day, week or month: capital, rate, period, monthly deposits and a target, with chart, growth table and a comparison with simple interest. Free."
+        },
+        "recovery": {
+          "tab": "Loss recovery",
+          "title": "Loss recovery calculator",
+          "intro": "How much you need to gain to get back to your previous balance after a loss, and how long it takes.",
+          "card": "How much you need to gain to get back to your balance before a loss.",
+          "metaTitle": "Drawdown Recovery Calculator",
+          "metaDescription": "Find out how much profit you need to recover a loss (drawdown): a 50% loss needs a 100% gain. With estimated time and a table. Free."
+        }
+      }
+    },
+    "growth": {
+      "principal": "Starting capital (US$)",
+      "rate": "Return (%)",
+      "per": {
+        "day": "per day",
+        "week": "per week",
+        "month": "per month"
+      },
+      "horizon": "Period",
+      "horizonUnit": "Period unit",
+      "units": {
+        "day": "trading days",
+        "week": "weeks",
+        "month": "months",
+        "year": "years"
+      },
+      "daysNote": "Counts market days only: 1 week = 5 days, 1 month = 21 days, 1 year = 252 days.",
+      "capped": "The maximum period is 10 years (2,520 trading days).",
+      "monthly": "Monthly deposit (US$)",
+      "monthlyHint": "Optional. Added at the end of each month.",
+      "goal": "Balance target (US$)",
+      "goalPlaceholder": "E.g. 10000",
+      "goalHint": "Optional. Shows how long it takes to get there.",
+      "invalid": "Enter valid values for capital, return (up to 100%) and period.",
+      "final": "Final balance",
+      "profit": "Total profit",
+      "profitPct": "Total return",
+      "deposited": "Total deposited",
+      "firstsTitle": "Profit at the start (no deposits)",
+      "firsts": {
+        "day": "Day 1",
+        "week": "Week 1",
+        "month": "Month 1"
+      },
+      "compareCompound": "With simple interest, the same capital would end at {other}. Reinvesting the profit earns {diff} more.",
+      "compareSimple": "With compound interest, reinvesting the profit, it would end at {other}: {diff} more.",
+      "goalReach": "You reach {goal} in {when}.",
+      "goalNever": "At this pace, the balance does not reach {goal} within 10 years.",
+      "goalAlready": "The starting capital is already above the target.",
+      "goalDays": "{days, plural, one {# trading day} other {# trading days}}",
+      "goalMonths": "{days} trading days (about {months} months)",
+      "goalYears": "{days} trading days (about {years} years)",
+      "highRate": "A high return that is the same every day does not exist in real markets: there are losing days and results vary. Use the simulation to understand the math, not as a promise.",
+      "chartTitle": "Balance growth",
+      "simple": "Simple interest",
+      "compound": "Compound interest",
+      "depositedLine": "Total deposited",
+      "tipDay": "Trading day {n}",
+      "showTable": "Show growth table",
+      "hideTable": "Hide table",
+      "colPeriod": "Period",
+      "colDeposits": "Deposits",
+      "colProfit": "Profit in period",
+      "colBalance": "Balance",
+      "colTotalPct": "Cumulative return",
+      "row": {
+        "day": "Day {n}",
+        "week": "Week {n}",
+        "month": "Month {n}",
+        "year": "Year {n}"
+      },
+      "axisDay": "{n}d",
+      "axisMonth": "{n}mo",
+      "axisYear": "{n}y",
+      "howCompoundTitle": "How compound interest works",
+      "howCompound": "Each day, the return is calculated on the previous day's balance, which already includes the accumulated profit. That is why the curve speeds up over time. Weekly or monthly rates are converted to the equivalent daily rate: 10% per month, for example, is about 0.45% per trading day.",
+      "howSimpleTitle": "How simple interest works",
+      "howSimple": "The return is always calculated on the amount deposited (starting capital + deposits), never on the profit. Each day's profit is the same and the balance grows in a straight line. It is the case of someone who withdraws the profit and always keeps the same capital trading.",
+      "disclaimer": "Mathematical simulation, without costs, taxes or spread. Trading involves risk: results vary from day to day, there are losing days and past results do not guarantee future results.",
+      "huge": "over US$ 1 quadrillion",
+      "hugePct": "over 100 billion %"
+    },
+    "recovery": {
+      "by": "How to enter the loss",
+      "byPct": "In %",
+      "byBalance": "By balance",
+      "lossPct": "Loss (%)",
+      "before": "Balance before the loss (US$)",
+      "after": "Balance now (US$)",
+      "rate": "Expected return to recover (%)",
+      "rateHint": "Optional. Used to estimate the time, with compound interest.",
+      "invalid": "Enter a loss between 0% and 100% (or a current balance lower than before).",
+      "result": "Gain needed to recover",
+      "explainPct": "After losing {loss}, the account needs to gain {gain} on the remaining balance to get back to where it was.",
+      "explainBalance": "The account dropped from {before} to {after} (a {loss} loss). To get back to {before}, it needs {need} of profit, which is {gain} on the current balance.",
+      "time": "At {rate} {period}, reinvesting the profit, recovery takes {when}.",
+      "lesson": "The bigger the loss, the harder the way back: losing 10% needs an 11% gain, but losing 50% needs 100%. That is why Ai X PULSE RS works with a daily loss limit: protecting capital comes before chasing profit.",
+      "tableTitle": "Recovery table",
+      "tableIntro": "The gain needed grows much faster than the loss.",
+      "colLoss": "Loss",
+      "colGain": "Gain needed",
+      "tableNote": "Bars on a logarithmic scale, so the 90% loss (which needs +900%) fits."
     },
     "sessions": {
       "metaTitle": "Forex Market Sessions in Your Time Zone",

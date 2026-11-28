@@ -9,7 +9,7 @@ import { TOOLS } from "@/lib/tools";
 
 type Props = { params: Promise<{ locale: string }> };
 
-const ICONS = { calculator: IconCandles, sessions: IconClock, quotes: IconChartUp, calendar: IconCalendar, analysis: IconSpark, news: IconGlobe } as const;
+const ICONS = { calculators: IconCandles, sessions: IconClock, quotes: IconChartUp, calendar: IconCalendar, analysis: IconSpark, news: IconGlobe } as const;
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { locale } = await params;

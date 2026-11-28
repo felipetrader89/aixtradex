@@ -34,7 +34,7 @@
     },
     "tools": {
       "title": "Herramientas para el Trader",
-      "description": "Herramientas gratis para el trader de forex y oro: calculadora de lote, sesiones del mercado en tu horario y cotizaciones de referencia."
+      "description": "Herramientas gratis para el trader de forex y oro: calculadoras (lote, interés simple y compuesto, recuperación de pérdidas), sesiones del mercado en tu horario y cotizaciones de referencia."
     },
     "terms": {
       "title": "Términos de Uso",
@@ -441,7 +441,7 @@
       "contact": "Contacto"
     },
     "toolsLinks": {
-      "calculator": "Calculadora de lote",
+      "calculators": "Calculadoras",
       "sessions": "Sesiones del mercado",
       "quotes": "Cotizaciones",
       "calendar": "Calendario económico",
@@ -1924,7 +1924,7 @@
       "open": "Abrir",
       "soon": "Muy pronto",
       "items": {
-        "calculator": "Encuentra el lote correcto para tu riesgo en segundos.",
+        "calculators": "Lote, interés simple, interés compuesto y recuperación de pérdidas.",
         "sessions": "Mira qué mercados están abiertos ahora, en tu horario.",
         "quotes": "Precio de referencia del oro y de los principales pares.",
         "calendar": "Noticias económicas que mueven el mercado.",
@@ -1964,6 +1964,140 @@
       "belowMin": "El lote calculado quedó por debajo del mínimo del bróker (0,01). Con 0,01 arriesgarías {risk} ({pct} del saldo). Aumenta el capital o usa un stop más corto.",
       "invalid": "Completa saldo, riesgo y stop con valores mayores que cero.",
       "assumptions": "Considera una cuenta en dólares (USD), contrato estándar (100.000 unidades; oro 100 onzas) y redondea el lote hacia abajo en pasos de 0,01. Confirma el tamaño del contrato y el lote mínimo con tu bróker."
+    },
+    "calculators": {
+      "metaTitle": "Calculadoras de Trading: Lote, Interés Simple y Compuesto",
+      "metaDescription": "Calculadoras gratis para el trader: lote según el riesgo, interés simple, interés compuesto con aportes y meta, y recuperación de pérdidas. Oro y forex.",
+      "eyebrow": "Calculadoras",
+      "title": "Calculadoras",
+      "intro": "Simula antes de operar: el lote correcto para tu riesgo, el crecimiento del capital con interés simple y compuesto y cuánto cuesta recuperar una pérdida.",
+      "items": {
+        "lot": {
+          "tab": "Lote",
+          "title": "Calculadora de lote",
+          "intro": "Indica el saldo, cuánto aceptas arriesgar y dónde está el stop. La calculadora muestra el lote y cuánto vale cada pip.",
+          "card": "El lote correcto para tu riesgo y cuánto vale cada pip.",
+          "metaTitle": "Calculadora de Lote y Valor del Pip",
+          "metaDescription": "Calcula el tamaño del lote en MT4 según tu riesgo: saldo, % de riesgo y stop en pips o por precio. Oro (XAU/USD) y pares forex, incluidos JPY. Gratis."
+        },
+        "simple": {
+          "tab": "Interés simple",
+          "title": "Calculadora de interés simple",
+          "intro": "La ganancia siempre se calcula sobre el monto depositado, sin reinvertir. Simula por día, semana o mes, con aporte mensual y meta.",
+          "card": "Ganancia fija sobre el capital, sin reinvertir lo ganado.",
+          "metaTitle": "Calculadora de Interés Simple",
+          "metaDescription": "Simula interés simple por día, semana o mes: capital inicial, tasa, plazo y aporte mensual, con gráfico, tabla y comparación con interés compuesto. Gratis."
+        },
+        "compound": {
+          "tab": "Interés compuesto",
+          "title": "Calculadora de interés compuesto",
+          "intro": "La ganancia de cada día entra al saldo y empieza a rendir también. Simula por día, semana o mes, con aporte mensual, meta y tabla de evolución.",
+          "card": "Ganancia reinvertida: el saldo creciendo día a día, con aportes y meta.",
+          "metaTitle": "Calculadora de Interés Compuesto",
+          "metaDescription": "Simula interés compuesto por día, semana o mes: capital, tasa, plazo, aporte mensual y meta, con gráfico, tabla de evolución y comparación con interés simple. Gratis."
+        },
+        "recovery": {
+          "tab": "Recuperar pérdida",
+          "title": "Calculadora de recuperación de pérdidas",
+          "intro": "Cuánto necesitas ganar para volver al saldo anterior después de una pérdida, y en cuánto tiempo.",
+          "card": "Cuánto necesitas ganar para volver al saldo de antes de una pérdida.",
+          "metaTitle": "Calculadora de Recuperación de Drawdown",
+          "metaDescription": "Descubre cuánto necesitas ganar para recuperar una pérdida (drawdown): una pérdida del 50% exige una ganancia del 100%. Con tiempo estimado y tabla. Gratis."
+        }
+      }
+    },
+    "growth": {
+      "principal": "Capital inicial (US$)",
+      "rate": "Rendimiento (%)",
+      "per": {
+        "day": "al día",
+        "week": "a la semana",
+        "month": "al mes"
+      },
+      "horizon": "Plazo",
+      "horizonUnit": "Unidad del plazo",
+      "units": {
+        "day": "días hábiles",
+        "week": "semanas",
+        "month": "meses",
+        "year": "años"
+      },
+      "daysNote": "Cuenta solo los días de mercado abierto: 1 semana = 5 días, 1 mes = 21 días, 1 año = 252 días.",
+      "capped": "El plazo máximo es de 10 años (2.520 días hábiles).",
+      "monthly": "Aporte mensual (US$)",
+      "monthlyHint": "Opcional. Se deposita al final de cada mes.",
+      "goal": "Meta de saldo (US$)",
+      "goalPlaceholder": "Ej.: 10000",
+      "goalHint": "Opcional. Muestra en cuánto tiempo llegas.",
+      "invalid": "Completa capital, rendimiento (hasta 100%) y plazo con valores válidos.",
+      "final": "Saldo final",
+      "profit": "Ganancia total",
+      "profitPct": "Rendimiento total",
+      "deposited": "Total depositado",
+      "firstsTitle": "Ganancia al inicio (sin aportes)",
+      "firsts": {
+        "day": "Día 1",
+        "week": "Semana 1",
+        "month": "Mes 1"
+      },
+      "compareCompound": "Con interés simple, el mismo capital terminaría en {other}. Reinvertir la ganancia rinde {diff} más.",
+      "compareSimple": "Con interés compuesto, reinvirtiendo la ganancia, terminaría en {other}: {diff} más.",
+      "goalReach": "Llegas a {goal} en {when}.",
+      "goalNever": "A este ritmo, el saldo no llega a {goal} en 10 años.",
+      "goalAlready": "El capital inicial ya está por encima de la meta.",
+      "goalDays": "{days, plural, one {# día hábil} other {# días hábiles}}",
+      "goalMonths": "{days} días hábiles (unos {months} meses)",
+      "goalYears": "{days} días hábiles (unos {years} años)",
+      "highRate": "Un rendimiento alto e igual todos los días no existe en el mercado real: hay días de pérdida y el resultado varía. Usa la simulación para entender la matemática, no como una promesa.",
+      "chartTitle": "Evolución del saldo",
+      "simple": "Interés simple",
+      "compound": "Interés compuesto",
+      "depositedLine": "Total depositado",
+      "tipDay": "Día hábil {n}",
+      "showTable": "Ver tabla de evolución",
+      "hideTable": "Ocultar tabla",
+      "colPeriod": "Período",
+      "colDeposits": "Aportes",
+      "colProfit": "Ganancia del período",
+      "colBalance": "Saldo",
+      "colTotalPct": "Rendimiento acumulado",
+      "row": {
+        "day": "Día {n}",
+        "week": "Semana {n}",
+        "month": "Mes {n}",
+        "year": "Año {n}"
+      },
+      "axisDay": "{n} d",
+      "axisMonth": "{n} m",
+      "axisYear": "{n} a",
+      "howCompoundTitle": "Cómo funciona el interés compuesto",
+      "howCompound": "Cada día, el rendimiento se calcula sobre el saldo del día anterior, que ya incluye la ganancia acumulada. Por eso la curva se acelera con el tiempo. Las tasas semanales o mensuales se convierten en la tasa diaria equivalente: 10% al mes, por ejemplo, es cerca de 0,45% por día hábil.",
+      "howSimpleTitle": "Cómo funciona el interés simple",
+      "howSimple": "El rendimiento siempre se calcula sobre el monto depositado (capital inicial + aportes), nunca sobre la ganancia. La ganancia de cada día es la misma y el saldo crece en línea recta. Es el caso de quien retira la ganancia y mantiene siempre el mismo capital operando.",
+      "disclaimer": "Simulación matemática, sin costos, impuestos ni spread. El trading tiene riesgo: el resultado varía de un día a otro, hay días de pérdida y los resultados pasados no garantizan resultados futuros.",
+      "huge": "más de US$ 1.000 billones",
+      "hugePct": "más de 100.000 millones %"
+    },
+    "recovery": {
+      "by": "Cómo indicar la pérdida",
+      "byPct": "En %",
+      "byBalance": "Por el saldo",
+      "lossPct": "Pérdida (%)",
+      "before": "Saldo antes de la pérdida (US$)",
+      "after": "Saldo actual (US$)",
+      "rate": "Rendimiento esperado para recuperar (%)",
+      "rateHint": "Opcional. Se usa para estimar el tiempo, con interés compuesto.",
+      "invalid": "Indica una pérdida entre 0% y 100% (o un saldo actual menor que el anterior).",
+      "result": "Ganancia necesaria para recuperar",
+      "explainPct": "Después de perder {loss}, la cuenta necesita ganar {gain} sobre el saldo restante para volver al valor anterior.",
+      "explainBalance": "La cuenta bajó de {before} a {after} (pérdida de {loss}). Para volver a {before}, necesita ganar {need}, que es {gain} sobre el saldo actual.",
+      "time": "Con {rate} {period}, reinvirtiendo la ganancia, la recuperación tarda {when}.",
+      "lesson": "Cuanto mayor la pérdida, más difícil volver: perder 10% exige 11% de ganancia, pero perder 50% exige 100%. Por eso Ai X PULSE RS trabaja con límite de pérdida diaria: proteger el capital va antes de buscar ganancia.",
+      "tableTitle": "Tabla de recuperación",
+      "tableIntro": "La ganancia necesaria crece mucho más rápido que la pérdida.",
+      "colLoss": "Pérdida",
+      "colGain": "Ganancia necesaria",
+      "tableNote": "Barras en escala logarítmica, para que quepa la pérdida del 90% (que exige +900%)."
     },
     "sessions": {
       "metaTitle": "Sesiones del Mercado Forex en Tu Horario",
