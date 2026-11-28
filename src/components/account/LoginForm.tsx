@@ -56,7 +56,7 @@ export function LoginForm({ next }: { next?: string }) {
           }}
           className="flex flex-col gap-4"
         >
-          <h2 className="text-center font-display text-xl font-bold text-chrome">{t("title")}</h2>
+          <h1 className="text-center font-display text-xl font-bold text-chrome">{t("title")}</h1>
           <p className="text-center text-sm text-brand-ink-dim">{t("body")}</p>
           <label className="flex flex-col gap-2 text-xs text-brand-ink-dim">
             {t("emailLabel")}
@@ -89,7 +89,7 @@ export function LoginForm({ next }: { next?: string }) {
           }}
           className="flex flex-col gap-4"
         >
-          <h2 className="text-center font-display text-xl font-bold text-chrome">{t("codeTitle")}</h2>
+          <h1 className="text-center font-display text-xl font-bold text-chrome">{t("codeTitle")}</h1>
           <p className="text-center text-sm text-brand-ink-dim">{t("codeBody", { email })}</p>
           <label className="flex flex-col gap-2 text-xs text-brand-ink-dim">
             {t("codeLabel")}
